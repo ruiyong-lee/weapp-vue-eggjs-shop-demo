@@ -1,0 +1,63 @@
+<!--goodsDetail.wxml-->
+<import src="/style/ui/cart-add/index.wxml" />
+
+<view class="page content-scroll">
+  <!-- 轮播 -->
+  <swiper class="goods-swiper" indicator-dots="{{true}}" autoplay="{{true}}" indicator-active-color="#20a0ff">
+    <block wx:for="{{imgUrls}}">
+      <swiper-item>
+        <image src="{{item}}" class="slide-image" mode="widthFix" />
+      </swiper-item>
+    </block>
+  </swiper>
+
+  <!-- 详情 -->
+  <view class="weui-panel weui-panel_access mt-0">
+    <view class="weui-panel__bd">
+      <view class="weui-media-box weui-media-box_appmsg">
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view class="weui-media-box__title lh-30">特级燕麦</view>
+          <view class="weui-media-box__desc zan-c-orange lh-30">
+            <image class="icon-small inline-block" src="../../images/icon/icon-rmb.png"></image>
+            <view class="inline">
+              10/<text class="inline fs-11">斤</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="weui-panel weui-panel_access">
+    <view class="weui-panel__bd pb-50">
+      <view class="weui-media-box weui-media-box_appmsg">
+        <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+          <view>商品详情</view>
+          <view class="zan-c-gray-darker mt-6">
+            <rich-text type="text" nodes="" bindtap="tap"></rich-text>
+            燕麦（拉丁学名：Avena sativa L.）为禾本科植物,《本草纲目》中称之为雀麦、野麦子。燕麦不易脱皮，所以被称为皮燕麦,是一种低糖、高营养、高能食品。燕麦性味甘平。能益脾养心、敛汗。有较高的营养价值。可用于体虚自汗、盗汗或肺结核病人。煎汤服，或“舂去皮作面蒸食及作饼食。”（《救荒本草》）.燕麦耐寒，抗旱，对土壤的适应性很强，能自播繁衍。燕麦富含膳食纤维，能促进肠胃蠕动，利于排便，热量低，升糖指数低，降脂降糖，也是高档补品之一，在贫苦地区是不可缺少的干粮。 1997年美国FDA认定燕麦为功能性食物，具有降低胆固醇、平稳血糖的功效。美国《时代》杂志评选的“全球十大健康食物”中燕麦位列第五，是唯一上榜的谷类。
+            谷粒供磨面食用，或作饲料，营养价值很高。在中国人日常食用的小麦、稻米、玉米等9种食粮中，以燕麦的经济价值最高，其主要表现在营养、医疗保健和饲用价值均高。燕麦中的β-葡聚糖可减缓血液中葡萄糖含量的增加，预防和控制肥胖症、糖尿病及心血管疾病。燕麦富含的膳食纤维具有清理肠道垃圾的作用。
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="fixed-bottom wp-100">
+  <navigator class="zan-btn zan-btn--large box-btn" open-type="navigateBack">
+    <image class="icon-small mt-5" src="../../images/icon/icon-home.png"></image>
+    <view class="fs-11">首页</view>
+  </navigator>
+  <navigator class="zan-btn zan-btn--large box-btn">
+    <image class="icon-small mt-5" src="../../images/icon/icon-cart.png"></image>
+    <view class="weui-badge weui-badge_dot absolute m-5"></view>
+    <view class="fs-11">购物车</view>
+  </navigator>
+  <view class="fluid-box pl-160">
+    <button class="zan-btn zan-btn--large zan-btn--warn" catchtap="toggleDialog">加入购物车</button>
+  </view>
+</view>
+
+<!-- 加入购物车弹窗 -->
+<template is="cart-add" data="{{ cartData, componentId: 'cartData' }}" />

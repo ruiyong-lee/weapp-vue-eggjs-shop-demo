@@ -1,0 +1,7 @@
+/**goodsDetail.wxss**/
+.goods-swiper {
+  height: 240px;
+}
+ .goods-swiper .slide-image {
+  width: 100%;
+} 

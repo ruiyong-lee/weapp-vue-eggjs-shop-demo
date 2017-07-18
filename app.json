@@ -1,0 +1,39 @@
+{
+  "pages": [
+    "pages/order/order",
+    "pages/index/index",
+    "pages/goodsDetail/goodsDetail",
+    "pages/person/person",
+    "pages/logs/logs"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#fff",
+    "navigationBarTitleText": "干货",
+    "navigationBarTextStyle": "black"
+  },
+  "tabBar": {
+    "selectedColor": "#20a0ff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "iconPath": "images/icon/icon-home.png",
+        "selectedIconPath": "images/icon/icon-home-active.png",
+        "text": "商品"
+      },
+      {
+        "pagePath": "pages/cart/cart",
+        "iconPath": "images/icon/icon-cart.png",
+        "selectedIconPath": "images/icon/icon-cart-active.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/person/person",
+        "iconPath": "images/icon/icon-person.png",
+        "selectedIconPath": "images/icon/icon-person-active.png",
+        "text": "我的"
+      }
+    ]
+  }
+}

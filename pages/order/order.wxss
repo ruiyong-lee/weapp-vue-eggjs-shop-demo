@@ -1,0 +1,5 @@
+/* pages/order/order.wxss */
+
+.order-item-header {
+  padding: 10px 0;
+}

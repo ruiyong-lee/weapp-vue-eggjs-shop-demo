@@ -1,0 +1,26 @@
+/* pages/person/person.wxss */
+.userinfo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height:320rpx;
+}
+
+.userinfo-avatar {
+  width: 160rpx;
+  height: 160rpx;
+  margin: 20rpx;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  box-shadow:0px 1px 8px 2px #eee;
+}
+
+.userinfo-nickname {
+  color: #aaa;
+}
+
+.person-module {
+  padding: 20rpx 0;
+  text-align: center;
+}

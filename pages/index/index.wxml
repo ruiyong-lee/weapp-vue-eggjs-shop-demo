@@ -1,0 +1,60 @@
+<!--index.wxml-->
+<import src="/style/ui/cart-add/index.wxml" />
+
+<view class="page">
+  <!-- 搜索 -->
+  <view class="search-bar">
+    <input class="search-input" confirm-type="done" placeholder="搜索商品" />
+  </view>
+
+  <view class="classname">{{quantity.quantity}}</view>
+
+  <view class="goods-panel">
+    <!-- 类别列表 -->
+    <scroll-view scroll-y class="goods-sidebar content-scroll">
+      <view class="content-scroll-child">
+        <view class="category-item active">
+          全部
+        </view>
+        <view class="category-item" wx:for="{{[1,2,3,4,5,6,7,8,9,10,11,12,13,14,15]}}">
+          ----
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 商品列表 -->
+    <scroll-view scroll-y class="goods-content content-scroll" bindscrolltolower="lower">
+      <view class="content-scroll-child">
+        <navigator class="goods-item zan-card" wx:for="{{testArr}}" url="../goodsDetail/goodsDetail">
+          <view class="zan-card__thumb">
+            <image class="zan-card__img" src="../../images/test.png" mode="aspectFit"></image>
+          </view>
+          <view class="zan-card__detail">
+            <view class="zan-card__detail-row minh-40">
+              <view class="zan-ellipsis--l2">特级燕麦</view>
+            </view>
+
+            <view class="zan-card__detail-row">
+              <view class="zan-card__right-col h-30">
+                <image class="icon-mid" src="../../images/icon/icon-cart-add.png" catchtap="toggleDialog"></image>
+              </view>
+              <view class="zan-card__left-col zan-ellipsis--l2 zan-c-orange mt-6 mr-40">
+                <image class="icon-small inline-block" src="../../images/icon/icon-rmb.png"></image>
+                <view class="inline">
+                  10/<text class="inline fs-11">斤</text>
+                </view>
+              </view>
+            </view>
+          </view>
+        </navigator>
+        <view class="weui-loadmore" hidden="{{loadmore}}">
+          <view class="weui-loading"></view>
+          <view class="weui-loadmore__tips">正在加载</view>
+        </view>
+      </view>
+    </scroll-view>
+
+    <!-- 加入购物车弹窗 -->
+    <template is="cart-add" data="{{ cartData, componentId: 'cartData' }}" />
+  </view>
+</view>

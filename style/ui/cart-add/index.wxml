@@ -1,0 +1,40 @@
+<!-- 加入购物车弹窗模板 -->
+
+<template name="cart-add">
+  <import src="/style/zanui/quantity/index.wxml" />
+
+  <view class="zan-dialog cart-add-dialog {{ cartData.showDialog ? 'zan-dialog--show' : '' }}">
+    <view class="zan-dialog__mask" bindtap="toggleDialog" />
+    <view class="zan-dialog__container">
+      <view class="weui-panel weui-panel_access">
+        <view class="weui-panel__bd">
+          <view class="weui-media-box weui-media-box_appmsg">
+            <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
+              <image class="weui-media-box__thumb" src="../../images/test.png" mode="aspectFit"/>
+            </view>
+            <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+              <view class="weui-media-box__title">特级燕麦</view>
+              <view class="weui-media-box__desc zan-c-orange">
+                <image class="icon-small inline-block" src="../../images/icon/icon-rmb.png"></image>
+                <view class="inline">
+                  10/<text class="inline fs-11">斤</text>
+                </view>
+              </view>
+            </view>
+          <icon class="dialog-close" type="cancel" size="23" color="#999999" bindtap="toggleDialog"></icon>
+        </view>
+        <view class="weui-media-box weui-media-box_appmsg">
+          <view>购买数量：</view>
+            <template is="zan-quantity" data="{{ ...cartData, componentId: componentId, size: 'small' }}" />
+          </view>
+          <view class="weui-media-box weui-media-box_appmsg">
+            <textarea class="wp-100" auto-height placeholder="填写备注" />
+          </view>
+        </view>
+        <view class="weui-panel__ft">
+          <button class="zan-btn zan-btn--large zan-btn--warn">加入购物车</button>
+        </view>
+      </view>
+    </view>
+  </view>
+</template>
