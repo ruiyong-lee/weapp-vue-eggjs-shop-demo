@@ -4,7 +4,7 @@
 <view class="page border-top-1">
   <template is="zan-tab" data="{{tab: tab, componentId: 'tab'}}"></template>
 
-  <view class="weui-panel weui-panel_access">
+  <navigator url="../orderDetail/orderDetail" class="weui-panel weui-panel_access">
     <view class="zan-card plr-15">
       <view class="zan-card__detail ml-0">
         <view class="zan-card__detail-row">
@@ -49,7 +49,7 @@
         查看全部3件商品
       </view>
       <view class="weui-media-box text-right ptb-5">
-        <text class="fs-13">合计：</text>
+        <text class="fs-14">合计：</text>
         <text class="zan-c-red">¥ 998</text>
       </view>
       <view class="weui-media-box text-right ptb-10 lh-1">
@@ -57,5 +57,5 @@
         <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain">去支付</button>
       </view>
     </view>
-  </view>
+  </navigator>
 </view>

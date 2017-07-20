@@ -71,6 +71,12 @@
   opacity: 1;
 }
 
+.weui-media-box__ft {
+  position: absolute;
+  right: 15px;
+  top: 50%;
+}
+
 /* 常用 */
 
 .absolute {
@@ -79,7 +85,10 @@
 
 .fixed-bottom {
   position: absolute;
+  z-index: 10;
   bottom: 0;
+  height: 50px;
+  background-color: #fff;
 }
 
 .overflow-hidden {
@@ -114,6 +123,10 @@
 
 .pl-160 {
   padding-left: 160px !important;
+}
+
+.pr-100 {
+  padding-right: 100px;
 }
 
 .pb-50 {
@@ -163,6 +176,10 @@
   margin-left: 0;
 }
 
+.mb-10 {
+  margin-bottom: 10px;
+}
+
 .minh-40 {
   min-height: 40px !important;
 }
@@ -175,12 +192,24 @@
   width: 100%;
 }
 
+.w-50 {
+  width: 50px;
+}
+
+.w-100 {
+  width: 100px;
+}
+
 .fs-11 {
   font-size: 11px;
 }
 
 .fs-13 {
   font-size: 13px;
+}
+
+.fs-14 {
+  font-size: 14px;
 }
 
 .lh-1 {

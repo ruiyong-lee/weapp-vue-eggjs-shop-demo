@@ -1,0 +1,110 @@
+<!--pages/orderDetail/orderDetail.wxml-->
+
+<view class="page content-scroll">
+  <!-- 状态、地址 -->
+
+  <view class="pb-50">
+    <view class="weui-panel weui-panel_access">
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_appmsg">
+          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg icon-mid">
+            <image class="weui-media-box__thumb" src="../../images/icon/icon-unPayment.png" />
+          </view>
+          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title fs-14">等待买家付款</view>
+            <view class="weui-media-box__desc fs-11">请于 26分34秒 内付款，超时订单将自动取消</view>
+          </view>
+        </view>
+        <view class="weui-media-box weui-media-box_appmsg">
+          <view class="weui-media-box__hd weui-media-box__hd_in-appmsg icon-mid">
+            <image class="weui-media-box__thumb" src="../../images/icon/icon-address.png" />
+          </view>
+          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <view class="weui-media-box__title fs-14">收货人：李锐勇 18389197148</view>
+            <view class="weui-media-box__desc fs-11">收货地址：软件园二期望海路39号102</view>
+            <view class="weui-cell__ft weui-cell__ft_in-access weui-media-box__ft"></view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 订单信息 -->
+    <view class="weui-panel weui-panel_access">
+      <view class="plr-15 ptb-10 fs-14">店铺名称</view>
+
+      <view class="weui-panel__bd bg-gray mb-10" wx:for="{{[1,2]}}">
+        <view class="zan-card plr-15">
+          <view class="zan-card__thumb">
+            <image class="zan-card__img" src="../../images/test.png" mode="aspectFit"></image>
+          </view>
+          <view class="zan-card__detail">
+            <view class="zan-card__detail-row">
+              <view class="zan-card__right-col zan-c-red">
+                <view class="inline">
+                  ¥ 10/<text class="inline fs-11">斤</text>
+                </view>
+              </view>
+              <view class="zan-card__left-col zan-ellipsis--l2">特级燕麦</view>
+            </view>
+
+            <view class="zan-card__detail-row zan-c-gray-darker">
+              <view class="zan-card__right-col">x2</view>
+              <view class="zan-card__left-col">
+                备注：我要好的
+              </view>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="weui-cells weui-cells_after-title mt-10 fs-14">
+      <view class="weui-cell weui-cell_access" bindtap="chooseDay">
+        <view class="weui-cell__bd ">送货时间</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access ">次日达（次日20点之前）</view>
+      </view>
+    </view>
+
+    <view class="weui-panel weui-panel_access fs-14">
+      <view class="weui-panel__bd">
+        <view class="weui-media-box weui-media-box_appmsg">
+          <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
+            <input placeholder="请填写备注（选填）" />
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <!-- <view class="weui-panel weui-panel_access fs-14 mb-10"> -->
+    <view class="weui-form-preview mt-10 mb-10">
+      <view class="weui-form-preview__bd">
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label zan-c-black">商品金额</view>
+          <view class="weui-form-preview__value zan-c-red">¥ 998</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label zan-c-black">运费</view>
+          <view class="weui-form-preview__value zan-c-red">+ ¥ 10</view>
+        </view>
+        <view class="weui-form-preview__item">
+          <view class="weui-form-preview__label zan-c-black">加急费</view>
+          <view class="weui-form-preview__value zan-c-red">+ ¥ 10</view>
+        </view>
+      </view>
+    </view>
+    <!-- </view> -->
+  </view>
+</view>
+
+<view class="fixed-bottom wp-100 ">
+  <view class="fluid-box ">
+    <view class="order-detail-footer ">
+      <!-- <button class="zan-btn zan-btn--small zan-btn--plain ">取消订单</button> -->
+      <view class="text-right wp-100 pr-100 ">
+        <text class="fs-14 ">合计：</text>
+        <text class="zan-c-red ">¥ 1018</text>
+      </view>
+    </view>
+  </view>
+  <button class="zan-btn zan-btn--large zan-btn--danger w-100 ">去支付</button>
+</view>

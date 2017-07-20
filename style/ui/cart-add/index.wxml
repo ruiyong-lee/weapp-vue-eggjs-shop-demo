@@ -28,7 +28,8 @@
             <template is="zan-quantity" data="{{ ...cartData, componentId: componentId, size: 'small' }}" />
           </view>
           <view class="weui-media-box weui-media-box_appmsg">
-            <textarea class="wp-100" auto-height placeholder="填写备注" />
+            <!-- 实测手机dialog关闭后textarea不能马上关闭，暂时用wx:if控制 -->
+            <input wx:if="{{cartData.showDialog}}" placeholder="请填写备注（选填）" />
           </view>
         </view>
         <view class="weui-panel__ft">
