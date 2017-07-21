@@ -56,10 +56,10 @@
         </navigator>
       </view>
       <view class="weui-flex__item">
-        <view class="person-module" bindtap="geiAddress">
+        <navigator class="person-module" url="../address/address">
           <image class="icon-mid" src="../../images/icon/icon-address.png"></image>
           <view class="fs-11">我的地址</view>
-        </view>
+        </navigator>
       </view>
       <view class="weui-flex__item">
 

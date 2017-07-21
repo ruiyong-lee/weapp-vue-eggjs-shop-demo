@@ -30,7 +30,7 @@
 
     <!-- 订单信息 -->
     <view class="weui-panel weui-panel_access">
-      <view class="plr-15 ptb-10 fs-14">店铺名称</view>
+      <view class="plr-15 ptb-10 fs-14">商家名称</view>
 
       <view class="weui-panel__bd bg-gray mb-10" wx:for="{{[1,2]}}">
         <view class="zan-card plr-15">
@@ -49,7 +49,7 @@
 
             <view class="zan-card__detail-row zan-c-gray-darker">
               <view class="zan-card__right-col">x2</view>
-              <view class="zan-card__left-col">
+              <view class="zan-card__left-col zan-ellipsis--l2">
                 备注：我要好的
               </view>
             </view>
@@ -61,7 +61,7 @@
     <view class="weui-cells weui-cells_after-title mt-10 fs-14">
       <view class="weui-cell weui-cell_access" bindtap="chooseDay">
         <view class="weui-cell__bd ">送货时间</view>
-        <view class="weui-cell__ft weui-cell__ft_in-access ">次日达（次日20点之前）</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access">次日达（次日20点之前）</view>
       </view>
     </view>
 
@@ -75,24 +75,20 @@
       </view>
     </view>
 
-    <!-- <view class="weui-panel weui-panel_access fs-14 mb-10"> -->
-    <view class="weui-form-preview mt-10 mb-10">
-      <view class="weui-form-preview__bd">
-        <view class="weui-form-preview__item">
-          <view class="weui-form-preview__label zan-c-black">商品金额</view>
-          <view class="weui-form-preview__value zan-c-red">¥ 998</view>
+    <view class="weui-cells weui-cells_after-title mtb-10 fs-14">
+      <view class="weui-cell">
+        <view class="weui-cell__bd">
+          <view class="ptb-5">商品金额</view>
+          <view class="ptb-5">运费</view>
+          <view class="ptb-5">加急费</view>
         </view>
-        <view class="weui-form-preview__item">
-          <view class="weui-form-preview__label zan-c-black">运费</view>
-          <view class="weui-form-preview__value zan-c-red">+ ¥ 10</view>
-        </view>
-        <view class="weui-form-preview__item">
-          <view class="weui-form-preview__label zan-c-black">加急费</view>
-          <view class="weui-form-preview__value zan-c-red">+ ¥ 10</view>
+        <view class="weui-cell__ft">
+          <view class="ptb-5 zan-c-red">¥ 998</view>
+          <view class="ptb-5 zan-c-red">+ ¥ 10</view>
+          <view class="ptb-5 zan-c-red">+ ¥ 10</view>
         </view>
       </view>
     </view>
-    <!-- </view> -->
   </view>
 </view>
 

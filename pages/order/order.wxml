@@ -9,7 +9,7 @@
       <view class="zan-card__detail ml-0">
         <view class="zan-card__detail-row">
           <view class="zan-card__right-col zan-c-red">等待买家付款</view>
-          <view class="zan-card__left-col zan-ellipsis--l2">店铺名称</view>
+          <view class="zan-card__left-col zan-ellipsis--l2">商家名称</view>
         </view>
         <view class="overflow-hidden lh-13 zan-c-gray-darker">
           <view class="fs-11">
@@ -36,7 +36,7 @@
 
           <view class="zan-card__detail-row zan-c-gray-darker">
             <view class="zan-card__right-col">x2</view>
-            <view class="zan-card__left-col">
+            <view class="zan-card__left-col zan-ellipsis--l2">
               备注：我要好的
             </view>
           </view>
@@ -53,7 +53,7 @@
         <text class="zan-c-red">¥ 998</text>
       </view>
       <view class="weui-media-box text-right ptb-10 lh-1">
-         <button class="zan-btn zan-btn--small zan-btn--plain">取消订单</button> 
+        <button class="zan-btn zan-btn--small zan-btn--plain">取消订单</button>
         <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain">去支付</button>
       </view>
     </view>

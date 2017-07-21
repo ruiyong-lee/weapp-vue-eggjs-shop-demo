@@ -36,9 +36,19 @@
   height: 18px;
 }
 
+.icon-l-small {
+  width: 24px;
+  height: 24px;
+}
+
 .icon-mid {
   width: 30px;
   height: 30px;
+}
+
+.img-mid {
+  width: 280rpx;
+  height: 280rpx;
 }
 
 .dialog-close {
@@ -71,10 +81,16 @@
   opacity: 1;
 }
 
+/* weui */
+
 .weui-media-box__ft {
   position: absolute;
   right: 15px;
   top: 50%;
+}
+
+.weui-label-width-80 .weui-label {
+  width: 80px;
 }
 
 /* 常用 */
@@ -109,6 +125,14 @@
   display: flex;
 }
 
+.flex-center {
+  display: flex;
+  align-items: center; /*垂直居中*/
+  justify-content: center; /*水平居中*/
+  width: 100%;
+  height: 100%;
+}
+
 .text-center {
   text-align: center;
 }
@@ -117,12 +141,20 @@
   text-align: right;
 }
 
+.p-10 {
+  padding: 10px;
+}
+
 .pl-5 {
   padding-left: 5px !important;
 }
 
 .pl-160 {
   padding-left: 160px !important;
+}
+
+.pr-10 {
+  padding-right: 10px;
 }
 
 .pr-100 {
@@ -176,12 +208,25 @@
   margin-left: 0;
 }
 
+.ml-10 {
+  margin-left: 10px;
+}
+
 .mb-10 {
+  margin-bottom: 10px;
+}
+
+.mtb-10 {
+  margin-top: 10px;
   margin-bottom: 10px;
 }
 
 .minh-40 {
   min-height: 40px !important;
+}
+
+.h-auto {
+  height: auto;
 }
 
 .h-30 {
