@@ -153,6 +153,10 @@
   padding-left: 160px !important;
 }
 
+.pr-0 {
+  padding-right: 0px;
+}
+
 .pr-10 {
   padding-right: 10px;
 }
@@ -233,6 +237,10 @@
   height: 30px !important;
 }
 
+.h-80 {
+  height: 80px !important;
+}
+
 .wp-100 {
   width: 100%;
 }
@@ -267,6 +275,10 @@
 
 .lh-30 {
   line-height: 30px;
+}
+
+.lh-46 {
+  line-height: 46px;
 }
 
 .bg-gray {

@@ -1,4 +1,5 @@
 <!--pages/cart/cart.wxml-->
+<import src="/style/zanui/quantity/index.wxml" />
 
 <view class="page content-scroll">
   <!-- 空购物车 -->
@@ -22,28 +23,33 @@
       </view>
     </navigator>
 
-    <view class="weui-panel__bd bg-gray mb-10" wx:for="{{[1,2]}}">
-      <view class="cart-item-check">
-        <image class="icon-small" src="../../images/icon/icon-check.png"></image>
-      </view>
-      <view class="zan-card pr-15">
-        <view class="zan-card__thumb">
-          <image class="zan-card__img" src="../../images/test.png" mode="aspectFit"></image>
+    <view class="weui-panel__bd">
+      <view class="weui-media-box ptb-5" wx:for="{{[1,2]}}">
+        <view class="cart-item-check">
+          <image class="icon-small" src="../../images/icon/icon-check.png"></image>
         </view>
-        <view class="zan-card__detail">
-          <view class="zan-card__detail-row">
-            <view class="zan-card__right-col zan-c-red">
-              <view class="inline">
-                ¥ 10/<text class="inline fs-11">斤</text>
-              </view>
-            </view>
-            <view class="zan-card__left-col zan-ellipsis--l2">特级燕麦</view>
+        <view class="zan-card pr-0">
+          <view class="zan-card__thumb">
+            <image class="zan-card__img" src="../../images/test.png" mode="aspectFit"></image>
           </view>
+          <view class="zan-card__detail">
+            <view class="zan-card__detail-row">
+              <view class="zan-card__right-col zan-c-red">
+                <view class="inline">
+                  ¥ 10/<text class="inline fs-11">斤</text>
+                </view>
+              </view>
+              <view class="zan-card__left-col zan-ellipsis">特级燕麦</view>
+            </view>
 
-          <view class="zan-card__detail-row zan-c-gray-darker">
-            <view class="zan-card__right-col">x2</view>
-            <view class="zan-card__left-col zan-ellipsis--l2">
-              备注：我要好的
+            <view class="zan-card__detail-row">
+              <view class="zan-ellipsis zan-c-gray-darker fs-13">备注：我要好的很好非常好非常好</view>
+            </view>
+
+            <view class="zan-card__detail-row zan-c-gray-darker h-30">
+              <view class="zan-card__right-col">
+                <template is="zan-quantity" data="{{ ...cartData, componentId: componentId, size: 'small' }}" />
+              </view>
             </view>
           </view>
         </view>
