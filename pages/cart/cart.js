@@ -1,6 +1,6 @@
 // pages/cart/cart.js
 
-var app = getApp();
+var App = getApp();
 
 Page({
   data: {
@@ -8,8 +8,8 @@ Page({
   },
 
   onReady() {
-    var params = app.http.buildParams()
-    app.http.request('goods/query.do', params, function(res) {
+    var params = App.Http.buildParams()
+    App.Http.request('goods/getDropDownGoods.do', params, function(res) {
       console.log(res)
     })
   },

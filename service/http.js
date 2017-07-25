@@ -1,10 +1,10 @@
 // 请求
 
 //mock测试域名
-// var root = 'https://www.easy-mock.com/mock/5975a13da1d30433d83b8d9c/shop/';
+var root = 'https://www.easy-mock.com/mock/5975a13da1d30433d83b8d9c/shop/';
 
 //本地测试域名
-var root = 'http://localhost:8078/ghps-controller/';
+// var root = 'http://localhost:8078/ghps-controller/';
 
 function buildParams(url, data, cb) {
   var params = {};

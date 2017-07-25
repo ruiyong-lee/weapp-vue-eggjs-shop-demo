@@ -38,9 +38,7 @@
 }
 
 .category-item.active {
-  padding-left: 0;
   color: #20a0ff;
-  border-left: 5px solid #20a0ff;
   background-color: #fff;
 }
 
@@ -51,6 +49,19 @@
   width: 75%;
 }
 
+.goods-category {
+  padding: 5px 10px;
+  font-size: 13px;
+  background-color: #fff;
+  border-bottom: 1px solid #f8f8f8;
+  line-height: 15px;
+}
+
+.goods-category-title {
+  padding-left: 5px;
+  border-left: 4px solid #20a0ff;
+}
+
 .goods-item {
   border-bottom: 1px solid #f8f8f8;
   background-color: #fff;
@@ -58,7 +69,7 @@
 
 /* 加入购物车弹窗 */
 
-.cart-add-dialog .zan-quantity{
+.cart-add-dialog .zan-quantity {
   position: absolute;
   right: 15px;
 }

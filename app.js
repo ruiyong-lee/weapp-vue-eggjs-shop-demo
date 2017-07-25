@@ -17,7 +17,7 @@ App({
   },
 
   // 请求
-  http: Http,
+  Http: Http,
 
   //公用方法
   getUserInfo(cb) {
