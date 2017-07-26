@@ -13,26 +13,26 @@
     <!-- 类别列表 -->
     <scroll-view scroll-y class="goods-sidebar content-scroll">
       <view class="content-scroll-child">
-        <view class="category-item {{selectedCategory === category ? 'active' : ''}}" wx:for="{{goodsMap}}" wx:for-index="category" wx:key="{{category}}" data-category="{{category}}" data-category-panel="{{item[0] ? item[0].uuid : ''}}" bindtap="selectCategoty">
+        <view class="category-item {{selectedCategory === category ? 'active' : ''}}" wx:for="{{goodsMap}}" wx:for-index="category" wx:key="{{category}}" data-category="{{category}}" data-category-panel="{{item[0] ? item[0].uuid : ''}}" bindtap="selectCategory">
           {{category}}
         </view>
       </view>
     </scroll-view>
 
     <!-- 商品列表 -->
-    <scroll-view scroll-y class="goods-content content-scroll" scroll-into-view="{{activeCategoryPanel}}" scroll-with-animation="{{true}}" bindscroll="handleScrollGoodsContent">
-      <view class="content-scroll-child" bindtouchmove="nihao">
-        <view wx:for="{{goodsMap}}" wx:for-index="category" wx:key="category" id="{{item[0] ? item[0].uuid : ''}}">
+    <scroll-view id="goods_content_scroll" scroll-y class="goods-content content-scroll" scroll-into-view="{{activeCategoryPanel}}" scroll-with-animation="{{true}}" bindscroll="handleScrollGoodsContent">
+      <view class="content-scroll-child">
+        <view wx:for="{{goodsMap}}" wx:for-index="category" wx:for-item="goodsItems" wx:key="category" id="{{goodsItems[0] ? goodsItems[0].uuid : ''}}">
           <view class="goods-category">
             <view class="goods-category-title">{{category}}</view>
           </view>
-          <navigator class="goods-item zan-card" wx:for="{{item}}" url="../goodsDetail/goodsDetail">
+          <navigator class="goods-item zan-card" wx:for="{{goodsItems}}" wx:key="item.uuid" url="../goodsDetail/goodsDetail?goodsUuid= + {{item.goods ? item.goods.uuid : ''}}">
             <view class="zan-card__thumb">
-              <image class="zan-card__img" src="../../images/test.png" mode="aspectFit"></image>
+              <image class="zan-card__img" src="{{item.thumbnail}}" mode="aspectFill"></image>
             </view>
             <view class="zan-card__detail">
               <view class="zan-card__detail-row minh-40">
-                <view class="zan-ellipsis--l2">特级燕麦</view>
+                <view class="zan-ellipsis--l2">{{item.goods ? item.goods.nameuuid : ''}}</view>
               </view>
 
               <view class="zan-card__detail-row">
@@ -42,7 +42,7 @@
                 <view class="zan-card__left-col zan-ellipsis--l2 zan-c-orange mt-6 mr-40">
                   <image class="icon-small inline-block" src="../../images/icon/icon-rmb.png"></image>
                   <view class="inline">
-                    10/<text class="inline fs-11">斤</text>
+                    {{item.salePrice}}/<text class="inline fs-11">{{item.spec}}</text>
                   </view>
                 </view>
               </view>
