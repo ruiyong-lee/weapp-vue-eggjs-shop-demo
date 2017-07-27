@@ -19,6 +19,11 @@
       </view>
     </scroll-view>
 
+    <!-- 当前类别 -->
+    <view class="goods-category category-header">
+      <view class="goods-category-title">{{categoryHeader}}</view>
+    </view>
+
     <!-- 商品列表 -->
     <scroll-view id="goods_content_scroll" scroll-y class="goods-content content-scroll" scroll-into-view="{{activeCategoryPanel}}" scroll-with-animation="{{true}}" bindscroll="handleScrollGoodsContent">
       <view class="content-scroll-child">
@@ -26,18 +31,18 @@
           <view class="goods-category">
             <view class="goods-category-title">{{category}}</view>
           </view>
-          <navigator class="goods-item zan-card" wx:for="{{goodsItems}}" wx:key="item.uuid" url="../goodsDetail/goodsDetail?goodsUuid= + {{item.goods ? item.goods.uuid : ''}}">
+          <navigator class="goods-item zan-card" wx:for="{{goodsItems}}" wx:key="item.uuid" url="../goodsDetail/goodsDetail?goodsUuid={{item.goods ? item.goods.uuid : ''}}">
             <view class="zan-card__thumb">
               <image class="zan-card__img" src="{{item.thumbnail}}" mode="aspectFill"></image>
             </view>
             <view class="zan-card__detail">
               <view class="zan-card__detail-row minh-40">
-                <view class="zan-ellipsis--l2">{{item.goods ? item.goods.nameuuid : ''}}</view>
+                <view class="zan-ellipsis--l2">{{item.goods.name}}</view>
               </view>
 
               <view class="zan-card__detail-row">
                 <view class="zan-card__right-col h-30">
-                  <image class="icon-mid" src="../../images/icon/icon-cart-add.png" catchtap="toggleDialog"></image>
+                  <image class="icon-mid" src="../../images/icon/icon-cart-add.png" data-goods="{{item}}" catchtap="toggleDialog"></image>
                 </view>
                 <view class="zan-card__left-col zan-ellipsis--l2 zan-c-orange mt-6 mr-40">
                   <image class="icon-small inline-block" src="../../images/icon/icon-rmb.png"></image>

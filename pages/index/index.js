@@ -6,6 +6,7 @@ var App = getApp();
 
 var categoryGoodsPanelScrollTopMap = {};//记录各个类别商品面板scrollTop区间的Map
 var selectCategoryFlag = false;//标记：是否选择了侧边栏的类别
+var goodsContentHeight;
 var categoryArr = [];//类别
 var goodsItemHeight = 81;//每条商品容器的高度
 var goodsCategoryHeight = 26;//面板类别标题的高度
@@ -14,12 +15,15 @@ Page(Object.assign({}, cartAdd, {
   data: {
     cartData: {
       quantity: 1,
+      remark: '',
       min: 1,
       max: 9999,
-      showDialog: false
+      showDialog: false,
+      goods: {}
     },
     goodsMap: {},
     selectedCategory: '',
+    categoryHeader: '',
     activeCategoryPanel: '',
     loadmore: true
   },
@@ -36,7 +40,8 @@ Page(Object.assign({}, cartAdd, {
       that.getCategoryGoodsPanelScrollTop(res.data)
       that.setData({
         goodsMap: res.data,
-        selectedCategory: categoryArr[0]
+        selectedCategory: categoryArr[0],
+        categoryHeader: categoryArr[0]
       })
     })
   },
@@ -58,19 +63,35 @@ Page(Object.assign({}, cartAdd, {
   },
   //商品面板滚动
   handleScrollGoodsContent(e) {
+    var that = this;
     var scrollTop = e.detail.scrollTop;
+    var scrollheight = e.detail.scrollheight;
     var dataMap = categoryGoodsPanelScrollTopMap;
 
-    if (!selectCategoryFlag) {
+    that.getGoodsContentHeght(function () {
       for (var key in dataMap) {
         var topArr = dataMap[key];
         if (scrollTop >= topArr[0] && scrollTop < topArr[1]) {
-          this.setCategory(key);
+          if (!selectCategoryFlag) {
+            that.setCategory(key);
+          }
+          that.setCategoryHeader(key);
           break;
         }
       }
+      selectCategoryFlag = false;
+    })
+  },
+  // 获取商品容器高度
+  getGoodsContentHeght(cb) {
+    if (!goodsContentHeight) {
+      return typeof (cb) == 'function' ? cb() : '';
+    } else {
+      wx.createSelectorQuery().select('#goods_content_scroll').boundingClientRect(function (rect) {
+        goodsContentHeight = rect.height;
+        return typeof (cb) == 'function' ? cb() : '';
+      }).exec()
     }
-    selectCategoryFlag = false;
   },
 
   //设置类别
@@ -81,12 +102,19 @@ Page(Object.assign({}, cartAdd, {
       });
     }
   },
+  setCategoryHeader(category) {
+    if (category !== this.data.categoryHeader) {
+      this.setData({
+        categoryHeader: category
+      });
+    }
+  },
   //选择类别
-  selectCategory(event) {
+  selectCategory(e) {
     selectCategoryFlag = true;
     this.setData({
-      selectedCategory: event.currentTarget.dataset.category,
-      activeCategoryPanel: event.currentTarget.dataset.categoryPanel
+      selectedCategory: e.currentTarget.dataset.category,
+      activeCategoryPanel: e.currentTarget.dataset.categoryPanel
     });
   },
 
@@ -101,9 +129,13 @@ Page(Object.assign({}, cartAdd, {
     });
   },
   //打开关闭添加到购物车按钮
-  toggleDialog() {
+  toggleDialog(e) {
+    var showDialog = this.data.cartData.showDialog;
+    var goods = e.currentTarget.dataset.goods;
+
     this.setData({
-      ["cartData.showDialog"]: !this.data.cartData.showDialog
+      "cartData.showDialog": !showDialog,
+      "cartData.goods": !showDialog ? goods : {}
     });
   },
 }))

@@ -20,6 +20,7 @@
 .goods-panel {
   position: relative;
   height: 100%;
+  overflow:hidden;
 }
 
 /* 侧边栏 */
@@ -28,7 +29,7 @@
   width: 25%;
 }
 
-/* 品类列表 */
+/* 类别列表 */
 
 .category-item {
   padding: 10px 5px;
@@ -42,9 +43,18 @@
   background-color: #fff;
 }
 
+/* 当前类别 */
+.category-header {
+  position: absolute;
+  z-index: 10;
+  right: 0;
+  width: 75%;
+  box-sizing:border-box;
+}
+
 /* 商品列表 */
 
-.goods-content {
+.goods-content{
   right: 0;
   width: 75%;
 }

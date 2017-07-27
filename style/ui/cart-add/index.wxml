@@ -10,14 +10,14 @@
         <view class="weui-panel__bd">
           <view class="weui-media-box weui-media-box_appmsg">
             <view class="weui-media-box__hd weui-media-box__hd_in-appmsg">
-              <image class="weui-media-box__thumb" src="../../images/test.png" mode="aspectFit"/>
+              <image class="weui-media-box__thumb" src="{{cartData.goods.thumbnail}}" mode="aspectFill"/>
             </view>
             <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-              <view class="weui-media-box__title">特级燕麦</view>
+              <view class="weui-media-box__title">{{cartData.goods.goods.name}}</view>
               <view class="weui-media-box__desc zan-c-orange">
                 <image class="icon-small inline-block" src="../../images/icon/icon-rmb.png"></image>
                 <view class="inline">
-                  10/<text class="inline fs-11">斤</text>
+                {{cartData.goods.salePrice}}/<text class="inline fs-11">{{cartData.goods.spec}}</text>
                 </view>
               </view>
             </view>
@@ -29,7 +29,7 @@
           </view>
           <view class="weui-media-box weui-media-box_appmsg">
             <!-- 实测手机dialog关闭后textarea不能马上关闭，暂时用wx:if控制 -->
-            <input wx:if="{{cartData.showDialog}}" placeholder="请填写备注（选填）" />
+            <input wx:if="{{cartData.showDialog}}" value="{{cartData.remark}}" placeholder="请填写备注（选填）" />
           </view>
         </view>
         <view class="weui-panel__ft">
