@@ -47,7 +47,7 @@
                 <view class="zan-card__left-col zan-ellipsis--l2 zan-c-orange mt-6 mr-40">
                   <image class="icon-small inline-block" src="../../images/icon/icon-rmb.png"></image>
                   <view class="inline">
-                    {{item.salePrice}}/<text class="inline fs-11">{{item.spec}}</text>
+                    {{item.salePrice}}/<text class="inline fs-11">{{item.unitName}}</text>
                   </view>
                 </view>
               </view>
@@ -58,6 +58,6 @@
     </scroll-view>
 
     <!-- 加入购物车弹窗 -->
-    <template is="cart-add" data="{{ cartData, componentId: 'cartData' }}" />
+    <template is="cart-add" data="{{ cartData, zanToast, componentId: 'cartData' }}" />
   </view>
 </view>

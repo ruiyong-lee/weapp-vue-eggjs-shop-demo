@@ -13,7 +13,7 @@
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "干货",
+    "navigationBarTitleText": "商品",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {

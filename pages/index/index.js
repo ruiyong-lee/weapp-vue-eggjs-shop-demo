@@ -111,24 +111,16 @@ Page(Object.assign({}, cartAdd, {
   },
   //选择类别
   selectCategory(e) {
+    var dataset = e.currentTarget.dataset;
+
     selectCategoryFlag = true;
     this.setData({
-      selectedCategory: e.currentTarget.dataset.category,
-      activeCategoryPanel: e.currentTarget.dataset.categoryPanel
+      selectedCategory: dataset.category,
+      activeCategoryPanel: dataset.categoryPanel
     });
   },
 
-  //数量改变
-  handleZanQuantityChange(e) {
-    var componentId = e.componentId;
-    var quantity = e.quantity;
-
-    //数据处理 TODO
-    this.setData({
-      [`${componentId}.quantity`]: quantity
-    });
-  },
-  //打开关闭添加到购物车按钮
+  //打开关闭添加到购物车弹窗
   toggleDialog(e) {
     var showDialog = this.data.cartData.showDialog;
     var goods = e.currentTarget.dataset.goods;
