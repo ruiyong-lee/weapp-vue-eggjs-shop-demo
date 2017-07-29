@@ -1,23 +1,24 @@
 //app.js
 
 var Http = require('service/http.js');
+var Util = require('utils/util.js');//引入util.js
+var Constants = require('utils/constants.js')//引入constants.js
+var Check = Util.Check;//验证
+var Storage = Util.Storage;//数据缓存
 
 App({
-  onLaunch: function (options) {
+  onReady: function (options) {
 
-  },
-  onShow: function (options) {
-
-  },
-  onHide: function () {
-    // Do something when hide.
   },
   onError: function (msg) {
     console.log(msg)
   },
 
-  // 请求
+  //引入
+  Constants: Constants,
   Http: Http,
+  Check: Check,
+  Storage: Storage,
 
   //公用方法
   getUserInfo(cb) {
@@ -41,8 +42,16 @@ App({
       url: url,
     })
   },
+  setSelectedGoods(goods) {
+    this.globalData.selectedGoods = goods
+  },
+  isCartEmpty() {
+    var cartStorage = Storage.getStorageSync('cart', Constants.getCartFailTip);
+    return Check.isUndeFinedOrNullOrEmpty(cartStorage);
+  },
 
   globalData: {
-    userInfo: null
+    userInfo: null,
+    selectedGoods: {}
   }
 })

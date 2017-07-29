@@ -7,26 +7,26 @@
     <view class="text-center">
       <image class="img-mid" src="../../images/cart-empty.png"></image>
       <view class="mb-10">购物车是空的</view>
-      <button class="zan-btn zan-btn--small zan-btn--primary zan-btn--plain" bindtap="switchTabIndex">去逛逛</button>
+      <navigator class="zan-btn zan-btn--small zan-btn--primary zan-btn--plain" url="../index/index" open-type="switchTab">去逛逛</navigator>
     </view>
   </view>
 
   <!-- 购物车 -->
   <view class="weui-panel weui-panel_access" wx:else>
-    <navigator class="weui-cells weui-cells_after-title fs-14" url="../addressEdit/addressEdit">
+    <navigator class="weui-cells weui-cells_after-title fs-14">
       <view class="weui-cell weui-cell_access">
-        <view class="weui-cell__hd">
-          <image class="inline-block pr-10 icon-small" src="../../images/icon/icon-check.png"></image>
+        <view class="weui-cell__hd" bindtap="toggleCheckAll">
+          <image class="inline-block pr-10 icon-small" src="../../images/icon/{{checkAll ? 'icon-check' : 'icon-circle'}}.png"></image>
         </view>
         <view class="weui-cell__bd">商家名称</view>
-        <view class="weui-cell__ft">完成</view>
+        <view class="weui-cell__ft" bindtap="toggleIsEdit">{{isEdit ? '完成' : '编辑'}}</view>
       </view>
     </navigator>
 
     <view class="weui-panel__bd">
-      <view class="weui-media-box ptb-5" wx:for="{{[1,2]}}">
-        <view class="cart-item-check">
-          <image class="icon-small" src="../../images/icon/icon-check.png"></image>
+      <view class="weui-media-box ptb-5" wx:for="{{cartStorage}}" wx:key="index">
+        <view class="cart-item-check" data-key="index" bindtap="toggleCheckItem">
+          <image class="icon-small" src="../../images/icon/{{cartCheckStorage[index] ? 'icon-check' : 'icon-circle'}}.png"></image>
         </view>
         <view class="zan-card pr-0">
           <view class="zan-card__thumb">
@@ -36,19 +36,19 @@
             <view class="zan-card__detail-row">
               <view class="zan-card__right-col zan-c-red">
                 <view class="inline">
-                  ¥ 10/<text class="inline fs-11">斤</text>
+                  ¥ {{item.salePrice}}/<text class="inline fs-11">{{item.unitName}}</text>
                 </view>
               </view>
-              <view class="zan-card__left-col zan-ellipsis">特级燕麦</view>
+              <view class="zan-card__left-col zan-ellipsis">{{item.goods.name}}</view>
             </view>
 
             <view class="zan-card__detail-row">
-              <view class="zan-ellipsis zan-c-gray-darker fs-13">备注：我要好的很好非常好非常好</view>
+              <view class="zan-ellipsis zan-c-gray-darker fs-13">备注：{{item.remark}}</view>
             </view>
 
             <view class="zan-card__detail-row zan-c-gray-darker h-30">
               <view class="zan-card__right-col">
-                <template is="zan-quantity" data="{{ ...cartData, componentId: componentId, size: 'small' }}" />
+                <template is="zan-quantity" data="{{ ...zanQuantityConfig, quantity:item.goodsQty, componentId: index, size: 'small' }}" />
               </view>
             </view>
           </view>
@@ -56,4 +56,28 @@
       </view>
     </view>
   </view>
+</view>
+
+<view class="fixed-bottom wp-100" wx:if="{{!cartEmpty}}">
+  <view class="fluid-box">
+    <view class="pay-footer">
+      <!-- <button class="zan-btn zan-btn--small zan-btn--plain ">取消订单</button> -->
+      <view class="wp-100 pr-100">
+        <view class="flex-center">
+          <view bindtap="toggleCheckAll">
+            <image class="inline-block pr-10 icon-small" src="../../images/icon/{{checkAll ? 'icon-check' : 'icon-circle'}}.png"></image>
+            <view class="inline-block">全选</view>
+          </view>
+          <view class="weui-flex__item text-right fs-13">
+            <view>
+              <text>合计：</text>
+              <text class="zan-c-red">¥ 1018</text>
+            </view>
+            <view class="zan-c-gray-darker">不含运费</view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+  <button class="zan-btn zan-btn--large zan-btn--danger w-100">结算</button>
 </view>

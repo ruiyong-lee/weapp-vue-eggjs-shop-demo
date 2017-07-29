@@ -2,7 +2,6 @@
 
 <view class="page content-scroll">
   <!-- 状态、地址 -->
-
   <view class="pb-50">
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__bd">
@@ -92,15 +91,15 @@
   </view>
 </view>
 
-<view class="fixed-bottom wp-100 ">
-  <view class="fluid-box ">
-    <view class="order-detail-footer ">
+<view class="fixed-bottom wp-100">
+  <view class="fluid-box">
+    <view class="pay-footer">
       <!-- <button class="zan-btn zan-btn--small zan-btn--plain ">取消订单</button> -->
-      <view class="text-right wp-100 pr-100 ">
-        <text class="fs-14 ">合计：</text>
-        <text class="zan-c-red ">¥ 1018</text>
+      <view class="text-right wp-100 pr-100">
+        <text class="fs-14">合计：</text>
+        <text class="zan-c-red">¥ 1018</text>
       </view>
     </view>
   </view>
-  <button class="zan-btn zan-btn--large zan-btn--danger w-100 ">去支付</button>
+  <button class="zan-btn zan-btn--large zan-btn--danger w-100">去支付</button>
 </view>

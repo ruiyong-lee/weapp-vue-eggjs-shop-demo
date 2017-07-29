@@ -1,7 +1,7 @@
 var ZanQuantity = require('../../zanui/quantity/index')//引入数字输入控件
-var ZanToast = require('../../zanui/toast/index');
-var Util = require('../../../utils/util.js')//引入util.js
-var Check = Util.Check;
+var ZanToast = require('../../zanui/toast/index');//引入消息提示框控件
+
+var app = getApp();//获取应用实例
 
 var cartAdd = Object.assign({}, ZanQuantity, ZanToast, {
   //添加到购物车
@@ -9,18 +9,21 @@ var cartAdd = Object.assign({}, ZanQuantity, ZanToast, {
     var dataset = e.currentTarget.dataset;
     var cartData = dataset.cartData;
     var key = cartData.goods.uuid;
-    var cartStorage = wx.getStorageSync('cart-storage');
+    var cartStorage = app.Storage.getStorageSync('cart', app.Constants.getCartFailTip);
     var cartItem = this.getCartItem(cartData);
 
-    if (Check.isUndeFinedOrNullOrEmpty(cartStorage)) {
-      wx.setStorageSync('cart-storage', { [key]: cartItem });
-    } else {
-      cartStorage[key] = cartItem;
-      wx.setStorageSync('cart-storage', cartStorage);
-    }
-    //TODO 设置失败的情况
     this.setData({
       "cartData.showDialog": false
+    });
+
+    if (app.Check.isUndeFinedOrNullOrEmpty(cartStorage)) {
+      app.Storage.setStorageSync('cart', { [key]: cartItem }, app.Constants.addToCartFailTip)
+    } else {
+      cartStorage[key] = cartItem;
+      app.Storage.setStorageSync('cart', cartStorage, app.Constants.addToCartFailTip)
+    }
+    this.setData({
+      isCartEmpty: false
     });
     this.showZanToast('已成功添加到购物车');
   },

@@ -1,8 +1,6 @@
 //index.js
 var cartAdd = require('../../style/ui/cart-add/index');//引入数字输入控件
-
-//获取应用实例
-var App = getApp();
+var app = getApp();//获取应用实例
 
 var categoryGoodsPanelScrollTopMap = {};//记录各个类别商品面板scrollTop区间的Map
 var selectCategoryFlag = false;//标记：是否选择了侧边栏的类别
@@ -34,8 +32,8 @@ Page(Object.assign({}, cartAdd, {
   //获取商品
   getGoods() {
     var that = this;
-    var params = App.Http.buildParams()
-    App.Http.request('goods/getGoods.do', params, function (res) {
+    var params = app.Http.buildParams()
+    app.Http.request('goods/getGoods.do', params, function (res) {
       categoryArr = Object.keys(res.data)
       that.getCategoryGoodsPanelScrollTop(res.data)
       that.setData({
@@ -130,4 +128,10 @@ Page(Object.assign({}, cartAdd, {
       "cartData.goods": !showDialog ? goods : {}
     });
   },
+
+  //跳转到商品详情
+  jumpToDetail(e) {
+    app.setSelectedGoods(e.currentTarget.dataset.goods)
+    app.jumpTo('../goodsDetail/goodsDetail')
+  }
 }))

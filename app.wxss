@@ -62,6 +62,7 @@
   z-index: 9;
   display: inline-block;
   width: 80px;
+  border-top: 1px solid #f8f8f8;
   line-height: 20px;
 }
 
@@ -79,6 +80,19 @@
 .navigator-hover {
   background-color: transparent;
   opacity: 1;
+}
+
+.pay-footer {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  padding: 0 15px;
+  height: 50px;
+  border-top: 1rpx solid #e5e5e5;
+  text-align: right;
 }
 
 /* weui */

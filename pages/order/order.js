@@ -18,6 +18,12 @@ Page(Object.assign({}, ZanTab, {
     }
   },
 
+  onLoad() {
+    wx.setNavigationBarTitle({
+      title: '订单'
+    })
+  },
+
   handleZanTabChange(e) {
     var componentId = e.componentId;
     var selectedId = e.selectedId;

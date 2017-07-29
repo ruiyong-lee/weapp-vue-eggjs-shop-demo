@@ -4,13 +4,15 @@ var app = getApp()
 
 Page({
   data: {
-    address: undefined
-  },
-  data: {
+    address: undefined,
     userInfo: {}
   },
+
   onLoad: function () {
-    var that = this
+    var that = this;
+    wx.setNavigationBarTitle({
+      title: '个人中心'
+    })
     //调用应用实例的方法获取全局数据
     app.getUserInfo(function (userInfo) {
       //更新数据
@@ -19,6 +21,7 @@ Page({
       })
     })
   },
+
   callCustomer() {
     wx.makePhoneCall({
       phoneNumber: '18359197148' //仅为示例，TODO

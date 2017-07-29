@@ -1,7 +1,7 @@
 //goodsDetail.js
 var cartAdd = require('../../style/ui/cart-add/index');//引入数字输入控件
-//获取应用实例
-var app = getApp()
+var app = getApp();//获取应用实例
+
 Page(Object.assign({}, cartAdd, {
   data: {
     cartData: {
@@ -10,24 +10,29 @@ Page(Object.assign({}, cartAdd, {
       max: 9999,
       showDialog: false
     },
-    imgUrls: [
-      
-    ],
+    goods: {},
+    isCartEmpty: true
   },
-  //数量改变
-  handleZanQuantityChange(e) {
-    var componentId = e.componentId;
-    var quantity = e.quantity;
-
-    //数据处理 TODO
+  onLoad() {
+    wx.setNavigationBarTitle({
+      title: '商品详情'
+    })
+  },
+  onReady() {
     this.setData({
-      [`${componentId}.quantity`]: quantity
+      goods: app.globalData.selectedGoods,
+      isCartEmpty: app.isCartEmpty()
     });
   },
+
   //打开关闭添加到购物车按钮
   toggleDialog() {
+    var showDialog = this.data.cartData.showDialog;
+    var goods = this.data.goods;
+
     this.setData({
-      ["cartData.showDialog"]: !this.data.cartData.showDialog
+      "cartData.showDialog": !showDialog,
+      "cartData.goods": !showDialog ? goods : {}
     });
   },
 }))

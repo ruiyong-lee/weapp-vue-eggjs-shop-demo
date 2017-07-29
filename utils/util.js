@@ -33,7 +33,43 @@ var Check = {
   },
 }
 
+//数据缓存相关方法
+var Storage = {
+  setStorageSync(key, value, msg) {
+    try {
+      wx.setStorageSync(key, value)
+    } catch (e) {
+      wx.showModal({ title: '提示', content: msg, showCancel: false })
+    }
+  },
+  getStorageSync(key, msg) {
+    try {
+      var value = wx.getStorageSync(key)
+      if (value) {
+        return value
+      }
+    } catch (e) {
+      wx.showModal({ title: '提示', content: msg, showCancel: false })
+    }
+  },
+  removeStorageSync(key, msg) {
+    try {
+      wx.removeStorageSync(key)
+    } catch (e) {
+      wx.showModal({ title: '提示', content: msg, showCancel: false })
+    }
+  },
+  clearStorageSync(key, msg) {
+    try {
+      wx.clearStorageSync(key)
+    } catch (e) {
+      wx.showModal({ title: '提示', content: msg, showCancel: false })
+    }
+  },
+}
+
 module.exports = {
   Format: Format,
-  Check: Check
+  Check: Check,
+  Storage: Storage,
 }
