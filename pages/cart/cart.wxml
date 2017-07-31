@@ -1,9 +1,9 @@
 <!--pages/cart/cart.wxml-->
 <import src="/style/zanui/quantity/index.wxml" />
 
-<view class="page content-scroll">
+<view class="page">
   <!-- 空购物车 -->
-  <view class="flex-center" wx:if="{{cartEmpty}}">
+  <view class="flex flex-center" wx:if="{{cartEmpty}}">
     <view class="text-center">
       <image class="img-mid" src="../../images/cart-empty.png"></image>
       <view class="mb-10">购物车是空的</view>
@@ -12,43 +12,45 @@
   </view>
 
   <!-- 购物车 -->
-  <view class="weui-panel weui-panel_access" wx:else>
-    <navigator class="weui-cells weui-cells_after-title fs-14">
+  <view class="weui-panel weui-panel_access hp-100" wx:else>
+    <view class="weui-cells weui-cells_after-title fs-14">
       <view class="weui-cell weui-cell_access">
-        <view class="weui-cell__hd" bindtap="toggleCheckAll">
+        <!-- <view class="weui-cell__hd" bindtap="toggleCheckAll">
           <image class="inline-block pr-10 icon-small" src="../../images/icon/{{checkAll ? 'icon-check' : 'icon-circle'}}.png"></image>
-        </view>
+        </view> -->
         <view class="weui-cell__bd">商家名称</view>
         <view class="weui-cell__ft" bindtap="toggleIsEdit">{{isEdit ? '完成' : '编辑'}}</view>
       </view>
-    </navigator>
+    </view>
 
-    <view class="weui-panel__bd">
-      <view class="weui-media-box ptb-5" wx:for="{{cartStorage}}" wx:key="index">
-        <view class="cart-item-check" data-key="index" bindtap="toggleCheckItem">
-          <image class="icon-small" src="../../images/icon/{{cartCheckStorage[index] ? 'icon-check' : 'icon-circle'}}.png"></image>
-        </view>
-        <view class="zan-card pr-0">
-          <view class="zan-card__thumb">
-            <image class="zan-card__img" src="../../images/test.png" mode="aspectFit"></image>
+    <view class="cart-content content-scroll">
+      <view class="weui-panel__bd cart-panel">
+        <view class="weui-media-box ptb-5" wx:for="{{cartStorage}}" wx:key="index">
+          <view class="cart-item-check" data-key="{{index}}" bindtap="toggleCheckItem">
+            <image class="icon-small" src="../../images/icon/{{cartCheckMap[index] ? 'icon-check' : 'icon-circle'}}.png"></image>
           </view>
-          <view class="zan-card__detail">
-            <view class="zan-card__detail-row">
-              <view class="zan-card__right-col zan-c-red">
-                <view class="inline">
-                  ¥ {{item.salePrice}}/<text class="inline fs-11">{{item.unitName}}</text>
+          <view class="zan-card pr-0">
+            <view class="zan-card__thumb">
+              <image class="zan-card__img" src="{{item.goodsPic}}" mode="aspectFill"></image>
+            </view>
+            <view class="zan-card__detail">
+              <view class="zan-card__detail-row">
+                <view class="zan-card__right-col zan-c-red">
+                  <view class="inline">
+                    ¥ {{item.salePrice}}/<text class="inline fs-11">{{item.unitName}}</text>
+                  </view>
                 </view>
+                <view class="zan-card__left-col zan-ellipsis">{{item.goods.name}}</view>
               </view>
-              <view class="zan-card__left-col zan-ellipsis">{{item.goods.name}}</view>
-            </view>
 
-            <view class="zan-card__detail-row">
-              <view class="zan-ellipsis zan-c-gray-darker fs-13">备注：{{item.remark}}</view>
-            </view>
+              <view class="zan-card__detail-row">
+                <view class="zan-ellipsis zan-c-gray-darker fs-13">备注：{{item.remark}}</view>
+              </view>
 
-            <view class="zan-card__detail-row zan-c-gray-darker h-30">
-              <view class="zan-card__right-col">
-                <template is="zan-quantity" data="{{ ...zanQuantityConfig, quantity:item.goodsQty, componentId: index, size: 'small' }}" />
+              <view class="zan-card__detail-row zan-c-gray-darker h-30">
+                <view class="zan-card__right-col">
+                  <template is="zan-quantity" data="{{ ...zanQuantityConfig, quantity:item.goodsQty, componentId: index, size: 'small' }}" />
+                </view>
               </view>
             </view>
           </view>
@@ -60,18 +62,20 @@
 
 <view class="fixed-bottom wp-100" wx:if="{{!cartEmpty}}">
   <view class="fluid-box">
-    <view class="pay-footer">
-      <!-- <button class="zan-btn zan-btn--small zan-btn--plain ">取消订单</button> -->
-      <view class="wp-100 pr-100">
-        <view class="flex-center">
+    <view class="pay-footer border-bottom-1">
+      <view class="wp-100 {{isEdit ? '' : 'pr-100'}}">
+        <view class="flex flex-y-center">
           <view bindtap="toggleCheckAll">
             <image class="inline-block pr-10 icon-small" src="../../images/icon/{{checkAll ? 'icon-check' : 'icon-circle'}}.png"></image>
             <view class="inline-block">全选</view>
           </view>
-          <view class="weui-flex__item text-right fs-13">
+          <view class="weui-flex__item" hidden="{{!isEdit}}">
+            <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain" bindtap="deleteCartItem">删除选中</button>
+          </view>
+          <view class="weui-flex__item text-right fs-13" hidden="{{isEdit}}">
             <view>
               <text>合计：</text>
-              <text class="zan-c-red">¥ 1018</text>
+              <text class="zan-c-red">¥ {{goodsOrder.totalAmount}}</text>
             </view>
             <view class="zan-c-gray-darker">不含运费</view>
           </view>
@@ -79,5 +83,5 @@
       </view>
     </view>
   </view>
-  <button class="zan-btn zan-btn--large zan-btn--danger w-100">结算</button>
+  <button class="zan-btn zan-btn--large zan-btn--danger w-100" hidden="{{isEdit}}">结算</button>
 </view>

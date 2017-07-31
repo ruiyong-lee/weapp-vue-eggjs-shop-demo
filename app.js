@@ -4,6 +4,7 @@ var Http = require('service/http.js');
 var Util = require('utils/util.js');//引入util.js
 var Constants = require('utils/constants.js')//引入constants.js
 var Check = Util.Check;//验证
+var Count = Util.Count;//验证
 var Storage = Util.Storage;//数据缓存
 
 App({
@@ -18,6 +19,7 @@ App({
   Constants: Constants,
   Http: Http,
   Check: Check,
+  Count: Count,
   Storage: Storage,
 
   //公用方法
