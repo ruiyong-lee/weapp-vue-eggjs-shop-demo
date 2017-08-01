@@ -27,11 +27,11 @@
     <!-- 商品列表 -->
     <scroll-view id="goods_content_scroll" scroll-y class="goods-content content-scroll" scroll-into-view="{{activeCategoryPanel}}" scroll-with-animation="{{true}}" bindscroll="handleScrollGoodsContent">
       <view class="content-scroll-child">
-        <view wx:for="{{goodsMap}}" wx:for-index="category" wx:for-item="goodsItems" wx:key="category" id="{{goodsItems[0] ? goodsItems[0].uuid : ''}}">
+        <view wx:for="{{goodsMap}}" wx:for-index="category" wx:for-item="goodsItems" wx:key="{{category}}" id="{{goodsItems[0] ? goodsItems[0].uuid : ''}}">
           <view class="goods-category">
             <view class="goods-category-title">{{category}}</view>
           </view>
-          <view class="goods-item zan-card" wx:for="{{goodsItems}}" wx:key="item.uuid" data-goods="{{item}}" bindtap="jumpToDetail">
+          <view class="goods-item zan-card" wx:for="{{goodsItems}}" wx:key="{{item.uuid}}" data-goods="{{item}}" bindtap="jumpToDetail">
             <view class="zan-card__thumb">
               <image class="zan-card__img" src="{{item.thumbnail}}" mode="aspectFill"></image>
             </view>

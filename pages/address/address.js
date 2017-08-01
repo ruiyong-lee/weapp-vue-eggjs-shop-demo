@@ -1,8 +1,45 @@
 // pages/address/address.js
+
+var app = getApp();
+
 Page({
-  onLoad() {
+  data: {
+    status: '',
+    addressList: [],
+    selectedAddressUuid: ''
+  },
+
+  onLoad(option) {
+    var status = option.status;
+    var addressStorage = app.Storage.getStorageSync('address-selected', app.Constants.getCheckFailTip);
+
     wx.setNavigationBarTitle({
-      title: '我的地址'
+      title: status === 'select' ? '选择地址' : '我的地址'
+    })
+    this.setData({
+      status: status,
+      selectedAddressUuid: addressStorage ? addressStorage.uuid : ''
+    })
+    this.getAddressList();
+  },
+
+  //获取地址列表
+  getAddressList() {
+    var that = this;
+    var params = app.Http.buildParams()
+    app.Http.request('address/gets.do', params, function (res) {
+      that.setData({
+        addressList: res.data
+      })
     })
   },
+  //选择地址
+  handleSelectAddress(e) {
+    if (this.data.status === 'select') {
+      var address = e.currentTarget.dataset.address;
+
+      app.Storage.setStorageSync('address-selected', address, app.Constants.saveCheckFailTip)
+      wx.navigateBack()
+    }
+  }
 })

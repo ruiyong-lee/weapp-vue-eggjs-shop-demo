@@ -25,7 +25,7 @@ Page(Object.assign({}, cartAdd, {
     activeCategoryPanel: '',
     loadmore: true
   },
-  onReady() {
+  onLoad() {
     this.getGoods();
   },
 
@@ -125,7 +125,9 @@ Page(Object.assign({}, cartAdd, {
 
     this.setData({
       "cartData.showDialog": !showDialog,
-      "cartData.goods": !showDialog ? goods : {}
+      "cartData.goods": !showDialog ? goods : {},
+      "cartData.quantity": 1,
+      "cartData.remark": '',
     });
   },
 

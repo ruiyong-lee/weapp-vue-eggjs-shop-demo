@@ -1,8 +1,9 @@
 // pages/cart/cart.js
 var ZanQuantity = require('../../style/zanui/quantity/index')//引入数字输入控件
+var ZanTopTips = require('../../style/zanui/toptips/index')//引入提示控件
 var app = getApp();
 
-Page(Object.assign({}, ZanQuantity, {
+Page(Object.assign({}, ZanQuantity, ZanTopTips, {
   data: {
     cartStorage: {},
     cartCheckMap: {},
@@ -53,6 +54,7 @@ Page(Object.assign({}, ZanQuantity, {
       isEdit: false
     })
     this.handleCheckItem();
+    this.account();//测试用，要删除
   },
 
   //全选、取消全选
@@ -98,14 +100,14 @@ Page(Object.assign({}, ZanQuantity, {
     var cartCheckMap = this.data.cartCheckMap;
     var total = Object.keys(cartStorage).length;
     var checkedNum = Object.keys(cartCheckMap).length;
-    
+
     this.calculateAmount();
     this.setData({
       checkAll: total === checkedNum && total !== 0 ? true : false
     })
   },
   //计算总额、总数
-  calculateAmount(){
+  calculateAmount() {
     var totalAmount = 0;//总额
     var goodsTotalQty = 0;//总数
     var cartStorage = this.data.cartStorage;
@@ -115,7 +117,7 @@ Page(Object.assign({}, ZanQuantity, {
       var item = cartStorage[key];
       var singlrPrice = app.Count.decimalMultiply(item.salePrice, item.goodsQty, 6);
       goodsTotalQty = app.Count.decimalAdd(goodsTotalQty, item.goodsQty, 6);
-      totalAmount = app.Count.decimalAdd(totalAmount, singlrPrice, 6);
+      totalAmount = app.Count.decimalAdd(totalAmount, singlrPrice, 2);
     }
 
     this.setData({
@@ -139,7 +141,7 @@ Page(Object.assign({}, ZanQuantity, {
         checkAll: false
       })
     }
-    
+
     this.setData({
       isEdit: !isEdit
     })
@@ -158,30 +160,34 @@ Page(Object.assign({}, ZanQuantity, {
     var cartCheckStorage = app.Storage.getStorageSync('cart-check', app.Constants.getCheckFailTip);
     var num = Object.keys(cartCheckMap).length;
 
-    wx.showModal({
-      title: '提示',
-      confirmColor: '#20a0ff',
-      content: '确定要删除这' + num + '种商品吗？',
-      success: function (res) {
-        if (res.confirm) {
-          for (var key in cartCheckMap) {
-            delete cartStorage[key];
-            delete cartCheckStorage[key];
-          }
+    if (num <= 0) {
+      this.showZanTopTips('请选择要删除的商品');
+    } else {
+      wx.showModal({
+        title: '提示',
+        confirmColor: '#20a0ff',
+        content: '确定要删除这' + num + '种商品吗？',
+        success: function (res) {
+          if (res.confirm) {
+            for (var key in cartCheckMap) {
+              delete cartStorage[key];
+              delete cartCheckStorage[key];
+            }
 
-          that.setData({
-            cartStorage: cartStorage,
-            cartCheckMap: {},
-            cartEmpty: app.Check.isUndeFinedOrNullOrEmpty(cartStorage)
-          })
-          that.calculateAmount();
-          that.setCartCheckStorage(cartCheckStorage, true);
-          app.Storage.setStorageSync('cart', cartStorage, app.Constants.addToCartFailTip)
-        } else if (res.cancel) {
-          console.log('用户点击取消')
+            that.setData({
+              cartStorage: cartStorage,
+              cartCheckMap: {},
+              cartEmpty: app.Check.isUndeFinedOrNullOrEmpty(cartStorage)
+            })
+            that.calculateAmount();
+            that.setCartCheckStorage(cartCheckStorage, true);
+            app.Storage.setStorageSync('cart', cartStorage, app.Constants.addToCartFailTip)
+          } else if (res.cancel) {
+            console.log('用户点击取消')
+          }
         }
-      }
-    })
+      })
+    }
   },
   //数量改变
   handleZanQuantityChange(e) {
@@ -192,7 +198,23 @@ Page(Object.assign({}, ZanQuantity, {
       [`cartStorage.${componentId}.goodsQty`]: quantity
     });
     this.calculateAmount();
-    app.Storage.setStorageSync('cart', this.data.cartStorage, app.Constants.addToCartFailTip)
+    app.Storage.setStorageSync('cart', this.data.cartStorage, app.Constants.addToCartFailTip);
   },
+  //结算
+  account() {
+    var lines = [];
+    var cartStorage = this.data.cartStorage;
+    var cartCheckMap = this.data.cartCheckMap;
 
+    for (var key in cartCheckMap) {
+      lines.push(cartStorage[key]);
+    }
+
+    this.setData({
+      "goodsOrder.lines": lines
+    })
+
+    app.setGoodsOrder(this.data.goodsOrder);
+    app.jumpTo('../orderDetail/orderDetail?status=account');
+  }
 }))

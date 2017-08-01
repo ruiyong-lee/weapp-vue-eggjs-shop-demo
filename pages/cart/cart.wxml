@@ -1,5 +1,6 @@
 <!--pages/cart/cart.wxml-->
 <import src="/style/zanui/quantity/index.wxml" />
+<import src="/style/zanui/toptips/index.wxml" />
 
 <view class="page">
   <!-- 空购物车 -->
@@ -25,7 +26,7 @@
 
     <view class="cart-content content-scroll">
       <view class="weui-panel__bd cart-panel">
-        <view class="weui-media-box ptb-5" wx:for="{{cartStorage}}" wx:key="index">
+        <view class="weui-media-box ptb-5" wx:for="{{cartStorage}}" wx:key="{{index}}">
           <view class="cart-item-check" data-key="{{index}}" bindtap="toggleCheckItem">
             <image class="icon-small" src="../../images/icon/{{cartCheckMap[index] ? 'icon-check' : 'icon-circle'}}.png"></image>
           </view>
@@ -83,5 +84,7 @@
       </view>
     </view>
   </view>
-  <button class="zan-btn zan-btn--large zan-btn--danger w-100" hidden="{{isEdit}}">结算</button>
+  <button class="zan-btn zan-btn--large zan-btn--danger w-100" hidden="{{isEdit}}" bindtap="account">结算</button>
 </view>
+
+<template is="zan-toptips" data="{{ zanTopTips }}"></template>

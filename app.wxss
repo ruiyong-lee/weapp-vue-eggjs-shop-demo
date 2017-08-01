@@ -183,8 +183,16 @@
   padding-right: 10px;
 }
 
+.pr-15 {
+  padding-right: 15px;
+}
+
 .pr-100 {
   padding-right: 100px;
+}
+
+.pb-40 {
+  padding-bottom: 40px;
 }
 
 .pb-50 {

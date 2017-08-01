@@ -44,9 +44,15 @@ App({
       url: url,
     })
   },
+  //已选商品，用于商品详情页
   setSelectedGoods(goods) {
     this.globalData.selectedGoods = goods
   },
+  //订单信息，用于订单详情页
+  setGoodsOrder(goodsOrder) {
+    this.globalData.goodsOrder = goodsOrder
+  },
+  //判断购物车是否为空
   isCartEmpty() {
     var cartStorage = Storage.getStorageSync('cart', Constants.getCartFailTip);
     return Check.isUndeFinedOrNullOrEmpty(cartStorage);
@@ -54,6 +60,7 @@ App({
 
   globalData: {
     userInfo: null,
-    selectedGoods: {}
+    selectedGoods: {},
+    goodsOrder: {}
   }
 })

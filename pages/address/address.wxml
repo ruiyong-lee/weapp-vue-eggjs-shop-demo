@@ -1,42 +1,23 @@
 <!--pages/address/address.wxml-->
 
 <view class="page content-scroll">
-  <view class="pb-50">
-    <view class="weui-cells weui-cells_after-title mb-10 fs-14">
+  <view class="pb-40">
+    <view class="weui-cells weui-cells_after-title mb-10 fs-14" wx:for="{{addressList}}" wx:key="{{index}}" data-address="{{item}}" bindtap="handleSelectAddress">
       <view class="weui-cell">
+        <view class="pr-15" hidden="{{status !== 'select'}}">
+          <image class="inline-block icon-small" src="../../images/icon/{{ item.uuid === selectedAddressUuid ? 'icon-check' : 'icon-circle'}}.png"></image>
+        </view>
         <view class="weui-cell__bd">
-          <view>李锐勇 18359197148</view>
-          <view class="zan-c-gray-darker fs-13">福建省厦门市思明区软件园二期望海路39号102</view>
+          <view>{{item.linkMan}} {{item.linkPhone}}</view>
+          <view class="zan-c-gray-darker fs-13">{{item.address}}</view>
         </view>
+        <navigator url="../addressEdit/addressEdit" hidden="{{status !== 'select'}}" catchtap>
+          <image class="inline-block icon-l-small" src="../../images/icon/icon-edit.png"></image>
+        </navigator>
       </view>
-      <view class="weui-cell">
+      <view class="weui-cell" hidden="{{status === 'select'}}">
         <view class="weui-cell__hd">
-          <image class="inline-block pr-10 icon-small" src="../../images/icon/icon-check.png"></image>
-        </view>
-        <view class="weui-cell__bd">设为默认</view>
-        <view class="weui-cell__bd text-right">
-          <navigator class="inline-block" url="../addressEdit/addressEdit">
-            <image class="inline-block icon-l-small" src="../../images/icon/icon-edit.png"></image>
-            <view class="inline-block pl-5">编辑</view>
-          </navigator>
-          <view class="inline-block ml-10">
-            <image class="inline-block icon-l-small" src="../../images/icon/icon-delete.png"></image>
-            <view class="inline-block pl-5">删除</view>
-          </view>
-        </view>
-      </view>
-    </view>
-
-    <view class="weui-cells weui-cells_after-title mb-10 fs-14" wx:for="{{[1,2,3,4,5]}}">
-      <view class="weui-cell">
-        <view class="weui-cell__bd">
-          <view>李锐勇 18359197148</view>
-          <view class="zan-c-gray-darker fs-13">福建省厦门市思明区软件园二期望海路39号102</view>
-        </view>
-      </view>
-      <view class="weui-cell">
-        <view class="weui-cell__hd">
-          <image class="inline-block pr-10 icon-small" src="../../images/icon/icon-circle.png"></image>
+          <image class="inline-block pr-10 icon-small" src="../../images/icon/{{ item.sysDefault ? 'icon-check' : 'icon-circle'}}.png"></image>
         </view>
         <view class="weui-cell__bd">设为默认</view>
         <view class="weui-cell__bd text-right">

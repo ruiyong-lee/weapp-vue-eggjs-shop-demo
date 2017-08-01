@@ -6,6 +6,7 @@ Page(Object.assign({}, cartAdd, {
   data: {
     cartData: {
       quantity: 1,
+      remark: '',
       min: 1,
       max: 9999,
       showDialog: false
@@ -32,7 +33,9 @@ Page(Object.assign({}, cartAdd, {
 
     this.setData({
       "cartData.showDialog": !showDialog,
-      "cartData.goods": !showDialog ? goods : {}
+      "cartData.goods": !showDialog ? goods : {},
+      "cartData.quantity": 1,
+      "cartData.remark": '',
     });
   },
 }))
