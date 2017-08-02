@@ -3,3 +3,8 @@
 .order-item-header {
   padding: 10px 0;
 }
+
+.order-panel {
+  padding-top: 10px;
+  padding-bottom: 55px;
+}

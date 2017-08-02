@@ -34,13 +34,15 @@ Page(Object.assign({}, cartAdd, {
     var that = this;
     var params = app.Http.buildParams()
     app.Http.request('goods/getGoods.do', params, function (res) {
-      categoryArr = Object.keys(res.data)
-      that.getCategoryGoodsPanelScrollTop(res.data)
-      that.setData({
-        goodsMap: res.data,
-        selectedCategory: categoryArr[0],
-        categoryHeader: categoryArr[0]
-      })
+      if (res) {
+        categoryArr = Object.keys(res.data)
+        that.getCategoryGoodsPanelScrollTop(res.data)
+        that.setData({
+          goodsMap: res.data,
+          selectedCategory: categoryArr[0],
+          categoryHeader: categoryArr[0]
+        })
+      }
     })
   },
   //获取商品各个类别商品面板的scrollTop,用于滚动面板自动识别当前类别

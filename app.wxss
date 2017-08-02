@@ -2,12 +2,12 @@
 @import 'style/weui.wxss';
 @import 'style/zanui/index.wxss';
 
-.page {
+.page, .content {
   position: absolute;
   height: 100%;
   width: 100%;
   overflow: hidden;
-  background-color: #f9f9f9;
+  background-color: #f1f1f5;
 }
 
 .container {

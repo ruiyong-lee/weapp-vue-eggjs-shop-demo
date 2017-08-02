@@ -4,58 +4,60 @@
 <view class="page border-top-1">
   <template is="zan-tab" data="{{tab: tab, componentId: 'tab'}}"></template>
 
-  <navigator url="../orderDetail/orderDetail" class="weui-panel weui-panel_access">
-    <view class="zan-card plr-15">
-      <view class="zan-card__detail ml-0">
-        <view class="zan-card__detail-row">
-          <view class="zan-card__right-col zan-c-red">等待买家付款</view>
-          <view class="zan-card__left-col zan-ellipsis--l2">商家名称</view>
-        </view>
-        <view class="overflow-hidden lh-13 zan-c-gray-darker">
-          <view class="fs-11">
-            订单编号：45484968498464156464
-          </view>
-        </view>
-      </view>
-    </view>
-
-    <view class="weui-panel__bd bg-gray">
-      <view class="zan-card plr-15">
-        <view class="zan-card__thumb">
-          <image class="zan-card__img" src="../../images/test.png" mode="aspectFit"></image>
-        </view>
-        <view class="zan-card__detail">
-          <view class="zan-card__detail-row">
-            <view class="zan-card__right-col zan-c-red">
-              <view class="inline">
-                ¥ 10/<text class="inline fs-11">斤</text>
+  <view class="content content-scroll">
+    <view class="order-panel">
+      <navigator class="weui-panel weui-panel_access" wx:for="{{goodsOrderList}}" wx:key="{{item.uuid}}" url="../orderDetail/orderDetail?orderUuid={{item.uuid}}">
+        <view class="zan-card plr-15">
+          <view class="zan-card__detail ml-0">
+            <view class="zan-card__detail-row">
+              <view class="zan-card__right-col zan-c-red">{{orderStatusTipMap[item.status]}}</view>
+              <view class="zan-card__left-col zan-ellipsis--l2">{{item.shopName}}</view>
+            </view>
+            <view class="overflow-hidden lh-13 zan-c-gray-darker">
+              <view class="fs-11">
+                订单编号：{{item.billNumber}}
               </view>
             </view>
-            <view class="zan-card__left-col zan-ellipsis--l2">特级燕麦</view>
           </view>
+        </view>
 
-          <view class="zan-card__detail-row zan-c-gray-darker">
-            <view class="zan-card__right-col">x2</view>
-            <view class="zan-card__left-col zan-ellipsis--l2">
-              备注：我要好的
+        <view class="weui-panel__bd bg-gray">
+          <view class="zan-card plr-15">
+            <view class="zan-card__thumb">
+              <image class="zan-card__img" src="{{item.lines[0].goodsPic}}" mode="aspectFill"></image>
+            </view>
+            <view class="zan-card__detail">
+              <view class="zan-card__detail-row">
+                <view class="zan-card__right-col zan-c-red">
+                  <view class="inline">
+                    ¥ {{item.lines[0].salePrice}}/<text class="inline fs-11">{{item.lines[0].unitName}}</text>
+                  </view>
+                </view>
+                <view class="zan-card__left-col zan-ellipsis--l2">{{item.lines[0].goods.name}}</view>
+              </view>
+
+              <view class="zan-card__detail-row zan-c-gray-darker">
+                <view class="zan-card__right-col">x{{item.lines[0].goodsQty}}</view>
+                <view class="zan-card__left-col zan-ellipsis--l2">
+                  备注：{{item.lines[0].remark}}
+                </view>
+              </view>
             </view>
           </view>
         </view>
-      </view>
-    </view>
 
-    <view class="weui-panel__bd">
-      <view class="weui-media-box text-center ptb-5 fs-13">
-        查看全部3件商品
-      </view>
-      <view class="weui-media-box text-right ptb-5">
-        <text class="fs-14">合计：</text>
-        <text class="zan-c-red">¥ 998</text>
-      </view>
-      <view class="weui-media-box text-right ptb-10 lh-1">
-        <button class="zan-btn zan-btn--small zan-btn--plain">取消订单</button>
-        <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain">去支付</button>
-      </view>
+        <view class="weui-panel__bd">
+          <view class="weui-media-box text-right ptb-5">
+            <text class="fs-13">共{{item.lines.length}}件商品 {{item.status === 'unPayment' ? '需付款' : '实付款'}}：</text>
+            <text class="zan-c-red">¥ {{item.paymentAmount}}</text>
+          </view>
+          <view class="weui-media-box text-right ptb-10 lh-1">
+            <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status === 'unPayment'}}">取消订单</button>
+            <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain" wx:if="{{item.status === 'unPayment'}}">去支付</button>
+            <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status !== 'unPayment'}}">再次购买</button>
+          </view>
+        </view>
+      </navigator>
     </view>
-  </navigator>
+  </view>
 </view>

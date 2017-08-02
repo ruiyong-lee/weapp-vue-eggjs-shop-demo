@@ -28,9 +28,11 @@ Page({
     var that = this;
     var params = app.Http.buildParams()
     app.Http.request('address/gets.do', params, function (res) {
-      that.setData({
-        addressList: res.data
-      })
+      if(res) {
+        that.setData({
+          addressList: res.data
+        })
+      }
     })
   },
   //选择地址

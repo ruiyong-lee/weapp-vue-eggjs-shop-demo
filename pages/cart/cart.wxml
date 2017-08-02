@@ -24,7 +24,7 @@
       </view>
     </view>
 
-    <view class="cart-content content-scroll">
+    <view class="content content-scroll">
       <view class="weui-panel__bd cart-panel">
         <view class="weui-media-box ptb-5" wx:for="{{cartStorage}}" wx:key="{{index}}">
           <view class="cart-item-check" data-key="{{index}}" bindtap="toggleCheckItem">

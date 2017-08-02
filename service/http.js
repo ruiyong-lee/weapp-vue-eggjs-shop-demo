@@ -23,7 +23,9 @@ function request(url, data, cb) {
     url: root + url,
     data: data,
     success: function (res) {
-      return typeof cb == "function" && cb(res.data)
+      //TODO
+      var info = res.data;
+      return typeof cb == "function" && cb(info.data ? info : false)
     },
     fail: function () {
       return typeof cb == "function" && cb(false)

@@ -1,6 +1,8 @@
 // pages/orderDetail/orderDetail.js
 
 var app = getApp();
+var isGetDeliveryTimeType = false;//是否成功获取收货时间
+var isGetFreightPlane = false;//是否成功获取运费方案
 
 Page({
   data: {
@@ -9,6 +11,7 @@ Page({
     goodsOrder: {},
     deliveryTimeMap: [],
     deliveryTimeArr: [],
+    canOrder: false
   },
 
   onLoad(option) {
@@ -23,6 +26,7 @@ Page({
       goodsOrder: goodsOrder
     })
     this.getDeliveryTimeType();
+    this.getFreightPlan();
   },
   onShow() {
     this.refreshAddress();
@@ -55,23 +59,26 @@ Page({
     var that = this;
     var params = app.Http.buildParams()
     app.Http.request('deliveryTimeType/gets.do', params, function (res) {
-      var arr = [];
-      var obj = {};
-      var list = res.data;
+      if (res) {
+        var arr = [];
+        var obj = {};
+        var list = res.data;
 
-      for (var i = 0; i < list.length; i++) {
-        var item = list[i];
-        var key = item.name + '（' + item.remark + '）';
-        arr.push(key)
-        obj[key] = item;
-        if (i === 0) {
-          that.setDeliveryTimeType(item);
+        for (var i = 0; i < list.length; i++) {
+          var item = list[i];
+          var key = item.name + '（' + item.remark + '）';
+          arr.push(key)
+          obj[key] = item;
+          if (i === 0) {
+            that.setDeliveryTimeType(item);
+          }
         }
+        that.setData({
+          deliveryTimeArr: arr,
+          deliveryTimeMap: obj
+        })
+        isGetDeliveryTimeType = true;
       }
-      that.setData({
-        deliveryTimeArr: arr,
-        deliveryTimeMap: obj
-      })
     })
   },
   //选择收货时间
@@ -99,8 +106,34 @@ Page({
     })
     this.calculatePaymentAmount();
   },
+  //获取运费方案
+  getFreightPlan() {
+    var that = this;
+    var params = app.Http.buildParams()
+    app.Http.request('freightPlan/getDefault.do', params, function (res) {
+      if (res) {
+        var freight = 0;
+        var freightPlan = res.data;
+        var basicFreight = freightPlan.basicFreight;//基础运费
+        var freeFreightAmount = freightPlan.freeFreightAmount;//免运费金额
+        var totalAmount = that.data.goodsOrder.totalAmount;//商品总金额
+
+        that.setData({
+          "goodsOrder.freightAmount": totalAmount >= freeFreightAmount ? 0 : basicFreight
+        })
+        that.calculatePaymentAmount();
+        isGetFreightPlane = true;
+      }
+    })
+  },
+  //填写备注
+  handleFiilInRemark(e) {
+    this.setData({
+      "goodsOrder.remark": e.detail.value
+    })
+  },
   //计算总金额
-  calculatePaymentAmount(){
+  calculatePaymentAmount() {
     var goodsOrder = this.data.goodsOrder;
     var amount1 = app.Count.decimalAdd(goodsOrder.totalAmount, goodsOrder.freightAmount, 6);
     var paymentAmount = app.Count.decimalAdd(amount1, goodsOrder.deliveryTimeTypeSurcharge, 2);
@@ -108,5 +141,22 @@ Page({
     this.setData({
       "goodsOrder.paymentAmount": paymentAmount
     })
+  },
+  saveOrder() {
+    //成功获取送货时间和运费方案才能下单
+    if (isGetDeliveryTimeType && isGetFreightPlane) {
+      var goodsOrder = this.data.goodsOrder;
+
+      //TODO
+      console.log(goodsOrder)
+      console.log(JSON.stringify(goodsOrder))
+    } else {
+      wx.showModal({
+        title: '无法下单',
+        confirmColor: '#20a0ff',
+        content: app.Constants.requestFailTip,
+        showCancel: false
+      })
+    }
   }
 })

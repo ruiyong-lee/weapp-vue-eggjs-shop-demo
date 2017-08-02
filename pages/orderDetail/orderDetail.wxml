@@ -71,7 +71,7 @@
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_appmsg">
           <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <input placeholder="请填写备注（选填）" />
+            <input placeholder="请填写备注（选填）" bindinput="handleFiilInRemark" />
           </view>
         </view>
       </view>
@@ -103,5 +103,5 @@
       </view>
     </view>
   </view>
-  <button class="zan-btn zan-btn--large zan-btn--danger w-100">去支付</button>
+  <button class="zan-btn zan-btn--large zan-btn--danger w-100" bindtap="saveOrder">去支付</button>
 </view>

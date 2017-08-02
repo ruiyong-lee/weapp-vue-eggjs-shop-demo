@@ -1,5 +1,6 @@
 // pages/order/order.js
 var ZanTab = require('../../style/zanui/tab/index');
+var app = getApp();
 
 Page(Object.assign({}, ZanTab, {
   data: {
@@ -15,12 +16,34 @@ Page(Object.assign({}, ZanTab, {
       selectedId: 'all',
       scroll: true,
       height: 45
-    }
+    },
+    orderStatusTipMap:{
+      unPayment: '等待买家付款',
+      receipted: '商家已接单',
+      dispatching: '正在配送',
+      completed: '已完成',
+      canceled: '已取消',
+    },
+    goodsOrderList: []
   },
 
   onLoad() {
     wx.setNavigationBarTitle({
       title: '订单'
+    })
+    this.getOrderList();
+  },
+
+  //获取订单列表
+  getOrderList() {
+    var that = this;
+    var params = app.Http.buildParams()
+    app.Http.request('goodsOrder/queryList.do', params, function (res) {
+      if (res) {
+        that.setData({
+          goodsOrderList: res.data
+        })
+      }
     })
   },
 

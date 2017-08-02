@@ -1,13 +1,6 @@
 /* pages/cart/cart.wxss */
 
-.cart-content {
-  position: absolute;
-  height: 100%;
-  width: 100%;
-  background-color: #f9f9f9;
-}
-
-.cart-content .cart-panel {
+.cart-panel {
   margin-bottom: 100px;
   background: #fff;
   border-bottom: 1rpx solid #e5e5e5;

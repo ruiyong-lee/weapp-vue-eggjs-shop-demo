@@ -1,5 +1,6 @@
 .zan-tab {
   height: 45px;
+  border-bottom: 1px solid #e5e5e5;
 }
 .zan-tab__bd {
   width: 750rpx;
