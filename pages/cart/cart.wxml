@@ -75,8 +75,8 @@
           </view>
           <view class="weui-flex__item text-right fs-13" hidden="{{isEdit}}">
             <view>
-              <text>合计：</text>
-              <text class="zan-c-red">¥ {{goodsOrder.totalAmount}}</text>
+              <text class="fs-14">合计：¥ </text>
+              <text class="zan-c-red fs-18">{{goodsOrder.totalAmount}}</text>
             </view>
             <view class="zan-c-gray-darker">不含运费</view>
           </view>

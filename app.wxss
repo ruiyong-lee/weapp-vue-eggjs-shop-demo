@@ -299,6 +299,10 @@
   font-size: 14px;
 }
 
+.fs-18 {
+  font-size: 18px;
+}
+
 .lh-1 {
   line-height: 1;
 }

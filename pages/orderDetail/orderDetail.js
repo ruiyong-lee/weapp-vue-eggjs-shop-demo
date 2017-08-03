@@ -7,6 +7,7 @@ var isGetFreightPlane = false;//是否成功获取运费方案
 Page({
   data: {
     status: '',
+    orderStatusTipMap: app.Constants.orderStatusTipMap,
     address: null,
     goodsOrder: {},
     deliveryTimeMap: [],
@@ -16,44 +17,62 @@ Page({
 
   onLoad(option) {
     var status = option.status;
-    var goodsOrder = app.globalData.goodsOrder;
+    var orderUuid = option.uuid;
 
     wx.setNavigationBarTitle({
       title: status === 'account' ? '提交订单' : '订单详情'
     })
-    this.setData({
-      status: status,
-      goodsOrder: goodsOrder
-    })
-    this.getDeliveryTimeType();
-    this.getFreightPlan();
+
+    if (status === 'account') {
+      //待提交订单
+      var goodsOrder = app.globalData.goodsOrder;
+      this.setData({
+        status: status,
+        goodsOrder: goodsOrder
+      })
+      this.getDeliveryTimeType();
+      this.getFreightPlan();
+    } else {
+      //已提交订单
+      this.getOrder();
+    }
   },
   onShow() {
     this.refreshAddress();
   },
 
+  getOrder() {
+    var that = this;
+    var params = app.Http.buildParams()
+    app.Http.request('goodsOrder/get.do', params, function (res) {
+      if (res) {
+        that.setData({
+          "goodsOrder": res.data
+        })
+      }
+    })
+  },
+
   //刷新地址
-  refreshAddress() {
-    var parentObj = {};
-    var status = this.data.status;
+  refreshAddress() { 
+    var addressSelected = app.Storage.getStorageSync('address-selected', app.Constants.getCheckFailTip);
 
-    if (status === 'account') {
-      //获取上次选中的地址
-      parentObj = app.Storage.getStorageSync('address-selected', app.Constants.getCheckFailTip);
-    } else {
-      //获取订单内的地址
-      parentObj = this.data.goodsOrder;
-    }
-
-    if (!app.Check.isUndeFinedOrNullOrEmpty(parentObj)) {
+    if (!app.Check.isUndeFinedOrNullOrEmpty(addressSelected)) {
       this.setData({
-        "goodsOrder.linkMan": parentObj.linkMan,
-        "goodsOrder.linkPhone": parentObj.linkPhone,
-        "goodsOrder.address": parentObj.address,
-        "goodsOrder.addressUuid": status === 'account' ? parentObj.uuid : parentObj.addressUuid,
+        "goodsOrder.linkMan": addressSelected.linkMan,
+        "goodsOrder.linkPhone": addressSelected.linkPhone,
+        "goodsOrder.address": addressSelected.address,
+        "goodsOrder.addressUuid": status === 'account' ? addressSelected.uuid : addressSelected.addressUuid,
       })
     }
   },
+  //跳转到地址选择
+  jumpToSelectAddress(){
+    if (this.data.status === 'account') {
+      app.jumpTo('../address/address?status=select');
+    }
+  },
+
   //获取收货时间列表
   getDeliveryTimeType() {
     var that = this;

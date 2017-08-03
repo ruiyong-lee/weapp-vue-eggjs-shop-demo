@@ -5,25 +5,12 @@ var app = getApp();
 Page(Object.assign({}, ZanTab, {
   data: {
     tab: {
-      list: [
-        { id: 'all', title: '全部' },
-        { id: 'unPayment', title: '待付款' },
-        { id: 'receipted', title: '已接单' },
-        { id: 'dispatching', title: '配送中' },
-        { id: 'completed', title: '已完成' },
-        { id: 'canceled', title: '已取消' }
-      ],
+      list: app.Constants.orderTabList,
       selectedId: 'all',
       scroll: true,
       height: 45
     },
-    orderStatusTipMap:{
-      unPayment: '等待买家付款',
-      receipted: '商家已接单',
-      dispatching: '正在配送',
-      completed: '已完成',
-      canceled: '已取消',
-    },
+    orderStatusTipMap: app.Constants.orderStatusTipMap,
     goodsOrderList: []
   },
 

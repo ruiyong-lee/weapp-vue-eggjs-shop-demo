@@ -5,16 +5,16 @@
   <view class="pb-50">
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__bd">
-        <view class="weui-media-box weui-media-box_appmsg" hidden="{{status === 'account'}}">
+        <view class="weui-media-box weui-media-box_appmsg" wx:if="{{goodsOrder.status !== 'account'}}">
           <view class="weui-media-box__hd weui-media-box__hd_in-appmsg icon-mid">
-            <image class="weui-media-box__thumb" src="../../images/icon/icon-unPayment.png" />
+            <image class="weui-media-box__thumb" src="{{goodsOrder.status ? '../../images/icon/icon-' + goodsOrder.status  + '.png' : ''}}" />
           </view>
           <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <view class="weui-media-box__title fs-14">等待买家付款</view>
-            <view class="weui-media-box__desc fs-11" hidden="{{status !== 'unPayment'}}">请于 26分34秒 内付款，超时订单将自动取消</view>
+            <view class="weui-media-box__title fs-14">{{orderStatusTipMap[goodsOrder.status]}}</view>
+            <view class="weui-media-box__desc fs-11" wx:if="{{goodsOrder.status === 'unPayment'}}">请于 26分34秒 内付款，超时订单将自动取消</view>
           </view>
         </view>
-        <navigator class="weui-media-box weui-media-box_appmsg" url="../address/address?status=select">
+        <view class="weui-media-box weui-media-box_appmsg" bindtap="jumpToSelectAddress">
           <view class="weui-media-box__hd weui-media-box__hd_in-appmsg icon-mid">
             <image class="weui-media-box__thumb" src="../../images/icon/icon-address.png" />
           </view>
@@ -22,9 +22,9 @@
             <view class="weui-media-box__title fs-14" hidden="{{goodsOrder.addressUuid}}">请选择收货地址</view>
             <view class="weui-media-box__title fs-14" hidden="{{!goodsOrder.addressUuid}}">收货人：{{goodsOrder.linkMan}} {{goodsOrder.linkPhone}}</view>
             <view class="weui-media-box__desc fs-11" hidden="{{!goodsOrder.addressUuid}}">收货地址：{{goodsOrder.address}}</view>
-            <view class="weui-cell__ft weui-cell__ft_in-access weui-media-box__ft"></view>
+            <view class="weui-cell__ft weui-cell__ft_in-access weui-media-box__ft" wx:if="{{goodsOrder.status === 'account'}}"></view>
           </view>
-        </navigator>
+        </view>
       </view>
     </view>
 
@@ -61,8 +61,8 @@
     <view class="weui-cells weui-cells_after-title mt-10 fs-14">
       <view class="weui-cell weui-cell_access" bindtap="selectDeliveryTimeType">
         <view class="weui-cell__bd ">送货时间</view>
-        <view class="weui-cell__ft weui-cell__ft_in-access">
-        {{goodsOrder.deliveryTimeTypeUuid ? goodsOrder.deliveryTimeTypeName + '（' + goodsOrder.deliveryTimeTypeRemark + '）' : ''}}
+        <view class="weui-cell__ft {{goodsOrder.status === 'account' ? 'weui-cell__ft_in-access' : ''}}">
+          {{goodsOrder.deliveryTimeTypeUuid ? goodsOrder.deliveryTimeTypeName + '（' + goodsOrder.deliveryTimeTypeRemark + '）' : ''}}
         </view>
       </view>
     </view>
@@ -71,7 +71,8 @@
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_appmsg">
           <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <input placeholder="请填写备注（选填）" bindinput="handleFiilInRemark" />
+            <input wx:if="{{goodsOrder.status === 'account'}}" placeholder="请填写备注（选填）" bindinput="handleFiilInRemark" />
+            <text wx:else>备注：{{goodsOrder.remark}}</text>
           </view>
         </view>
       </view>
@@ -90,6 +91,13 @@
           <view class="ptb-5 zan-c-red">+ ¥ {{goodsOrder.deliveryTimeTypeSurcharge}}</view>
         </view>
       </view>
+      <view class="weui-cell" wx:if="{{goodsOrder.status !== 'unPayment'}}">
+        <view class="weui-cell__bd"></view>
+        <view class="weui-cell__ft">
+          <text class="zan-c-black fs-14">合计：¥ </text>
+          <text class="zan-c-red fs-18">{{goodsOrder.paymentAmount}}</text>
+        </view>
+      </view>
     </view>
   </view>
 </view>
@@ -97,11 +105,14 @@
 <view class="fixed-bottom wp-100">
   <view class="fluid-box">
     <view class="pay-footer">
-      <view class="text-right wp-100 pr-100">
-        <text class="fs-14">合计：</text>
-        <text class="zan-c-red">¥ {{goodsOrder.paymentAmount}}</text>
+      <view class="text-right wp-100 {{goodsOrder.status === 'unPayment' ? 'pr-100' : ''}}">
+        <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{goodsOrder.status !== 'unPayment'}}" catchtap>再次购买</button>
+        <block wx:else>
+          <text class="fs-14">合计：¥ </text>
+          <text class="zan-c-red fs-18">{{goodsOrder.paymentAmount}}</text>
+        </block>
       </view>
     </view>
   </view>
-  <button class="zan-btn zan-btn--large zan-btn--danger w-100" bindtap="saveOrder">去支付</button>
+  <button class="zan-btn zan-btn--large zan-btn--danger w-100" wx:if="{{goodsOrder.status === 'unPayment'}}" bindtap="saveOrder">去支付</button>
 </view>

@@ -6,7 +6,7 @@
 
   <view class="content content-scroll">
     <view class="order-panel">
-      <navigator class="weui-panel weui-panel_access" wx:for="{{goodsOrderList}}" wx:key="{{item.uuid}}" url="../orderDetail/orderDetail?orderUuid={{item.uuid}}">
+      <navigator class="weui-panel weui-panel_access" wx:for="{{goodsOrderList}}" wx:key="{{item.uuid}}" hover-class="none" url="../orderDetail/orderDetail?status={{item.status}}&uuid={{item.uuid}}">
         <view class="zan-card plr-15">
           <view class="zan-card__detail ml-0">
             <view class="zan-card__detail-row">
@@ -48,13 +48,13 @@
 
         <view class="weui-panel__bd">
           <view class="weui-media-box text-right ptb-5">
-            <text class="fs-13">共{{item.lines.length}}件商品 {{item.status === 'unPayment' ? '需付款' : '实付款'}}：</text>
-            <text class="zan-c-red">¥ {{item.paymentAmount}}</text>
+            <text class="fs-13">共{{item.lines.length}}件商品 {{item.status === 'unPayment' ? '需付款' : '实付款'}}：¥ </text>
+            <text class="zan-c-red fs-18">{{item.paymentAmount}}</text>
           </view>
           <view class="weui-media-box text-right ptb-10 lh-1">
-            <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status === 'unPayment'}}">取消订单</button>
+            <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status === 'unPayment'}}" catchtap>取消订单</button>
             <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain" wx:if="{{item.status === 'unPayment'}}">去支付</button>
-            <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status !== 'unPayment'}}">再次购买</button>
+            <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status !== 'unPayment'}}" catchtap>再次购买</button>
           </view>
         </view>
       </navigator>
