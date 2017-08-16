@@ -34,7 +34,7 @@ var cartAdd = Object.assign({}, ZanQuantity, ZanToast, {
 
     result.goods = goodsInfo.goods;
     result.unitName = goodsInfo.unitName;
-    result.goodsPic = goodsInfo.thumbnail;
+    result.goodsPic = goodsInfo.mainImg;
     result.goodsSpec = goodsInfo.spec;
     result.goodsCategory = goodsInfo.categoryUuid;
     result.salePrice = goodsInfo.salePrice;

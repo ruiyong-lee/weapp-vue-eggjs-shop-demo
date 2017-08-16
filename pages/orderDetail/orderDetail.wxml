@@ -5,7 +5,7 @@
   <view class="pb-50">
     <view class="weui-panel weui-panel_access">
       <view class="weui-panel__bd">
-        <view class="weui-media-box weui-media-box_appmsg" wx:if="{{goodsOrder.status !== 'account'}}">
+        <view class="weui-media-box weui-media-box_appmsg" wx:if="{{!isAccount}}">
           <view class="weui-media-box__hd weui-media-box__hd_in-appmsg icon-mid">
             <image class="weui-media-box__thumb" src="{{goodsOrder.status ? '../../images/icon/icon-' + goodsOrder.status  + '.png' : ''}}" />
           </view>
@@ -22,7 +22,7 @@
             <view class="weui-media-box__title fs-14" hidden="{{goodsOrder.addressUuid}}">请选择收货地址</view>
             <view class="weui-media-box__title fs-14" hidden="{{!goodsOrder.addressUuid}}">收货人：{{goodsOrder.linkMan}} {{goodsOrder.linkPhone}}</view>
             <view class="weui-media-box__desc fs-11" hidden="{{!goodsOrder.addressUuid}}">收货地址：{{goodsOrder.address}}</view>
-            <view class="weui-cell__ft weui-cell__ft_in-access weui-media-box__ft" wx:if="{{goodsOrder.status === 'account'}}"></view>
+            <view class="weui-cell__ft weui-cell__ft_in-access weui-media-box__ft" wx:if="{{isAccount}}"></view>
           </view>
         </view>
       </view>
@@ -61,7 +61,7 @@
     <view class="weui-cells weui-cells_after-title mt-10 fs-14">
       <view class="weui-cell weui-cell_access" bindtap="selectDeliveryTimeType">
         <view class="weui-cell__bd ">送货时间</view>
-        <view class="weui-cell__ft {{goodsOrder.status === 'account' ? 'weui-cell__ft_in-access' : ''}}">
+        <view class="weui-cell__ft {{isAccount ? 'weui-cell__ft_in-access' : ''}}">
           {{goodsOrder.deliveryTimeTypeUuid ? goodsOrder.deliveryTimeTypeName + '（' + goodsOrder.deliveryTimeTypeRemark + '）' : ''}}
         </view>
       </view>
@@ -71,7 +71,7 @@
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_appmsg">
           <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <input wx:if="{{goodsOrder.status === 'account'}}" placeholder="请填写备注（选填）" bindinput="handleFiilInRemark" />
+            <input wx:if="{{isAccount}}" placeholder="请填写备注（选填）" bindinput="handleFiilInRemark" />
             <text wx:else>备注：{{goodsOrder.remark}}</text>
           </view>
         </view>

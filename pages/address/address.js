@@ -27,12 +27,11 @@ Page({
   getAddressList() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('address/gets.do', params, function (res) {
-      if(res) {
-        that.setData({
-          addressList: res.data
-        })
-      }
+    app.Http.request('getAddressList.do', params, function (res) {
+      var addressList = JSON.parse(res)
+      that.setData({
+        addressList: addressList
+      })
     })
   },
   //选择地址

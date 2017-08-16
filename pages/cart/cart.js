@@ -54,7 +54,6 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
       isEdit: false
     })
     this.handleCheckItem();
-    this.account();//测试用，要删除
   },
 
   //全选、取消全选
@@ -215,6 +214,6 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
     })
 
     app.setGoodsOrder(this.data.goodsOrder);
-    app.jumpTo('../orderDetail/orderDetail?status=account');
+    app.jumpTo('../orderDetail/orderDetail?isAccount=true');
   }
 }))

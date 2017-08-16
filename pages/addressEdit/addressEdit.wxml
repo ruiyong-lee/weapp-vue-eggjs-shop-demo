@@ -7,7 +7,7 @@
         <view class="weui-label">店铺</view>
       </view>
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="名称" />
+        <input class="weui-input" placeholder="名称" value="{{address.shopName}}" bindblur="handleInputChange"/>
       </view>
     </view>
     <view class="weui-cell weui-cell_input">
@@ -15,7 +15,7 @@
         <view class="weui-label">收货人</view>
       </view>
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="名字" />
+        <input class="weui-input" placeholder="名字" value="{{address.linkMan}}"/>
       </view>
     </view>
     <view class="weui-cell weui-cell_input">
@@ -23,7 +23,7 @@
         <view class="weui-label">联系电话</view>
       </view>
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="手机、固定电话" />
+        <input class="weui-input" placeholder="手机、固定电话" value="{{address.linkPhone}}"/>
       </view>
     </view>
     <view class="weui-cell weui-cell_input">
@@ -31,13 +31,13 @@
         <view class="weui-label">详细地址</view>
       </view>
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="街道门牌号等信息" />
+        <input class="weui-input" placeholder="街道门牌号等信息" value="{{address.address}}"/>
       </view>
     </view>
   </view>
 
   <view class="zan-btns">
-      <button class="zan-btn zan-btn--primary">保存</button>
+      <button class="zan-btn zan-btn--primary" bindtap="saveAddress">保存</button>
       <button class="zan-btn">取消</button>
     </view>
 </view>

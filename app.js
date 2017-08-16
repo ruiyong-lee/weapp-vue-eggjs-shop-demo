@@ -8,8 +8,18 @@ var Count = Util.Count;//验证
 var Storage = Util.Storage;//数据缓存
 
 App({
-  onReady: function (options) {
-
+  onLaunch: function (options) {
+    var that = this;
+    
+    wx.checkSession({
+      success: function () {
+        //session 未过期，并且在本生命周期一直有效
+      },
+      fail: function () {
+        //登录态过期
+        that.login()
+      }
+    })
   },
   onError: function (msg) {
     console.log(msg)
@@ -32,13 +42,33 @@ App({
       wx.getUserInfo({
         withCredentials: false,
         success: function (res) {
-          console.log(res)
           that.globalData.userInfo = res.userInfo
           typeof cb == "function" && cb(that.globalData.userInfo)
         }
       })
     }
   },
+  //登录
+  login() {
+    var that = this;
+    var params = Http.buildParams()
+
+    wx.setStorageSync('3rd_session', '')
+    wx.login({
+      success: function (res) {
+        var code = res.code;
+        if (code) {
+          params.body.js_code = code;
+          Http.request('login.do', params, function (res1) {
+            wx.setStorageSync('3rd_session', res1)
+          })
+        } else {
+          console.log('获取用户登录态失败！' + res.errMsg)
+        }
+      }
+    });
+  },
+  //跳转
   jumpTo(url) {
     wx.navigateTo({
       url: url,

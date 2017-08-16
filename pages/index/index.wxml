@@ -33,7 +33,7 @@
           </view>
           <view class="goods-item zan-card" wx:for="{{goodsItems}}" wx:key="{{item.uuid}}" data-goods="{{item}}" bindtap="jumpToDetail">
             <view class="zan-card__thumb">
-              <image class="zan-card__img" src="{{item.thumbnail}}" mode="aspectFill"></image>
+              <image class="zan-card__img" src="{{item.mainImg}}" mode="aspectFill"></image>
             </view>
             <view class="zan-card__detail">
               <view class="zan-card__detail-row minh-40">

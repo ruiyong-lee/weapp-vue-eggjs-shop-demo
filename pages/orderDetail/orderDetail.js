@@ -6,7 +6,7 @@ var isGetFreightPlane = false;//是否成功获取运费方案
 
 Page({
   data: {
-    status: '',
+    isAccount: false,//结算状态，尚未提交订单到后台
     orderStatusTipMap: app.Constants.orderStatusTipMap,
     address: null,
     goodsOrder: {},
@@ -16,18 +16,18 @@ Page({
   },
 
   onLoad(option) {
-    var status = option.status;
+    var isAccount = option.isAccount;
     var orderUuid = option.uuid;
 
     wx.setNavigationBarTitle({
-      title: status === 'account' ? '提交订单' : '订单详情'
+      title: isAccount ? '提交订单' : '订单详情'
     })
 
-    if (status === 'account') {
+    if (isAccount) {
       //待提交订单
       var goodsOrder = app.globalData.goodsOrder;
       this.setData({
-        status: status,
+        isAccount: isAccount,
         goodsOrder: goodsOrder
       })
       this.getDeliveryTimeType();
@@ -45,16 +45,14 @@ Page({
     var that = this;
     var params = app.Http.buildParams()
     app.Http.request('goodsOrder/get.do', params, function (res) {
-      if (res) {
-        that.setData({
-          "goodsOrder": res.data
-        })
-      }
+      that.setData({
+        "goodsOrder": res
+      })
     })
   },
 
   //刷新地址
-  refreshAddress() { 
+  refreshAddress() {
     var addressSelected = app.Storage.getStorageSync('address-selected', app.Constants.getCheckFailTip);
 
     if (!app.Check.isUndeFinedOrNullOrEmpty(addressSelected)) {
@@ -62,13 +60,13 @@ Page({
         "goodsOrder.linkMan": addressSelected.linkMan,
         "goodsOrder.linkPhone": addressSelected.linkPhone,
         "goodsOrder.address": addressSelected.address,
-        "goodsOrder.addressUuid": status === 'account' ? addressSelected.uuid : addressSelected.addressUuid,
+        "goodsOrder.addressUuid": this.data.isAccount ? addressSelected.uuid : addressSelected.addressUuid,
       })
     }
   },
   //跳转到地址选择
-  jumpToSelectAddress(){
-    if (this.data.status === 'account') {
+  jumpToSelectAddress() {
+    if (this.data.isAccount) {
       app.jumpTo('../address/address?status=select');
     }
   },
@@ -77,27 +75,25 @@ Page({
   getDeliveryTimeType() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('deliveryTimeType/gets.do', params, function (res) {
-      if (res) {
-        var arr = [];
-        var obj = {};
-        var list = res.data;
+    app.Http.request('getDeliveryTimeTypeList.do', params, function (res) {
+      var arr = [];
+      var obj = {};
+      var list = JSON.parse(res);
 
-        for (var i = 0; i < list.length; i++) {
-          var item = list[i];
-          var key = item.name + '（' + item.remark + '）';
-          arr.push(key)
-          obj[key] = item;
-          if (i === 0) {
-            that.setDeliveryTimeType(item);
-          }
+      for (var i = 0; i < list.length; i++) {
+        var item = list[i];
+        var key = item.name + '（' + item.remark + '）';
+        arr.push(key)
+        obj[key] = item;
+        if (i === 0) {
+          that.setDeliveryTimeType(item);
         }
-        that.setData({
-          deliveryTimeArr: arr,
-          deliveryTimeMap: obj
-        })
-        isGetDeliveryTimeType = true;
       }
+      that.setData({
+        deliveryTimeArr: arr,
+        deliveryTimeMap: obj
+      })
+      isGetDeliveryTimeType = true;
     })
   },
   //选择收货时间
@@ -129,20 +125,18 @@ Page({
   getFreightPlan() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('freightPlan/getDefault.do', params, function (res) {
-      if (res) {
-        var freight = 0;
-        var freightPlan = res.data;
-        var basicFreight = freightPlan.basicFreight;//基础运费
-        var freeFreightAmount = freightPlan.freeFreightAmount;//免运费金额
-        var totalAmount = that.data.goodsOrder.totalAmount;//商品总金额
+    app.Http.request('getDefaultFreightPlan.do', params, function (res) {
+      var freight = 0;
+      var freightPlan = JSON.parse(res);
+      var basicFreight = freightPlan.basicFreight;//基础运费
+      var freeFreightAmount = freightPlan.freeFreightAmount;//免运费金额
+      var totalAmount = that.data.goodsOrder.totalAmount;//商品总金额
 
-        that.setData({
-          "goodsOrder.freightAmount": totalAmount >= freeFreightAmount ? 0 : basicFreight
-        })
-        that.calculatePaymentAmount();
-        isGetFreightPlane = true;
-      }
+      that.setData({
+        "goodsOrder.freightAmount": totalAmount >= freeFreightAmount ? 0 : basicFreight
+      })
+      that.calculatePaymentAmount();
+      isGetFreightPlane = true;
     })
   },
   //填写备注

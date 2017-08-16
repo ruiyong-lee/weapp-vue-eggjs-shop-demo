@@ -8,12 +8,9 @@ module.exports = {
       show: true,
       title
     };
-    console.log(this.data)
     this.setData({
       zanToast
     });
-
-    console.log(this.data)
 
     var timer = setTimeout(() => {
       this.clearZanToast();

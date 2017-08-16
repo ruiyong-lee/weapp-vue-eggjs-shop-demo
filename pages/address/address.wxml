@@ -36,7 +36,7 @@
 </view>
 
 <view class="fixed-bottom wp-100 h-auto">
-  <navigator class="weui-cells weui-cells_after-title fs-14" url="../addressEdit/addressEdit">
+  <navigator class="weui-cells weui-cells_after-title fs-14" url="../addressEdit/addressEdit?isAdd=true">
     <view class="weui-cell weui-cell_access">
       <view class="weui-cell__hd">
         <image class="inline-block pr-10 icon-small" src="../../images/icon/icon-add.png"></image>

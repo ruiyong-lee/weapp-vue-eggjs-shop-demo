@@ -4,7 +4,7 @@
 <view class="page content-scroll">
   <!-- 轮播 -->
   <swiper class="goods-swiper" indicator-dots="{{true}}" autoplay="{{true}}" indicator-active-color="#20a0ff">
-    <block wx:for="{{goods.atlas}}">
+    <block wx:for="{{goods.images}}">
       <swiper-item>
         <image src="{{item}}" class="slide-image" mode="aspectFill" />
       </swiper-item>

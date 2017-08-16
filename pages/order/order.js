@@ -26,11 +26,9 @@ Page(Object.assign({}, ZanTab, {
     var that = this;
     var params = app.Http.buildParams()
     app.Http.request('goodsOrder/queryList.do', params, function (res) {
-      if (res) {
-        that.setData({
-          goodsOrderList: res.data
-        })
-      }
+      that.setData({
+        goodsOrderList: res.data
+      })
     })
   },
 
