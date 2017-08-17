@@ -9,6 +9,9 @@ module.exports = {
   USER_UUID_KEY: "userUuid",
   USER_NAME_KEY: "userName",
 
+  //正则
+  TELEPHONE_CELLPHONE_REGEX: '(^(0[0-9]{2,3}\\-)([2-9][0-9]{6,7})+(\\-[0-9]{1,4})?$)|((400|800)([0-9\\-]{7,10}))|(^(0|86|17951)?1[0-9]{10}$)',
+
   //错误提示
   getCartFailTip: '无法获取购物车',
   addToCartFailTip: '无法添加到购物车',

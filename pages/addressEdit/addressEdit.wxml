@@ -7,37 +7,52 @@
         <view class="weui-label">店铺</view>
       </view>
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="名称" value="{{address.shopName}}" bindblur="handleInputChange"/>
+        <input class="weui-input" placeholder="名称" data-key="shopName" value="{{address.shopName}}" bindblur="handleInputBlur" />
       </view>
     </view>
-    <view class="weui-cell weui-cell_input">
+    <view class="weui-cell weui-cell_input {{!check.linkMan ? 'weui-cell_warn' : ''}}">
       <view class="weui-cell__hd">
         <view class="weui-label">收货人</view>
       </view>
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="名字" value="{{address.linkMan}}"/>
+        <input class="weui-input" placeholder="名字" data-key="linkMan" value="{{address.linkMan}}" bindblur="handleInputBlur" bindinput="handleInputChange" />
+      </view>
+      <view class="weui-cell__ft" hidden="{{check.linkMan}}">
+        <icon type="warn" size="23" color="#E64340"></icon>
       </view>
     </view>
-    <view class="weui-cell weui-cell_input">
+    <view class="weui-cell weui-cell_input {{!check.linkPhone ? 'weui-cell_warn' : ''}}">
       <view class="weui-cell__hd">
         <view class="weui-label">联系电话</view>
       </view>
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="手机、固定电话" value="{{address.linkPhone}}"/>
+        <input class="weui-input" placeholder="手机、固定电话" data-key="linkPhone" value="{{address.linkPhone}}" bindblur="handleInputBlur" bindinput="handleInputChange" />
+      </view>
+      <view class="weui-cell__ft" hidden="{{check.linkPhone}}">
+        <icon type="warn" size="23" color="#E64340"></icon>
       </view>
     </view>
-    <view class="weui-cell weui-cell_input">
+    <view class="weui-cell weui-cell_input {{!check.address ? 'weui-cell_warn' : ''}}">
       <view class="weui-cell__hd">
         <view class="weui-label">详细地址</view>
       </view>
       <view class="weui-cell__bd">
-        <input class="weui-input" placeholder="街道门牌号等信息" value="{{address.address}}"/>
+        <input class="weui-input" placeholder="街道门牌号等信息" data-key="address" value="{{address.address}}" bindblur="handleInputBlur" bindinput="handleInputChange" />
+      </view>
+      <view class="weui-cell__ft" hidden="{{check.address}}">
+        <icon type="warn" size="23" color="#E64340"></icon>
+      </view>
+    </view>
+    <view class="weui-cell weui-cell_switch">
+      <view class="weui-cell__bd">设为默认地址</view>
+      <view class="weui-cell__ft">
+        <switch checked="{{address.sysDefault}}" color="#20a0ff" bindchange="switchChange"/>
       </view>
     </view>
   </view>
 
   <view class="zan-btns">
-      <button class="zan-btn zan-btn--primary" bindtap="saveAddress">保存</button>
-      <button class="zan-btn">取消</button>
-    </view>
+    <button class="zan-btn zan-btn--primary" bindtap="saveAddress">保存</button>
+    <button class="zan-btn" bindtap="navigateBack">取消</button>
+  </view>
 </view>

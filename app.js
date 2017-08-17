@@ -10,16 +10,22 @@ var Storage = Util.Storage;//数据缓存
 App({
   onLaunch: function (options) {
     var that = this;
-    
-    wx.checkSession({
-      success: function () {
-        //session 未过期，并且在本生命周期一直有效
-      },
-      fail: function () {
-        //登录态过期
-        that.login()
-      }
-    })
+    var session_id = wx.getStorageSync('3rd_session')
+
+    // that.login()
+    // if (session_id) {
+    //   wx.checkSession({
+    //     success: function () {
+    //       //session 未过期，并且在本生命周期一直有效
+    //     },
+    //     fail: function () {
+    //       //登录态过期
+    //       that.login()
+    //     }
+    //   })
+    // } else {
+    //   that.login()
+    // }
   },
   onError: function (msg) {
     console.log(msg)
@@ -38,7 +44,6 @@ App({
     if (this.globalData.userInfo) {
       typeof cb == "function" && cb(this.globalData.userInfo)
     } else {
-      //调用登录接口
       wx.getUserInfo({
         withCredentials: false,
         success: function (res) {
@@ -47,26 +52,6 @@ App({
         }
       })
     }
-  },
-  //登录
-  login() {
-    var that = this;
-    var params = Http.buildParams()
-
-    wx.setStorageSync('3rd_session', '')
-    wx.login({
-      success: function (res) {
-        var code = res.code;
-        if (code) {
-          params.body.js_code = code;
-          Http.request('login.do', params, function (res1) {
-            wx.setStorageSync('3rd_session', res1)
-          })
-        } else {
-          console.log('获取用户登录态失败！' + res.errMsg)
-        }
-      }
-    });
   },
   //跳转
   jumpTo(url) {

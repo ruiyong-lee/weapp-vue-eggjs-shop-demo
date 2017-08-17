@@ -20,7 +20,9 @@ Page({
       status: status,
       selectedAddressUuid: addressStorage ? addressStorage.uuid : ''
     })
-    this.getAddressList();
+  },
+  onShow() {
+    this.getAddressList()
   },
 
   //获取地址列表
@@ -28,7 +30,7 @@ Page({
     var that = this;
     var params = app.Http.buildParams()
     app.Http.request('getAddressList.do', params, function (res) {
-      var addressList = JSON.parse(res)
+      var addressList = JSON.parse(res);console.log(addressList)
       that.setData({
         addressList: addressList
       })
@@ -42,5 +44,36 @@ Page({
       app.Storage.setStorageSync('address-selected', address, app.Constants.saveCheckFailTip)
       wx.navigateBack()
     }
+  },
+  //设为默认地址
+  setDefaultAddress(e) {
+    var that = this;
+    var params = app.Http.buildParams()
+    params.body.uuid = e.currentTarget.dataset.uuid;
+    app.Http.request('setDefaultAddress.do', params, function (res) {
+      wx.showToast({ title: '设置默认地址成功', icon: 'success', duration: 2000 })
+      that.getAddressList();
+    })
+  },
+  //删除地址
+  deleteAddress(e) {
+    var that = this;
+
+    wx.showModal({
+      title: '提示',
+      content: '确认删除该地址？',
+      success: function (res) {
+        if (res.confirm) {
+          var params = app.Http.buildParams()
+          params.body.uuid = e.currentTarget.dataset.uuid;
+          app.Http.request('deleteAddress.do', params, function (res) {
+            wx.showToast({ title: '删除成功', icon: 'success', duration: 2000 })
+            that.getAddressList();
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
   }
 })
