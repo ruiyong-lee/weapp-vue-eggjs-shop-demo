@@ -4,24 +4,24 @@
 <view class="page border-top-1">
   <template is="zan-tab" data="{{tab: tab, componentId: 'tab'}}"></template>
 
-  <view class="content content-scroll">
+  <scroll-view scroll-y scroll-with-animation enable-back-to-top class="content content-scroll" bindscrolltolower="handleScrollOrderContent">
     <view class="order-panel">
-      <navigator class="weui-panel weui-panel_access" wx:for="{{goodsOrderList}}" wx:key="{{item.uuid}}" hover-class="none" url="../orderDetail/orderDetail?status={{item.status}}&uuid={{item.uuid}}">
+      <navigator class="weui-panel weui-panel_access" wx:for="{{goodsOrder.values}}" wx:key="{{item.uuid}}" hover-class="none" url="../orderDetail/orderDetail?uuid={{item.uuid}}">
         <view class="zan-card plr-15">
           <view class="zan-card__detail ml-0">
             <view class="zan-card__detail-row">
               <view class="zan-card__right-col zan-c-red">{{orderStatusTipMap[item.status]}}</view>
-              <view class="zan-card__left-col zan-ellipsis--l2">{{item.shopName}}</view>
+              <view class="zan-card__left-col zan-ellipsis--l2">订单编号：{{item.billNumber}}</view>
             </view>
-            <view class="overflow-hidden lh-13 zan-c-gray-darker">
+            <!-- <view class="overflow-hidden lh-13 zan-c-gray-darker">
               <view class="fs-11">
                 订单编号：{{item.billNumber}}
               </view>
-            </view>
+            </view> -->
           </view>
         </view>
 
-        <view class="weui-panel__bd bg-gray">
+        <!-- <view class="weui-panel__bd bg-gray">
           <view class="zan-card plr-15">
             <view class="zan-card__thumb">
               <image class="zan-card__img" src="{{item.lines[0].goodsPic}}" mode="aspectFill"></image>
@@ -44,20 +44,29 @@
               </view>
             </view>
           </view>
-        </view>
+        </view> -->
 
         <view class="weui-panel__bd">
           <view class="weui-media-box text-right ptb-5">
-            <text class="fs-13">共{{item.lines.length}}件商品 {{item.status === 'unPayment' ? '需付款' : '实付款'}}：¥ </text>
+            <text class="fs-13">共{{item.goodsTotalQty}}件商品 {{item.status === 'initial' ? '需付款' : '实付款'}}：¥ </text>
             <text class="zan-c-red fs-18">{{item.paymentAmount}}</text>
           </view>
           <view class="weui-media-box text-right ptb-10 lh-1">
-            <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status === 'unPayment'}}" catchtap>取消订单</button>
-            <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain" wx:if="{{item.status === 'unPayment'}}">去支付</button>
-            <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status !== 'unPayment'}}" catchtap>再次购买</button>
+            <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status === 'initial'}}" data-order="{{item}}" catchtap="cancelOrderBill">取消订单</button>
+            <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain" wx:if="{{item.status === 'initial'}}">去支付</button>
+            <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status !== 'initial'}}" catchtap>再次购买</button>
           </view>
         </view>
       </navigator>
+      <view class="page__bd">
+        <view class="weui-loadmore" wx:if="{{loadmore}}">
+          <view class="weui-loading"></view>
+          <view class="weui-loadmore__tips">正在加载</view>
+        </view>
+        <view class="weui-loadmore weui-loadmore_line" wx:if="{{!goodsOrder}}">
+          <view class="weui-loadmore__tips weui-loadmore__tips_in-line">您还没有相关的订单</view>
+        </view>
+      </view>
     </view>
-  </view>
+  </scroll-view>
 </view>

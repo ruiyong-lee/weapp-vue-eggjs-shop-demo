@@ -95,6 +95,7 @@ var Count = {
 //数据缓存相关方法
 var Storage = {
   setStorageSync(key, value, msg) {
+    msg = msg || '无法缓存数据'
     try {
       wx.setStorageSync(key, value)
     } catch (e) {
@@ -102,6 +103,7 @@ var Storage = {
     }
   },
   getStorageSync(key, msg) {
+    msg = msg || '无法获取缓存数据'
     try {
       var value = wx.getStorageSync(key)
       if (value) {
@@ -112,6 +114,7 @@ var Storage = {
     }
   },
   removeStorageSync(key, msg) {
+    msg = msg || '无法移除缓存数据'
     try {
       wx.removeStorageSync(key)
     } catch (e) {
@@ -119,6 +122,7 @@ var Storage = {
     }
   },
   clearStorageSync(key, msg) {
+    msg = msg || '无法清除缓存数据'
     try {
       wx.clearStorageSync(key)
     } catch (e) {

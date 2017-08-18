@@ -9,16 +9,28 @@ var Constants = require('../utils/constants.js')//引入constants.js
 var root = 'http://localhost:8098/ghps-controller/ghps/wechat/';
 
 function buildParams(url, data, cb) {
-  var params = {};
-  params.platform = Constants.PLATFORM;
-  params.userIdentity = Constants.USER_IDENTITY;
-  params.appid = 'wxd5f43aeb67cd5192';
-  params.nickName = '';
-  // params.sessionId = this.getCookieValue(this.SESSION_ID_KEY);
-  // params.userUuid = this.getCookieValue(this.USER_UUID_KEY);
-  // params.userName = this.getCookieValue(this.USER_NAME_KEY);
-  params.body = {};
-  return params;
+  var params = {}
+  params.platform = Constants.PLATFORM
+  params.userIdentity = Constants.USER_IDENTITY
+  params.appid = 'wxd5f43aeb67cd5192'
+  params.nickName = ''
+  // params.sessionId = this.getCookieValue(this.SESSION_ID_KEY)
+  // params.userUuid = this.getCookieValue(this.USER_UUID_KEY)
+  // params.userName = this.getCookieValue(this.USER_NAME_KEY)
+  params.body = {}
+  return params
+}
+
+
+function buildFilter(arg) {
+  var filter = {}
+  arg = arg || {}
+  filter.params = arg.params || {}
+  filter.orders = arg.orders || []
+  filter.page = arg.page || 0
+  filter.pageSize = arg.pageSize || 10
+  filter.defaultPageSize = arg.defaultPageSize || 0
+  return filter
 }
 
 function request(url, data, cb) {
@@ -82,6 +94,7 @@ function login(cb) {
 }
 
 module.exports = {
+  buildFilter: buildFilter,
   buildParams: buildParams,
   request: request,
   login: login

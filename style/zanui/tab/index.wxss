@@ -28,7 +28,7 @@
   height: 44px;
   line-height: 44px;
   box-sizing: border-box;
-  margin: 0 10px;
+  margin: 0;
   word-break: keep-all;
 }
 

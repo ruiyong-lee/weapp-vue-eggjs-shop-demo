@@ -12,7 +12,7 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
     checkAll: false,
     goodsOrder: {
       orgUuid: '',
-      status: 'unPayment',
+      status: 'initial',
       type: 'wechat',
       customer: {},
       goodsTotalQty: 0,
@@ -48,7 +48,7 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
     var cartCheckStorage = app.Storage.getStorageSync('cart-check', app.Constants.getCheckFailTip);
 
     this.setData({
-      cartStorage: cartStorage,
+      cartStorage: cartStorage ? cartStorage : {},
       cartCheckMap: cartCheckStorage ? cartCheckStorage : {},
       cartEmpty: app.Check.isUndeFinedOrNullOrEmpty(cartStorage),
       isEdit: false

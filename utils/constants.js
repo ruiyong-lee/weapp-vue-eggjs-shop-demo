@@ -22,15 +22,15 @@ module.exports = {
   //订单
   orderTabList: [
     { id: 'all', title: '全部' },
-    { id: 'unPayment', title: '待付款' },
-    { id: 'receipted', title: '已接单' },
+    { id: 'initial', title: '待付款' },
+    { id: 'audited', title: '已审核' },
     { id: 'dispatching', title: '配送中' },
     { id: 'completed', title: '已完成' },
     { id: 'canceled', title: '已取消' }
   ],
   orderStatusTipMap: {
-    unPayment: '等待付款',
-    receipted: '已接单',
+    initial: '等待付款',
+    audited: '已审核',
     dispatching: '正在配送',
     completed: '已完成',
     canceled: '已取消',

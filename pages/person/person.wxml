@@ -13,15 +13,15 @@
     <view class="weui-panel__bd">
       <view class="weui-flex">
         <view class="weui-flex__item">
-          <navigator class="person-module" url="../order/order?status=unPayment">
+          <navigator class="person-module" url="../order/order?status=initial">
             <image class="icon-mid" src="../../images/icon/icon-unPayment.png"></image>
             <view class="fs-11">待付款</view>
           </navigator>
         </view>
         <view class="weui-flex__item">
-          <navigator class="person-module" url="../order/order?status=receipted">
+          <navigator class="person-module" url="../order/order?status=audited">
             <image class="icon-mid" src="../../images/icon/icon-receipted.png"></image>
-            <view class="fs-11">已接单</view>
+            <view class="fs-11">已审核</view>
           </navigator>
         </view>
         <view class="weui-flex__item">

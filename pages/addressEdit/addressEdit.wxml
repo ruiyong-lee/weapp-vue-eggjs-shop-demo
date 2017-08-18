@@ -46,10 +46,11 @@
     <view class="weui-cell weui-cell_switch">
       <view class="weui-cell__bd">设为默认地址</view>
       <view class="weui-cell__ft">
-        <switch checked="{{address.sysDefault}}" color="#20a0ff" bindchange="switchChange"/>
+        <switch checked="{{address.sysDefault}}" color="#20a0ff" bindchange="switchChange" />
       </view>
     </view>
   </view>
+  <view class="weui-cells__title">*联系电话为手机号码或者带区号的电话号码，如：0592-5772210</view>
 
   <view class="zan-btns">
     <button class="zan-btn zan-btn--primary" bindtap="saveAddress">保存</button>

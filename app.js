@@ -11,21 +11,6 @@ App({
   onLaunch: function (options) {
     var that = this;
     var session_id = wx.getStorageSync('3rd_session')
-
-    // that.login()
-    // if (session_id) {
-    //   wx.checkSession({
-    //     success: function () {
-    //       //session 未过期，并且在本生命周期一直有效
-    //     },
-    //     fail: function () {
-    //       //登录态过期
-    //       that.login()
-    //     }
-    //   })
-    // } else {
-    //   that.login()
-    // }
   },
   onError: function (msg) {
     console.log(msg)

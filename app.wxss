@@ -108,6 +108,10 @@
   width: 80px;
 }
 
+.weui-loadmore__tips_in-line {
+  background-color: #f1f1f5;
+}
+
 /* 常用 */
 
 .absolute {

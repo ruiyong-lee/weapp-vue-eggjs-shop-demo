@@ -34,7 +34,7 @@ Page({
       this.getFreightPlan();
     } else {
       //已提交订单
-      this.getOrder();
+      // this.getOrder();
     }
   },
   onShow() {
@@ -156,13 +156,16 @@ Page({
     })
   },
   saveOrder() {
+    var that = this;
+    var params = app.Http.buildParams()
+
     //成功获取送货时间和运费方案才能下单
     if (isGetDeliveryTimeType && isGetFreightPlane) {
-      var goodsOrder = this.data.goodsOrder;
+      params.body.goodsOrder = this.data.goodsOrder;
 
-      //TODO
-      console.log(goodsOrder)
-      console.log(JSON.stringify(goodsOrder))
+      app.Http.request('createBill.do', params, function (res) {
+        app.Storage.removeStorageSync('cart')
+      })
     } else {
       wx.showModal({
         title: '无法下单',
