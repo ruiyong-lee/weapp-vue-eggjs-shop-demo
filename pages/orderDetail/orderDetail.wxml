@@ -11,7 +11,7 @@
           </view>
           <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
             <view class="weui-media-box__title fs-14">{{orderStatusTipMap[goodsOrder.status]}}</view>
-            <view class="weui-media-box__desc fs-11" wx:if="{{goodsOrder.status === 'initial'}}">请于 26分34秒 内付款，超时订单将自动取消</view>
+            <view class="weui-media-box__desc fs-11" wx:if="{{goodsOrder.status === 'initial'}}">请于 {{countDown}} 内付款，超时订单将自动取消</view>
           </view>
         </view>
         <view class="weui-media-box weui-media-box_appmsg" bindtap="jumpToSelectAddress">
@@ -106,7 +106,7 @@
   <view class="fluid-box">
     <view class="pay-footer">
       <view class="text-right wp-100 {{goodsOrder.status === 'initial' ? 'pr-100' : ''}}">
-        <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{goodsOrder.status !== 'initial'}}" catchtap>再次购买</button>
+        <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{goodsOrder.status !== 'initial'}}" catchtap="orderAgain">再次购买</button>
         <block wx:else>
           <text class="fs-14">合计：¥ </text>
           <text class="zan-c-red fs-18">{{goodsOrder.paymentAmount}}</text>

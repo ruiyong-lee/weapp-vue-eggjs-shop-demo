@@ -14,6 +14,14 @@ var Format = {
 
     return [year, month, day].map(this.formatNumber).join('/') + ' ' + [hour, minute, second].map(this.formatNumber).join(':')
   },
+  formatCountDown(interval) {
+    var maxInterval = 1800000 //不超过30分钟
+    var surplus = maxInterval - interval
+    var minute = parseInt(surplus / 60000, 10)
+    var seconds = Math.ceil((surplus % 60000) / 1000)
+
+    return surplus >= 0 ? minute + '分' + seconds + '秒' : false
+  },
   formatNumber(n) {
     n = n.toString()
     return n[1] ? n : '0' + n

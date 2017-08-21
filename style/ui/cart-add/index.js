@@ -8,20 +8,16 @@ var cartAdd = Object.assign({}, ZanQuantity, ZanToast, {
   addToCart(e) {
     var dataset = e.currentTarget.dataset;
     var cartData = dataset.cartData;
-    var key = cartData.goods.uuid;
-    var cartStorage = app.Storage.getStorageSync('cart', app.Constants.getCartFailTip);
+    var key = cartData.goods.goods.uuid;
+    var cartStorage = app.Storage.getStorageSync('cart', app.Constants.getCartFailTip) || {};
     var cartItem = this.getCartItem(cartData);
 
     this.setData({
       "cartData.showDialog": false
     });
 
-    if (app.Check.isUndeFinedOrNullOrEmpty(cartStorage)) {
-      app.Storage.setStorageSync('cart', { [key]: cartItem }, app.Constants.addToCartFailTip)
-    } else {
-      cartStorage[key] = cartItem;
-      app.Storage.setStorageSync('cart', cartStorage, app.Constants.addToCartFailTip)
-    }
+    cartStorage[key] = cartItem;
+    app.Storage.setStorageSync('cart', cartStorage, app.Constants.addToCartFailTip)
     this.setData({
       isCartEmpty: false
     });

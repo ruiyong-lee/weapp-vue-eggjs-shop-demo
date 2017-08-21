@@ -11,6 +11,7 @@ Page({
 
   onLoad(option) {
     var status = option.status;
+    var addressUuid = option.addressUuid;
     var addressStorage = app.Storage.getStorageSync('address-selected', app.Constants.getCheckFailTip);
 
     wx.setNavigationBarTitle({
@@ -18,7 +19,7 @@ Page({
     })
     this.setData({
       status: status,
-      selectedAddressUuid: addressStorage ? addressStorage.uuid : ''
+      selectedAddressUuid: addressStorage ? addressStorage.uuid : addressUuid || ''
     })
   },
   onShow() {

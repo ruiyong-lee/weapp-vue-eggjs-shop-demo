@@ -4,18 +4,18 @@
   <view class="pb-40">
     <view class="weui-cells weui-cells_after-title mb-10 fs-14" wx:for="{{addressList}}" wx:key="{{index}}" data-address="{{item}}" bindtap="handleSelectAddress">
       <view class="weui-cell">
-        <view class="pr-15" hidden="{{status !== 'select'}}">
+        <view class="pr-15" wx:if="{{status === 'select'}}">
           <image class="inline-block icon-small" src="../../images/icon/{{ item.uuid === selectedAddressUuid ? 'icon-check' : 'icon-circle'}}.png"></image>
         </view>
         <view class="weui-cell__bd">
           <view>{{item.linkMan}} {{item.linkPhone}}</view>
           <view class="zan-c-gray-darker fs-13">{{item.address}}</view>
         </view>
-        <navigator url="../addressEdit/addressEdit" hidden="{{status !== 'select'}}" catchtap>
+        <navigator url="../addressEdit/addressEdit" wx:if="{{status === 'select'}}" catchtap>
           <image class="inline-block icon-l-small" src="../../images/icon/icon-edit.png"></image>
         </navigator>
       </view>
-      <view class="weui-cell" hidden="{{status === 'select'}}">
+      <view class="weui-cell" wx:if="{{status !== 'select'}}">
         <view class="weui-cell__hd" data-uuid="{{item.uuid}}" bindtap="setDefaultAddress">
           <image class="inline-block pr-10 icon-small" src="../../images/icon/{{ item.sysDefault ? 'icon-check' : 'icon-circle'}}.png"></image>
         </view>

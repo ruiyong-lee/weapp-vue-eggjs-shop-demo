@@ -1,6 +1,7 @@
 // pages/orderDetail/orderDetail.js
 
 var app = getApp();
+var isGetAddress = false;//是否成功获取收货地址
 var isGetDeliveryTimeType = false;//是否成功获取收货时间
 var isGetFreightPlane = false;//是否成功获取运费方案
 
@@ -12,7 +13,8 @@ Page({
     goodsOrder: {},
     deliveryTimeMap: [],
     deliveryTimeArr: [],
-    canOrder: false
+    canOrder: false,
+    countDown: ''
   },
 
   onLoad(option) {
@@ -34,40 +36,66 @@ Page({
       this.getFreightPlan();
     } else {
       //已提交订单
-      // this.getOrder();
+      this.getOrder(orderUuid);
     }
   },
   onShow() {
-    this.refreshAddress();
+    if (this.data.isAccount) {
+      this.refreshAddress();
+    }
   },
 
-  getOrder() {
+  //获取订单信息
+  getOrder(orderUuid) {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('goodsOrder/get.do', params, function (res) {
+    params.body.uuid = orderUuid
+    app.Http.request('getOrderBillByUuid.do', params, function (res) {
+      var data = JSON.parse(res)
+      console.log(data)
+
+      if (data.status === 'initial') {
+        that.getCountDown(data.createInfo.operateTime, orderUuid)
+      }
       that.setData({
-        "goodsOrder": res
+        "goodsOrder": data
       })
     })
   },
-
-  //刷新地址
+  //刷新地址,如果上次有选择地址，则使用该地址，否则使用默认地址
   refreshAddress() {
     var addressSelected = app.Storage.getStorageSync('address-selected', app.Constants.getCheckFailTip);
 
     if (!app.Check.isUndeFinedOrNullOrEmpty(addressSelected)) {
-      this.setData({
-        "goodsOrder.linkMan": addressSelected.linkMan,
-        "goodsOrder.linkPhone": addressSelected.linkPhone,
-        "goodsOrder.address": addressSelected.address,
-        "goodsOrder.addressUuid": this.data.isAccount ? addressSelected.uuid : addressSelected.addressUuid,
-      })
+      this.setAddress(addressSelected)
+    } else {
+      this.getDefaultAddress()
     }
+  },
+  //获取默认地址
+  getDefaultAddress() {
+    var that = this;
+    var params = app.Http.buildParams()
+    app.Http.request('getDefaultAddress.do', params, function (res) {
+      var data = JSON.parse(res)
+      that.setAddress(data)
+    })
+  },
+  //设置地址
+  setAddress(address) {
+    this.setData({
+      "goodsOrder.linkMan": address.linkMan,
+      "goodsOrder.linkPhone": address.linkPhone,
+      "goodsOrder.address": address.address,
+      "goodsOrder.addressUuid": this.data.isAccount ? address.uuid : address.addressUuid,
+    })
+    isGetAddress = true
   },
   //跳转到地址选择
   jumpToSelectAddress() {
-    if (this.data.isAccount) {
-      app.jumpTo('../address/address?status=select');
+    var thisData = this.data
+    if (thisData.isAccount) {
+      app.jumpTo('../address/address?status=select&addressUuid=' + thisData.goodsOrder.addressUuid);
     }
   },
 
@@ -155,12 +183,32 @@ Page({
       "goodsOrder.paymentAmount": paymentAmount
     })
   },
+  getCountDown(operateTime, orderUuid) {
+    var that = this;
+    var interval = setInterval(function () {
+      var startTime = new Date(operateTime).getTime()
+      var nowTime = new Date().getTime()
+      var countDown = app.Format.formatCountDown(nowTime - startTime)
+
+      if (!countDown) {
+        clearInterval(interval)
+        that.setData({
+          'goodsOrder.status': 'canceled'
+        })
+        // that.getOrder(orderUuid)//刷新订单，后台自动过期
+      }
+      that.setData({
+        countDown: countDown || '0分0秒'
+      })
+    }, 1000)
+  },
+  //保存订单
   saveOrder() {
     var that = this;
     var params = app.Http.buildParams()
 
     //成功获取送货时间和运费方案才能下单
-    if (isGetDeliveryTimeType && isGetFreightPlane) {
+    if (isGetAddress && isGetDeliveryTimeType && isGetFreightPlane) {
       params.body.goodsOrder = this.data.goodsOrder;
 
       app.Http.request('createBill.do', params, function (res) {
@@ -174,5 +222,10 @@ Page({
         showCancel: false
       })
     }
-  }
+  },
+  //再次购买
+  orderAgain(e) {
+    var orderLines = this.data.goodsOrder.lines
+    app.orderAgain(orderLines)
+  },
 })

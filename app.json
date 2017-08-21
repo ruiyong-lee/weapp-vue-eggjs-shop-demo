@@ -1,9 +1,9 @@
 {
   "pages": [
-    "pages/order/order",
     "pages/index/index",
     "pages/goodsDetail/goodsDetail",
     "pages/cart/cart",
+    "pages/order/order",
     "pages/orderDetail/orderDetail",
     "pages/person/person",
     "pages/address/address",
@@ -14,7 +14,8 @@
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "商品",
-    "navigationBarTextStyle": "black"
+    "navigationBarTextStyle": "black",
+    "enablePullDownRefresh": true
   },
   "tabBar": {
     "selectedColor": "#20a0ff",

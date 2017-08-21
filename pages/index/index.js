@@ -42,7 +42,21 @@ Page(Object.assign({}, cartAdd, {
         selectedCategory: categoryArr[0],
         categoryHeader: categoryArr[0]
       })
+      that.getGoodsMap(data)
     })
+  },
+  //获取商品Map，用于再次购买刷新价格
+  getGoodsMap(data) {
+    var result = {}
+
+    for(var key in data) {
+      var list = data[key]
+      for(var i=0;i<list.length;i++) {
+        var item = list[i]
+        result[item.goods.uuid] = item
+      }
+    }
+    app.globalData.goodsMap = result
   },
   //获取商品各个类别商品面板的scrollTop,用于滚动面板自动识别当前类别
   getCategoryGoodsPanelScrollTop(data) {
@@ -92,7 +106,6 @@ Page(Object.assign({}, cartAdd, {
       }).exec()
     }
   },
-
   //设置类别
   setCategory(category) {
     if (category !== this.data.selectedCategory) {
@@ -118,7 +131,6 @@ Page(Object.assign({}, cartAdd, {
       activeCategoryPanel: dataset.categoryPanel
     });
   },
-
   //打开关闭添加到购物车弹窗
   toggleDialog(e) {
     var showDialog = this.data.cartData.showDialog;
@@ -131,7 +143,6 @@ Page(Object.assign({}, cartAdd, {
       "cartData.remark": '',
     });
   },
-
   //跳转到商品详情
   jumpToDetail(e) {
     app.setSelectedGoods(e.currentTarget.dataset.goods)

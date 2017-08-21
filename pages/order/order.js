@@ -11,9 +11,10 @@ Page(Object.assign({}, ZanTab, {
       height: 45
     },
     orderStatusTipMap: app.Constants.orderStatusTipMap,
-    goodsOrder: null,
-    page: 0,
-    loadmore: false
+    goodsOrderList: [],
+    page: 1,
+    loadmore: false,
+    isLastPage: false
   },
 
   onLoad(option) {
@@ -29,17 +30,26 @@ Page(Object.assign({}, ZanTab, {
   },
 
   //获取订单列表
-  getOrderList() {
+  getOrderList(cb) {
     var that = this;
     var params = app.Http.buildParams()
     params.body.queryFilter = app.Http.buildFilter({ params: { status: this.data.tab.selectedId }, page: this.data.page })
     app.Http.request('queryOrderBill.do', params, function (res) {
       var data = JSON.parse(res)
-      console.log(data)
+      var result = that.data.goodsOrderList.concat(data.values)
+
+      if (that.data.page === data.pageCount) {
+        that.setData({
+          isLastPage: true
+        })
+      }
 
       that.setData({
-        goodsOrder: data
+        goodsOrderList: result,
+        loadmore: false,
       })
+
+      return typeof cb === "function" && cb()
     })
   },
   //取消订单
@@ -67,6 +77,24 @@ Page(Object.assign({}, ZanTab, {
       }
     })
   },
+  //再次购买
+  orderAgain(e) {
+    var orderUuid = e.currentTarget.dataset.orderUuid;
+
+    this.getOrder(orderUuid, function(order) {
+      var orderLines = order.lines
+      app.orderAgain(orderLines)
+    })
+  },
+  //获取订单信息
+  getOrder(orderUuid, cb) {
+    var that = this;
+    var params = app.Http.buildParams()
+    params.body.uuid = orderUuid
+    app.Http.request('getOrderBillByUuid.do', params, function (res) {
+      return typeof cb === "function" && cb(JSON.parse(res) || null)
+    })
+  },
   //切换tab
   handleZanTabChange(e) {
     var componentId = e.componentId;
@@ -75,12 +103,33 @@ Page(Object.assign({}, ZanTab, {
     this.setData({
       [`${componentId}.selectedId`]: selectedId
     });
+    this.reset();
     this.getOrderList();
   },
   //滚动
-  handleScrollOrderContent(e) {
-    var that = this;
-   
-    //加载更多订单 TODO 判断页数才执行下面的函数
+  handleScrollOrderContentToLower(e) {
+    if (!this.data.isLastPage && !this.data.loadmore) {
+      this.setData({
+        page: ++this.data.page,
+        loadmore: true
+      })
+      this.getOrderList();
+    }
+  },
+  //重置请求参数
+  reset() {
+    this.setData({
+      goodsOrderList: [],
+      page: 1,
+      loadmore: false,
+      isLastPage: false
+    })
+  },
+  //下拉刷新
+  onPullDownRefresh: function () {
+    this.reset();
+    this.getOrderList(function () {
+      wx.stopPullDownRefresh()
+    });
   }
 }));

@@ -14,13 +14,13 @@
       <view class="weui-flex">
         <view class="weui-flex__item">
           <navigator class="person-module" url="../order/order?status=initial">
-            <image class="icon-mid" src="../../images/icon/icon-unPayment.png"></image>
+            <image class="icon-mid" src="../../images/icon/icon-initial.png"></image>
             <view class="fs-11">待付款</view>
           </navigator>
         </view>
         <view class="weui-flex__item">
           <navigator class="person-module" url="../order/order?status=audited">
-            <image class="icon-mid" src="../../images/icon/icon-receipted.png"></image>
+            <image class="icon-mid" src="../../images/icon/icon-audited.png"></image>
             <view class="fs-11">已审核</view>
           </navigator>
         </view>

@@ -1,5 +1,6 @@
 // 请求
 
+var app = getApp();
 var Constants = require('../utils/constants.js')//引入constants.js
 
 //mock测试域名
@@ -9,14 +10,13 @@ var Constants = require('../utils/constants.js')//引入constants.js
 var root = 'http://localhost:8098/ghps-controller/ghps/wechat/';
 
 function buildParams(url, data, cb) {
+  var app = getApp();
+  var userInfo = app.globalData.userInfo
   var params = {}
   params.platform = Constants.PLATFORM
   params.userIdentity = Constants.USER_IDENTITY
   params.appid = 'wxd5f43aeb67cd5192'
-  params.nickName = ''
-  // params.sessionId = this.getCookieValue(this.SESSION_ID_KEY)
-  // params.userUuid = this.getCookieValue(this.USER_UUID_KEY)
-  // params.userName = this.getCookieValue(this.USER_NAME_KEY)
+  params.nickName = userInfo ? userInfo.nickName : ''
   params.body = {}
   return params
 }
@@ -28,7 +28,7 @@ function buildFilter(arg) {
   filter.params = arg.params || {}
   filter.orders = arg.orders || []
   filter.page = arg.page || 0
-  filter.pageSize = arg.pageSize || 10
+  filter.pageSize = arg.pageSize || 5
   filter.defaultPageSize = arg.defaultPageSize || 0
   return filter
 }
@@ -37,6 +37,7 @@ function request(url, data, cb) {
   var session_id = wx.getStorageSync('3rd_session')
   var header = session_id ? { 'content-type': 'application/json', 'Cookie': 'JSESSIONID=' + session_id } : { 'content-type': 'application/json' };
 
+  console.log(data)
   wx.request({
     method: 'POST',
     url: root + url,
