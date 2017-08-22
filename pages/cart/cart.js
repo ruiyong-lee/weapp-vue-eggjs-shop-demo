@@ -8,7 +8,7 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
     cartStorage: {},
     cartCheckMap: {},
     isEdit: false,
-    cartEmpty: true,
+    cartEmpty: false,
     checkAll: false,
     goodsOrder: {
       orgUuid: '',
@@ -205,15 +205,19 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
     var cartStorage = this.data.cartStorage;
     var cartCheckMap = this.data.cartCheckMap;
 
-    for (var key in cartCheckMap) {
-      lines.push(cartStorage[key]);
+    if (app.Check.isUndeFinedOrNullOrEmpty(cartCheckMap)) {
+      this.showZanTopTips('至少选择一个商品');
+    } else {
+      for (var key in cartCheckMap) {
+        lines.push(cartStorage[key]);
+      }
+
+      this.setData({
+        "goodsOrder.lines": lines
+      })
+
+      app.setGoodsOrder(this.data.goodsOrder);
+      app.jumpTo('../orderDetail/orderDetail?isAccount=true');
     }
-
-    this.setData({
-      "goodsOrder.lines": lines
-    })
-
-    app.setGoodsOrder(this.data.goodsOrder);
-    app.jumpTo('../orderDetail/orderDetail?isAccount=true');
   }
 }))

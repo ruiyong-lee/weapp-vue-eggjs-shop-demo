@@ -14,7 +14,8 @@ Page({
     deliveryTimeMap: [],
     deliveryTimeArr: [],
     canOrder: false,
-    countDown: ''
+    countDown: '',
+    freeFreightAmount: 0
   },
 
   onLoad(option) {
@@ -161,7 +162,8 @@ Page({
       var totalAmount = that.data.goodsOrder.totalAmount;//商品总金额
 
       that.setData({
-        "goodsOrder.freightAmount": totalAmount >= freeFreightAmount ? 0 : basicFreight
+        "goodsOrder.freightAmount": totalAmount >= freeFreightAmount ? 0 : basicFreight,
+        freeFreightAmount: freeFreightAmount
       })
       that.calculatePaymentAmount();
       isGetFreightPlane = true;
@@ -212,7 +214,8 @@ Page({
       params.body.goodsOrder = this.data.goodsOrder;
 
       app.Http.request('createBill.do', params, function (res) {
-        app.Storage.removeStorageSync('cart')
+        app.clearCart()
+        that.toPay(res)
       })
     } else {
       wx.showModal({
@@ -222,6 +225,17 @@ Page({
         showCancel: false
       })
     }
+  },
+  //预支付
+  toPay(orderUuid) {
+    var that = this;
+    var params = app.Http.buildParams()
+    params.body.uuid = orderUuid
+    // params.body.spbill_create_ip = '127.0.0.1'
+    app.Http.request('toPay.do', params, function (res) {
+      var data = JSON.parse(res)
+      console.log(data)
+    })
   },
   //再次购买
   orderAgain(e) {

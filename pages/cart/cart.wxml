@@ -16,10 +16,7 @@
   <view class="weui-panel weui-panel_access hp-100" wx:else>
     <view class="weui-cells weui-cells_after-title fs-14">
       <view class="weui-cell weui-cell_access">
-        <!-- <view class="weui-cell__hd" bindtap="toggleCheckAll">
-          <image class="inline-block pr-10 icon-small" src="../../images/icon/{{checkAll ? 'icon-check' : 'icon-circle'}}.png"></image>
-        </view> -->
-        <view class="weui-cell__bd">商家名称</view>
+        <view class="weui-cell__bd">商品列表</view>
         <view class="weui-cell__ft" bindtap="toggleIsEdit">{{isEdit ? '完成' : '编辑'}}</view>
       </view>
     </view>

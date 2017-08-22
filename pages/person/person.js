@@ -17,18 +17,10 @@ Page({
     })
   },
 
+  //联系客服
   callCustomer() {
     wx.makePhoneCall({
       phoneNumber: '18359197148' //仅为示例，TODO
     })
   },
-  geiAddress() {
-    var that = this;
-    
-    wx.chooseAddress({
-      success: function (res) {
-        //仅为示例，TODO
-      }
-    })
-  }
 })

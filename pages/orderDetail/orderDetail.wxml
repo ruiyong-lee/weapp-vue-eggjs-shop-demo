@@ -30,7 +30,7 @@
 
     <!-- 订单信息 -->
     <view class="weui-panel weui-panel_access">
-      <view class="plr-15 ptb-10 fs-14">商家名称</view>
+      <view class="plr-15 ptb-10 fs-14">商品列表</view>
 
       <view class="weui-panel__bd bg-gray mb-10" wx:for="{{goodsOrder.lines}}" wx:key="item.uuid">
         <view class="zan-card plr-15">
@@ -82,7 +82,7 @@
       <view class="weui-cell">
         <view class="weui-cell__bd">
           <view class="ptb-5">商品金额</view>
-          <view class="ptb-5">运费</view>
+          <view class="ptb-5">运费<text class="zan-c-gray fs-13">（满¥{{freeFreightAmount}}免运费）</text></view>
           <view class="ptb-5">加急费</view>
         </view>
         <view class="weui-cell__ft">

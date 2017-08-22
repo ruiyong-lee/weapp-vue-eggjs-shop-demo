@@ -12,6 +12,11 @@ App({
   onLaunch: function (options) {
     var that = this;
     this.getUserInfo()
+    wx.getNetworkType({
+      success: function (res) {
+        console.log(res)
+      }
+    })
   },
   onError: function (msg) {
     console.log(msg)
@@ -59,11 +64,16 @@ App({
     var cartStorage = Storage.getStorageSync('cart', Constants.getCartFailTip);
     return Check.isUndeFinedOrNullOrEmpty(cartStorage);
   },
+  //清空购物车
+  clearCart() {
+    Storage.removeStorageSync('cart')
+    Storage.removeStorageSync('cart-check')
+  },
   //再次购买，覆盖商品最新信息
   orderAgain(orderLines) {
     var goodsMap = this.globalData.goodsMap
-    var cartStorage = this.Storage.getStorageSync('cart', this.Constants.getCartFailTip) || {};
-    var cartCheckStorage = this.Storage.getStorageSync('cart-check', this.Constants.getCheckFailTip) || {};
+    var cartStorage = Storage.getStorageSync('cart', this.Constants.getCartFailTip) || {};
+    var cartCheckStorage = Storage.getStorageSync('cart-check', this.Constants.getCheckFailTip) || {};
 
     for(var i=0;i<orderLines.length;i++) {
       var item = orderLines[i]
@@ -83,8 +93,8 @@ App({
       cartCheckStorage[key] = true
     }
 
-    this.Storage.setStorageSync('cart', cartStorage, this.Constants.addToCartFailTip)
-    this.Storage.setStorageSync('cart-check', cartStorage, this.Constants.saveCheckFailTip)
+    Storage.setStorageSync('cart', cartStorage, this.Constants.addToCartFailTip)
+    Storage.setStorageSync('cart-check', cartStorage, this.Constants.saveCheckFailTip)
 
     wx.switchTab({
       url: '../cart/cart'

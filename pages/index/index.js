@@ -143,7 +143,7 @@ Page(Object.assign({}, cartAdd, {
       "cartData.remark": '',
     });
   },
-  //跳转到商品详情
+  //跳转到商品详情，暂时没做
   jumpToDetail(e) {
     app.setSelectedGoods(e.currentTarget.dataset.goods)
     app.jumpTo('../goodsDetail/goodsDetail')

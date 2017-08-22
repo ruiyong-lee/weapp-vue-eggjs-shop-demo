@@ -50,16 +50,16 @@
   <view class="weui-panel">
     <view class="weui-flex">
       <view class="weui-flex__item">
-        <navigator class="person-module">
-          <image class="icon-mid" src="../../images/icon/icon-user.png"></image>
-          <view class="fs-11">我的信息</view>
-        </navigator>
-      </view>
-      <view class="weui-flex__item">
         <navigator class="person-module" url="../address/address">
           <image class="icon-mid" src="../../images/icon/icon-address.png"></image>
           <view class="fs-11">我的地址</view>
         </navigator>
+      </view>
+      <view class="weui-flex__item">
+        <!-- <navigator class="person-module">
+          <image class="icon-mid" src="../../images/icon/icon-user.png"></image>
+          <view class="fs-11">我的信息</view>
+        </navigator> -->
       </view>
       <view class="weui-flex__item">
 

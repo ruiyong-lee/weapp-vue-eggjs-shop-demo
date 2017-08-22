@@ -31,7 +31,7 @@
           <view class="goods-category">
             <view class="goods-category-title">{{category}}</view>
           </view>
-          <view class="goods-item zan-card" wx:for="{{goodsItems}}" wx:key="{{item.uuid}}" data-goods="{{item}}" bindtap="jumpToDetail">
+          <view class="goods-item zan-card" wx:for="{{goodsItems}}" wx:key="{{item.uuid}}" data-goods="{{item}}">
             <view class="zan-card__thumb">
               <image class="zan-card__img" src="{{item.mainImg}}" mode="aspectFill"></image>
             </view>
