@@ -6,6 +6,10 @@
 
 也可以自行fork修改
 
+后端代码用的是node.js，正在开发中...
+
+> 后端代码：[wechat-shop-server](https://github.com/ruiyong-lee/wechat-shop-server)
+
 ***
 
 ### 非常感谢：
