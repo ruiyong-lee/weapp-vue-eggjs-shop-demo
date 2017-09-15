@@ -10,13 +10,7 @@ var Storage = Util.Storage;//数据缓存
 
 App({
   onLaunch: function (options) {
-    var that = this;
     this.getUserInfo()
-    wx.getNetworkType({
-      success: function (res) {
-        console.log(res)
-      }
-    })
   },
   onError: function (msg) {
     console.log(msg)
@@ -94,7 +88,7 @@ App({
     }
 
     Storage.setStorageSync('cart', cartStorage, this.Constants.addToCartFailTip)
-    Storage.setStorageSync('cart-check', cartStorage, this.Constants.saveCheckFailTip)
+    Storage.setStorageSync('cart-check', cartCheckStorage, this.Constants.saveCheckFailTip)
 
     wx.switchTab({
       url: '../cart/cart'

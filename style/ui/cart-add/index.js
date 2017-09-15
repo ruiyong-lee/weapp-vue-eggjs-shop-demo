@@ -6,8 +6,8 @@ var app = getApp();//获取应用实例
 var cartAdd = Object.assign({}, ZanQuantity, ZanToast, {
   //添加到购物车
   addToCart(e) {
-    var dataset = e.currentTarget.dataset;
-    var cartData = dataset.cartData;
+    var dataset = e.currentTarget.dataset || {};
+    var cartData = dataset.cartData || {}; console.log(cartData); console.log(cartData.goods);
     var key = cartData.goods.goods.uuid;
     var cartStorage = app.Storage.getStorageSync('cart', app.Constants.getCartFailTip) || {};
     var cartItem = this.getCartItem(cartData);
