@@ -1,11 +1,12 @@
 // pages/orderDetail/orderDetail.js
+var ZanToast = require('../../style/zanui/toast/index');//引入消息提示框控件
 
 var app = getApp();
 var isGetAddress = false;//是否成功获取收货地址
 var isGetDeliveryTimeType = false;//是否成功获取收货时间
 var isGetFreightPlane = false;//是否成功获取运费方案
 
-Page({
+Page(Object.assign({}, ZanToast, {
   data: {
     isAccount: false,//结算状态，尚未提交订单到后台
     orderStatusTipMap: app.Constants.orderStatusTipMap,
@@ -84,13 +85,15 @@ Page({
   },
   //设置地址
   setAddress(address) {
-    this.setData({
-      "goodsOrder.linkMan": address.linkMan,
-      "goodsOrder.linkPhone": address.linkPhone,
-      "goodsOrder.address": address.address,
-      "goodsOrder.addressUuid": this.data.isAccount ? address.uuid : address.addressUuid,
-    })
-    isGetAddress = true
+    if (address) {
+      this.setData({
+        "goodsOrder.linkMan": address.linkMan,
+        "goodsOrder.linkPhone": address.linkPhone,
+        "goodsOrder.address": address.address,
+        "goodsOrder.addressUuid": this.data.isAccount ? address.uuid : address.addressUuid,
+      })
+      isGetAddress = true
+    }
   },
   //跳转到地址选择
   jumpToSelectAddress() {
@@ -210,19 +213,21 @@ Page({
     var params = app.Http.buildParams()
 
     //成功获取送货时间和运费方案才能下单
-    if (isGetAddress && isGetDeliveryTimeType && isGetFreightPlane) {
+    if (!isGetDeliveryTimeType || !isGetFreightPlane) {
+      wx.showModal({
+        title: '无法下单',
+        confirmColor: '#20a0ff',
+        content: !isGetAddress ? app.Constants.selectAddressTip : app.Constants.requestFailTip,
+        showCancel: false
+      })
+    } else if (!isGetAddress) {
+      that.showZanToast(app.Constants.selectAddressTip);
+    } else {
       params.body.goodsOrder = this.data.goodsOrder;
 
       app.Http.request('createBill.do', params, function (res) {
         app.clearCart()
         that.toPay(res)
-      })
-    } else {
-      wx.showModal({
-        title: '无法下单',
-        confirmColor: '#20a0ff',
-        content: app.Constants.requestFailTip,
-        showCancel: false
       })
     }
   },
@@ -231,10 +236,23 @@ Page({
     var that = this;
     var params = app.Http.buildParams()
     params.body.uuid = orderUuid
-    // params.body.spbill_create_ip = '127.0.0.1'
     app.Http.request('toPay.do', params, function (res) {
       var data = JSON.parse(res)
       console.log(data)
+      //调用微信支付接口
+      wx.requestPayment({
+        timeStamp: data.timestamp,
+        nonceStr: data.nonce_str,
+        package: data.package,
+        signType: 'MD5',
+        paySign: data.sign,
+        success: function (res) {
+          console.log(res)
+        },
+        fail: function (res) {
+          console.log(res)
+        }
+      })
     })
   },
   //再次购买
@@ -242,4 +260,4 @@ Page({
     var orderLines = this.data.goodsOrder.lines
     app.orderAgain(orderLines)
   },
-})
+}))

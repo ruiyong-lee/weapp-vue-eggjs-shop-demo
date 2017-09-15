@@ -18,6 +18,7 @@ module.exports = {
   getCheckFailTip: '无法获取勾选数据',
   saveCheckFailTip: '无法保存勾选数据',
   requestFailTip:'服务器开了点小差，请重试或者联系客服',
+  selectAddressTip: '请选择地址',
 
   //订单
   orderTabList: [

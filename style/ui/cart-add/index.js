@@ -7,21 +7,28 @@ var cartAdd = Object.assign({}, ZanQuantity, ZanToast, {
   //添加到购物车
   addToCart(e) {
     var dataset = e.currentTarget.dataset || {};
-    var cartData = dataset.cartData || {}; console.log(cartData); console.log(cartData.goods);
-    var key = cartData.goods.goods.uuid;
+    var cartData = dataset.cartData || {};
+    var key = cartData.goods && cartData.goods.goods ? cartData.goods.goods.uuid : '';
     var cartStorage = app.Storage.getStorageSync('cart', app.Constants.getCartFailTip) || {};
+    var cartCheckStorage = app.Storage.getStorageSync('cart-check', app.Constants.getCheckFailTip) || {};
     var cartItem = this.getCartItem(cartData);
 
-    this.setData({
-      "cartData.showDialog": false
-    });
-
-    cartStorage[key] = cartItem;
-    app.Storage.setStorageSync('cart', cartStorage, app.Constants.addToCartFailTip)
-    this.setData({
-      isCartEmpty: false
-    });
-    this.showZanToast('已成功添加到购物车');
+    if (key) {
+      this.setData({
+        "cartData.showDialog": false
+      });
+      
+      cartStorage[key] = cartItem;
+      cartCheckStorage[key] = true;
+      app.Storage.setStorageSync('cart', cartStorage, app.Constants.addToCartFailTip)
+      app.Storage.setStorageSync('cart-check', cartCheckStorage, app.Constants.saveCheckFailTip)
+      this.setData({
+        isCartEmpty: false
+      });
+      this.showZanToast('已成功添加到购物车');
+    } else {
+      this.showZanToast('无法添加到购物车');
+    }
   },
   //通过cartData构建一条购物车数据
   getCartItem(data) {

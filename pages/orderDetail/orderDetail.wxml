@@ -1,4 +1,5 @@
 <!--pages/orderDetail/orderDetail.wxml-->
+<import src="/style/zanui/toast/index.wxml" />
 
 <view class="page content-scroll">
   <!-- 状态、地址 -->
@@ -116,3 +117,5 @@
   </view>
   <button class="zan-btn zan-btn--large zan-btn--danger w-100" wx:if="{{goodsOrder.status === 'initial'}}" bindtap="saveOrder">去支付</button>
 </view>
+
+<template is="zan-toast" data="{{ zanToast }}" />
