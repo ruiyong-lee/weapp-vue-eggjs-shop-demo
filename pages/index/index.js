@@ -33,7 +33,7 @@ Page(Object.assign({}, cartAdd, {
   getGoods() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('getGoods.do', params, function (res) {
+    app.Http.request('getGoods.json', params, function (res) {
       var data = JSON.parse(res)
       categoryArr = Object.keys(data)
       that.getCategoryGoodsPanelScrollTop(data)

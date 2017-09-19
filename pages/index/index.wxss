@@ -39,7 +39,7 @@
 }
 
 .category-item.active {
-  color: #20a0ff;
+  color: #ea4242;
   background-color: #fff;
 }
 
@@ -70,7 +70,7 @@
 
 .goods-category-title {
   padding-left: 5px;
-  border-left: 4px solid #20a0ff;
+  border-left: 4px solid #ea4242;
 }
 
 .goods-item {

@@ -7,7 +7,7 @@ var Constants = require('../utils/constants.js')//引入constants.js
 // var root = 'https://www.easy-mock.com/mock/5975a13da1d30433d83b8d9c/shop/';
 
 //本地测试域名
-var root = 'http://192.168.64.152:8098/ghps-controller/ghps/wechat/';
+var root = 'http://localhost:3001/wehchat-shop-demo/';
 
 function buildParams(url, data, cb) {
   var app = getApp();
@@ -15,7 +15,7 @@ function buildParams(url, data, cb) {
   var params = {}
   params.platform = Constants.PLATFORM
   params.userIdentity = Constants.USER_IDENTITY
-  params.appid = 'wx7d730d2c861c97b1'
+  params.appid = 'wxd5f43aeb67cd5192'
   params.nickName = userInfo ? userInfo.nickName : ''
   params.body = {}
   return params

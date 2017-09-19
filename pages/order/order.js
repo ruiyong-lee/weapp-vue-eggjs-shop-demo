@@ -34,7 +34,7 @@ Page(Object.assign({}, ZanTab, {
     var that = this;
     var params = app.Http.buildParams()
     params.body.queryFilter = app.Http.buildFilter({ params: { status: this.data.tab.selectedId }, page: this.data.page })
-    app.Http.request('queryOrderBill.do', params, function (res) {
+    app.Http.request('queryOrderBill.json', params, function (res) {
       var data = JSON.parse(res)
       var result = that.data.goodsOrderList.concat(data.values)
 
@@ -69,7 +69,7 @@ Page(Object.assign({}, ZanTab, {
             uuid: order.uuid,
             version: order.version
           }
-          app.Http.request('cancelOrderBill.do', params, function (res) {
+          app.Http.request('cancelOrderBill.json', params, function (res) {
             wx.showToast({ title: '取消订单成功', icon: 'success', duration: 2000 })
             that.setData({
               [`goodsOrderList[${index}].status`]: 'canceled'
@@ -95,7 +95,7 @@ Page(Object.assign({}, ZanTab, {
     var that = this;
     var params = app.Http.buildParams()
     params.body.uuid = orderUuid
-    app.Http.request('getOrderBillByUuid.do', params, function (res) {
+    app.Http.request('getOrderBillByUuid.json', params, function (res) {
       return typeof cb === "function" && cb(JSON.parse(res) || null)
     })
   },
