@@ -7,7 +7,7 @@ var Constants = require('../utils/constants.js')//引入constants.js
 // var root = 'https://www.easy-mock.com/mock/5975a13da1d30433d83b8d9c/shop/';
 
 //本地测试域名
-var root = 'http://localhost:8098/ghps-controller/ghps/wechat/';
+var root = 'http://192.168.64.152:8098/ghps-controller/ghps/wechat/';
 
 function buildParams(url, data, cb) {
   var app = getApp();
@@ -15,7 +15,7 @@ function buildParams(url, data, cb) {
   var params = {}
   params.platform = Constants.PLATFORM
   params.userIdentity = Constants.USER_IDENTITY
-  params.appid = 'wxd5f43aeb67cd5192'
+  params.appid = 'wx7d730d2c861c97b1'
   params.nickName = userInfo ? userInfo.nickName : ''
   params.body = {}
   return params
@@ -28,7 +28,7 @@ function buildFilter(arg) {
   filter.params = arg.params || {}
   filter.orders = arg.orders || []
   filter.page = arg.page || 0
-  filter.pageSize = arg.pageSize || 5
+  filter.pageSize = arg.pageSize || Constants.pageSize
   filter.defaultPageSize = arg.defaultPageSize || 0
   return filter
 }

@@ -7,7 +7,7 @@ var cartAdd = Object.assign({}, ZanQuantity, ZanToast, {
   //添加到购物车
   addToCart(e) {
     var dataset = e.currentTarget.dataset || {};
-    var cartData = dataset.cartData || {};
+    var cartData = dataset.cartData || {}; console.log(cartData); console.log(cartData.goods);
     var key = cartData.goods && cartData.goods.goods ? cartData.goods.goods.uuid : '';
     var cartStorage = app.Storage.getStorageSync('cart', app.Constants.getCartFailTip) || {};
     var cartCheckStorage = app.Storage.getStorageSync('cart-check', app.Constants.getCheckFailTip) || {};
@@ -52,7 +52,7 @@ var cartAdd = Object.assign({}, ZanQuantity, ZanToast, {
     var quantity = e.quantity;
 
     this.setData({
-      "cartData.quantity": quantity
+      ['cartData.quantity']: quantity
     });
   },
   //修改备注

@@ -191,7 +191,7 @@ Page(Object.assign({}, ZanToast, {
   getCountDown(operateTime, orderUuid) {
     var that = this;
     var interval = setInterval(function () {
-      var startTime = new Date(operateTime).getTime()
+      var startTime = new Date(operateTime.replace(/-/g, '/')).getTime()
       var nowTime = new Date().getTime()
       var countDown = app.Format.formatCountDown(nowTime - startTime)
 
@@ -208,7 +208,7 @@ Page(Object.assign({}, ZanToast, {
     }, 1000)
   },
   //保存订单
-  saveOrder() {
+  saveOrder(cb) {
     var that = this;
     var params = app.Http.buildParams()
 
@@ -221,13 +221,29 @@ Page(Object.assign({}, ZanToast, {
         showCancel: false
       })
     } else if (!isGetAddress) {
-      that.showZanToast(app.Constants.selectAddressTip);
+      this.showZanToast(app.Constants.selectAddressTip);
     } else {
       params.body.goodsOrder = this.data.goodsOrder;
 
       app.Http.request('createBill.do', params, function (res) {
         app.clearCart()
-        that.toPay(res)
+        that.setData({
+          'goodsOrder.uuid': res
+        })
+        return typeof cb === "function" && cb(res)
+      })
+    }
+  },
+  //支付
+  pay() {
+    var that = this;
+    var orderUuid = that.data.goodsOrder.uuid;
+
+    if (orderUuid) {
+      that.toPay(orderUuid)
+    } else {
+      that.saveOrder(function (uuid) {
+        that.toPay(uuid)
       })
     }
   },
@@ -236,21 +252,33 @@ Page(Object.assign({}, ZanToast, {
     var that = this;
     var params = app.Http.buildParams()
     params.body.uuid = orderUuid
+
+    wx.showLoading({
+      title: '支付数据提交中',
+    })
+
     app.Http.request('toPay.do', params, function (res) {
       var data = JSON.parse(res)
-      console.log(data)
+      wx.hideLoading()
       //调用微信支付接口
       wx.requestPayment({
-        timeStamp: data.timestamp,
-        nonceStr: data.nonce_str,
+        timeStamp: data.timeStamp,
+        nonceStr: data.nonceStr,
         package: data.package,
         signType: 'MD5',
         paySign: data.sign,
         success: function (res) {
-          console.log(res)
+          wx.showToast({
+            title: '支付成功',
+            icon: 'success',
+            duration: 2000
+          })
+          wx.redirectTo({
+            url: '../orderDetail/orderDetail?uuid=' + orderUuid
+          })
         },
         fail: function (res) {
-          console.log(res)
+          
         }
       })
     })

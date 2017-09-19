@@ -137,10 +137,10 @@ Page(Object.assign({}, cartAdd, {
     var goods = e.currentTarget.dataset.goods;
 
     this.setData({
-      "cartData.showDialog": !showDialog,
-      "cartData.goods": !showDialog ? goods : {},
-      "cartData.quantity": 1,
-      "cartData.remark": '',
+      'cartData.showDialog': !showDialog,
+      'cartData.goods': !showDialog ? goods : {},
+      'cartData.quantity': 1,
+      'cartData.remark': ''
     });
   },
   //跳转到商品详情，暂时没做

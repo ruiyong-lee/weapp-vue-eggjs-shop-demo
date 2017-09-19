@@ -25,8 +25,8 @@
 /* type */
 .zan-btn--primary {
   color: #fff;
-  background-color: #ea4242;
-  border-color: #ea4242;
+  background-color: #20a0ff;
+  border-color: #20a0ff;
 }
 
 .zan-btn--warn {
@@ -73,7 +73,7 @@
   background-color: transparent;
 }
 .zan-btn--plain.zan-btn--primary {
-  color: #ea4242;
+  color: #20a0ff;
 }
 .zan-btn--plain.zan-btn--warn {
   color: #FF6600;

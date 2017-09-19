@@ -61,7 +61,9 @@ Page(Object.assign({}, ZanTab, {
       content: '狠心取消订单？',
       success: function (res) {
         if (res.confirm) {
-          var order = e.currentTarget.dataset.order;
+          var dataset = e.currentTarget.dataset
+          var order = dataset.order;
+          var index = dataset.index; console.log(index)
           var params = app.Http.buildParams()
           params.body = {
             uuid: order.uuid,
@@ -69,7 +71,9 @@ Page(Object.assign({}, ZanTab, {
           }
           app.Http.request('cancelOrderBill.do', params, function (res) {
             wx.showToast({ title: '取消订单成功', icon: 'success', duration: 2000 })
-            that.getOrderList();
+            that.setData({
+              [`goodsOrderList[${index}].status`]: 'canceled'
+            });
           })
         } else if (res.cancel) {
           console.log('用户点击取消')
@@ -81,7 +85,7 @@ Page(Object.assign({}, ZanTab, {
   orderAgain(e) {
     var orderUuid = e.currentTarget.dataset.orderUuid;
 
-    this.getOrder(orderUuid, function(order) {
+    this.getOrder(orderUuid, function (order) {
       var orderLines = order.lines
       app.orderAgain(orderLines)
     })

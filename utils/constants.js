@@ -9,6 +9,9 @@ module.exports = {
   USER_UUID_KEY: "userUuid",
   USER_NAME_KEY: "userName",
 
+  //分页
+  pageSize: 5,
+
   //正则
   TELEPHONE_CELLPHONE_REGEX: '(^(0[0-9]{2,3}\\-)([2-9][0-9]{6,7})+(\\-[0-9]{1,4})?$)|((400|800)([0-9\\-]{7,10}))|(^(0|86|17951)?1[0-9]{10}$)',
 
@@ -17,7 +20,7 @@ module.exports = {
   addToCartFailTip: '无法添加到购物车',
   getCheckFailTip: '无法获取勾选数据',
   saveCheckFailTip: '无法保存勾选数据',
-  requestFailTip:'服务器开了点小差，请重试或者联系客服',
+  requestFailTip: '服务器开了点小差，请重试或者联系客服',
   selectAddressTip: '请选择地址',
 
   //订单
