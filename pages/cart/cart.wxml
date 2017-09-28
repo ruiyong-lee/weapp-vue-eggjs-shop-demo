@@ -25,17 +25,20 @@
       <view class="weui-panel__bd cart-panel">
         <view class="weui-media-box ptb-5" wx:for="{{cartStorage}}" wx:key="{{index}}">
           <view class="cart-item-check" data-key="{{index}}" bindtap="toggleCheckItem">
-            <image class="icon-small" src="../../images/icon/{{cartCheckMap[index] ? 'icon-check' : 'icon-circle'}}.png"></image>
+            <image wx:if="{{item.isDown && !isEdit}}" class="icon-small" src="../../images/icon/icon-warn.png"></image>
+            <image wx:else class="icon-small" src="../../images/icon/{{cartCheckMap[index] ? 'icon-check' : 'icon-circle'}}.png"></image>
           </view>
           <view class="zan-card pr-0">
             <view class="zan-card__thumb">
               <image class="zan-card__img" src="{{item.goodsPic}}" mode="aspectFill"></image>
+              <view class="zan-card__img"></view>
             </view>
             <view class="zan-card__detail">
               <view class="zan-card__detail-row">
                 <view class="zan-card__right-col zan-c-red">
                   <view class="inline">
-                    ¥ {{item.salePrice}}/<text class="inline fs-11">{{item.unitName}}</text>
+                    ¥ {{item.salePrice}}/
+                    <text class="inline fs-11">{{item.unitName}}</text>
                   </view>
                 </view>
                 <view class="zan-card__left-col zan-ellipsis">{{item.goods.name}}</view>
@@ -47,7 +50,8 @@
 
               <view class="zan-card__detail-row zan-c-gray-darker h-30">
                 <view class="zan-card__right-col">
-                  <template is="zan-quantity" data="{{ ...zanQuantityConfig, quantity:item.goodsQty, componentId: index, size: 'small' }}" />
+                  <view wx:if="{{item.isDown}}">此商品已下架</view>
+                  <template wx:else is="zan-quantity" data="{{ ...zanQuantityConfig, quantity:item.goodsQty, componentId: index, size: 'small' }}" />
                 </view>
               </view>
             </view>

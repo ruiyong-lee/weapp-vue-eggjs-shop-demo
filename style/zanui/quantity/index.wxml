@@ -9,7 +9,7 @@
     >-</view>
     <input
       class="zan-quantity__text {{ min >= max ? 'zan-quantity--disabled' : '' }}"
-      type="number"
+      type="{{ type === 'digit' ? 'digit' : 'number' }}"
       data-component-id="{{ componentId }}"
       data-min="{{ min }}"
       data-max="{{ max }}"

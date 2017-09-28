@@ -3,7 +3,7 @@
 <view class="page">
   <!-- 个人信息 -->
   <view class="weui-panel userinfo">
-    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover"></image>
+    <image class="userinfo-avatar" src="{{userInfo.avatarUrl}}" background-size="cover" bindtap="getSetting"></image>
     <text class="userinfo-nickname">{{userInfo.nickName}}</text>
   </view>
 

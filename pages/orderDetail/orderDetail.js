@@ -25,8 +25,18 @@ Page(Object.assign({}, ZanToast, {
 
     wx.setNavigationBarTitle({
       title: isAccount ? '提交订单' : '订单详情'
-    })
+    });
 
+    this.init(isAccount, orderUuid);
+  },
+  onShow() {
+    if (this.data.isAccount) {
+      this.refreshAddress();
+    }
+  },
+
+  //初始化
+  init(isAccount, orderUuid, cb) {
     if (isAccount) {
       //待提交订单
       var goodsOrder = app.globalData.goodsOrder;
@@ -38,23 +48,16 @@ Page(Object.assign({}, ZanToast, {
       this.getFreightPlan();
     } else {
       //已提交订单
-      this.getOrder(orderUuid);
+      this.getOrder(orderUuid, cb);
     }
   },
-  onShow() {
-    if (this.data.isAccount) {
-      this.refreshAddress();
-    }
-  },
-
   //获取订单信息
-  getOrder(orderUuid) {
+  getOrder(orderUuid, cb) {
     var that = this;
     var params = app.Http.buildParams()
     params.body.uuid = orderUuid
-    app.Http.request('getOrderBillByUuid.json', params, function (res) {
+    app.Http.request('getOrderBillByUuid.do', params, function (res) {
       var data = JSON.parse(res)
-      console.log(data)
 
       if (data.status === 'initial') {
         that.getCountDown(data.createInfo.operateTime, orderUuid)
@@ -62,6 +65,7 @@ Page(Object.assign({}, ZanToast, {
       that.setData({
         "goodsOrder": data
       })
+      return typeof cb === "function" && cb()
     })
   },
   //刷新地址,如果上次有选择地址，则使用该地址，否则使用默认地址
@@ -78,7 +82,7 @@ Page(Object.assign({}, ZanToast, {
   getDefaultAddress() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('getDefaultAddress.json', params, function (res) {
+    app.Http.request('getDefaultAddress.do', params, function (res) {
       var data = JSON.parse(res)
       that.setAddress(data)
     })
@@ -107,7 +111,7 @@ Page(Object.assign({}, ZanToast, {
   getDeliveryTimeType() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('getDeliveryTimeTypeList.json', params, function (res) {
+    app.Http.request('getDeliveryTimeTypeList.do', params, function (res) {
       var arr = [];
       var obj = {};
       var list = JSON.parse(res);
@@ -157,7 +161,7 @@ Page(Object.assign({}, ZanToast, {
   getFreightPlan() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('getDefaultFreightPlan.json', params, function (res) {
+    app.Http.request('getDefaultFreightPlan.do', params, function (res) {
       var freight = 0;
       var freightPlan = JSON.parse(res);
       var basicFreight = freightPlan.basicFreight;//基础运费
@@ -216,7 +220,7 @@ Page(Object.assign({}, ZanToast, {
     if (!isGetDeliveryTimeType || !isGetFreightPlane) {
       wx.showModal({
         title: '无法下单',
-        confirmColor: '#ea4242',
+        confirmColor: '#20a0ff',
         content: !isGetAddress ? app.Constants.selectAddressTip : app.Constants.requestFailTip,
         showCancel: false
       })
@@ -225,7 +229,7 @@ Page(Object.assign({}, ZanToast, {
     } else {
       params.body.goodsOrder = this.data.goodsOrder;
 
-      app.Http.request('createBill.json', params, function (res) {
+      app.Http.request('createBill.do', params, function (res) {
         app.clearCart()
         that.setData({
           'goodsOrder.uuid': res
@@ -257,7 +261,7 @@ Page(Object.assign({}, ZanToast, {
       title: '支付数据提交中',
     })
 
-    app.Http.request('toPay.json', params, function (res) {
+    app.Http.request('toPay.do', params, function (res) {
       var data = JSON.parse(res)
       wx.hideLoading()
       //调用微信支付接口
@@ -285,7 +289,16 @@ Page(Object.assign({}, ZanToast, {
   },
   //再次购买
   orderAgain(e) {
-    var orderLines = this.data.goodsOrder.lines
-    app.orderAgain(orderLines)
+    var orderLines = this.data.goodsOrder.lines;
+    app.orderAgain(orderLines);
   },
+  //下拉刷新
+  onPullDownRefresh: function () {
+    var goodsOrder = this.data.goodsOrder;
+    var isAccount = this.data.isAccount;
+    var orderUuid = goodsOrder.uuid;
+    this.init(isAccount, orderUuid, function () {
+      wx.stopPullDownRefresh();
+    });
+  }
 }))

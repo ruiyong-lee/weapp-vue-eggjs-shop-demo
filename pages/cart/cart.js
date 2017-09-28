@@ -58,17 +58,23 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
 
   //全选、取消全选
   toggleCheckAll() {
+    var isEdit = this.data.isEdit;
     var checked = this.data.checkAll;
+    var cartStorage = this.data.cartStorage;
     var cartCheckMap = {};//勾选
+    var hasOneUpGoodsAtLeast = false;//至少有一个上架的商品
 
     if (!checked) {
-      for (var key in this.data.cartStorage) {
-        cartCheckMap[key] = true
+      for (var key in cartStorage) {
+        if (!cartStorage[key].isDown || isEdit) {
+          cartCheckMap[key] = true
+          hasOneUpGoodsAtLeast = true
+        }
       }
     }
 
     this.setData({
-      checkAll: !checked,
+      checkAll: hasOneUpGoodsAtLeast && !checked,
       cartCheckMap: cartCheckMap
     })
     this.calculateAmount();
@@ -78,20 +84,24 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
   toggleCheckItem(e) {
     var dataset = e.currentTarget.dataset;
     var key = dataset.key;
+    var isEdit = this.data.isEdit;
+    var cartStorage = this.data.cartStorage;
     var cartCheckMap = this.data.cartCheckMap;
     var checked = cartCheckMap[key];
 
-    if (checked) {
-      delete cartCheckMap[key];
-    } else {
-      cartCheckMap[key] = true;
-    }
+    if (!cartStorage[key].isDown || isEdit) {
+      if (checked) {
+        delete cartCheckMap[key];
+      } else {
+        cartCheckMap[key] = true;
+      }
 
-    this.setData({
-      cartCheckMap: cartCheckMap
-    })
-    this.handleCheckItem();
-    this.setCartCheckStorage(cartCheckMap);
+      this.setData({
+        cartCheckMap: cartCheckMap
+      })
+      this.handleCheckItem();
+      this.setCartCheckStorage(cartCheckMap);
+    }
   },
   //选中单条时判断是否全选、计算价格
   handleCheckItem() {
@@ -102,7 +112,7 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
 
     this.calculateAmount();
     this.setData({
-      checkAll: total === checkedNum && total !== 0 ? true : false
+      checkAll: total - app.globalData.downGoodsQty === checkedNum && total !== 0 ? true : false
     })
   },
   //计算总额、总数
@@ -131,7 +141,7 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
 
     if (isEdit) {
       this.setData({
-        cartCheckMap: cartCheckStorage ? cartCheckStorage : {},
+        cartCheckMap: cartCheckStorage || {},
       })
       this.handleCheckItem();
     } else {
@@ -164,7 +174,7 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
     } else {
       wx.showModal({
         title: '提示',
-        confirmColor: '#ea4242',
+        confirmColor: '#20a0ff',
         content: '确定要删除这' + num + '种商品吗？',
         success: function (res) {
           if (res.confirm) {

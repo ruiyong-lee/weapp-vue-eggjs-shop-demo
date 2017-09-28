@@ -107,7 +107,7 @@ var Storage = {
     try {
       wx.setStorageSync(key, value)
     } catch (e) {
-      wx.showModal({ title: '提示', confirmColor: '#ea4242', content: msg, showCancel: false })
+      wx.showModal({ title: '提示', confirmColor: '#20a0ff', content: msg, showCancel: false })
     }
   },
   getStorageSync(key, msg) {
@@ -118,7 +118,7 @@ var Storage = {
         return value
       }
     } catch (e) {
-      wx.showModal({ title: '提示', confirmColor: '#ea4242', content: msg, showCancel: false })
+      wx.showModal({ title: '提示', confirmColor: '#20a0ff', content: msg, showCancel: false })
     }
   },
   removeStorageSync(key, msg) {
@@ -126,7 +126,7 @@ var Storage = {
     try {
       wx.removeStorageSync(key)
     } catch (e) {
-      wx.showModal({ title: '提示', confirmColor: '#ea4242', content: msg, showCancel: false })
+      wx.showModal({ title: '提示', confirmColor: '#20a0ff', content: msg, showCancel: false })
     }
   },
   clearStorageSync(key, msg) {
@@ -134,7 +134,7 @@ var Storage = {
     try {
       wx.clearStorageSync(key)
     } catch (e) {
-      wx.showModal({ title: '提示', confirmColor: '#ea4242', content: msg, showCancel: false })
+      wx.showModal({ title: '提示', confirmColor: '#20a0ff', content: msg, showCancel: false })
     }
   },
 }

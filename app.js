@@ -10,10 +10,13 @@ var Storage = Util.Storage;//数据缓存
 
 App({
   onLaunch: function (options) {
-    this.getUserInfo()
+    this.getUserInfo();
+  },
+  onShow: function (options) {
+    this.globalData.isReloadGoods = true;
   },
   onError: function (msg) {
-    console.log(msg)
+    console.log(msg);
   },
 
   //引入
@@ -26,15 +29,15 @@ App({
 
   //公用方法
   getUserInfo(cb) {
-    var that = this
-    if (this.globalData.userInfo) {
-      typeof cb == "function" && cb(this.globalData.userInfo)
+    var that = this;
+    if (!Check.isUndeFinedOrNullOrEmpty(this.globalData.userInfo)) {
+      typeof cb == "function" && cb(this.globalData.userInfo);
     } else {
       wx.getUserInfo({
         withCredentials: false,
         success: function (res) {
-          that.globalData.userInfo = res.userInfo
-          typeof cb == "function" && cb(that.globalData.userInfo)
+          that.globalData.userInfo = res.userInfo;
+          typeof cb == "function" && cb(that.globalData.userInfo);
         }
       })
     }
@@ -47,11 +50,11 @@ App({
   },
   //已选商品，用于商品详情页
   setSelectedGoods(goods) {
-    this.globalData.selectedGoods = goods
+    this.globalData.selectedGoods = goods;
   },
   //订单信息，用于订单详情页
   setGoodsOrder(goodsOrder) {
-    this.globalData.goodsOrder = goodsOrder
+    this.globalData.goodsOrder = goodsOrder;
   },
   //判断购物车是否为空
   isCartEmpty() {
@@ -60,21 +63,21 @@ App({
   },
   //清空购物车
   clearCart() {
-    Storage.removeStorageSync('cart')
-    Storage.removeStorageSync('cart-check')
+    Storage.removeStorageSync('cart');
+    Storage.removeStorageSync('cart-check');
   },
   //再次购买，覆盖商品最新信息
   orderAgain(orderLines) {
-    var goodsMap = this.globalData.goodsMap
+    var goodsMap = this.globalData.goodsMap;
     var cartStorage = Storage.getStorageSync('cart', this.Constants.getCartFailTip) || {};
     var cartCheckStorage = Storage.getStorageSync('cart-check', this.Constants.getCheckFailTip) || {};
 
-    for(var i=0;i<orderLines.length;i++) {
-      var item = orderLines[i]
-      var key = item.goods.uuid
-      var goods = goodsMap[key]
+    for (var i = 0; i < orderLines.length; i++) {
+      var item = orderLines[i];
+      var key = item.goods.uuid;
+      var goods = goodsMap[key];
       //只有数目、备注和原订单一样，其他的获取最新数据
-      var cartItem  = {
+      var cartItem = {
         goods: goods.goods,
         unitName: goods.unitName,
         goodsPic: goods.mainImg,
@@ -82,13 +85,13 @@ App({
         goodsQty: item.goodsQty,
         remark: item.goodsQty,
         hasReturnQty: 0
-      }
-      cartStorage[key] = cartItem
-      cartCheckStorage[key] = true
+      };
+      cartStorage[key] = cartItem;
+      cartCheckStorage[key] = true;
     }
 
-    Storage.setStorageSync('cart', cartStorage, this.Constants.addToCartFailTip)
-    Storage.setStorageSync('cart-check', cartCheckStorage, this.Constants.saveCheckFailTip)
+    Storage.setStorageSync('cart', cartStorage, this.Constants.addToCartFailTip);
+    Storage.setStorageSync('cart-check', cartCheckStorage, this.Constants.saveCheckFailTip);
 
     wx.switchTab({
       url: '../cart/cart'
@@ -99,6 +102,8 @@ App({
     userInfo: null,
     selectedGoods: {},
     goodsOrder: {},
-    goodsMap: {}
+    goodsMap: {},
+    isReloadGoods: true,
+    downGoodsQty: 0
   }
 })

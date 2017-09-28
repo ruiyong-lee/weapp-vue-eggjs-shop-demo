@@ -22,6 +22,10 @@ module.exports = {
   saveCheckFailTip: '无法保存勾选数据',
   requestFailTip: '服务器开了点小差，请重试或者联系客服',
   selectAddressTip: '请选择地址',
+  unknownErrorTip: '来自二次元的错误，请联系客服',
+
+  //客服电话
+  servicePhone: '18286112017',
 
   //订单
   orderTabList: [

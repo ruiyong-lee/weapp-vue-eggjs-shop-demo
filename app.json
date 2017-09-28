@@ -15,10 +15,10 @@
     "navigationBarBackgroundColor": "#fff",
     "navigationBarTitleText": "商品",
     "navigationBarTextStyle": "black",
-    "enablePullDownRefresh": true
+    "enablePullDownRefresh": false
   },
   "tabBar": {
-    "selectedColor": "#ea4242",
+    "selectedColor": "#20a0ff",
     "borderStyle": "white",
     "list": [
       {

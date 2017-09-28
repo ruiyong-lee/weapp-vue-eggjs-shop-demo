@@ -35,7 +35,7 @@ Page({
     var params = app.Http.buildParams()
     params.body.uuid = addressUuid
 
-    app.Http.request('getAddressByUuid.json', params, function (res) {
+    app.Http.request('getAddressByUuid.do', params, function (res) {
       that.setData({
         address: JSON.parse(res)
       })
@@ -83,7 +83,7 @@ Page({
     var that = this;
 
     if (this.getValidToSave()) {
-      app.Http.request('saveNewAddress.json', params, function (res) {
+      app.Http.request('saveNewAddress.do', params, function (res) {
         wx.showToast({ title: '新建成功', icon: 'success', duration: 2000 })
         that.navigateBack()
       })
@@ -94,7 +94,7 @@ Page({
     var that = this;
 
     if (this.getValidToSave()) {
-      app.Http.request('saveModifyAddress.json', params, function (res) {
+      app.Http.request('saveModifyAddress.do', params, function (res) {
         wx.showToast({ title: '修改成功', icon: 'success', duration: 2000 })
         that.navigateBack()
       })

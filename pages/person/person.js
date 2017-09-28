@@ -17,10 +17,41 @@ Page({
     })
   },
 
+  //获取用户授权情况
+  getSetting() {
+    var that = this;
+    wx.getSetting({
+      success(res) {
+        wx.openSetting({
+          success(res2) {
+            if (res2.authSetting['scope.userInfo']) {
+              that.getUserInfo();
+            } else {
+              app.globalData.userInfo = {}
+              that.setData({
+                userInfo: {}
+              })
+            }
+          },
+        })
+      }
+    })
+  },
+  //获取用户信息
+  getUserInfo() {
+    var that = this;
+    var userInfo = app.globalData.userInfo;
+
+    app.getUserInfo(function (result) {
+      that.setData({
+        userInfo: result
+      })
+    });
+  },
   //联系客服
   callCustomer() {
     wx.makePhoneCall({
-      phoneNumber: '18359197148' //仅为示例，TODO
+      phoneNumber: app.Constants.servicePhone
     })
   },
 })
