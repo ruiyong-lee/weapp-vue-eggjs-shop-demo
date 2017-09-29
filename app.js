@@ -31,13 +31,13 @@ App({
   getUserInfo(cb) {
     var that = this;
     if (!Check.isUndeFinedOrNullOrEmpty(this.globalData.userInfo)) {
-      typeof cb == "function" && cb(this.globalData.userInfo);
+      return typeof cb == "function" && cb(this.globalData.userInfo);
     } else {
       wx.getUserInfo({
         withCredentials: false,
         success: function (res) {
           that.globalData.userInfo = res.userInfo;
-          typeof cb == "function" && cb(that.globalData.userInfo);
+          return typeof cb == "function" && cb(that.globalData.userInfo);
         }
       })
     }
@@ -95,6 +95,50 @@ App({
 
     wx.switchTab({
       url: '../cart/cart'
+    })
+  },
+  //取消订单
+  cancelOrderBill(order, cb) {
+    wx.showModal({
+      title: '提示',
+      content: '狠心取消订单？',
+      success: function (res) {
+        if (res.confirm) {
+          var params = Http.buildParams()
+          params.body = {
+            uuid: order.uuid,
+            version: order.version
+          }
+          Http.request('cancelOrderBill.do', params, function () {
+            wx.showToast({ title: '取消订单成功', icon: 'success', duration: 2000 })
+            return typeof cb == "function" && cb();
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
+  //确认收货
+  completeOrderBill(order, cb) {
+    wx.showModal({
+      title: '提示',
+      content: '确认已收到货品？',
+      success: function (res) {
+        if (res.confirm) {
+          var params = Http.buildParams()
+          params.body = {
+            uuid: order.uuid,
+            version: order.version
+          }
+          Http.request('completeOrderBill.do', params, function () {
+            wx.showToast({ title: '确认收货成功', icon: 'success', duration: 2000 })
+            return typeof cb == "function" && cb();
+          })
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
     })
   },
 

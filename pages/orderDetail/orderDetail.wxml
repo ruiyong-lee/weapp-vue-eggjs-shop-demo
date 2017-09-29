@@ -108,7 +108,8 @@
     <view class="pay-footer">
       <view class="text-right wp-100 {{goodsOrder.status === 'initial' ? 'pr-100' : ''}}">
         <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{goodsOrder.status !== 'initial'}}" catchtap="orderAgain">再次购买</button>
-        <block wx:else>
+        <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain" wx:if="{{goodsOrder.status === 'dispatching'}}" catchtap="completeOrder">确认收货</button>
+        <block wx:if="{{goodsOrder.status === 'initial'}}">
           <text class="fs-14">合计：¥ </text>
           <text class="zan-c-red fs-18">{{goodsOrder.paymentAmount}}</text>
         </block>

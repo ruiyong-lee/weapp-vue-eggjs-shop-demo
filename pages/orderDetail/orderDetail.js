@@ -292,6 +292,14 @@ Page(Object.assign({}, ZanToast, {
     var orderLines = this.data.goodsOrder.lines;
     app.orderAgain(orderLines);
   },
+  //确认收货
+  completeOrder(e) {
+    var that = this;
+    var order = that.data.goodsOrder;
+    app.completeOrderBill(order, function () {
+      that.getOrder(order.uuid);
+    });
+  },
   //下拉刷新
   onPullDownRefresh: function () {
     var goodsOrder = this.data.goodsOrder;

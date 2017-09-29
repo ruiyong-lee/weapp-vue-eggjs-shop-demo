@@ -55,6 +55,7 @@
             <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status === 'initial'}}" data-order="{{item}}" data-index="{{index}}" catchtap="cancelOrderBill">取消订单</button>
             <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain" wx:if="{{item.status === 'initial'}}">去支付</button>
             <button class="zan-btn zan-btn--small zan-btn--plain" wx:if="{{item.status !== 'initial'}}" data-order-uuid="{{item.uuid}}" catchtap="orderAgain">再次购买</button>
+            <button class="zan-btn zan-btn--small zan-btn--danger zan-btn--plain" wx:if="{{item.status === 'dispatching'}}" data-order="{{item}}" data-index="{{index}}" catchtap="completeOrder">确认收货</button>
           </view>
         </view>
       </navigator>

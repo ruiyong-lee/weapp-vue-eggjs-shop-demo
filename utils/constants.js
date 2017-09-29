@@ -38,7 +38,7 @@ module.exports = {
   ],
   orderStatusTipMap: {
     initial: '等待付款',
-    audited: '已审核',
+    audited: '商家已确认',
     dispatching: '正在配送',
     completed: '已完成',
     canceled: '已取消',

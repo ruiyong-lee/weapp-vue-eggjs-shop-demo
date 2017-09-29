@@ -55,31 +55,14 @@ Page(Object.assign({}, ZanTab, {
   //取消订单
   cancelOrderBill(e) {
     var that = this;
-
-    wx.showModal({
-      title: '提示',
-      content: '狠心取消订单？',
-      success: function (res) {
-        if (res.confirm) {
-          var dataset = e.currentTarget.dataset
-          var order = dataset.order;
-          var index = dataset.index; console.log(index)
-          var params = app.Http.buildParams()
-          params.body = {
-            uuid: order.uuid,
-            version: order.version
-          }
-          app.Http.request('cancelOrderBill.do', params, function (res) {
-            wx.showToast({ title: '取消订单成功', icon: 'success', duration: 2000 })
-            that.setData({
-              [`goodsOrderList[${index}].status`]: 'canceled'
-            });
-          })
-        } else if (res.cancel) {
-          console.log('用户点击取消')
-        }
-      }
-    })
+    var dataset = e.currentTarget.dataset
+    var order = dataset.order;
+    var index = dataset.index;
+    app.cancelOrderBill(order, function () {
+      that.setData({
+        [`goodsOrderList[${index}].status`]: 'canceled'
+      });
+    });
   },
   //再次购买
   orderAgain(e) {
@@ -89,6 +72,18 @@ Page(Object.assign({}, ZanTab, {
       var orderLines = order.lines
       app.orderAgain(orderLines)
     })
+  },
+  //确认收货
+  completeOrder(e) {
+    var that = this;
+    var dataset = e.currentTarget.dataset
+    var order = dataset.order;
+    var index = dataset.index;
+    app.completeOrderBill(order, function () {
+      that.setData({
+        [`goodsOrderList[${index}].status`]: 'completed'
+      });
+    });
   },
   //获取订单信息
   getOrder(orderUuid, cb) {
