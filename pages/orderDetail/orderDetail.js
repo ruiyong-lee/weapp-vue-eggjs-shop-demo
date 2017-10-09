@@ -277,6 +277,7 @@ Page(Object.assign({}, ZanToast, {
             icon: 'success',
             duration: 2000
           })
+          //没做websocket，暂时先这样
           wx.redirectTo({
             url: '../orderDetail/orderDetail?uuid=' + orderUuid
           })
