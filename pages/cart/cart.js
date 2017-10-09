@@ -174,7 +174,7 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
     } else {
       wx.showModal({
         title: '提示',
-        confirmColor: '#20a0ff',
+        confirmColor: '#ea4242',
         content: '确定要删除这' + num + '种商品吗？',
         success: function (res) {
           if (res.confirm) {

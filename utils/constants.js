@@ -25,7 +25,7 @@ module.exports = {
   unknownErrorTip: '来自二次元的错误，请联系客服',
 
   //客服电话
-  servicePhone: '18286112017',
+  servicePhone: '18359197148',
 
   //订单
   orderTabList: [
