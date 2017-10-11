@@ -1,4 +1,4 @@
-# vue-koa2-blog
+# wechat-shop-demo 服务端开发笔记
 
 > **作者：ruiyong-lee**
 
@@ -71,3 +71,4 @@
 可以安装一些可视化工具来辅助操作数据库，如：[Navicat](http://www.navicat.com.cn/products/navicat-for-mysql) (收费)、 [HeidiSQL](https://www.heidisql.com/) (免费)
 安装完后，需要在本地新建一个数据库：wechat-shop-demo
 
+未完待续......
