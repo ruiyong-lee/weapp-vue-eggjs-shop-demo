@@ -11,29 +11,29 @@ var root = 'http://localhost:3001/wechat-shop-demo/';
 
 function buildParams(url, data, cb) {
   var app = getApp();
-  var userInfo = app.globalData.userInfo
-  var params = {}
-  params.platform = Constants.PLATFORM
-  params.userIdentity = Constants.USER_IDENTITY
-  params.appid = 'wxd5f43aeb67cd5192'
-  params.nickName = userInfo ? userInfo.nickName : ''
-  params.body = {}
-  return params
+  var userInfo = app.globalData.userInfo;
+  var params = {};
+  params.platform = Constants.PLATFORM;
+  params.userIdentity = Constants.USER_IDENTITY;
+  params.orgUuid = Constants.ORG_UUID;
+  params.nickName = userInfo ? userInfo.nickName : '';
+  params.body = {};
+  return params;
 }
 
 function buildFilter(arg) {
-  var filter = {}
-  arg = arg || {}
-  filter.params = arg.params || {}
-  filter.orders = arg.orders || []
-  filter.page = arg.page || 0
-  filter.pageSize = arg.pageSize || Constants.pageSize
-  filter.defaultPageSize = arg.defaultPageSize || 0
-  return filter
+  var filter = {};
+  arg = arg || {};
+  filter.params = arg.params || {};
+  filter.orders = arg.orders || [];
+  filter.page = arg.page || 0;
+  filter.pageSize = arg.pageSize || Constants.pageSize;
+  filter.defaultPageSize = arg.defaultPageSize || 0;
+  return filter;
 }
 
 function request(url, data, cb) {
-  var session_id = wx.getStorageSync('3rd_session')
+  var session_id = wx.getStorageSync('3rd_session');
   var header = session_id ? { 'content-type': 'application/json', 'Cookie': 'JSESSIONID=' + session_id } : { 'content-type': 'application/json' };
 
   wx.request({
@@ -44,7 +44,7 @@ function request(url, data, cb) {
     success: function (res) {
       var info = res.data; console.log(res) // 要去掉
       if (info.errorCode == 0) {
-        return typeof cb === "function" && cb(info.data || null)
+        return typeof cb === "function" && cb(info.data || null);
       } else if (info.errorCode == 5) {
         //未登录或过期
         login(function() {
@@ -69,17 +69,17 @@ function request(url, data, cb) {
 }
 
 function login(cb) {
-  var params = buildParams()
+  var params = buildParams();
 
-  wx.setStorageSync('3rd_session', '')
+  wx.setStorageSync('3rd_session', '');
   wx.login({
     success: function (res) {
       var code = res.code;
       if (code) {
         params.body.js_code = code;
         request('login.do', params, function (res1) {
-          wx.setStorageSync('3rd_session', res1)
-          return typeof cb === "function" && cb()
+          wx.setStorageSync('3rd_session', res1);
+          return typeof cb === "function" && cb();
         })
       } else {
         wx.showModal({

@@ -3,11 +3,12 @@
 module.exports = {
   //登录
   PLATFORM: 'mobile',
-  USER_IDENTITY: "customer",
-  ORG_UUID_KEY: "orgUuid",
-  ORG_NAME_KEY: "orgName",
-  USER_UUID_KEY: "userUuid",
-  USER_NAME_KEY: "userName",
+  USER_IDENTITY: 'customer',
+  ORG_UUID_KEY: 'orgUuid',
+  ORG_NAME_KEY: 'orgName',
+  USER_UUID_KEY: 'userUuid',
+  USER_NAME_KEY: 'userName',
+  ORG_UUID: '4028c0185de3e466015de3fba81e0003', //根据不同商家手动配置
 
   //分页
   pageSize: 5,

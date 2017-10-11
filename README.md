@@ -8,7 +8,7 @@
 
 后端代码用的是node.js，正在开发中...，正在开发中...，正在开发中...，接口估计会有所调整，都是闲余时间，所以需要点时间，见谅
 
-> 后端代码：[wechat-shop-server](https://github.com/ruiyong-lee/wechat-shop-server)
+合并了前后端
 
 ***
 
