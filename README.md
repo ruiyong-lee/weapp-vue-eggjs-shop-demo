@@ -10,7 +10,7 @@
 
 合并了前后端
 
-> app_server: [https://github.com/ruiyong-lee/wechat-shop-demo/blob/master/app_server/NOTE.md](服务端开发笔记)
+> app_server: [服务端开发笔记](https://github.com/ruiyong-lee/wechat-shop-demo/blob/master/app_server/NOTE.md)
 
 ##### 目录结构
 
@@ -24,8 +24,6 @@
 
 ***
 
-### 非常感谢：
+### 非常感谢以下开源项目或作者：
 
-**weui-wxss**：[https://github.com/Tencent/weui-wxss](https://github.com/Tencent/weui-wxss)
-
-**zanui-weapp**：[https://github.com/youzan/zanui-weapp](https://github.com/youzan/zanui-weapp)
+[**weui-wxss**](https://github.com/Tencent/weui-wxss) | [**zanui-weapp**](https://github.com/youzan/zanui-weapp) | [**koajs**](https://github.com/koajs) | [**Sequelize**](https://github.com/sequelize) | [**ESLint**](https://github.com/eslint) | [**mysql**](https://github.com/mysqljs/mysql) | [**node-uuid**](https://github.com/kelektiv/node-uuid)
