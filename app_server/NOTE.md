@@ -8,7 +8,7 @@
 
 ## 简介
 
-希望小伙伴们帮忙指正错误和不足，多谢~
+nodejs开发，希望小伙伴们帮忙指正错误和不足，多谢~
 
 ## 准备
 
@@ -68,7 +68,7 @@
 ##### MYSQL
 
 [官网](https://dev.mysql.com/downloads/mysql/) 下载安装，安装过程可参考： [MySQL 5.7版本的安装使用详细教程](http://blog.csdn.net/hisense20112784/article/details/72909701)
-可以安装一些可视化工具来辅助操作数据库，如：[Navicat](http://www.navicat.com.cn/products/navicat-for-mysql) (收费)、 [HeidiSQL](https://www.heidisql.com/) (免费)
+可以安装一些可视化工具来辅助操作数据库，如：[Navicat](http://www.navicat.com.cn/products/navicat-for-mysql) (收费，但可以你懂的)、 [HeidiSQL](https://www.heidisql.com/) (免费)
 安装完后，需要在本地新建一个数据库：wechat-shop-demo
 
 未完待续......

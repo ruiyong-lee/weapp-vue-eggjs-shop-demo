@@ -45,15 +45,14 @@ Page(Object.assign({}, cartAdd, {
     var that = this;
     var params = app.Http.buildParams();
     app.Http.request('goods/getGoods.json', params, function (res) {
-      var data = res;console.log(res)
-      categoryArr = Object.keys(data);
-      that.getCategoryGoodsPanelScrollTop(data);
+      categoryArr = Object.keys(res);
+      that.getCategoryGoodsPanelScrollTop(res);
       that.setData({
-        goodsMap: data,
+        goodsMap: res,
         selectedCategory: categoryArr[0],
         categoryHeader: categoryArr[0]
       })
-      that.getGoodsMap(data);
+      that.getGoodsMap(res);
     })
   },
   //获取商品Map，用于再次购买刷新价格，获取商品对应的scrollTop，用于搜索商品

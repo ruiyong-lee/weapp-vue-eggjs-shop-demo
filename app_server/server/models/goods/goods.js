@@ -1,14 +1,15 @@
 /**
  * goods | 模型
  */
+const uuidV1 = require('uuid/v1')
 const db = require('../../utils/db')
-const goodsModelSchema = './../../schema/goods'
-const categoryModelSchema = './../../schema/goodscategory'
+const goodsModelPath = './../../schema/goods'
+const categoryModelPath = './../../schema/goodscategory'
 const WeChatShopDb = db.WeChatShop // 引入数据库
 
 // 用sequelize的import方法引入表结构，实例化
-const Goods = WeChatShopDb.import(goodsModelSchema)
-const Category = WeChatShopDb.import(categoryModelSchema)
+const Goods = WeChatShopDb.import(goodsModelPath)
+const Category = WeChatShopDb.import(categoryModelPath)
 
 // 关系
 Category.hasMany(Goods, {foreignKey: 'categoryUuid'})
@@ -29,6 +30,7 @@ module.exports = {
         attributes: condition.goodsAttributes
       }]
     })
+
     return result || null
   }
 }

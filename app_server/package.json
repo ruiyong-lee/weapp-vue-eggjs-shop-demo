@@ -25,7 +25,8 @@
     "moment": "^2.18.1",
     "mysql": "^2.14.1",
     "sequelize": "^3.29.0",
-    "sequelize-auto": "^0.4.28"
+    "sequelize-auto": "^0.4.28",
+    "uuid": "^3.1.0"
   },
   "devDependencies": {
     "babel-eslint": "^8.0.0-alpha.17",
