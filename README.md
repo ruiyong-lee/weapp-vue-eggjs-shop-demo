@@ -10,13 +10,15 @@
 
 合并了前后端
 
+> app_server: [https://github.com/ruiyong-lee/wechat-shop-demo/blob/master/app_server/NOTE.md](服务端开发笔记)
+
 ##### 目录结构
 
 ```
 .
 ├── app        // 小程序目录（已完成，待完善）
 ├── app_pc     // 小程序pc管理端目录（未开发）
-├── app_server // 小程序后端目录（开发中）
+├── app_server // 小程序服务端目录（开发中）
 └── README.md
 ```
 
