@@ -8,8 +8,8 @@
 	},
 	"compileType": "weapp",
 	"libVersion": "1.5.3",
-	"appid": "wxd5f43aeb67cd5192",
-	"projectname": "wechat-shop-demo",
+	"appid": "wx7d730d2c861c97b1",
+	"projectname": "ghps",
 	"condition": {
 		"weapp": {
 			"current": -1,

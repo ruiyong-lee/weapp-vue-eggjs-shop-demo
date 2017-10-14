@@ -1,10 +1,11 @@
 <!--index.wxml-->
 <import src="/style/ui/cart-add/index.wxml" />
+<import src="/style/ui/img-dialog/index.wxml" />
 
 <view class="page">
   <!-- 搜索 -->
   <view class="search-bar">
-    <input class="search-input" confirm-type="done" placeholder="搜索商品" value="{{searchKey}}" bindinput="searchGoods"/>
+    <input class="search-input" confirm-type="done" placeholder="搜索商品" value="{{searchKey}}" bindinput="searchGoods" />
   </view>
 
   <view class="classname">{{quantity.quantity}}</view>
@@ -13,7 +14,8 @@
     <!-- 类别列表 -->
     <scroll-view scroll-y class="goods-sidebar content-scroll" scroll-into-view="{{activeCategoryItem}}" scroll-with-animation="{{true}}">
       <view class="content-scroll-child">
-        <view class="category-item {{selectedCategory === category ? 'active' : ''}}" wx:for="{{goodsMap}}" wx:for-index="category" wx:key="{{category}}" data-category="{{category}}" data-category-panel="goods{{item[0] && item[0].goodsCategory ? item[0].goodsCategory.id : ''}}" id="category{{item[0] && item[0].goodsCategory ? item[0].goodsCategory.id : ''}}" bindtap="selectCategory">
+        <view class="category-item {{selectedCategory === category ? 'active' : ''}}" wx:for="{{goodsMap}}" wx:for-index="category" wx:key="{{category}}" data-category="{{category}}" data-category-panel="goods{{item[0] && item[0].goodsCategory ? item[0].goodsCategory.id : ''}}"
+          id="category{{item[0] && item[0].goodsCategory ? item[0].goodsCategory.id : ''}}" bindtap="selectCategory">
           {{category}}
         </view>
       </view>
@@ -33,7 +35,7 @@
           </view>
           <view class="goods-item zan-card" wx:for="{{goodsItems}}" wx:key="{{item.goods ? item.goods.uuid : index}}" data-goods="{{item}}">
             <view class="zan-card__thumb">
-              <image class="zan-card__img" src="{{item.mainImg}}" mode="aspectFill"></image>
+              <image class="zan-card__img" src="{{item.mainImg}}" mode="aspectFill" data-src="{{item.mainImg}}" bindtap="openImgDialog" lazy-load="{{true}}"></image>
             </view>
             <view class="zan-card__detail">
               <view class="zan-card__detail-row minh-40">
@@ -47,7 +49,8 @@
                 <view class="zan-card__left-col zan-ellipsis--l2 zan-c-orange mt-6 mr-40">
                   <image class="icon-small inline-block" src="../../images/icon/icon-rmb.png"></image>
                   <view class="inline">
-                    {{item.salePrice}}/<text class="inline fs-11">{{item.unitName}}</text>
+                    {{item.salePrice}}/
+                    <text class="inline fs-11">{{item.unitName}}</text>
                   </view>
                 </view>
               </view>
@@ -60,4 +63,7 @@
     <!-- 加入购物车弹窗 -->
     <template is="cart-add" data="{{ cartData, zanToast, componentId: 'cartData' }}" />
   </view>
+
+  <!-- 大图弹窗 -->
+  <template is="img-dialog" data="{{ imgDialog }}" />
 </view>

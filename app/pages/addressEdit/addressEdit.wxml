@@ -46,7 +46,7 @@
     <view class="weui-cell weui-cell_switch">
       <view class="weui-cell__bd">设为默认地址</view>
       <view class="weui-cell__ft">
-        <switch checked="{{address.sysDefault}}" color="#ea4242" bindchange="switchChange" />
+        <switch checked="{{address.sysDefault}}" color="#20a0ff" bindchange="switchChange" />
       </view>
     </view>
   </view>

@@ -31,7 +31,7 @@
           </view>
           <view class="weui-media-box weui-media-box_appmsg">
             <!-- 实测手机dialog关闭后textarea不能马上关闭，暂时用wx:if控制 -->
-            <input wx:if="{{cartData.showDialog}}" value="{{cartData.remark}}" placeholder="请填写备注（选填）" bindinput="bindKeyInput" />
+            <input wx:if="{{cartData.showDialog}}" class='wp-100' value="{{cartData.remark}}" placeholder="请填写备注（选填）" placeholder-class="gray" bindinput="bindKeyInput" />
           </view>
         </view>
         <view class="weui-panel__ft">

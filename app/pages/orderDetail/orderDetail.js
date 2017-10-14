@@ -220,7 +220,7 @@ Page(Object.assign({}, ZanToast, {
     if (!isGetDeliveryTimeType || !isGetFreightPlane) {
       wx.showModal({
         title: '无法下单',
-        confirmColor: '#ea4242',
+        confirmColor: '#20a0ff',
         content: !isGetAddress ? app.Constants.selectAddressTip : app.Constants.requestFailTip,
         showCancel: false
       })

@@ -1,0 +1,37 @@
+.img-dialog-bg {
+  position: absolute;
+  z-index: 99;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background-color: rgba(69, 62, 69, 0.9);
+}
+
+.img-dialog-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-top: -25vh;
+  margin-left: -25vh;
+  height: 50vh;
+  width: 50vh;
+  border-radius: 6px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.img-dialog-img {
+  height: inherit;
+  width: inherit;
+  border-radius: 6px;
+}
+
+.img-dialog-close {
+  position: absolute;
+  left: 50%;
+  bottom: 40px;
+  margin-left: -25px;
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}

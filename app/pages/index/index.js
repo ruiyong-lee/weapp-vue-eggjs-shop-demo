@@ -1,5 +1,6 @@
 //index.js
 var cartAdd = require('../../style/ui/cart-add/index');//引入数字输入控件
+var imgDialog = require('../../style/ui/img-dialog/index');//引入大图弹窗控件
 var app = getApp();//获取应用实例
 
 var goodsScrollTopMap = {};//记录各个商品scrollTop的Map
@@ -10,7 +11,7 @@ var categoryArr = [];//类别
 var goodsItemHeight = 81;//每条商品容器的高度
 var goodsCategoryHeight = 26;//面板类别标题的高度
 
-Page(Object.assign({}, cartAdd, {
+Page(Object.assign({}, cartAdd, imgDialog, {
   data: {
     cartData: {
       quantity: 1,
@@ -19,6 +20,11 @@ Page(Object.assign({}, cartAdd, {
       max: 9999,
       showDialog: false,
       goods: {}
+    },
+    imgDialog: {
+      currentImg: '',
+      animationData: {},
+      showImgDialog: false
     },
     goodsMap: {},
     searchKey: '',
@@ -38,8 +44,18 @@ Page(Object.assign({}, cartAdd, {
       })
       app.globalData.isReloadGoods = false
     }
+    this.initAnimation()
   },
 
+  //动画
+  initAnimation() {
+    this.animation = wx.createAnimation({
+      transformOrigin: "50% 50%",
+      duration: 400,
+      timingFunction: "ease",
+      delay: 0
+    })
+  },
   //获取商品
   getGoods() {
     var that = this;
@@ -82,11 +98,11 @@ Page(Object.assign({}, cartAdd, {
 
     //记录已经下架的商品数量
     app.globalData.downGoodsQty = 0;
-    
-    for(var key in cartStorage) {
+
+    for (var key in cartStorage) {
       var goods = data[key];
       var cartItem = cartStorage[key];
-      
+
       //存在刷新价格，不存在提示商品下架
       if (!app.Check.isUndeFinedOrNullOrEmpty(goods)) {
         delete cartItem.isDown;
@@ -221,6 +237,20 @@ Page(Object.assign({}, cartAdd, {
       'cartData.quantity': 1,
       'cartData.remark': ''
     });
+  },
+  //查看商品大图
+  openImgDialog(e) {
+    var animation = this.animation;
+    var imgSrc = e.currentTarget.dataset.src;
+    this.setData({
+      'imgDialog.currentImg': imgSrc.split("?x-oss-process=image")[0],
+      'imgDialog.showImgDialog': true
+    });
+
+    animation.scale(1.05, 1.05).step()
+    this.setData({
+      'imgDialog.animationData': animation.export()
+    })
   },
   //跳转到商品详情，暂时没做
   jumpToDetail(e) {

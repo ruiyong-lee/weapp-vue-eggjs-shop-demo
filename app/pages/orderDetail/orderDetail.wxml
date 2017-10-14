@@ -72,7 +72,7 @@
       <view class="weui-panel__bd">
         <view class="weui-media-box weui-media-box_appmsg">
           <view class="weui-media-box__bd weui-media-box__bd_in-appmsg">
-            <input wx:if="{{isAccount}}" placeholder="请填写备注（选填）" bindinput="handleFiilInRemark" />
+            <input wx:if="{{isAccount}}" placeholder="请填写备注（选填）" placeholder-class="gray" bindinput="handleFiilInRemark" />
             <text wx:else>备注：{{goodsOrder.remark}}</text>
           </view>
         </view>
