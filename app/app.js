@@ -13,7 +13,11 @@ App({
     this.getUserInfo();
   },
   onShow: function (options) {
-    this.globalData.isReloadGoods = true;
+    var globalData = this.globalData;
+    if (!globalData.isPreviewImage) {
+      globalData.isReloadGoods = true;
+      globalData.isPreviewImage = false;
+    }
   },
   onError: function (msg) {
     console.log(msg);
@@ -148,6 +152,7 @@ App({
     goodsOrder: {},
     goodsMap: {},
     isReloadGoods: true,
+    isPreviewImage: false,
     downGoodsQty: 0
   }
 })

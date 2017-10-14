@@ -1,6 +1,5 @@
 <!--index.wxml-->
 <import src="/style/ui/cart-add/index.wxml" />
-<import src="/style/ui/img-dialog/index.wxml" />
 
 <view class="page">
   <!-- 搜索 -->
@@ -63,7 +62,4 @@
     <!-- 加入购物车弹窗 -->
     <template is="cart-add" data="{{ cartData, zanToast, componentId: 'cartData' }}" />
   </view>
-
-  <!-- 大图弹窗 -->
-  <template is="img-dialog" data="{{ imgDialog }}" />
 </view>

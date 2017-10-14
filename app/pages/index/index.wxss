@@ -1,5 +1,4 @@
 /**index.wxss**/
-@import '../../style/ui/img-dialog/index.wxss';
 
 /* 搜索栏 */
 

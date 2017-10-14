@@ -1,9 +1,0 @@
-<!-- 大图弹窗模板 -->
-<template name="img-dialog">
-  <view class="img-dialog-bg" hidden="{{!imgDialog.showImgDialog}}" catchtap="closeImgDialog">
-    <view class="img-dialog-box" animation="{{imgDialog.animationData}}">
-      <image class="img-dialog-img" src="{{imgDialog.currentImg}}" mode="aspectFill"></image>
-    </view>
-    <image class="img-dialog-close" src=" ../../images/icon/icon-close.png"></image>
-  </view>
-</template>

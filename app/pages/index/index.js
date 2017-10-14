@@ -1,6 +1,5 @@
 //index.js
 var cartAdd = require('../../style/ui/cart-add/index');//引入数字输入控件
-var imgDialog = require('../../style/ui/img-dialog/index');//引入大图弹窗控件
 var app = getApp();//获取应用实例
 
 var goodsScrollTopMap = {};//记录各个商品scrollTop的Map
@@ -11,7 +10,7 @@ var categoryArr = [];//类别
 var goodsItemHeight = 81;//每条商品容器的高度
 var goodsCategoryHeight = 26;//面板类别标题的高度
 
-Page(Object.assign({}, cartAdd, imgDialog, {
+Page(Object.assign({}, cartAdd, {
   data: {
     cartData: {
       quantity: 1,
@@ -20,11 +19,6 @@ Page(Object.assign({}, cartAdd, imgDialog, {
       max: 9999,
       showDialog: false,
       goods: {}
-    },
-    imgDialog: {
-      currentImg: '',
-      animationData: {},
-      showImgDialog: false
     },
     goodsMap: {},
     searchKey: '',
@@ -44,23 +38,13 @@ Page(Object.assign({}, cartAdd, imgDialog, {
       })
       app.globalData.isReloadGoods = false
     }
-    this.initAnimation()
   },
 
-  //动画
-  initAnimation() {
-    this.animation = wx.createAnimation({
-      transformOrigin: "50% 50%",
-      duration: 400,
-      timingFunction: "ease",
-      delay: 0
-    })
-  },
   //获取商品
   getGoods() {
     var that = this;
     var params = app.Http.buildParams();
-    app.Http.request('goods/getGoods.json', params, function (res) {
+    app.Http.request('goods/getGoods.do', params, function (res) {
       categoryArr = Object.keys(res);
       that.getCategoryGoodsPanelScrollTop(res);
       that.setData({
@@ -216,7 +200,6 @@ Page(Object.assign({}, cartAdd, imgDialog, {
           that.setData({
             goodsPanelScrollTop: goodsScrollTopMap[key] - goodsCategoryHeight
           })
-          console.log(goodsScrollTopMap[key])
           return true;
         }
       })
@@ -240,21 +223,28 @@ Page(Object.assign({}, cartAdd, imgDialog, {
   },
   //查看商品大图
   openImgDialog(e) {
-    var animation = this.animation;
     var imgSrc = e.currentTarget.dataset.src;
-    this.setData({
-      'imgDialog.currentImg': imgSrc.split("?x-oss-process=image")[0],
-      'imgDialog.showImgDialog': true
-    });
-
-    animation.scale(1.05, 1.05).step()
-    this.setData({
-      'imgDialog.animationData': animation.export()
+    app.globalData.isPreviewImage = true;
+    wx.previewImage({
+      urls: [imgSrc.split("?x-oss-process=image")[0]] // 需要预览的图片http链接列表
     })
   },
   //跳转到商品详情，暂时没做
   jumpToDetail(e) {
     app.setSelectedGoods(e.currentTarget.dataset.goods)
     app.jumpTo('../goodsDetail/goodsDetail')
+  },
+  //转发
+  onShareAppMessage: function (res) {
+    return {
+      title: '易省快',
+      path: 'pages/index/index',
+      success: function (res) {
+        // 转发成功
+      },
+      fail: function (res) {
+        // 转发失败
+      }
+    }
   }
 }))
