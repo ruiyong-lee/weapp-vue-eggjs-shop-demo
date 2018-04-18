@@ -6,9 +6,7 @@
 
 也可以自行fork修改, 还有并没有加websocket, 没有管理商品的界面，这些都需要点时间。。。。。。
 
-后端代码用的是node.js，正在开发中...，正在开发中...，正在开发中...，接口估计会有所调整，都是闲余时间，所以需要点时间，见谅
-
-合并了前后端
+后端代码用的是node.js，非常抱歉，前阶段没时间，闲置了好久，过段时间会开始写
 
 > app_server: [服务端开发笔记](https://github.com/ruiyong-lee/wechat-shop-demo/blob/master/app_server/NOTE.md)
 
