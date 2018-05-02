@@ -1,0 +1,12 @@
+[*]
+indent_style=space
+indent_size=2
+
+[{.eslintrc,.babelrc,.stylelintrc,jest.config,*.json,*.jsb3,*.jsb2,*.bowerrc}]
+indent_style=space
+indent_size=2
+
+[{.analysis_options,*.yml,*.yaml}]
+indent_style=space
+indent_size=2
+
