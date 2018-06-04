@@ -109,13 +109,16 @@ App({
       success: function (res) {
         if (res.confirm) {
           var params = Http.buildParams()
-          params.body = {
-            uuid: order.uuid,
-            version: order.version
-          }
-          Http.request('cancelOrderBill.do', params, function () {
-            wx.showToast({ title: '取消订单成功', icon: 'success', duration: 2000 })
-            return typeof cb == "function" && cb();
+          params.uuid = order.uuid
+          params.version = order.version
+
+          Http.request({
+            url: 'cancelOrderBill.do',
+            data: params,
+            success(res) {
+              wx.showToast({ title: '取消订单成功', icon: 'success', duration: 2000 })
+              return typeof cb == "function" && cb();
+            }
           })
         } else if (res.cancel) {
           console.log('用户点击取消')
@@ -131,13 +134,16 @@ App({
       success: function (res) {
         if (res.confirm) {
           var params = Http.buildParams()
-          params.body = {
-            uuid: order.uuid,
-            version: order.version
-          }
-          Http.request('completeOrderBill.do', params, function () {
-            wx.showToast({ title: '确认收货成功', icon: 'success', duration: 2000 })
-            return typeof cb == "function" && cb();
+          params.uuid = order.uuid
+          params.version = order.version
+          
+          Http.request({
+            url: 'completeOrderBill.do',
+            data: params,
+            success(res) {
+              wx.showToast({ title: '确认收货成功', icon: 'success', duration: 2000 })
+              return typeof cb == "function" && cb();
+            }
           })
         } else if (res.cancel) {
           console.log('用户点击取消')

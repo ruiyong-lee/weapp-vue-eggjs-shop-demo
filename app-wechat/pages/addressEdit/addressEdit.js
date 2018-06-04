@@ -33,12 +33,16 @@ Page({
   getAddress(addressUuid) {
     var that = this;
     var params = app.Http.buildParams()
-    params.body.uuid = addressUuid
+    params.uuid = addressUuid
 
-    app.Http.request('getAddressByUuid.do', params, function (res) {
-      that.setData({
-        address: JSON.parse(res)
-      })
+    app.Http.request({
+      url: 'getAddressByUuid.do',
+      data: params,
+      success(res) {
+        that.setData({
+          address: JSON.parse(res)
+        })
+      }
     })
   },
   //input失焦
@@ -67,7 +71,7 @@ Page({
     var that = this;
     var address = that.data.address
     var params = app.Http.buildParams()
-    params.body.address = address
+    params.address = address
     console.log(params)
 
     if (this.getValidToSave()) {
@@ -83,9 +87,13 @@ Page({
     var that = this;
 
     if (this.getValidToSave()) {
-      app.Http.request('saveNewAddress.do', params, function (res) {
-        wx.showToast({ title: '新建成功', icon: 'success', duration: 2000 })
-        that.navigateBack()
+      app.Http.request({
+        url: 'saveNewAddress.do',
+        data: params,
+        success(res) {
+          wx.showToast({ title: '新建成功', icon: 'success', duration: 2000 })
+          that.navigateBack()
+        }
       })
     }
   },
@@ -94,9 +102,13 @@ Page({
     var that = this;
 
     if (this.getValidToSave()) {
-      app.Http.request('saveModifyAddress.do', params, function (res) {
-        wx.showToast({ title: '修改成功', icon: 'success', duration: 2000 })
-        that.navigateBack()
+      app.Http.request({
+        url: 'saveModifyAddress.do',
+        data: params,
+        success(res) {
+          wx.showToast({ title: '修改成功', icon: 'success', duration: 2000 })
+          that.navigateBack()
+        }
       })
     }
   },

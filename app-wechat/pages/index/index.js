@@ -42,17 +42,23 @@ Page(Object.assign({}, cartAdd, {
 
   //获取商品
   getGoods() {
-    var that = this;
     var params = app.Http.buildParams();
-    app.Http.request('goods/getGoods.do', params, function (res) {
-      categoryArr = Object.keys(res);
-      that.getCategoryGoodsPanelScrollTop(res);
-      that.setData({
-        goodsMap: res,
-        selectedCategory: categoryArr[0],
-        categoryHeader: categoryArr[0]
-      })
-      that.getGoodsMap(res);
+
+    app.Http.request({
+      url: 'goods/getGoods',
+      data: params,
+      success: (res) => {
+        if (!app.Check.isUndeFinedOrNullOrEmpty(res)) {
+          categoryArr = Object.keys(res);
+          this.getCategoryGoodsPanelScrollTop(res);
+          this.setData({
+            goodsMap: res,
+            selectedCategory: categoryArr[0],
+            categoryHeader: categoryArr[0]
+          })
+          this.getGoodsMap(res);
+        }
+      }
     })
   },
   //获取商品Map，用于再次购买刷新价格，获取商品对应的scrollTop，用于搜索商品

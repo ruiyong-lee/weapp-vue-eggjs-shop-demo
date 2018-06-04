@@ -4,17 +4,25 @@
   "description": "app server",
   "private": true,
   "dependencies": {
-    "egg": "^2.2.1",
-    "egg-scripts": "^2.5.0"
+    "egg": "^2.8.1",
+    "egg-mysql": "^3.0.0",
+    "egg-redis": "^2.0.0",
+    "egg-scripts": "^2.5.0",
+    "egg-sequelize": "^3.1.4",
+    "egg-session-redis": "^1.0.0",
+    "egg-validate": "^1.0.0",
+    "lodash": "^4.17.10",
+    "mysql2": "^1.5.3",
+    "uuid": "^3.2.1"
   },
   "devDependencies": {
     "autod": "^3.0.1",
-    "autod-egg": "^1.0.0",
-    "egg-bin": "^4.3.5",
+    "autod-egg": "^1.1.0",
+    "egg-bin": "^4.7.0",
     "egg-ci": "^1.8.0",
-    "egg-mock": "^3.14.0",
-    "eslint": "^4.11.0",
-    "eslint-config-egg": "^6.0.0",
+    "egg-mock": "^3.17.2",
+    "eslint": "^4.19.1",
+    "eslint-config-egg": "^7.0.0",
     "webstorm-disable-index": "^1.2.0"
   },
   "engines": {
@@ -31,7 +39,10 @@
     "lint": "eslint .",
     "ci": "npm run lint && npm run cov",
     "autod": "autod",
-    "sql": "node ./sql/index.js"
+    "sql": "node ./sql/index.js",
+    "migrate:new": "egg-sequelize migration:create",
+    "migrate:up": "egg-sequelize db:migrate",
+    "migrate:down": "egg-sequelize db:migrate:undo"
   },
   "ci": {
     "version": "8"

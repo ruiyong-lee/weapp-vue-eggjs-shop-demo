@@ -6,8 +6,57 @@ module.exports = appInfo => {
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1523515826308_192';
 
-  // add your config here
-  config.middleware = [];
+  // 小程序只能存storage，关闭csrf
+  config.security = {
+    csrf: {
+      enable: false,
+    },
+  };
+
+  // 数据库
+  config.mysql = {
+    client: {
+      host: 'localhost',
+      // 端口号
+      port: '3306',
+      // 用户名
+      user: 'root',
+      // 密码
+      password: '209cfcfaf6',
+      // 数据库名
+      database: 'weapp_eggjs_shop_demo',
+    },
+    // 所有数据库配置的默认值
+    default: {},
+
+    // 是否加载到 app 上，默认开启
+    app: true,
+    // 是否加载到 agent 上，默认关闭
+    agent: false,
+  };
+
+  config.sequelize = {
+    dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
+    database: 'weapp_eggjs_shop_demo',
+    host: 'localhost',
+    port: '3306',
+    username: 'root',
+    password: '209cfcfaf6',
+  };
+
+  // redis
+  config.redis = {
+    client: {
+      host: 'localhost',
+      port: '6379',
+      password: 'ruiyong-lee',
+      db: '0',
+    },
+    agent: true,
+  };
+
+  // 中间件
+  config.middleware = [ 'auth', 'errorHandler' ];
 
   return config;
 };

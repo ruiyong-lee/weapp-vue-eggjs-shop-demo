@@ -33,23 +33,28 @@ Page(Object.assign({}, ZanTab, {
   getOrderList(cb) {
     var that = this;
     var params = app.Http.buildParams()
-    params.body.queryFilter = app.Http.buildFilter({ params: { status: this.data.tab.selectedId }, page: this.data.page })
-    app.Http.request('queryOrderBill.do', params, function (res) {
-      var data = JSON.parse(res)
-      var result = that.data.goodsOrderList.concat(data.values)
+    params.queryFilter = app.Http.buildFilter({ params: { status: this.data.tab.selectedId }, page: this.data.page })
 
-      if (that.data.page === data.pageCount) {
+    app.Http.request({
+      url: 'queryOrderBill.do',
+      data: params,
+      success(res) {
+        var data = JSON.parse(res)
+        var result = that.data.goodsOrderList.concat(data.values)
+
+        if (that.data.page === data.pageCount) {
+          that.setData({
+            isLastPage: true
+          })
+        }
+
         that.setData({
-          isLastPage: true
+          goodsOrderList: result,
+          loadmore: false,
         })
+
+        return typeof cb === "function" && cb()
       }
-
-      that.setData({
-        goodsOrderList: result,
-        loadmore: false,
-      })
-
-      return typeof cb === "function" && cb()
     })
   },
   //取消订单
@@ -89,9 +94,14 @@ Page(Object.assign({}, ZanTab, {
   getOrder(orderUuid, cb) {
     var that = this;
     var params = app.Http.buildParams()
-    params.body.uuid = orderUuid
-    app.Http.request('getOrderBillByUuid.do', params, function (res) {
-      return typeof cb === "function" && cb(JSON.parse(res) || null)
+    params.uuid = orderUuid
+
+    app.Http.request({
+      url: 'getOrderBillByUuid.do',
+      data: params,
+      success(res) {
+        return typeof cb === "function" && cb(JSON.parse(res) || null)
+      }
     })
   },
   //切换tab

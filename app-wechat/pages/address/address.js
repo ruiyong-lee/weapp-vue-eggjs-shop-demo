@@ -30,11 +30,16 @@ Page({
   getAddressList() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('getAddressList.do', params, function (res) {
-      var addressList = JSON.parse(res);console.log(addressList)
-      that.setData({
-        addressList: addressList
-      })
+
+    app.Http.request({
+      url: 'getAddressList.do',
+      data: params,
+      success(res) {
+        var addressList = JSON.parse(res); console.log(addressList)
+        that.setData({
+          addressList: addressList
+        })
+      }
     })
   },
   //选择地址
@@ -50,10 +55,15 @@ Page({
   setDefaultAddress(e) {
     var that = this;
     var params = app.Http.buildParams()
-    params.body.uuid = e.currentTarget.dataset.uuid;
-    app.Http.request('setDefaultAddress.do', params, function (res) {
-      wx.showToast({ title: '设置默认地址成功', icon: 'success', duration: 2000 })
-      that.getAddressList();
+    params.uuid = e.currentTarget.dataset.uuid;
+
+    app.Http.request({
+      url: 'setDefaultAddress.do',
+      data: params,
+      success(res) {
+        wx.showToast({ title: '设置默认地址成功', icon: 'success', duration: 2000 })
+        that.getAddressList();
+      }
     })
   },
   //删除地址
@@ -66,10 +76,15 @@ Page({
       success: function (res) {
         if (res.confirm) {
           var params = app.Http.buildParams()
-          params.body.uuid = e.currentTarget.dataset.uuid;
-          app.Http.request('deleteAddress.do', params, function (res) {
-            wx.showToast({ title: '删除成功', icon: 'success', duration: 2000 })
-            that.getAddressList();
+          params.uuid = e.currentTarget.dataset.uuid;
+
+          app.Http.request({
+            url: 'deleteAddress.do',
+            data: params,
+            success(res) {
+              wx.showToast({ title: '删除成功', icon: 'success', duration: 2000 })
+              that.getAddressList();
+            }
           })
         } else if (res.cancel) {
           console.log('用户点击取消')

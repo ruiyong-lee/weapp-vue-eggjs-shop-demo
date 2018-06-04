@@ -55,17 +55,22 @@ Page(Object.assign({}, ZanToast, {
   getOrder(orderUuid, cb) {
     var that = this;
     var params = app.Http.buildParams()
-    params.body.uuid = orderUuid
-    app.Http.request('getOrderBillByUuid.do', params, function (res) {
-      var data = JSON.parse(res)
+    params.uuid = orderUuid
 
-      if (data.status === 'initial') {
-        that.getCountDown(data.createInfo.operateTime, orderUuid)
+    app.Http.request({
+      url: 'getOrderBillByUuid.do',
+      data: params,
+      success(res) {
+        var data = JSON.parse(res)
+
+        if (data.status === 'initial') {
+          that.getCountDown(data.createInfo.operateTime, orderUuid)
+        }
+        that.setData({
+          "goodsOrder": data
+        })
+        return typeof cb === "function" && cb()
       }
-      that.setData({
-        "goodsOrder": data
-      })
-      return typeof cb === "function" && cb()
     })
   },
   //刷新地址,如果上次有选择地址，则使用该地址，否则使用默认地址
@@ -82,9 +87,14 @@ Page(Object.assign({}, ZanToast, {
   getDefaultAddress() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('getDefaultAddress.do', params, function (res) {
-      var data = JSON.parse(res)
-      that.setAddress(data)
+
+    app.Http.request({
+      url: 'getDefaultAddress.do',
+      data: params,
+      success(res) {
+        var data = JSON.parse(res)
+        that.setAddress(data)
+      }
     })
   },
   //设置地址
@@ -111,25 +121,30 @@ Page(Object.assign({}, ZanToast, {
   getDeliveryTimeType() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('getDeliveryTimeTypeList.do', params, function (res) {
-      var arr = [];
-      var obj = {};
-      var list = JSON.parse(res);
 
-      for (var i = 0; i < list.length; i++) {
-        var item = list[i];
-        var key = item.name + '（' + item.remark + '）';
-        arr.push(key)
-        obj[key] = item;
-        if (i === 0) {
-          that.setDeliveryTimeType(item);
+    app.Http.request({
+      url: 'getDeliveryTimeTypeList.do',
+      data: params,
+      success(res) {
+        var arr = [];
+        var obj = {};
+        var list = JSON.parse(res);
+
+        for (var i = 0; i < list.length; i++) {
+          var item = list[i];
+          var key = item.name + '（' + item.remark + '）';
+          arr.push(key)
+          obj[key] = item;
+          if (i === 0) {
+            that.setDeliveryTimeType(item);
+          }
         }
+        that.setData({
+          deliveryTimeArr: arr,
+          deliveryTimeMap: obj
+        })
+        isGetDeliveryTimeType = true;
       }
-      that.setData({
-        deliveryTimeArr: arr,
-        deliveryTimeMap: obj
-      })
-      isGetDeliveryTimeType = true;
     })
   },
   //选择收货时间
@@ -161,19 +176,24 @@ Page(Object.assign({}, ZanToast, {
   getFreightPlan() {
     var that = this;
     var params = app.Http.buildParams()
-    app.Http.request('getDefaultFreightPlan.do', params, function (res) {
-      var freight = 0;
-      var freightPlan = JSON.parse(res);
-      var basicFreight = freightPlan.basicFreight;//基础运费
-      var freeFreightAmount = freightPlan.freeFreightAmount;//免运费金额
-      var totalAmount = that.data.goodsOrder.totalAmount;//商品总金额
 
-      that.setData({
-        "goodsOrder.freightAmount": totalAmount >= freeFreightAmount ? 0 : basicFreight,
-        freeFreightAmount: freeFreightAmount
-      })
-      that.calculatePaymentAmount();
-      isGetFreightPlane = true;
+    app.Http.request({
+      url: 'getDefaultFreightPlan.do',
+      data: params,
+      success(res) {
+        var freight = 0;
+        var freightPlan = JSON.parse(res);
+        var basicFreight = freightPlan.basicFreight;//基础运费
+        var freeFreightAmount = freightPlan.freeFreightAmount;//免运费金额
+        var totalAmount = that.data.goodsOrder.totalAmount;//商品总金额
+
+        that.setData({
+          "goodsOrder.freightAmount": totalAmount >= freeFreightAmount ? 0 : basicFreight,
+          freeFreightAmount: freeFreightAmount
+        })
+        that.calculatePaymentAmount();
+        isGetFreightPlane = true;
+      }
     })
   },
   //填写备注
@@ -227,14 +247,18 @@ Page(Object.assign({}, ZanToast, {
     } else if (!isGetAddress) {
       this.showZanToast(app.Constants.selectAddressTip);
     } else {
-      params.body.goodsOrder = this.data.goodsOrder;
+      params.goodsOrder = this.data.goodsOrder;
 
-      app.Http.request('createBill.do', params, function (res) {
-        app.clearCart()
-        that.setData({
-          'goodsOrder.uuid': res
-        })
-        return typeof cb === "function" && cb(res)
+      app.Http.request({
+        url: 'createBill.do',
+        data: params,
+        success(res) {
+          app.clearCart()
+          that.setData({
+            'goodsOrder.uuid': res
+          })
+          return typeof cb === "function" && cb(res)
+        }
       })
     }
   },
@@ -255,37 +279,41 @@ Page(Object.assign({}, ZanToast, {
   toPay(orderUuid) {
     var that = this;
     var params = app.Http.buildParams()
-    params.body.uuid = orderUuid
+    params.uuid = orderUuid
 
     wx.showLoading({
       title: '支付数据提交中',
     })
 
-    app.Http.request('toPay.do', params, function (res) {
-      var data = JSON.parse(res)
-      wx.hideLoading()
-      //调用微信支付接口
-      wx.requestPayment({
-        timeStamp: data.timeStamp,
-        nonceStr: data.nonceStr,
-        package: data.package,
-        signType: 'MD5',
-        paySign: data.sign,
-        success: function (res) {
-          wx.showToast({
-            title: '支付成功',
-            icon: 'success',
-            duration: 2000
-          })
-          //没做websocket，暂时先这样
-          wx.redirectTo({
-            url: '../orderDetail/orderDetail?uuid=' + orderUuid
-          })
-        },
-        fail: function (res) {
-          
-        }
-      })
+    app.Http.request({
+      url: 'toPay.do',
+      data: params,
+      success(res) {
+        var data = JSON.parse(res)
+        wx.hideLoading()
+        //调用微信支付接口
+        wx.requestPayment({
+          timeStamp: data.timeStamp,
+          nonceStr: data.nonceStr,
+          package: data.package,
+          signType: 'MD5',
+          paySign: data.sign,
+          success: function (res) {
+            wx.showToast({
+              title: '支付成功',
+              icon: 'success',
+              duration: 2000
+            })
+            //没做websocket，暂时先这样
+            wx.redirectTo({
+              url: '../orderDetail/orderDetail?uuid=' + orderUuid
+            })
+          },
+          fail: function (res) {
+
+          }
+        })
+      }
     })
   },
   //再次购买
