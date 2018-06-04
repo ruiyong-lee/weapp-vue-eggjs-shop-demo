@@ -28,4 +28,4 @@
 
 ### 非常感谢以下开源项目或作者：
 
-[**weui-wxss**](https://github.com/Tencent/weui-wxss) | [**zanui-weapp**](https://github.com/youzan/zanui-weapp) | [**nodejs**](https://github.com/nodejs) | [**egg**](https://github.com/eggjs/egg) | [**koajs**](https://github.com/koajs) | [**ESLint**](https://github.com/eslint) | [**mysql**](https://github.com/mysqljs/mysql)
+[**weui-wxss**](https://github.com/Tencent/weui-wxss) | [**zanui-weapp**](https://github.com/youzan/zanui-weapp) | [**nodejs**](https://github.com/nodejs) | [**egg**](https://github.com/eggjs/egg) | [**koajs**](https://github.com/koajs) | [**ESLint**](https://github.com/eslint) | [**mysql**](https://github.com/mysqljs/mysql) | [**sequelize**](https://github.com/sequelize/sequelize) | [**lodash**](https://github.com/lodash/lodash)
