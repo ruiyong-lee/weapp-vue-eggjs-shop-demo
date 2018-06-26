@@ -6,13 +6,14 @@ Page(Object.assign({}, ZanTab, {
   data: {
     tab: {
       list: app.Constants.orderTabList,
-      selectedId: 'all',
+      selectedId: '',
       scroll: false,
       height: 45
     },
     orderStatusTipMap: app.Constants.orderStatusTipMap,
     goodsOrderList: [],
     page: 1,
+    pageSize: 10,
     loadmore: false,
     isLastPage: false
   },
@@ -31,24 +32,26 @@ Page(Object.assign({}, ZanTab, {
 
   //获取订单列表
   getOrderList(cb) {
-    var that = this;
-    var params = app.Http.buildParams()
-    params.queryFilter = app.Http.buildFilter({ params: { status: this.data.tab.selectedId }, page: this.data.page })
+    var { page, pageSize, tab} = this.data
+    var params = app.Http.buildParams({
+      status: tab.selectedId,
+      page,
+      pageSize
+    })
 
     app.Http.request({
-      url: 'queryOrderBill.do',
+      url: 'order/queryOrderBill',
       data: params,
-      success(res) {
-        var data = JSON.parse(res)
-        var result = that.data.goodsOrderList.concat(data.values)
+      success: (res = {}) => {
+        var result = this.data.goodsOrderList.concat(res.rows)
 
-        if (that.data.page === data.pageCount) {
-          that.setData({
+        if (page * pageSize >= res.count) {
+          this.setData({
             isLastPage: true
           })
         }
 
-        that.setData({
+        this.setData({
           goodsOrderList: result,
           loadmore: false,
         })

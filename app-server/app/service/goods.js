@@ -10,14 +10,14 @@ const Service = require('egg').Service;
 class GoodsService extends Service {
   /**
    * 批量查询商品数据
-   * @param {object} orgUuid 商家uuid
+   * @param {String} merchantUuid 商家uuid
    * @return {Object|null} 查找结果
    */
-  async getGoods(orgUuid) {
+  async getGoods(merchantUuid) {
     const { app } = this;
     const goodsMap = {};
     const resultList = await app.model.Goods.getGoods({
-      orgUuid,
+      merchantUuid,
       categoryAttributes: [ 'name' ],
       goodsAttributes: [ 'uuid', 'code', 'name', 'categoryUuid', 'spec', 'mainImg', 'salePrice', 'unitName' ],
     });

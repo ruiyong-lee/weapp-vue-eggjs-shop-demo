@@ -2,10 +2,10 @@
 const co = require('co');
 
 module.exports = {
-  up: co.wrap(function* (db, Sequelize) {
+  up: co.wrap(async (db, Sequelize) => {
     // const { STRING, INTEGER, DATE } = Sequelize;
 
-    // yield db.createTable('users', {
+    // await db.createTable('users', {
     //   id: { type: INTEGER, primaryKey: true, autoIncrement: true },
     //   name: { type: STRING, allowNull: false },
     //   email: { type: STRING, allowNull: false },
@@ -13,10 +13,10 @@ module.exports = {
     //   updated_at: DATE,
     // });
 
-    yield db.removeColumn('goods', 'thumbnail');
+    // await db.removeColumn('goods', 'created_at');
   }),
 
-  down: co.wrap(function* (db, Sequelize) {
-    // yield db.dropTable('users');
+  down: co.wrap(async (db, Sequelize) => {
+    // await db.addColumn('goods', 'created_at');
   }),
 };

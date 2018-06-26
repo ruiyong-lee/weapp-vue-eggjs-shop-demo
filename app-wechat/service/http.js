@@ -6,27 +6,16 @@ var Constants = require('../utils/constants.js')//引入constants.js
 //本地测试域名
 var root = 'http://localhost:7001/weapp/';
 
-function buildParams(url, data, cb) {
+function buildParams(data = {}) {
   var app = getApp();
   var userInfo = app.globalData.userInfo;
 
-  return {
+  return Object.assign(data, {
     platform: Constants.PLATFORM,
     userIdentity: Constants.USER_IDENTITY,
     merchantUuid: Constants.MERCHANT_UUID,
     nickName: userInfo ? userInfo.nickName : '',
-  };
-}
-
-function buildFilter(arg) {
-  var filter = {};
-  arg = arg || {};
-  filter.params = arg.params || {};
-  filter.orders = arg.orders || [];
-  filter.page = arg.page || 0;
-  filter.pageSize = arg.pageSize || Constants.pageSize;
-  filter.defaultPageSize = arg.defaultPageSize || 0;
-  return filter;
+  }) ;
 }
 
 function request(config, noLogin) {
@@ -113,7 +102,6 @@ function login(cb) {
 }
 
 module.exports = {
-  buildFilter: buildFilter,
   buildParams: buildParams,
   request: request,
   login: login

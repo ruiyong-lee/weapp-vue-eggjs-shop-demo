@@ -11,17 +11,17 @@ module.exports = app => {
 
   /**
    * 查找所有商品数据
-   * @param {object} condition 条件
+   * @param {object} params 条件
    * @return {object|null} 查找结果
    */
-  Goods.getGoods = async condition => {
+  Goods.getGoods = async params => {
     return await Goodscategory.findAll({
-      attributes: condition.categoryAttributes,
-      where: { orgUuid: condition.orgUuid },
+      attributes: params.categoryAttributes,
+      where: { orgUuid: params.merchantUuid },
       include: [
         {
           model: Goods,
-          attributes: condition.goodsAttributes,
+          attributes: params.goodsAttributes,
         },
       ],
     });

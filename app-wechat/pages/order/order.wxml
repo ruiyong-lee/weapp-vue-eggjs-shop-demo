@@ -67,6 +67,9 @@
         <view class="weui-loadmore weui-loadmore_line" wx:if="{{goodsOrderList.length === 0}}">
           <view class="weui-loadmore__tips weui-loadmore__tips_in-line">您还没有相关的订单</view>
         </view>
+        <view class="weui-loadmore weui-loadmore_line" hidden="{{!isLastPage}}">
+          <view class="weui-loadmore__tips weui-loadmore__tips_in-line">已加载所有订单</view>
+        </view>
       </view>
     </view>
   </scroll-view>

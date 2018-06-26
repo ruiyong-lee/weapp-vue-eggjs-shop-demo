@@ -15,7 +15,27 @@ class WeappController extends Controller {
   async getGoods() {
     const { ctx } = this;
     const { merchantUuid } = ctx.request.body;
+    const rule = {
+      merchantUuid: 'string',
+    };
+    ctx.validate(rule);
     const goods = await ctx.service.goods.getGoods(merchantUuid);
+
+    this.success(goods);
+  }
+
+  /**
+   * 获取订单列表
+   */
+  async queryOrderBill() {
+    const { ctx } = this;
+    const rule = {
+      merchantUuid: 'string',
+      page: { type: 'int', min: 1 },
+      pageSize: 'int',
+    };
+    ctx.validate(rule);
+    const goods = await ctx.service.goodsOrder.query(ctx.request.body);
 
     this.success(goods);
   }

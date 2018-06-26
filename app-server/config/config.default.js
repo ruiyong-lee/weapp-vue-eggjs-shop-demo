@@ -9,14 +9,14 @@ module.exports = appInfo => {
   // 小程序只能存storage，关闭csrf
   config.security = {
     csrf: {
-      enable: false,
+      ignore: '/weapp',
     },
   };
 
   // 数据库
   config.mysql = {
     client: {
-      host: 'localhost',
+      host: '127.0.0.1',
       // 端口号
       port: '3306',
       // 用户名
@@ -38,7 +38,7 @@ module.exports = appInfo => {
   config.sequelize = {
     dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
     database: 'weapp_eggjs_shop_demo',
-    host: 'localhost',
+    host: '127.0.0.1',
     port: '3306',
     username: 'root',
     password: '209cfcfaf6',
