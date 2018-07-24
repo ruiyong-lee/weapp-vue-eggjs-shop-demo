@@ -41,6 +41,21 @@ class WeappController extends Controller {
   }
 
   /**
+   * 获取订单列表
+   */
+  async getOrderBill() {
+    const { ctx } = this;
+    const { uuid } = ctx.request.body;
+    const rule = {
+      uuid: 'string',
+    };
+    ctx.validate(rule);
+    const goods = await ctx.service.goodsOrder.get(uuid);
+
+    this.success(goods);
+  }
+
+  /**
    * 登录
    * @return {Function|null} 登录结果
    */

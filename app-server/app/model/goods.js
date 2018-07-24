@@ -11,17 +11,19 @@ module.exports = app => {
 
   /**
    * 查找所有商品数据
-   * @param {object} params 条件
-   * @return {object|null} 查找结果
+   * @param {Object} params 条件
+   * @return {Object|Null} 查找结果
    */
   Goods.getGoods = async params => {
+    const { categoryAttributes, merchantUuid, goodsAttributes } = params;
+
     return await Goodscategory.findAll({
-      attributes: params.categoryAttributes,
-      where: { orgUuid: params.merchantUuid },
+      attributes: categoryAttributes,
+      where: { orgUuid: merchantUuid },
       include: [
         {
           model: Goods,
-          attributes: params.goodsAttributes,
+          attributes: goodsAttributes,
         },
       ],
     });

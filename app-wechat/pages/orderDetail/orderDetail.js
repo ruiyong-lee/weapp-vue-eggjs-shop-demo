@@ -58,16 +58,14 @@ Page(Object.assign({}, ZanToast, {
     params.uuid = orderUuid
 
     app.Http.request({
-      url: 'getOrderBillByUuid.do',
+      url: 'order/getOrderBill',
       data: params,
       success(res) {
-        var data = JSON.parse(res)
-
-        if (data.status === 'initial') {
-          that.getCountDown(data.createInfo.operateTime, orderUuid)
+        if (res.status === 'initial') {
+          that.getCountDown(res.createInfo.operateTime, orderUuid)
         }
         that.setData({
-          "goodsOrder": data
+          "goodsOrder": res
         })
         return typeof cb === "function" && cb()
       }

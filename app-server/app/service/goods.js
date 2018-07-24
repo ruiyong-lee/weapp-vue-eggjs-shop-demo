@@ -11,15 +11,15 @@ class GoodsService extends Service {
   /**
    * 批量查询商品数据
    * @param {String} merchantUuid 商家uuid
-   * @return {Object|null} 查找结果
+   * @return {Object|Null} 查找结果
    */
   async getGoods(merchantUuid) {
     const { app } = this;
     const goodsMap = {};
     const resultList = await app.model.Goods.getGoods({
       merchantUuid,
-      categoryAttributes: [ 'name' ],
-      goodsAttributes: [ 'uuid', 'code', 'name', 'categoryUuid', 'spec', 'mainImg', 'salePrice', 'unitName' ],
+      categoryAttributes: ['name'],
+      goodsAttributes: ['uuid', 'code', 'name', 'categoryUuid', 'spec', 'mainImg', 'salePrice', 'unitName'],
     });
 
     for (const resultItem of resultList) {
@@ -45,7 +45,7 @@ class GoodsService extends Service {
 
         goodsArr.push(goods);
       }
-      goodsMap[ key ] = goodsArr;
+      goodsMap[key] = goodsArr;
     }
 
     return goodsMap;
