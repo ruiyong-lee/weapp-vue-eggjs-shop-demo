@@ -87,11 +87,10 @@ Page(Object.assign({}, ZanToast, {
     var params = app.Http.buildParams()
 
     app.Http.request({
-      url: 'getDefaultAddress.do',
+      url: 'user/customer/address/getDefaultAddress',
       data: params,
       success(res) {
-        var data = JSON.parse(res)
-        that.setAddress(data)
+        that.setAddress(res)
       }
     })
   },

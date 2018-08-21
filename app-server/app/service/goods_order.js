@@ -17,7 +17,11 @@ class GoodsOrderService extends Service {
     const { app } = this;
     const { Sequelize } = app;
     return await app.model.GoodsOrder.query(Object.assign(params, {
-      attributes: ['uuid', 'status', 'billNumber', 'goodsTotalQty', [Sequelize.fn('ROUND', Sequelize.col('paymentAmount'), 2), 'paymentAmount']],
+      attributes: [
+        'uuid', 'status', 'billNumber', 'goodsTotalQty',
+        [Sequelize.fn('0+CAST', Sequelize.literal('goodsTotalQty AS CHAR')), 'goodsTotalQty'],
+        [Sequelize.fn('ROUND', Sequelize.col('paymentAmount'), 2), 'paymentAmount'],
+      ],
     }));
   }
 

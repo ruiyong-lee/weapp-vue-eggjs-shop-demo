@@ -9,10 +9,13 @@
  */
 module.exports = (options, app) => {
   return async function auth(ctx, next) {
-    await next();
-
     const sessionid = ctx.get('sessionid');
-    const session = await app.redis.get(sessionid);
+    const session = ctx.helper.JSONParse(await app.redis.get(sessionid)) || {};
+    const { openId } = session;
+
+    ctx.request.body.openId = openId;
+
+    await next();
 
     // 过滤登录接口
     if (ctx.path === '/weapp/login') {
@@ -20,7 +23,7 @@ module.exports = (options, app) => {
     }
 
     // 判断是否有session
-    if (!session) {
+    if (!openId) {
       ctx.body = {
         errorCode: 100,
         message: '尚未登录',

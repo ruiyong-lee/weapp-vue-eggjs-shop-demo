@@ -41,7 +41,7 @@ class WeappController extends Controller {
   }
 
   /**
-   * 获取订单列表
+   * 获取订单详情
    */
   async getOrderBill() {
     const { ctx } = this;
@@ -56,6 +56,16 @@ class WeappController extends Controller {
   }
 
   /**
+   * 获取当前用户默认地址
+   */
+  async getDefaultAddress() {
+    const { ctx } = this;
+    const address = await ctx.service.user.customer.address.getDefault(ctx.request.body);
+
+    this.success(address);
+  }
+
+  /**
    * 登录
    * @return {Function|null} 登录结果
    */
@@ -65,7 +75,7 @@ class WeappController extends Controller {
     const sessionid = uuidv1();
 
     // 根据merchantUuid获取商家
-    const merchant = await ctx.service.user.getMerchant(merchantUuid);
+    const merchant = await ctx.service.user.base.getMerchant(merchantUuid);
 
     if (_.isEmpty(merchant)) {
       return this.fail(999, '该应用未绑定商家');
@@ -76,11 +86,11 @@ class WeappController extends Controller {
       dataType: 'json',
     }) || {};
 
-    const { openid, session_key } = weappInfo.data || {};
+    const { openid: openId, session_key } = weappInfo.data || {};
 
-    if (openid) {
-      const result = JSON.stringify({ openid, session_key });
-      // 保存openid和session_key到redis
+    if (openId) {
+      const result = JSON.stringify({ openId, session_key });
+      // 保存openId和session_key到redis
       await app.redis.setex(sessionid, 3600 * 24, result);
     } else {
       return this.fail(999, weappInfo.data.errmsg);

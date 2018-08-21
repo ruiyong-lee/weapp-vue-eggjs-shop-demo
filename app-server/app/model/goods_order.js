@@ -15,12 +15,12 @@ module.exports = app => {
    * @return {Object|Null} 查找结果
    */
   GoodsOrder.query = async params => {
-    const { status, attributes, page, pageSize: limit, merchantUuid } = params;
+    const { status, attributes, page, pageSize: limit, merchantUuid, openId } = params;
     let condition = {
       offset: (page - 1) * limit,
       limit,
       attributes,
-      where: { orgUuid: merchantUuid },
+      where: { orgUuid: merchantUuid, customerUuid: openId },
     };
 
     if (status) {
