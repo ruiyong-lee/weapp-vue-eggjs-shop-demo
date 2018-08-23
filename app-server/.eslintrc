@@ -1,5 +1,11 @@
 {
-  "extends": "eslint-config-egg",
+  "extends": ["eslint-config-egg"],
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "ecmaFeatures": {
+      "experimentalObjectRestSpread": true
+    }
+  },
   // add your custom rules here
   "rules": {
     "array-bracket-spacing": 0

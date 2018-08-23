@@ -12,6 +12,9 @@ module.exports = app => {
   router.post('/weapp/goods/getGoods', weapp.getGoods);
   router.post('/weapp/order/queryOrderBill', weapp.queryOrderBill);
   router.post('/weapp/order/getOrderBill', weapp.getOrderBill);
-  router.post('/weapp/user/customer/address/getDefaultAddress', weapp.getDefaultAddress);
+  router.post('/weapp/address/getDefaultAddress', weapp.getDefaultAddress);
+  router.post('/weapp/getDefaultFreightPlan', weapp.getDefaultFreightPlan);
+  router.post('/weapp/getDeliveryTimeTypeList', weapp.getDeliveryTimeTypeList);
+  router.post('/weapp/createBill', weapp.createBill);
   router.post('/weapp/login', weapp.login);
 };

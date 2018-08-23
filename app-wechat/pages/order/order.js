@@ -6,7 +6,7 @@ Page(Object.assign({}, ZanTab, {
   data: {
     tab: {
       list: app.Constants.orderTabList,
-      selectedId: '',
+      selectedId: 'all',
       scroll: false,
       height: 45
     },
@@ -32,9 +32,9 @@ Page(Object.assign({}, ZanTab, {
 
   //获取订单列表
   getOrderList(cb) {
-    var { page, pageSize, tab} = this.data
+    var { page, pageSize, tab } = this.data
     var params = app.Http.buildParams({
-      status: tab.selectedId,
+      status: tab.selectedId === 'all' ? '' : tab.selectedId,
       page,
       pageSize
     })

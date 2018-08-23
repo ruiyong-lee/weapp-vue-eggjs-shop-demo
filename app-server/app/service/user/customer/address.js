@@ -10,14 +10,15 @@ const Service = require('egg').Service;
 class AddressService extends Service {
   /**
    * 获取当前用户默认地址
-   * @param {Object} params 参数
+   * @param {Object} params 条件
    * @return {Object|Null} 查找结果
    */
   async getDefault(params = {}) {
     const { app } = this;
-    const address = await app.model.User.Customer.Address.getDefault(Object.assign(params, {
+    const address = await app.model.User.Customer.Address.getDefault({
+      ...params,
       attributes: ['uuid', 'linkMan', 'linkPhone', 'shopName', 'address'],
-    }));
+    });
 
     return address;
   }

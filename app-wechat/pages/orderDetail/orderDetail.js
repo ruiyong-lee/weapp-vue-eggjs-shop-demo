@@ -62,7 +62,7 @@ Page(Object.assign({}, ZanToast, {
       data: params,
       success(res) {
         if (res.status === 'initial') {
-          that.getCountDown(res.createInfo.operateTime, orderUuid)
+          that.getCountDown(res.createdTime, orderUuid)
         }
         that.setData({
           "goodsOrder": res
@@ -87,7 +87,7 @@ Page(Object.assign({}, ZanToast, {
     var params = app.Http.buildParams()
 
     app.Http.request({
-      url: 'user/customer/address/getDefaultAddress',
+      url: 'address/getDefaultAddress',
       data: params,
       success(res) {
         that.setAddress(res)
@@ -120,15 +120,14 @@ Page(Object.assign({}, ZanToast, {
     var params = app.Http.buildParams()
 
     app.Http.request({
-      url: 'getDeliveryTimeTypeList.do',
+      url: 'getDeliveryTimeTypeList',
       data: params,
       success(res) {
         var arr = [];
         var obj = {};
-        var list = JSON.parse(res);
 
-        for (var i = 0; i < list.length; i++) {
-          var item = list[i];
+        for (var i = 0; i < res.length; i++) {
+          var item = res[i];
           var key = item.name + '（' + item.remark + '）';
           arr.push(key)
           obj[key] = item;
@@ -175,13 +174,12 @@ Page(Object.assign({}, ZanToast, {
     var params = app.Http.buildParams()
 
     app.Http.request({
-      url: 'getDefaultFreightPlan.do',
+      url: 'getDefaultFreightPlan',
       data: params,
       success(res) {
         var freight = 0;
-        var freightPlan = JSON.parse(res);
-        var basicFreight = freightPlan.basicFreight;//基础运费
-        var freeFreightAmount = freightPlan.freeFreightAmount;//免运费金额
+        var basicFreight = res.basicFreight;//基础运费
+        var freeFreightAmount = res.freeFreightAmount;//免运费金额
         var totalAmount = that.data.goodsOrder.totalAmount;//商品总金额
 
         that.setData({
@@ -209,10 +207,10 @@ Page(Object.assign({}, ZanToast, {
       "goodsOrder.paymentAmount": paymentAmount
     })
   },
-  getCountDown(operateTime, orderUuid) {
+  getCountDown(createdTime, orderUuid) {
     var that = this;
     var interval = setInterval(function () {
-      var startTime = new Date(operateTime.replace(/-/g, '/')).getTime()
+      var startTime = new Date(createdTime.replace(/-/g, '/')).getTime()
       var nowTime = new Date().getTime()
       var countDown = app.Format.formatCountDown(nowTime - startTime)
 
@@ -247,7 +245,7 @@ Page(Object.assign({}, ZanToast, {
       params.goodsOrder = this.data.goodsOrder;
 
       app.Http.request({
-        url: 'createBill.do',
+        url: 'createBill',
         data: params,
         success(res) {
           app.clearCart()

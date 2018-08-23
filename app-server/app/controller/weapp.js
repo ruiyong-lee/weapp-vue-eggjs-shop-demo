@@ -1,7 +1,6 @@
 'use strict';
 
 const Controller = require('../core/base_controller');
-const uuidv1 = require('uuid/v1');
 
 /**
  * Controller - 微信小程序
@@ -66,13 +65,43 @@ class WeappController extends Controller {
   }
 
   /**
+   * 获取商家运费方案
+   */
+  async getDefaultFreightPlan() {
+    const { ctx } = this;
+    const address = await ctx.service.freightPlan.getDefault(ctx.request.body);
+
+    this.success(address);
+  }
+
+  /**
+   * 获取收货时间列表
+   */
+  async getDeliveryTimeTypeList() {
+    const { ctx } = this;
+    const list = await ctx.service.deliveryTimeType.getList(ctx.request.body);
+
+    this.success(list);
+  }
+
+  /**
+   * 创建订单
+   */
+  async createBill() {
+    const { ctx } = this;
+    const uuid = await ctx.service.goodsOrder.createBill(ctx.request.body);
+
+    this.success(uuid);
+  }
+
+  /**
    * 登录
    * @return {Function|null} 登录结果
    */
   async login() {
     const { ctx, app, _ } = this;
     const { merchantUuid, code } = ctx.request.body;
-    const sessionid = uuidv1();
+    const sessionid = ctx.helper.uuidv1();
 
     // 根据merchantUuid获取商家
     const merchant = await ctx.service.user.base.getMerchant(merchantUuid);
