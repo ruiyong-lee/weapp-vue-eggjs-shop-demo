@@ -24,6 +24,26 @@ class WeappController extends Controller {
   }
 
   /**
+   * 获取商家运费方案
+   */
+  async getDefaultFreightPlan() {
+    const { ctx } = this;
+    const freightPlan = await ctx.service.freightPlan.getDefault(ctx.request.body);
+
+    this.success(freightPlan);
+  }
+
+  /**
+   * 获取收货时间列表
+   */
+  async getDeliveryTimeTypeList() {
+    const { ctx } = this;
+    const list = await ctx.service.deliveryTimeType.getList(ctx.request.body);
+
+    this.success(list);
+  }
+
+  /**
    * 获取订单列表
    */
   async queryOrderBill() {
@@ -55,7 +75,47 @@ class WeappController extends Controller {
   }
 
   /**
-   * 获取当前用户默认地址
+   * 创建订单
+   */
+  async createBill() {
+    const { ctx } = this;
+    const rule = {
+      goodsOrder: 'object',
+    };
+    ctx.validate(rule);
+    const uuid = await ctx.service.goodsOrder.createBill(ctx.request.body);
+
+    this.success(uuid);
+  }
+
+  /**
+   * 取消订单
+   */
+  async cancelBill() {
+    const { ctx } = this;
+    const rule = {
+      uuid: 'string',
+      version: 'number',
+    };
+    ctx.validate(rule);
+    const uuid = await ctx.service.goodsOrder.cancelBill(ctx.request.body);
+
+    this.success(uuid);
+  }
+
+  /**
+   * 根据uuid获取用户地址
+   */
+  async getAddress() {
+    const { ctx } = this;
+    const { uuid } = ctx.request.body;
+    const address = await ctx.service.user.customer.address.get(uuid);
+
+    this.success(address);
+  }
+
+  /**
+   * 获取用户默认地址
    */
   async getDefaultAddress() {
     const { ctx } = this;
@@ -65,31 +125,59 @@ class WeappController extends Controller {
   }
 
   /**
-   * 获取商家运费方案
+   * 设置用户默认地址
    */
-  async getDefaultFreightPlan() {
+  async setDefaultAddress() {
     const { ctx } = this;
-    const address = await ctx.service.freightPlan.getDefault(ctx.request.body);
+    const uuid = await ctx.service.user.customer.address.setDefault(ctx.request.body);
 
-    this.success(address);
+    this.success(uuid);
   }
 
   /**
-   * 获取收货时间列表
+   * 删除用户地址
    */
-  async getDeliveryTimeTypeList() {
+  async deleteAddress() {
     const { ctx } = this;
-    const list = await ctx.service.deliveryTimeType.getList(ctx.request.body);
+    const uuid = await ctx.service.user.customer.address.delete(ctx.request.body);
 
-    this.success(list);
+    this.success(uuid);
   }
 
   /**
-   * 创建订单
+   * 获取用户地址列表
    */
-  async createBill() {
+  async getAddressList() {
     const { ctx } = this;
-    const uuid = await ctx.service.goodsOrder.createBill(ctx.request.body);
+    const addressList = await ctx.service.user.customer.address.getList(ctx.request.body);
+
+    this.success(addressList);
+  }
+
+  /**
+   * 新增用户地址
+   */
+  async saveNewAddress() {
+    const { ctx } = this;
+    const rule = {
+      address: 'object',
+    };
+    ctx.validate(rule);
+    const uuid = await ctx.service.user.customer.address.saveNew(ctx.request.body);
+
+    this.success(uuid);
+  }
+
+  /**
+   * 修改用户地址
+   */
+  async saveModifyAddress() {
+    const { ctx } = this;
+    const rule = {
+      address: 'object',
+    };
+    ctx.validate(rule);
+    const uuid = await ctx.service.user.customer.address.saveModify(ctx.request.body);
 
     this.success(uuid);
   }

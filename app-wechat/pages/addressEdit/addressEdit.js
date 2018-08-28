@@ -36,11 +36,11 @@ Page({
     params.uuid = addressUuid
 
     app.Http.request({
-      url: 'getAddressByUuid.do',
+      url: 'getAddress',
       data: params,
       success(res) {
         that.setData({
-          address: JSON.parse(res)
+          address: res
         })
       }
     })
@@ -88,7 +88,7 @@ Page({
 
     if (this.getValidToSave()) {
       app.Http.request({
-        url: 'saveNewAddress.do',
+        url: 'saveNewAddress',
         data: params,
         success(res) {
           wx.showToast({ title: '新建成功', icon: 'success', duration: 2000 })
@@ -103,7 +103,7 @@ Page({
 
     if (this.getValidToSave()) {
       app.Http.request({
-        url: 'saveModifyAddress.do',
+        url: 'saveModifyAddress',
         data: params,
         success(res) {
           wx.showToast({ title: '修改成功', icon: 'success', duration: 2000 })

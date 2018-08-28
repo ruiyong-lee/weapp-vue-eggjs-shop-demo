@@ -15,14 +15,14 @@ function buildParams(data = {}) {
     userIdentity: Constants.USER_IDENTITY,
     merchantUuid: Constants.MERCHANT_UUID,
     nickName: userInfo ? userInfo.nickName : '',
-  }) ;
+  });
 }
 
 function request(config, noLogin) {
   var sessionid = wx.getStorageSync('3rd_session');
   var header = sessionid ? { 'content-type': 'application/json', 'sessionid': sessionid } : { 'content-type': 'application/json' };
 
-  if (!config.notLoading) wx.showLoading({ title: '加载中...' })
+  if (!config.notLoading) wx.showLoading({ title: '加载中...', mask: true })
 
   wx.request({
     method: config.type || 'POST',

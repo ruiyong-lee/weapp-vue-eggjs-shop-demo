@@ -8,7 +8,7 @@
 		"newFeature": true
 	},
 	"compileType": "miniprogram",
-	"libVersion": "1.5.3",
+	"libVersion": "2.0.1",
 	"appid": "wx7d730d2c861c97b1",
 	"projectname": "wechat-shop-demo",
 	"condition": {
@@ -28,7 +28,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 2,
+			"current": 4,
 			"list": [
 				{
 					"id": -1,
@@ -47,6 +47,17 @@
 					"name": "订单详情",
 					"pathName": "pages/orderDetail/orderDetail",
 					"query": "uuid=f39c66885eb7a670015eb82756310030"
+				},
+				{
+					"id": -1,
+					"name": "地址",
+					"pathName": "pages/address/address",
+					"query": ""
+				},
+				{
+					"id": -1,
+					"name": "新增编辑地址",
+					"pathName": "pages/addressEdit/addressEdit"
 				}
 			]
 		}

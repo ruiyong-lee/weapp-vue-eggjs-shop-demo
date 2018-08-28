@@ -32,7 +32,7 @@ module.exports = {
   orderTabList: [
     { id: 'all', title: '全部' },
     { id: 'initial', title: '待付款' },
-    { id: 'audited', title: '已审核' },
+    { id: 'audited', title: '已接单' },
     { id: 'dispatching', title: '配送中' },
     { id: 'completed', title: '已完成' },
     { id: 'canceled', title: '已取消' }

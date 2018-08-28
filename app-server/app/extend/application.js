@@ -27,4 +27,13 @@ module.exports = {
 
     return `${key}${String(value).padStart(6, '0')}`;
   },
+
+  // 检查version
+  checkUpdateVersion(arr, message) {
+    if (arr.includes(0)) {
+      const error = new Error(message || '已被修改过，请刷新后重试！');
+      error.status = 422;
+      throw error;
+    }
+  },
 };

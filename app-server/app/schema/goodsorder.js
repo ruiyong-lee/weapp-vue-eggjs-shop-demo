@@ -1,17 +1,19 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, BIGINT, DATE, DECIMAL } = app.Sequelize;
+  const { STRING, BIGINT, DATE, DECIMAL, UUIDV1 } = app.Sequelize;
 
   return app.model.define('goodsorder', {
     uuid: {
       type: STRING(38),
       allowNull: false,
       primaryKey: true,
+      defaultValue: UUIDV1,
     },
     version: {
       type: BIGINT,
       allowNull: false,
+      defaultValue: 0,
     },
     lastModifiedTime: {
       type: DATE,

@@ -32,12 +32,11 @@ Page({
     var params = app.Http.buildParams()
 
     app.Http.request({
-      url: 'getAddressList.do',
+      url: 'getAddressList',
       data: params,
       success(res) {
-        var addressList = JSON.parse(res); console.log(addressList)
         that.setData({
-          addressList: addressList
+          addressList: res
         })
       }
     })
@@ -58,7 +57,7 @@ Page({
     params.uuid = e.currentTarget.dataset.uuid;
 
     app.Http.request({
-      url: 'setDefaultAddress.do',
+      url: 'setDefaultAddress',
       data: params,
       success(res) {
         wx.showToast({ title: '设置默认地址成功', icon: 'success', duration: 2000 })
@@ -79,7 +78,7 @@ Page({
           params.uuid = e.currentTarget.dataset.uuid;
 
           app.Http.request({
-            url: 'deleteAddress.do',
+            url: 'deleteAddress',
             data: params,
             success(res) {
               wx.showToast({ title: '删除成功', icon: 'success', duration: 2000 })

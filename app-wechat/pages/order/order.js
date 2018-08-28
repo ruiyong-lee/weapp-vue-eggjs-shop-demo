@@ -40,7 +40,7 @@ Page(Object.assign({}, ZanTab, {
     })
 
     app.Http.request({
-      url: 'order/queryOrderBill',
+      url: 'queryOrderBill',
       data: params,
       success: (res = {}) => {
         var result = this.data.goodsOrderList.concat(res.rows)
@@ -100,7 +100,7 @@ Page(Object.assign({}, ZanTab, {
     params.uuid = orderUuid
 
     app.Http.request({
-      url: 'getOrderBillByUuid.do',
+      url: 'getOrderBill',
       data: params,
       success(res) {
         return typeof cb === "function" && cb(JSON.parse(res) || null)

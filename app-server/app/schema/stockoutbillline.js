@@ -1,13 +1,14 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, DECIMAL } = app.Sequelize;
+  const { STRING, DECIMAL, UUIDV1 } = app.Sequelize;
 
   return app.model.define('stockoutbillline', {
     uuid: {
       type: STRING(38),
       allowNull: false,
       primaryKey: true,
+      defaultValue: UUIDV1,
     },
     stockOutQty: {
       type: DECIMAL,

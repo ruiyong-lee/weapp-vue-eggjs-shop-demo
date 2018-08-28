@@ -20,6 +20,7 @@ module.exports = app => {
       limit,
       attributes,
       where: { orgUuid: merchantUuid, customerUuid: openId },
+      order: [['createdTime', 'DESC']],
     };
 
     if (status) {
@@ -59,10 +60,31 @@ module.exports = app => {
   GoodsOrder.createBill = async ({ goodsOrder, goodsOrderLines }) => {
     const transaction = await app.transition();
 
-    await GoodsOrder.create(goodsOrder, { transaction });
+    goodsOrder = await GoodsOrder.create(goodsOrder, { transaction });
+    goodsOrderLines = goodsOrderLines.map(item => {
+      item.billUuid = goodsOrder.uuid;
+      return item;
+    });
+
     await GoodsOrderLine.bulkCreate(goodsOrderLines, { transaction });
 
     return goodsOrder.uuid;
+  };
+
+  /**
+   * 取消订单
+   * @param {Object} params 条件
+   * @return {String} 返回订单uuid
+   */
+  GoodsOrder.cancelBill = async params => {
+    const { uuid, version, lastModifierId, lastModifierName } = params;
+    const result = await GoodsOrder.update({ status: 'audited', lastModifierId, lastModifierName }, {
+      where: { uuid, version: version - 1 },
+      fields: ['status', 'lastModifierId', 'lastModifierName'],
+    });
+    app.checkUpdateVersion(result);
+
+    return uuid;
   };
 
   return GoodsOrder;

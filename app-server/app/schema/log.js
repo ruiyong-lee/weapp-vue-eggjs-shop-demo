@@ -1,13 +1,14 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, DATE } = app.Sequelize;
+  const { STRING, DATE, UUIDV1 } = app.Sequelize;
 
   return app.model.define('log', {
     uuid: {
       type: STRING(38),
       allowNull: false,
       primaryKey: true,
+      defaultValue: UUIDV1,
     },
     content: {
       type: STRING(2000),

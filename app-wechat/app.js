@@ -113,7 +113,7 @@ App({
           params.version = order.version
 
           Http.request({
-            url: 'cancelOrderBill.do',
+            url: 'cancelBill',
             data: params,
             success(res) {
               wx.showToast({ title: '取消订单成功', icon: 'success', duration: 2000 })

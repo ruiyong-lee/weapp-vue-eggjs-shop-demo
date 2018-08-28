@@ -58,7 +58,7 @@ Page(Object.assign({}, ZanToast, {
     params.uuid = orderUuid
 
     app.Http.request({
-      url: 'order/getOrderBill',
+      url: 'getOrderBill',
       data: params,
       success(res) {
         if (res.status === 'initial') {
@@ -87,7 +87,7 @@ Page(Object.assign({}, ZanToast, {
     var params = app.Http.buildParams()
 
     app.Http.request({
-      url: 'address/getDefaultAddress',
+      url: 'getDefaultAddress',
       data: params,
       success(res) {
         that.setAddress(res)

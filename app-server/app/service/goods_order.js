@@ -8,6 +8,16 @@ const Service = require('egg').Service;
  * @author ruiyong-lee
  */
 class GoodsOrderService extends Service {
+  constructors() {
+    this.goodsOrderStatus = {
+      initial: '待处理',
+      audited: '已接单',
+      dispatching: '配送中',
+      completed: '已完成',
+      canceled: '已取消',
+    };
+  }
+
   /**
    * 获取订单列表
    * @param {Object} params 条件
@@ -19,7 +29,7 @@ class GoodsOrderService extends Service {
     return await app.model.GoodsOrder.query({
       ...params,
       attributes: [
-        'uuid', 'status', 'billNumber', 'goodsTotalQty',
+        'uuid', 'version', 'status', 'billNumber', 'goodsTotalQty',
         [Sequelize.fn('0+CAST', Sequelize.literal('goodsTotalQty AS CHAR')), 'goodsTotalQty'],
         [Sequelize.fn('ROUND', Sequelize.col('paymentAmount'), 2), 'paymentAmount'],
       ],
@@ -32,13 +42,15 @@ class GoodsOrderService extends Service {
    * @return {Object|Null} 查找结果
    */
   async get(uuid) {
-    const { app } = this;
+    const { app, ctx } = this;
     const { Sequelize } = app;
+    const { helper } = ctx;
     return await app.model.GoodsOrder.get({
       uuid,
       orderAttributes: [
         'uuid', 'status', 'billNumber', 'addressUuid', 'linkMan', 'linkPhone', 'address',
-        'deliveryTimeTypeUuid', 'deliveryTimeTypeName', 'deliveryTimeTypeRemark', 'remark', 'createdTime',
+        'deliveryTimeTypeUuid', 'deliveryTimeTypeName', 'deliveryTimeTypeRemark', 'remark',
+        [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdTime'), helper.dayTimeFormat), 'createdTime'],
         [Sequelize.fn('ROUND', Sequelize.col('totalAmount'), 2), 'totalAmount'],
         [Sequelize.fn('ROUND', Sequelize.col('freightAmount'), 2), 'freightAmount'],
         [Sequelize.fn('ROUND', Sequelize.col('paymentAmount'), 2), 'paymentAmount'],
@@ -59,38 +71,41 @@ class GoodsOrderService extends Service {
    */
   async createBill({ merchantUuid, goodsOrder = {}, openId, nickName }) {
     const { app, ctx } = this;
-    const uuid = ctx.helper.uuidv1();
+    const crateInfo = ctx.helper.getCrateInfo({ openId, nickName });
     const billNumber = await app.getBillNumber('DG');
     const { lines = [] } = goodsOrder;
     const params = {
       goodsOrder: {
         ...goodsOrder,
-        uuid,
+        ...crateInfo,
         billNumber,
-        version: 1,
         orgUuid: merchantUuid,
-        creatorId: openId,
-        creatorName: nickName,
         customerUuid: openId,
         customerName: nickName,
-        lastModifierId: openId,
-        lastModifierName: nickName,
       },
       goodsOrderLines: lines.map((line = {}) => {
         const { goods } = line;
-        const lineUuid = ctx.helper.uuidv1();
         return {
           ...line,
           goodsUuid: goods.uuid,
           goodsCode: goods.code,
           goodsName: goods.name,
-          uuid: lineUuid,
-          billUuid: uuid,
         };
       }),
     };
 
     return await app.model.GoodsOrder.createBill(params);
+  }
+
+  /**
+   * 取消订单
+   * @param {Object} params 条件
+   * @return {String} 订单uuid
+   */
+  async cancelBill(params = {}) {
+    const { app, ctx } = this;
+    const modifyInfo = ctx.helper.getModifyInfo(params);
+    return await app.model.GoodsOrder.cancelBill({ ...params, ...modifyInfo });
   }
 }
 

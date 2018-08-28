@@ -42,6 +42,7 @@ module.exports = appInfo => {
     port: '3306',
     username: 'root',
     password: '209cfcfaf6',
+    timezone: '+08:00',
   };
 
   // redis
@@ -56,7 +57,7 @@ module.exports = appInfo => {
   };
 
   // 中间件
-  config.middleware = [ 'auth', 'errorHandler' ];
+  config.middleware = ['auth', 'errorHandler'];
 
   return config;
 };

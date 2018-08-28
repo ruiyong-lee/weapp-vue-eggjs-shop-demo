@@ -15,9 +15,10 @@ class FreightPlanService extends Service {
    */
   async getDefault(params = {}) {
     const { app } = this;
+    const { Sequelize } = app;
     const resultList = await app.model.FreightPlan.getDefault({
       ...params,
-      attributes: ['uuid', 'basicFreight', 'freeFreightAmount'],
+      attributes: ['uuid', 'basicFreight', [Sequelize.fn('ROUND', Sequelize.col('freeFreightAmount'), 2), 'freeFreightAmount']],
     });
 
     return resultList;
