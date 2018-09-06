@@ -28,8 +28,8 @@ module.exports = {
   getModifyInfo({ version, openId, nickName }) {
     return {
       version: version + 1,
-      lastModifierId: openId,
-      lastModifierName: nickName,
+      lastModifierId: openId || 'system',
+      lastModifierName: nickName || 'system',
     };
   },
 };

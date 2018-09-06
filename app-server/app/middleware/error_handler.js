@@ -11,7 +11,7 @@ module.exports = () => {
     try {
       await next();
 
-      transaction = ctx.app.getTransition();
+      transaction = await ctx.app.transition();
 
       // 如果有事务自动提交
       if (transaction) {

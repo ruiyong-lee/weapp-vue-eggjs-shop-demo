@@ -82,7 +82,7 @@ module.exports = app => {
       where: { uuid, version: version - 1 },
       fields: ['status', 'lastModifierId', 'lastModifierName'],
     });
-    app.checkUpdateVersion(result);
+    app.checkUpdate(result);
 
     return uuid;
   };

@@ -266,12 +266,23 @@ Page(Object.assign({}, ZanToast, {
       that.toPay(orderUuid)
     } else {
       that.saveOrder(function (uuid) {
+        wx.showToast({
+          title: '下单成功，但是支付功能暂未实现',
+          icon: 'success',
+          duration: 2000
+        })
+        //没做websocket，暂时先这样
+        wx.redirectTo({
+          url: '../orderDetail/orderDetail?uuid=' + uuid
+        })
         that.toPay(uuid)
       })
     }
   },
   //预支付
   toPay(orderUuid) {
+    return // to delete
+
     var that = this;
     var params = app.Http.buildParams()
     params.uuid = orderUuid

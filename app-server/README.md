@@ -12,9 +12,14 @@ app server
 
 - **mysql：** v5.5.51
 
+- **redis：** v3.2.0  需要打开配置：notify-keyspace-events Ex
+
+- **redis配置：** notify-keyspace-events Ex
+
 - **westorm：** 2018.1
 
 - **Webstorm配置：** File - Settings - Languages & Frameworks - Node.js and NPM 里面的Node.js Core library 设置成 enabled ，这样就会有代码提示
+
 
 
 ### 本地开发

@@ -54,9 +54,9 @@ class WeappController extends Controller {
       pageSize: 'int',
     };
     ctx.validate(rule);
-    const goods = await ctx.service.goodsOrder.query(ctx.request.body);
+    const goodsOrderData = await ctx.service.goodsOrder.query(ctx.request.body);
 
-    this.success(goods);
+    this.success(goodsOrderData);
   }
 
   /**
@@ -69,9 +69,9 @@ class WeappController extends Controller {
       uuid: 'string',
     };
     ctx.validate(rule);
-    const goods = await ctx.service.goodsOrder.get(uuid);
+    const goodsOrder = await ctx.service.goodsOrder.get(uuid);
 
-    this.success(goods);
+    this.success(goodsOrder);
   }
 
   /**
@@ -187,14 +187,14 @@ class WeappController extends Controller {
    * @return {Function|null} 登录结果
    */
   async login() {
-    const { ctx, app, _ } = this;
+    const { ctx, app } = this;
     const { merchantUuid, code } = ctx.request.body;
     const sessionid = ctx.helper.uuidv1();
 
     // 根据merchantUuid获取商家
     const merchant = await ctx.service.user.base.getMerchant(merchantUuid);
 
-    if (_.isEmpty(merchant)) {
+    if (app._.isEmpty(merchant)) {
       return this.fail(999, '该应用未绑定商家');
     }
 
@@ -208,7 +208,7 @@ class WeappController extends Controller {
     if (openId) {
       const result = JSON.stringify({ openId, session_key });
       // 保存openId和session_key到redis
-      await app.redis.setex(sessionid, 3600 * 24, result);
+      await app.redis.get('default').setex(sessionid, 3600 * 24, result);
     } else {
       return this.fail(999, weappInfo.data.errmsg);
     }

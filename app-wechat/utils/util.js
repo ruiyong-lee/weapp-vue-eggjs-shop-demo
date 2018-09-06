@@ -19,7 +19,6 @@ var Format = {
     var surplus = maxInterval - interval
     var minute = parseInt(surplus / 60000, 10)
     var seconds = Math.ceil((surplus % 60000) / 1000)
-    console.log(interval)
 
     return surplus >= 0 ? minute + '分' + seconds + '秒' : false
   },

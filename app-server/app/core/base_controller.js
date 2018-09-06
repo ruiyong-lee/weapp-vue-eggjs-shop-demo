@@ -1,7 +1,6 @@
 'use strict';
 
 const { Controller } = require('egg');
-const _ = require('lodash');
 
 /**
  * BaseController
@@ -9,11 +8,6 @@ const _ = require('lodash');
  * @author ruiyong-lee
  */
 class BaseController extends Controller {
-  constructor(props) {
-    super(props);
-    this._ = _;
-  }
-
   get user() {
     return this.ctx.session.user;
   }

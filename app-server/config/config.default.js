@@ -47,11 +47,19 @@ module.exports = appInfo => {
 
   // redis
   config.redis = {
-    client: {
-      host: 'localhost',
-      port: '6379',
-      password: 'ruiyong-lee',
-      db: '0',
+    clients: {
+      default: {
+        host: 'localhost',
+        port: '6379',
+        password: 'ruiyong-lee',
+        db: '0',
+      },
+      subscribe: {
+        host: 'localhost',
+        port: '6379',
+        password: 'ruiyong-lee',
+        db: '1',
+      },
     },
     agent: true,
   };

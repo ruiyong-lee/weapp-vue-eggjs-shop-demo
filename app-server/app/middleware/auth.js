@@ -10,7 +10,7 @@
 module.exports = (options, app) => {
   return async function auth(ctx, next) {
     const sessionid = ctx.get('sessionid');
-    const session = ctx.helper.JSONParse(await app.redis.get(sessionid)) || {};
+    const session = ctx.helper.JSONParse(await app.redis.get('default').get(sessionid)) || {};
     const { openId } = session;
 
     ctx.request.body.openId = openId;

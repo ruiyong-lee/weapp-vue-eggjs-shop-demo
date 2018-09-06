@@ -97,7 +97,7 @@ module.exports = app => {
       result = await Address.update(address, { where: { uuid, version: version - 1 } });
     }
 
-    app.checkUpdateVersion(result);
+    app.checkUpdate(result);
 
     return address.uuid;
   };

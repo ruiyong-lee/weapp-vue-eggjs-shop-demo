@@ -48,7 +48,7 @@ class GoodsOrderService extends Service {
     return await app.model.GoodsOrder.get({
       uuid,
       orderAttributes: [
-        'uuid', 'status', 'billNumber', 'addressUuid', 'linkMan', 'linkPhone', 'address',
+        'uuid', 'version', 'status', 'billNumber', 'addressUuid', 'linkMan', 'linkPhone', 'address',
         'deliveryTimeTypeUuid', 'deliveryTimeTypeName', 'deliveryTimeTypeRemark', 'remark',
         [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdTime'), helper.dayTimeFormat), 'createdTime'],
         [Sequelize.fn('ROUND', Sequelize.col('totalAmount'), 2), 'totalAmount'],
@@ -94,7 +94,12 @@ class GoodsOrderService extends Service {
       }),
     };
 
-    return await app.model.GoodsOrder.createBill(params);
+    const goodsUuid = await app.model.GoodsOrder.createBill(params);
+
+    // 超过30分钟自动取消订单
+    app.addDelayTask('cancelOrder', goodsUuid, {}, 30 * 60);
+
+    return goodsUuid;
   }
 
   /**
