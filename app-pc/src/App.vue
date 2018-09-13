@@ -6,21 +6,31 @@
           <icon name="menu" class="text-primary cursor-pointer" @click.native="isCollapse = !isCollapse"></icon>
         </div>
         <div class="app-header__center">
-          <div class="app-tabs">
-            <icon name="left-circle" class="tabs-icon text-primary"></icon>
-            <ul class="tabs-ul">
-              <li v-for="item in 5" class="tabs-li" :class="{active: item === 1}" :id="key" :key="item">
-                <div class="tabs-li-content">
-                  <icon name="sync" class="text-primary"></icon>
-                  <span class="tab-title">{{item}}</span>
-                  <icon name="close" class="text-primary"></icon>
-                </div>
-              </li>
-            </ul>
-            <icon name="right-circle" class="text-primary"></icon>
+          <div class="app-tab">
+            <icon name="left-circle" class="mr-15 text-primary cursor-pointer" @click.native="switchPrevTab"></icon>
+            <div class="app-tab-content" v-tab="activeTabIndex">
+              <ul class="tab-ul">
+                <li v-for="(item, index) in tabList"
+                    class="tab-li"
+                    :class="{active: index === activeTabIndex}"
+                    :id="item.name"
+                    :key="item.name">
+                  <div class="tab-li-content"
+                       :class="{'tab-li-icon__show': isTabLiIconShow && hoverTabIndex === index}"
+                       @mouseover="showTabLiIcon(index)"
+                       @mouseout="hideTabLiIcon"
+                       @click="$router.push({ name: item.name })">
+                    <span class="tab-li-title">{{item.meta && item.meta.title}}</span>
+                    <icon name="close" class="tab-li-icon text-primary" @click.native.stop="closeTab(index)"></icon>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <icon name="right-circle" class="ml-15 text-primary cursor-pointer" @click.native="switchNextTab"></icon>
           </div>
         </div>
         <div class="app-header__right">
+          <icon name="sync" class="app-refresh-btn text-primary cursor-pointer"></icon>
           <el-dropdown>
             <span>
               ruiyong.lee <icon name="user" class="text-primary"></icon>
@@ -38,7 +48,7 @@
           <el-aside class="app-aside" :width="isCollapse ? '64px' : '200px'" v-auto-windows-height="100">
             <el-menu
               class="app-menu"
-              :default-active="routeName"
+              :default-active="route.name"
               :collapse="isCollapse"
               text-color="#485a6a"
               active-text-color="#5C9ACF"
@@ -70,29 +80,110 @@
 </template>
 
 <script>
-  import { ScaleTransition } from 'vue2-transitions';
-
   export default {
-    components: {
-      ScaleTransition,
-    },
     data() {
       return {
+        isTabLiIconShow: false,
         isCollapse: false,
+        hoverTabIndex: 0,
+        activeTabIndex: 0,
+        tabList: [],
         keepAliveNamesStr: ['home', 'about'],
       };
     },
     computed: {
-      routeName() {
-        return this.$route.name;
+      route() {
+        return this.$route || {};
+      },
+    },
+    watch: {
+      route: {
+        handler(route) {
+          const exist = this.tabList.some((tab, index) => {
+            const valid = tab.name === route.name;
+            if (valid) {
+              this.activeTabIndex = index;
+            }
+            return valid;
+          });
+
+          if (!exist) {
+            this.tabList.push(route);
+            this.$nextTick(() => {
+              this.activeTabIndex = this.tabList.length - 1;
+            });
+          }
+        },
+        immediate: true,
       },
     },
     methods: {
+      // 显示tab上面的图标
+      showTabLiIcon(index) {
+        this.hoverTabIndex = index;
+        this.isTabLiIconShow = true;
+      },
+      // 隐藏tab上面的图标
+      hideTabLiIcon() {
+        this.isTabLiIconShow = false;
+      },
+      // 跳转到上一个tab
+      switchPrevTab() {
+        const { activeTabIndex } = this;
+
+        if (activeTabIndex > 0) {
+          const tab = this.tabList[activeTabIndex - 1] || {};
+          this.$router.push({ name: tab.name });
+        }
+      },
+      // 跳转到下一个tab
+      switchNextTab() {
+        const { activeTabIndex } = this;
+
+        if (activeTabIndex < this.tabList.length - 1) {
+          const tab = this.tabList[activeTabIndex + 1] || {};
+          this.$router.push({ name: tab.name });
+        }
+      },
+      // 关闭tab
+      closeTab(index) {
+        // 如果关闭当前激活的tab则自动跳转到上一个或下一个tab
+        if (this.activeTabIndex === index) {
+          if (index > 0) {
+            this.switchPrevTab();
+          } else {
+            this.switchPrevTab();
+          }
+        }
+        this.tabList.splice(index, 1);
+      },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
+      },
+    },
+    directives: {
+      tab: {
+        update(el, binding) {
+          if (binding.value !== binding.oldValue) {
+            const activeTabLiElementIndex = binding.value;
+            const tabUlElement = el.querySelector('.tab-ul');
+            const tabLiElements = tabUlElement.querySelectorAll('.tab-li');
+            const activeTabLiElement = tabLiElements[activeTabLiElementIndex];
+            const elWidth = el.offsetWidth;
+            const activeTabLiElementWidth = activeTabLiElement.offsetWidth;
+            const activeTabLiElementLeft = activeTabLiElement.offsetLeft;
+            const distance = elWidth - activeTabLiElementWidth - activeTabLiElementLeft;
+
+            if (distance < 0) {
+              tabUlElement.style.left = `${distance}px`;
+            } else if (activeTabLiElementLeft <= 0) {
+              tabUlElement.style.left = 0;
+            }
+          }
+        },
       },
     },
   };
@@ -168,12 +259,13 @@
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
     .app-header__left {
-      width: 64px;
+      flex: 0 0 64px;
       text-align: center;
     }
     .app-header__center {
       padding: 0 15px;
       flex: 1;
+      overflow-x: auto;
     }
     .app-header__right {
       text-align: right;
@@ -187,7 +279,7 @@
   }
 
   //tab
-  .app-tabs {
+  .app-tab {
     position: relative;
     display: flex;
     align-items: center;
@@ -197,40 +289,67 @@
     height: 26px;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
-    .tabs-icon {
-    }
-    .tabs-ul {
+    .app-tab-content {
+      position: relative;
       flex: 1;
-      padding: 0 15px;
       height: inherit;
       width: auto;
       white-space: nowrap;
       overflow: hidden;
       transition: all 0.3s ease-in-out;
-      .tabs-li {
-        position: relative;
-        display: inline-block;
-        margin-right: 5px;
-        padding: 0 10px;
-        height: inherit;
-        line-height: 24px;
-        color: #5C9ACF;
-        border: 1px solid #5C9ACF;
-        border-radius: 2px;
-        background-color: #fff;
-        .tabs-li-content {
-          display: flex;
-          align-items: center;
-          > span {
+      .tab-ul {
+        position: absolute;
+        left: 0;
+        transition: left 0.3s ease-in-out;
+        .tab-li {
+          position: relative;
+          display: inline-block;
+          margin-right: 5px;
+          height: inherit;
+          line-height: 26px;
+          border-radius: 2px;
+          background-color: rgba(148, 148, 148, 0.1);
+          vertical-align: middle;
+          transition: background-color 0.3s ease-in-out;
+          .tab-li-content {
+            display: flex;
+            align-items: center;
+            padding: 0 14px;
+            color: #999;
             cursor: pointer;
+            transition: all 0.3s ease-in-out;
+            .tab-li-icon {
+              width: 0;
+              height: 14px;
+              transition: all 0.3s ease-in-out;
+            }
+            &.tab-li-icon__show {
+              padding: 0 7px;
+              .tab-li-icon {
+                width: 14px;
+                color: #999;
+              }
+            }
+            .tab-li-title {
+              padding: 0 7px;
+            }
           }
           &.active {
-            color: #fff;
-            border-color: #5C9ACF;
-            background-color: #5C9ACF;
+            .tab-li-content {
+              color: #fff;
+              border-color: #5C9ACF;
+              background-color: #5C9ACF;
+              .tab-li-icon {
+                color: #fff !important;
+              }
+            }
           }
         }
       }
     }
+  }
+
+  .app-refresh-btn {
+    margin-right: 25px;
   }
 </style>

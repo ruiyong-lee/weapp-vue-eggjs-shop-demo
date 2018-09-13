@@ -18,11 +18,13 @@ export default new Router({
       path: '/',
       name: 'home',
       component: customImport('Home'),
+      meta: { title: '首页' },
     },
     {
       path: '/about',
       name: 'about',
       component: customImport('About'),
+      meta: { title: '关于' },
     },
   ],
 });
