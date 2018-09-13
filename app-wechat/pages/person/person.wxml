@@ -21,7 +21,7 @@
         <view class="weui-flex__item">
           <navigator class="person-module" url="../order/order?status=audited">
             <image class="icon-mid" src="../../images/icon/icon-audited.png"></image>
-            <view class="fs-11">已审核</view>
+            <view class="fs-11">已接单</view>
           </navigator>
         </view>
         <view class="weui-flex__item">

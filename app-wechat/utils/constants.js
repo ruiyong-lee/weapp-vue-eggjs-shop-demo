@@ -26,7 +26,7 @@ module.exports = {
   serviceErrorTip: '服务器出了点问题，请联系客服',
 
   //客服电话
-  servicePhone: '18359197148',
+  servicePhone: '13000000000',
 
   //订单
   orderTabList: [
