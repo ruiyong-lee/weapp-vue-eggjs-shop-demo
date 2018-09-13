@@ -6,9 +6,9 @@
           <icon name="menu" class="text-primary cursor-pointer" @click.native="isCollapse = !isCollapse"></icon>
         </div>
         <div class="app-header__center">
-          <div class="app-tab">
-            <icon name="left-circle" class="mr-15 text-primary cursor-pointer" @click.native="switchPrevTab"></icon>
-            <div class="app-tab-content" v-tab="activeTabIndex">
+          <div class="app-tab" v-tab="activeTabIndex">
+            <icon name="left-circle" class="switch-tab-prev mr-15" @click.native="switchPrevTab"></icon>
+            <div class="app-tab-content">
               <ul class="tab-ul">
                 <li v-for="(item, index) in tabList"
                     class="tab-li"
@@ -26,7 +26,7 @@
                 </li>
               </ul>
             </div>
-            <icon name="right-circle" class="ml-15 text-primary cursor-pointer" @click.native="switchNextTab"></icon>
+            <icon name="right-circle" class="switch-tab-next ml-15r" @click.native="switchNextTab"></icon>
           </div>
         </div>
         <div class="app-header__right">
@@ -80,6 +80,31 @@
 </template>
 
 <script>
+  const adjustTabLayout = function (el, binding) {
+    if (binding.value !== binding.oldValue) {
+      const activeTabLiElementIndex = binding.value;
+      const tabUlElement = el.querySelector('.tab-ul');
+      const switchTabPrevElement = el.querySelector('.switch-tab-prev');
+      const switchTabNextElement = el.querySelector('.switch-tab-next');
+      const tabLiElements = tabUlElement.querySelectorAll('.tab-li');
+      const activeTabLiElement = tabLiElements[activeTabLiElementIndex];
+      const elWidth = el.offsetWidth;
+      const activeTabLiElementWidth = activeTabLiElement.offsetWidth;
+      const activeTabLiElementLeft = activeTabLiElement.offsetLeft;
+      const distance = elWidth - activeTabLiElementWidth - activeTabLiElementLeft;
+
+      if (distance < 0) {
+        tabUlElement.style.left = `${distance}px`;
+        switchTabPrevElement.style.visibility = 'visible';
+        switchTabNextElement.style.visibility = 'visible';
+      } else if (activeTabLiElementLeft <= 0) {
+        tabUlElement.style.left = 0;
+        switchTabPrevElement.style.visibility = 'hidden';
+        switchTabNextElement.style.visibility = 'hidden';
+      }
+    }
+  };
+
   export default {
     data() {
       return {
@@ -166,23 +191,11 @@
     },
     directives: {
       tab: {
+        inserted(el, binding) {
+          adjustTabLayout(el, binding);
+        },
         update(el, binding) {
-          if (binding.value !== binding.oldValue) {
-            const activeTabLiElementIndex = binding.value;
-            const tabUlElement = el.querySelector('.tab-ul');
-            const tabLiElements = tabUlElement.querySelectorAll('.tab-li');
-            const activeTabLiElement = tabLiElements[activeTabLiElementIndex];
-            const elWidth = el.offsetWidth;
-            const activeTabLiElementWidth = activeTabLiElement.offsetWidth;
-            const activeTabLiElementLeft = activeTabLiElement.offsetLeft;
-            const distance = elWidth - activeTabLiElementWidth - activeTabLiElementLeft;
-
-            if (distance < 0) {
-              tabUlElement.style.left = `${distance}px`;
-            } else if (activeTabLiElementLeft <= 0) {
-              tabUlElement.style.left = 0;
-            }
-          }
+          adjustTabLayout(el, binding);
         },
       },
     },
@@ -289,6 +302,10 @@
     height: 26px;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
+    .switch-tab-prev, .switch-tab-next {
+      color: #5C9ACF;
+      cursor: pointer;
+    }
     .app-tab-content {
       position: relative;
       flex: 1;
