@@ -26,7 +26,7 @@
                 </li>
               </ul>
             </div>
-            <icon name="right-circle" class="switch-tab-next ml-15r" @click.native="switchNextTab"></icon>
+            <icon name="right-circle" class="switch-tab-next ml-15" @click.native="switchNextTab"></icon>
           </div>
         </div>
         <div class="app-header__right">
@@ -313,11 +313,11 @@
       width: auto;
       white-space: nowrap;
       overflow: hidden;
-      transition: all 0.3s ease-in-out;
+      transition: inherit;
       .tab-ul {
         position: absolute;
         left: 0;
-        transition: left 0.3s ease-in-out;
+        transition: inherit;
         .tab-li {
           position: relative;
           display: inline-block;
@@ -327,18 +327,18 @@
           border-radius: 2px;
           background-color: rgba(148, 148, 148, 0.1);
           vertical-align: middle;
-          transition: background-color 0.3s ease-in-out;
+          transition: inherit;
           .tab-li-content {
             display: flex;
             align-items: center;
             padding: 0 14px;
             color: #999;
             cursor: pointer;
-            transition: all 0.3s ease-in-out;
+            transition: inherit;
             .tab-li-icon {
               width: 0;
               height: 14px;
-              transition: all 0.3s ease-in-out;
+              transition: inherit;
             }
             &.tab-li-icon__show {
               padding: 0 7px;
