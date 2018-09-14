@@ -58,18 +58,27 @@
             >
               <el-menu-item index="home" :route="{ name: 'home' }">
                 <icon name="home" class="el-icon-v"></icon>
-                <span slot="title">home</span>
+                <span slot="title">首页</span>
               </el-menu-item>
-              <el-menu-item index="about" :route="{ name: 'about' }">
-                <i class="el-icon-menu"></i>
-                <span slot="title">about</span>
-              </el-menu-item>
+              <el-submenu index="about">
+                <template slot="title">
+                  <i class="el-icon-location"></i>
+                  <span>订单</span>
+                </template>
+                <!--<el-menu-item-group>-->
+                <!--<template slot="title">分组一</template>-->
+                <!--<el-menu-item index="1-1">选项1</el-menu-item>-->
+                <!--<el-menu-item index="1-2">选项2</el-menu-item>-->
+                <!--</el-menu-item-group>-->
+                <el-menu-item index="about" :route="{ name: 'about' }">列表</el-menu-item>
+                <el-menu-item index="order" :route="{ name: 'order' }">详情</el-menu-item>
+              </el-submenu>
             </el-menu>
           </el-aside>
         </easy-scrollbar>
         <el-main>
           <el-collapse-transition>
-            <keep-alive :include="keepAliveNamesStr">
+            <keep-alive :include="keepAliveNames">
               <router-view class="app-view"/>
             </keep-alive>
           </el-collapse-transition>
@@ -80,7 +89,7 @@
 </template>
 
 <script>
-  const adjustTabLayout = function (el, binding) {
+  const adjustTabLayout = (el, binding) => {
     if (binding.value !== binding.oldValue) {
       const activeTabLiElementIndex = binding.value;
       const tabUlElement = el.querySelector('.tab-ul');
@@ -113,7 +122,8 @@
         hoverTabIndex: 0,
         activeTabIndex: 0,
         tabList: [],
-        keepAliveNamesStr: ['home', 'about'],
+        keepAliveNames: [],
+        keepAliveNamesMap: {},
       };
     },
     computed: {
@@ -123,17 +133,56 @@
     },
     watch: {
       route: {
-        handler(route) {
-          const exist = this.tabList.some((tab, index) => {
-            const valid = tab.name === route.name;
-            if (valid) {
+        handler(currentRoute = {}, prevRoute = {}) {
+          const { name: prevRouteName, meta: prevRouteMeta = {} } = prevRoute;
+          const { name: currentRouteName, meta: currentRouteMeta = {} } = currentRoute;
+          const prevRouteNameIndex = this.keepAliveNames.indexOf(prevRouteName);
+          const prevTabKey = prevRouteMeta.tabKey;
+          const currentTabKey = currentRouteMeta.tabKey;
+          const exist = this.tabList.some((tab = {}, index) => {
+            const { meta } = tab;
+            const validTabKey = meta.tabKey === currentTabKey;
+
+            // 存在tab列表里面，则替换
+            if (validTabKey) {
               this.activeTabIndex = index;
+              this.tabList.splice(index, 1, currentRoute);
             }
-            return valid;
+            return validTabKey;
           });
 
+          // 不存在缓存列表里面，则插入
+          if (!this.keepAliveNames.includes(currentRouteName)) {
+            this.keepAliveNames.push(currentRouteName);
+            if (!this.keepAliveNamesMap[currentTabKey]) {
+              this.keepAliveNamesMap[currentTabKey] = [];
+            }
+            if (!this.keepAliveNamesMap[currentTabKey].includes(currentRouteName)) {
+              this.keepAliveNamesMap[currentTabKey].push(currentRouteName);
+            }
+          }
+
+          // 处理前一个路由
+          if (prevRouteMeta && !prevRouteMeta.isMainPage && prevTabKey === currentTabKey && prevRouteNameIndex >= 0) {
+            const index = this.keepAliveNamesMap[prevTabKey].indexOf(prevRouteName);
+            this.keepAliveNames.splice(prevRouteNameIndex, 1);
+            this.keepAliveNamesMap[prevTabKey].splice(index, 1);
+          }
+
+          // 处理当前路由，如果跳转到主页面，则清理其他相同tabKey的页面缓存
+          if (currentRouteMeta.isMainPage) {
+            this.keepAliveNamesMap[currentTabKey].forEach((name) => {
+              if (name !== currentRouteName) {
+                const index = this.keepAliveNames.indexOf(name);
+                this.keepAliveNames.splice(index, 1);
+              }
+            });
+            this.keepAliveNamesMap[currentTabKey] = [currentRouteName];
+          }
+
+          // 不存在tab列表里面，则插入
           if (!exist) {
-            this.tabList.push(route);
+            this.tabList.push(currentRoute);
             this.$nextTick(() => {
               this.activeTabIndex = this.tabList.length - 1;
             });
@@ -172,15 +221,17 @@
       },
       // 关闭tab
       closeTab(index) {
-        // 如果关闭当前激活的tab则自动跳转到上一个或下一个tab
-        if (this.activeTabIndex === index) {
-          if (index > 0) {
-            this.switchPrevTab();
-          } else {
-            this.switchPrevTab();
+        // 如果关闭当前激活的tab则自动跳转到上一个或下一个tab， 并且清除相同tabKey的所有页面缓存
+        if (this.tabList.length !== 1) {
+          if (this.activeTabIndex === index) {
+            if (index > 0) {
+              this.switchPrevTab();
+            } else {
+              this.switchNextTab();
+            }
           }
+          this.tabList.splice(index, 1);
         }
-        this.tabList.splice(index, 1);
       },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
@@ -328,6 +379,7 @@
           background-color: rgba(148, 148, 148, 0.1);
           vertical-align: middle;
           transition: inherit;
+          overflow: hidden;
           .tab-li-content {
             display: flex;
             align-items: center;
