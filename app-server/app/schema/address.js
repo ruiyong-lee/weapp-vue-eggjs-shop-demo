@@ -3,17 +3,12 @@
 module.exports = app => {
   const { STRING, BIGINT, DATE, BOOLEAN, UUIDV1 } = app.Sequelize;
 
-  return app.model.define('address', {
+  return {
     uuid: {
       type: STRING(38),
       allowNull: false,
       primaryKey: true,
       defaultValue: UUIDV1,
-    },
-    version: {
-      type: BIGINT,
-      allowNull: false,
-      defaultValue: 0,
     },
     lastModifiedTime: {
       type: DATE,
@@ -47,25 +42,16 @@ module.exports = app => {
       type: STRING(20),
       allowNull: false,
     },
-    sysDefault: {
-      type: BOOLEAN,
-      allowNull: true,
-    },
-    shopName: {
-      type: STRING(76),
-      allowNull: true,
-    },
     linkMan: {
       type: STRING(76),
       allowNull: false,
     },
     openId: {
       type: STRING(38),
-      allowNull: true,
+      allowNull: false,
     },
-  }, {
-    createdAt: 'createdTime',
-    updatedAt: 'lastModifiedTime',
-    tableName: 'address',
-  });
+    sysDefault: BOOLEAN,
+    shopName: STRING(76),
+    version: BIGINT,
+  };
 };

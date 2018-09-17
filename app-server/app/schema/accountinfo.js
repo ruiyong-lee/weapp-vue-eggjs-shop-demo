@@ -3,17 +3,12 @@
 module.exports = app => {
   const { STRING, BIGINT, DATE, UUIDV1 } = app.Sequelize;
 
-  return app.model.define('accountinfo', {
+  return {
     uuid: {
       type: STRING(38),
       allowNull: false,
       primaryKey: true,
       defaultValue: UUIDV1,
-    },
-    version: {
-      type: BIGINT,
-      allowNull: false,
-      defaultValue: 0,
     },
     lastModifiedTime: {
       type: DATE,
@@ -48,14 +43,7 @@ module.exports = app => {
       allowNull: false,
       unique: true,
     },
-    email: {
-      type: STRING(255),
-      allowNull: true,
-      unique: true,
-    },
-  }, {
-    createdAt: 'createdTime',
-    updatedAt: 'lastModifiedTime',
-    tableName: 'accountinfo',
-  });
+    email: STRING(255),
+    version: BIGINT,
+  };
 };

@@ -89,6 +89,7 @@
 </template>
 
 <script>
+  // 调整tab样式
   const adjustTabLayout = (el, binding) => {
     if (binding.value !== binding.oldValue) {
       const activeTabLiElementIndex = binding.value;
@@ -223,12 +224,25 @@
       closeTab(index) {
         // 如果关闭当前激活的tab则自动跳转到上一个或下一个tab， 并且清除相同tabKey的所有页面缓存
         if (this.tabList.length !== 1) {
+          const currentRoute = this.tabList[index] || {};
+          const { meta = {} } = currentRoute || {};
+          const { tabKey } = meta;
+
+
+          this.keepAliveNamesMap[tabKey].forEach((name) => {
+            const index = this.keepAliveNames.indexOf(name);
+            this.keepAliveNames.splice(index, 1);
+          });
+          this.keepAliveNamesMap[tabKey] = null;
+
           if (this.activeTabIndex === index) {
             if (index > 0) {
               this.switchPrevTab();
             } else {
               this.switchNextTab();
             }
+          } else if (index < this.activeTabIndex) {
+            this.activeTabIndex -= this.activeTabIndex;
           }
           this.tabList.splice(index, 1);
         }

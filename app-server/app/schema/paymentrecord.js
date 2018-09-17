@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, DECIMAL, DATE, UUIDV1 } = app.Sequelize;
+  const { STRING, BIGINT, DECIMAL, DATE, UUIDV1 } = app.Sequelize;
 
-  return app.model.define('paymentrecord', {
+  return {
     uuid: {
       type: STRING(38),
       allowNull: false,
@@ -46,9 +46,6 @@ module.exports = app => {
       type: DECIMAL,
       allowNull: true,
     },
-  }, {
-    createdAt: 'createdTime',
-    updatedAt: 'lastModifiedTime',
-    tableName: 'paymentrecord',
-  });
+    version: BIGINT,
+  };
 };

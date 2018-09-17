@@ -3,17 +3,12 @@
 module.exports = app => {
   const { STRING, BIGINT, DATE, DECIMAL, BOOLEAN, UUIDV1 } = app.Sequelize;
 
-  return app.model.define('freightplan', {
+  return {
     uuid: {
       type: STRING(38),
       allowNull: false,
       primaryKey: true,
       defaultValue: UUIDV1,
-    },
-    version: {
-      type: BIGINT,
-      allowNull: false,
-      defaultValue: 0,
     },
     lastModifiedTime: {
       type: DATE,
@@ -59,9 +54,6 @@ module.exports = app => {
       type: STRING(38),
       allowNull: true,
     },
-  }, {
-    createdAt: 'createdTime',
-    updatedAt: 'lastModifiedTime',
-    tableName: 'freightplan',
-  });
+    version: BIGINT,
+  };
 };

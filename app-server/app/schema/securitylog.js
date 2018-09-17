@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, DATE, UUIDV1 } = app.Sequelize;
+  const { STRING, BIGINT, DATE, UUIDV1 } = app.Sequelize;
 
-  return app.model.define('securitylog', {
+  return {
     uuid: {
       type: STRING(38),
       allowNull: false,
@@ -62,9 +62,6 @@ module.exports = app => {
       type: STRING(255),
       allowNull: false,
     },
-  }, {
-    createdAt: 'createdTime',
-    updatedAt: 'lastModifiedTime',
-    tableName: 'securitylog',
-  });
+    version: BIGINT,
+  };
 };

@@ -295,15 +295,14 @@ Page(Object.assign({}, ZanToast, {
       url: 'toPay.do',
       data: params,
       success(res) {
-        var data = JSON.parse(res)
         wx.hideLoading()
         //调用微信支付接口
         wx.requestPayment({
-          timeStamp: data.timeStamp,
-          nonceStr: data.nonceStr,
-          package: data.package,
+          timeStamp: res.timeStamp,
+          nonceStr: res.nonceStr,
+          package: res.package,
           signType: 'MD5',
-          paySign: data.sign,
+          paySign: res.sign,
           success: function (res) {
             wx.showToast({
               title: '支付成功',

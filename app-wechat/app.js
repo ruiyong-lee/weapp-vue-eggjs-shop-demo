@@ -77,8 +77,8 @@ App({
     var cartCheckStorage = Storage.getStorageSync('cart-check', this.Constants.getCheckFailTip) || {};
 
     for (var i = 0; i < orderLines.length; i++) {
-      var item = orderLines[i];
-      var key = item.goods.uuid;
+      var item = orderLines[i] || {};
+      var key = item.goodsUuid;
       var goods = goodsMap[key];
       //只有数目、备注和原订单一样，其他的获取最新数据
       var cartItem = {
@@ -136,7 +136,7 @@ App({
           var params = Http.buildParams()
           params.uuid = order.uuid
           params.version = order.version
-          
+
           Http.request({
             url: 'completeOrderBill.do',
             data: params,

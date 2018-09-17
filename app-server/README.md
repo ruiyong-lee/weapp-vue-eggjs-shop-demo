@@ -18,7 +18,7 @@ app server
 
 - **westorm：** 2018.1
 
-- **Webstorm配置：** File - Settings - Languages & Frameworks - Node.js and NPM 里面的Node.js Core library 设置成 enabled ，这样就会有代码提示
+- **Webstorm配置：** File - Settings - Languages & Frameworks - Node.js and NPM 里面的 coding assistance for node.js 勾选 ，这样就会有代码提示
 
 
 

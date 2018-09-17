@@ -11,6 +11,30 @@ const TRANSITION = Symbol('Application#transition');
 module.exports = {
   _,
 
+  // 定义模型
+  defineModel(name, attributes, attributes1) {
+    const attrs = {};
+
+    for (const key in attributes) {
+      const value = attributes[key];
+      if (_.isObject(value) && value.type) {
+        value.allowNull = value.allowNull && true;
+        attrs[key] = value;
+      } else {
+        attrs[key] = {
+          type: value,
+          allowNull: true,
+        };
+      }
+    }
+
+    return this.model.define(name, attrs, attributes1 || {
+      createdAt: 'createdTime',
+      updatedAt: 'lastModifiedTime',
+      version: true,
+      freezeTableName: true,
+    });
+  },
   // 事务
   async transition() {
     if (!this[TRANSITION]) {

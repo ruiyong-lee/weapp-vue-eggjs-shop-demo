@@ -1,8 +1,9 @@
 'use strict';
-const defineFreightPlanModel = require('../schema/freightplan.js');
+const db = require('../../database/db.js');
 
 module.exports = app => {
-  const FreightPlan = defineFreightPlanModel(app);
+  const freightPlanSchema = require('../schema/freightplan.js')(app);
+  const FreightPlan = db.defineModel(app, 'freightplan', freightPlanSchema);
 
   /**
    * 查找默认运费方案

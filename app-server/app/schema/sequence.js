@@ -1,9 +1,9 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, INTEGER } = app.Sequelize;
+  const { STRING, BIGINT, INTEGER } = app.Sequelize;
 
-  return app.model.define('sequence', {
+  return {
     id: {
       type: INTEGER(11),
       allowNull: false,
@@ -14,9 +14,6 @@ module.exports = app => {
       type: STRING(10),
       allowNull: false,
     },
-  }, {
-    createdAt: 'createdTime',
-    updatedAt: 'lastModifiedTime',
-    tableName: 'sequence',
-  });
+    version: BIGINT,
+  };
 };

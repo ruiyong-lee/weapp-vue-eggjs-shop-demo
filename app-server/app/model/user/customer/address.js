@@ -1,8 +1,9 @@
 'use strict';
-const defineAddressModel = require('../../../schema/address.js');
+const db = require('../../../../database/db.js');
 
 module.exports = app => {
-  const Address = defineAddressModel(app);
+  const addressSchema = require('../../../schema/address.js')(app);
+  const Address = db.defineModel(app, 'address', addressSchema);
 
   /**
    * 根据uuid获取用户地址

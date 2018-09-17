@@ -3,7 +3,7 @@
 module.exports = app => {
   const { STRING, DECIMAL, UUIDV1 } = app.Sequelize;
 
-  return app.model.define('stockoutbillline', {
+  return {
     uuid: {
       type: STRING(38),
       allowNull: false,
@@ -58,8 +58,5 @@ module.exports = app => {
       type: DECIMAL,
       allowNull: true,
     },
-  }, {
-    timestamps: false,
-    tableName: 'stockoutbillline',
-  });
+  };
 };

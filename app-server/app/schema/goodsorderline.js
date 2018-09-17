@@ -3,7 +3,7 @@
 module.exports = app => {
   const { STRING, DECIMAL, UUIDV1 } = app.Sequelize;
 
-  return app.model.define('goodsorderline', {
+  return {
     uuid: {
       type: STRING(38),
       allowNull: false,
@@ -66,8 +66,5 @@ module.exports = app => {
         key: 'uuid',
       },
     },
-  }, {
-    timestamps: false,
-    tableName: 'goodsorderline',
-  });
+  };
 };

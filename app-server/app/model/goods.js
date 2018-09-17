@@ -1,10 +1,14 @@
 'use strict';
-const defineGoodsModel = require('../schema/goods.js');
-const defineGoodsCategoryModel = require('../schema/goodscategory.js');
+const db = require('../../database/db.js');
 
 module.exports = app => {
-  const Goods = defineGoodsModel(app);
-  const Goodscategory = defineGoodsCategoryModel(app);
+  const goodsSchema = require('../schema/goods.js')(app);
+  const goodsCategorySchema = require('../schema/goodscategory.js')(app);
+  const Goods = db.defineModel(app, 'goods', goodsSchema);
+  const Goodscategory = db.defineModel(app, 'goodscategory', goodsCategorySchema, {
+    timestamps: false,
+    freezeTableName: true,
+  });
 
   // 关系
   Goodscategory.hasMany(Goods, { foreignKey: 'categoryUuid' });

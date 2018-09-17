@@ -3,17 +3,12 @@
 module.exports = app => {
   const { STRING, BIGINT, DATE, UUIDV1 } = app.Sequelize;
 
-  return app.model.define('admin', {
+  return {
     uuid: {
       type: STRING(38),
       allowNull: false,
       primaryKey: true,
       defaultValue: UUIDV1,
-    },
-    version: {
-      type: BIGINT,
-      allowNull: false,
-      defaultValue: 0,
     },
     lastModifiedTime: {
       type: DATE,
@@ -47,10 +42,6 @@ module.exports = app => {
       type: STRING(38),
       allowNull: true,
     },
-    disabledReason: {
-      type: STRING(255),
-      allowNull: true,
-    },
     registerPlatform: {
       type: STRING(20),
       allowNull: true,
@@ -64,14 +55,6 @@ module.exports = app => {
       type: STRING(20),
       allowNull: false,
     },
-    authenticateStatus: {
-      type: STRING(20),
-      allowNull: false,
-    },
-    authenticateFailedReason: {
-      type: STRING(255),
-      allowNull: true,
-    },
     remark: {
       type: STRING(255),
       allowNull: true,
@@ -84,9 +67,6 @@ module.exports = app => {
       type: STRING(20),
       allowNull: false,
     },
-  }, {
-    createdAt: 'createdTime',
-    updatedAt: 'lastModifiedTime',
-    tableName: 'admin',
-  });
+    version: BIGINT,
+  };
 };

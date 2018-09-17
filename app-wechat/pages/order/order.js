@@ -103,7 +103,7 @@ Page(Object.assign({}, ZanTab, {
       url: 'getOrderBill',
       data: params,
       success(res) {
-        return typeof cb === "function" && cb(JSON.parse(res) || null)
+        return typeof cb === "function" && cb(res || null)
       }
     })
   },

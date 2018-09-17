@@ -1,8 +1,9 @@
 'use strict';
-const defineDeliveryTimeTypeModel = require('../schema/deliverytimetype.js');
+const db = require('../../database/db.js');
 
 module.exports = app => {
-  const DeliveryTimeType = defineDeliveryTimeTypeModel(app);
+  const deliveryTimeTypeSchema = require('../schema/deliverytimetype.js')(app);
+  const DeliveryTimeType = db.defineModel(app, 'deliverytimetype', deliveryTimeTypeSchema);
 
   /**
    * 查找收货时间
