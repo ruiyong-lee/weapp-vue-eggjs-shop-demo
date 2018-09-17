@@ -35,11 +35,11 @@ module.exports = {
           createdTime: new Date(),
           creatorName: 'system',
           creatorId: 'system',
-          name: '超级管理员',
+          name: '管理员',
           registerPlatform: 'service',
           accountInfoUuid,
           enableStatus: 'enabled',
-          userType: 'superAdmin',
+          userType: 'admin',
           version: 0,
         }]);
         await queryInterface.bulkInsert('accountinfo', [{
@@ -50,8 +50,8 @@ module.exports = {
           createdTime: new Date(),
           creatorName: 'system',
           creatorId: 'system',
-          password: new Date(),
-          userName: 'superAdmin',
+          password: '21232f297a57a5a743894a0e4a801fc3', // admin
+          userName: 'admin',
           version: 0,
         }]);
       } catch (e) {
