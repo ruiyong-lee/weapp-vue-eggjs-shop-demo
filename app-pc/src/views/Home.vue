@@ -14,5 +14,11 @@ export default {
   components: {
     HelloWorld,
   },
+  mounted() {
+    this.$api.getUserInfo(this.loginForm).then((res) => {
+      console.log(res);
+    }).catch(() => {
+    });
+  },
 };
 </script>

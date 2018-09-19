@@ -14,6 +14,7 @@
     "fecha": "^2.3.3",
     "lodash": "^4.17.10",
     "vue": "^2.5.17",
+    "vue-cookie": "^1.1.4",
     "vue-router": "^3.0.1",
     "vue-svg-icon": "^1.2.9",
     "vue2-transitions": "^0.2.3",

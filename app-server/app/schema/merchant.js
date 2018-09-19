@@ -38,17 +38,9 @@ module.exports = app => {
       type: STRING(76),
       allowNull: false,
     },
-    accountInfoUuid: {
-      type: STRING(38),
-      allowNull: true,
-    },
     enableStatus: {
       type: STRING(20),
       allowNull: false,
-    },
-    registerPlatform: {
-      type: STRING(20),
-      allowNull: true,
     },
     remark: {
       type: STRING(255),
@@ -56,10 +48,6 @@ module.exports = app => {
     },
     registerIP: {
       type: STRING(15),
-      allowNull: true,
-    },
-    sessionId: {
-      type: STRING(38),
       allowNull: true,
     },
     address: {
@@ -80,6 +68,15 @@ module.exports = app => {
     },
     userType: {
       type: STRING(20),
+      allowNull: false,
+    },
+    userName: {
+      type: STRING(12),
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: STRING(100),
       allowNull: false,
     },
     linkPhone: {

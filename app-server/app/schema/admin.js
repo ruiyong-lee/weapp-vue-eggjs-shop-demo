@@ -46,11 +46,6 @@ module.exports = app => {
       type: STRING(20),
       allowNull: true,
     },
-    accountInfoUuid: {
-      type: STRING(38),
-      allowNull: true,
-      unique: true,
-    },
     enableStatus: {
       type: STRING(20),
       allowNull: false,
@@ -65,6 +60,15 @@ module.exports = app => {
     },
     userType: {
       type: STRING(20),
+      allowNull: false,
+    },
+    userName: {
+      type: STRING(12),
+      allowNull: false,
+      unique: true,
+    },
+    password: {
+      type: STRING(100),
       allowNull: false,
     },
     version: BIGINT,

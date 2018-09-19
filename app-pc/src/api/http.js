@@ -1,5 +1,11 @@
 // axios封装
 import axios from 'axios';
+import Vue from 'vue';
+import VueCookie from 'vue-cookie';
+import { MessageBox } from 'element-ui';
+import router from '../router';
+
+Vue.use(VueCookie);
 
 // 环境的切换
 // if (process.env.NODE_ENV === 'development') {
@@ -25,15 +31,39 @@ axios.interceptors.request.use(
 // 响应拦截器
 axios.interceptors.response.use(
   (response) => {
-    if (response.status === 200) {
-      // TODO
-      return Promise.resolve(response);
-    }
+    const { data: responseData } = response;
+    const { errorCode, message } = responseData;
 
-    return Promise.reject(response);
+    if (errorCode !== 0) {
+      MessageBox.alert(message, '提示', {
+        type: 'warning',
+      });
+      return Promise.reject(response);
+    }
+    return Promise.resolve(responseData);
   },
   // 服务器状态码不是200的情况
-  error => Promise.reject(error.response),
+  (error) => {
+    const { response } = error;
+    const { status, data = {} } = response || {};
+
+    switch (status) {
+      case 401:
+        // 未登录或过期
+        router.replace({ name: 'login' });
+        break;
+      case 500:
+        MessageBox.alert('服务器出错', '提示', {
+          type: 'error',
+        });
+        break;
+      default:
+        MessageBox.alert(data.message, '提示', {
+          type: 'error',
+        });
+    }
+    return Promise.reject(response);
+  },
 );
 
 // get方法
@@ -43,8 +73,8 @@ export function get(url, params) {
       params,
     }).then((res) => {
       resolve(res.data);
-    }).catch((err) => {
-      reject(err.data);
+    }).catch((err = {}) => {
+      reject(err);
     });
   });
 }
@@ -52,10 +82,10 @@ export function get(url, params) {
 // post方法
 export function post(url, params) {
   return new Promise((resolve, reject) => {
-    axios.post(url, JSON.stringify(params)).then((res) => {
+    axios.post(url, params).then((res) => {
       resolve(res.data);
-    }).catch((err) => {
-      reject(err.data);
+    }).catch((err = {}) => {
+      reject(err);
     });
   });
 }

@@ -1,13 +1,7 @@
 // api封装
-import { get, post } from './http.js';
+import { get, post } from './http';
 
 export default {
-  // 首页
-  test: params => get('1/2', params), // 测试
-
-  // 蚂蚁地推
-  test2: params => post('1/2', params), // 测试
-
-  // 推广
-  // 我的
+  login: params => post('user/login', params), // 登录
+  getUserInfo: params => post('user/get', params), // 获取用户信息
 };

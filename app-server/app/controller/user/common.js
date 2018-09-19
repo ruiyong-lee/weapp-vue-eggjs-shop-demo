@@ -1,185 +1,27 @@
 'use strict';
 
+const md5 = require('md5');
 const Controller = require('../../core/base_controller');
 
 /**
- * Controller - 微信小程序
+ * Controller - user common
  * @class
  * @author ruiyong-lee
  */
-class WeappController extends Controller {
+class UserCommonController extends Controller {
   /**
-   * 获取类别和商品列表
+   * 获取用户信息
    */
-  async getGoods() {
+  async getUserInfo() {
     const { ctx } = this;
-    const { merchantUuid } = ctx.request.body;
+    const { userUuid } = ctx.request.body;
     const rule = {
-      merchantUuid: 'string',
+      userUuid: 'string',
     };
     ctx.validate(rule);
-    const goods = await ctx.service.goods.getGoods(merchantUuid);
+    const user = await ctx.service.user.common.getAdmin(userUuid);
 
-    this.success(goods);
-  }
-
-  /**
-   * 获取商家运费方案
-   */
-  async getDefaultFreightPlan() {
-    const { ctx } = this;
-    const freightPlan = await ctx.service.freightPlan.getDefault(ctx.request.body);
-
-    this.success(freightPlan);
-  }
-
-  /**
-   * 获取收货时间列表
-   */
-  async getDeliveryTimeTypeList() {
-    const { ctx } = this;
-    const list = await ctx.service.deliveryTimeType.getList(ctx.request.body);
-
-    this.success(list);
-  }
-
-  /**
-   * 获取订单列表
-   */
-  async queryOrderBill() {
-    const { ctx } = this;
-    const rule = {
-      merchantUuid: 'string',
-      page: { type: 'int', min: 1 },
-      pageSize: 'int',
-    };
-    ctx.validate(rule);
-    const goodsOrderData = await ctx.service.goodsOrder.query(ctx.request.body);
-
-    this.success(goodsOrderData);
-  }
-
-  /**
-   * 获取订单详情
-   */
-  async getOrderBill() {
-    const { ctx } = this;
-    const { uuid } = ctx.request.body;
-    const rule = {
-      uuid: 'string',
-    };
-    ctx.validate(rule);
-    const goodsOrder = await ctx.service.goodsOrder.get(uuid);
-
-    this.success(goodsOrder);
-  }
-
-  /**
-   * 创建订单
-   */
-  async createBill() {
-    const { ctx } = this;
-    const rule = {
-      goodsOrder: 'object',
-    };
-    ctx.validate(rule);
-    const uuid = await ctx.service.goodsOrder.createBill(ctx.request.body);
-
-    this.success(uuid);
-  }
-
-  /**
-   * 取消订单
-   */
-  async cancelBill() {
-    const { ctx } = this;
-    const rule = {
-      uuid: 'string',
-      version: 'number',
-    };
-    ctx.validate(rule);
-    const uuid = await ctx.service.goodsOrder.cancelBill(ctx.request.body);
-
-    this.success(uuid);
-  }
-
-  /**
-   * 根据uuid获取用户地址
-   */
-  async getAddress() {
-    const { ctx } = this;
-    const { uuid } = ctx.request.body;
-    const address = await ctx.service.user.customer.address.get(uuid);
-
-    this.success(address);
-  }
-
-  /**
-   * 获取用户默认地址
-   */
-  async getDefaultAddress() {
-    const { ctx } = this;
-    const address = await ctx.service.user.customer.address.getDefault(ctx.request.body);
-
-    this.success(address);
-  }
-
-  /**
-   * 设置用户默认地址
-   */
-  async setDefaultAddress() {
-    const { ctx } = this;
-    const uuid = await ctx.service.user.customer.address.setDefault(ctx.request.body);
-
-    this.success(uuid);
-  }
-
-  /**
-   * 删除用户地址
-   */
-  async deleteAddress() {
-    const { ctx } = this;
-    const uuid = await ctx.service.user.customer.address.delete(ctx.request.body);
-
-    this.success(uuid);
-  }
-
-  /**
-   * 获取用户地址列表
-   */
-  async getAddressList() {
-    const { ctx } = this;
-    const addressList = await ctx.service.user.customer.address.getList(ctx.request.body);
-
-    this.success(addressList);
-  }
-
-  /**
-   * 新增用户地址
-   */
-  async saveNewAddress() {
-    const { ctx } = this;
-    const rule = {
-      address: 'object',
-    };
-    ctx.validate(rule);
-    const uuid = await ctx.service.user.customer.address.saveNew(ctx.request.body);
-
-    this.success(uuid);
-  }
-
-  /**
-   * 修改用户地址
-   */
-  async saveModifyAddress() {
-    const { ctx } = this;
-    const rule = {
-      address: 'object',
-    };
-    ctx.validate(rule);
-    const uuid = await ctx.service.user.customer.address.saveModify(ctx.request.body);
-
-    this.success(uuid);
+    this.success(user);
   }
 
   /**
@@ -188,33 +30,25 @@ class WeappController extends Controller {
    */
   async login() {
     const { ctx, app } = this;
-    const { merchantUuid, code } = ctx.request.body;
-    const sessionid = ctx.helper.uuidv1();
+    const { userName, password } = ctx.request.body;
+    let user;
 
-    // 根据merchantUuid获取商家
-    const merchant = await ctx.service.user.common.getMerchant(merchantUuid);
-
-    if (app._.isEmpty(merchant)) {
-      return this.fail(999, '该应用未绑定商家');
-    }
-
-    // 登录凭证校验
-    const weappInfo = await ctx.curl(`https://api.weixin.qq.com/sns/jscode2session?appid=${merchant.appId}&secret=${merchant.appSecret}&js_code=${code}&grant_type=authorization_code`, {
-      dataType: 'json',
-    }) || {};
-
-    const { openid: openId, session_key } = weappInfo.data || {};
-
-    if (openId) {
-      const result = JSON.stringify({ openId, session_key });
-      // 保存openId和session_key到redis
-      await app.redis.get('default').setex(sessionid, 3600 * 24, result);
+    if (userName === 'admin') {
+      // 根据userName获取管理员
+      user = await ctx.service.user.common.getAdminByLogin(userName, md5(password));
     } else {
-      return this.fail(999, weappInfo.data.errmsg);
+      // 根据userName获取商家
+      user = await ctx.service.user.common.getMerchantByLogin(userName, md5(password));
     }
 
-    this.success(sessionid);
+    if (app._.isEmpty(user)) {
+      return this.fail(999, '账号或密码错误');
+    }
+
+    const { uuid: userUuid } = user;
+    ctx.setToken({ userUuid, userName });
+    this.success({ userUuid, userName });
   }
 }
 
-module.exports = WeappController;
+module.exports = UserCommonController;

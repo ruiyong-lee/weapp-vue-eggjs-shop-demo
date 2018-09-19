@@ -27,3 +27,13 @@ exports.validate = {
   enable: true,
   package: 'egg-validate',
 };
+
+exports.jwt = {
+  enable: true,
+  package: 'egg-jwt',
+};
+
+exports.passport = {
+  enable: true,
+  package: 'egg-passport',
+};

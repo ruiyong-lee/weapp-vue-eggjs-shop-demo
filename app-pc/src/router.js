@@ -36,5 +36,11 @@ export default new Router({
       component: customImport('Order'),
       meta: { title: '订单 • 详情', tabKey: 'about' },
     },
+    {
+      path: '/login',
+      name: 'login',
+      component: customImport('Login'),
+      meta: { title: '登录', tabKey: 'login' },
+    },
   ],
 });

@@ -9,7 +9,7 @@ module.exports = appInfo => {
   // 小程序只能存storage，关闭csrf
   config.security = {
     csrf: {
-      ignore: '/weapp',
+      enable: false,
     },
   };
 
@@ -60,8 +60,24 @@ module.exports = appInfo => {
         password: 'ruiyong-lee',
         db: '1',
       },
+      session: {
+        host: 'localhost',
+        port: '6379',
+        password: 'ruiyong-lee',
+        db: '2',
+      },
     },
     agent: true,
+  };
+
+  exports.sessionRedis = {
+    name: 'session', // specific instance `session` as the session store
+  };
+
+  // jwt
+  exports.jwt = {
+    secret: '123456',
+    // ignore: '/weapp',
   };
 
   // 中间件

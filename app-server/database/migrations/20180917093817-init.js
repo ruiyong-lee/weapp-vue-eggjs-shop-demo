@@ -7,57 +7,36 @@ const uuidv1 = require('uuid/v1');
 
 module.exports = {
   up: async (queryInterface, Sequelize) => {
-    // 初始化数据库
-    const adminUuid = uuidv1();
-    const accountInfoUuid = uuidv1();
+    try {
+      const files = fs.readdirSync(folderPath);
 
-    fs.readdir(folderPath, async (err, files) => {
-      const files1 = files.filter(file => !file.includes('line'));
-      const files2 = files.filter(file => file.includes('line'));
-
-      [...files1, ...files2].forEach(async fileName => {
-        try {
-          const filePath = path.join('../../app/schema/', fileName);
-          const schema = require(filePath)({ Sequelize });
-          await queryInterface.createTable(fileName.replace('.js', ''), schema);
-        } catch (e) {
-          console.log(e);
-        }
-      });
+      // 初始化数据库
+      for (const fileName of files) {
+        const filePath = path.join('../../app/schema/', fileName);
+        const schema = require(filePath)({ Sequelize });
+        await queryInterface.createTable(fileName.replace('.js', ''), schema);
+      }
 
       // 添加管理员
-      try {
-        await queryInterface.bulkInsert('admin', [{
-          uuid: adminUuid,
-          lastModifiedTime: new Date(),
-          lastModifierName: 'system',
-          lastModifierId: 'system',
-          createdTime: new Date(),
-          creatorName: 'system',
-          creatorId: 'system',
-          name: '管理员',
-          registerPlatform: 'service',
-          accountInfoUuid,
-          enableStatus: 'enabled',
-          userType: 'admin',
-          version: 0,
-        }]);
-        await queryInterface.bulkInsert('accountinfo', [{
-          uuid: accountInfoUuid,
-          lastModifiedTime: new Date(),
-          lastModifierName: 'system',
-          lastModifierId: 'system',
-          createdTime: new Date(),
-          creatorName: 'system',
-          creatorId: 'system',
-          password: '21232f297a57a5a743894a0e4a801fc3', // admin
-          userName: 'admin',
-          version: 0,
-        }]);
-      } catch (e) {
-        console.log(e);
-      }
-    });
+      await queryInterface.bulkInsert('admin', [{
+        uuid: uuidv1(),
+        lastModifiedTime: new Date(),
+        lastModifierName: 'system',
+        lastModifierId: 'system',
+        createdTime: new Date(),
+        creatorName: 'system',
+        creatorId: 'system',
+        name: '管理员',
+        registerPlatform: 'service',
+        enableStatus: 'enabled',
+        userType: 'admin',
+        userName: 'admin',
+        password: '21232f297a57a5a743894a0e4a801fc3', // admin
+        version: 0,
+      }]);
+    } catch (e) {
+      console.log(e);
+    }
   },
 
   down: async (queryInterface, Sequelize) => {

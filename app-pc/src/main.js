@@ -14,8 +14,8 @@ import './styles/common.scss';
 
 Vue.use(Element);
 Vue.use(EasyScroll);
-Vue.component('icon', Icon);
 Vue.use(_);
+Vue.component('icon', Icon);
 Vue.prototype.$api = api;
 
 Vue.config.productionTip = false;

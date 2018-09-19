@@ -7,8 +7,9 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  const { weapp } = controller;
+  const { weapp, user } = controller;
 
+  // 微信小程序
   router.post('/weapp/getGoods', weapp.getGoods);
   router.post('/weapp/getDefaultFreightPlan', weapp.getDefaultFreightPlan);
   router.post('/weapp/getDeliveryTimeTypeList', weapp.getDeliveryTimeTypeList);
@@ -24,4 +25,8 @@ module.exports = app => {
   router.post('/weapp/saveNewAddress', weapp.saveNewAddress);
   router.post('/weapp/saveModifyAddress', weapp.saveModifyAddress);
   router.post('/weapp/login', weapp.login);
+
+  // 管理端
+  router.post('/user/login', user.common.login);
+  router.post('/user/get', user.common.getUserInfo);
 };

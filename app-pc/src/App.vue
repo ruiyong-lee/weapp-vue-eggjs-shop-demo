@@ -79,7 +79,7 @@
         <el-main>
           <el-collapse-transition>
             <keep-alive :include="keepAliveNames">
-              <router-view class="app-view"/>
+              <router-view class="app-view" :class="{'app-login': route.name === 'login'}"/>
             </keep-alive>
           </el-collapse-transition>
         </el-main>
@@ -99,18 +99,21 @@
       const tabLiElements = tabUlElement.querySelectorAll('.tab-li');
       const activeTabLiElement = tabLiElements[activeTabLiElementIndex];
       const elWidth = el.offsetWidth;
-      const activeTabLiElementWidth = activeTabLiElement.offsetWidth;
-      const activeTabLiElementLeft = activeTabLiElement.offsetLeft;
-      const distance = elWidth - activeTabLiElementWidth - activeTabLiElementLeft;
 
-      if (distance < 0) {
-        tabUlElement.style.left = `${distance}px`;
-        switchTabPrevElement.style.visibility = 'visible';
-        switchTabNextElement.style.visibility = 'visible';
-      } else if (activeTabLiElementLeft <= 0) {
-        tabUlElement.style.left = 0;
-        switchTabPrevElement.style.visibility = 'hidden';
-        switchTabNextElement.style.visibility = 'hidden';
+      if (activeTabLiElement) {
+        const activeTabLiElementWidth = activeTabLiElement.offsetWidth;
+        const activeTabLiElementLeft = activeTabLiElement.offsetLeft;
+        const distance = elWidth - activeTabLiElementWidth - activeTabLiElementLeft;
+
+        if (distance < 0) {
+          tabUlElement.style.left = `${distance}px`;
+          switchTabPrevElement.style.visibility = 'visible';
+          switchTabNextElement.style.visibility = 'visible';
+        } else if (activeTabLiElementLeft <= 0) {
+          tabUlElement.style.left = 0;
+          switchTabPrevElement.style.visibility = 'hidden';
+          switchTabNextElement.style.visibility = 'hidden';
+        }
       }
     }
   };
@@ -137,56 +140,59 @@
         handler(currentRoute = {}, prevRoute = {}) {
           const { name: prevRouteName, meta: prevRouteMeta = {} } = prevRoute;
           const { name: currentRouteName, meta: currentRouteMeta = {} } = currentRoute;
-          const prevRouteNameIndex = this.keepAliveNames.indexOf(prevRouteName);
-          const prevTabKey = prevRouteMeta.tabKey;
-          const currentTabKey = currentRouteMeta.tabKey;
-          const exist = this.tabList.some((tab = {}, index) => {
-            const { meta } = tab;
-            const validTabKey = meta.tabKey === currentTabKey;
 
-            // 存在tab列表里面，则替换
-            if (validTabKey) {
-              this.activeTabIndex = index;
-              this.tabList.splice(index, 1, currentRoute);
-            }
-            return validTabKey;
-          });
+          if (currentRouteName !== 'login') {
+            const prevRouteNameIndex = this.keepAliveNames.indexOf(prevRouteName);
+            const prevTabKey = prevRouteMeta.tabKey;
+            const currentTabKey = currentRouteMeta.tabKey;
+            const exist = this.tabList.some((tab = {}, index) => {
+              const { meta } = tab;
+              const validTabKey = meta.tabKey === currentTabKey;
 
-          // 不存在缓存列表里面，则插入
-          if (!this.keepAliveNames.includes(currentRouteName)) {
-            this.keepAliveNames.push(currentRouteName);
-            if (!this.keepAliveNamesMap[currentTabKey]) {
-              this.keepAliveNamesMap[currentTabKey] = [];
-            }
-            if (!this.keepAliveNamesMap[currentTabKey].includes(currentRouteName)) {
-              this.keepAliveNamesMap[currentTabKey].push(currentRouteName);
-            }
-          }
-
-          // 处理前一个路由
-          if (prevRouteMeta && !prevRouteMeta.isMainPage && prevTabKey === currentTabKey && prevRouteNameIndex >= 0) {
-            const index = this.keepAliveNamesMap[prevTabKey].indexOf(prevRouteName);
-            this.keepAliveNames.splice(prevRouteNameIndex, 1);
-            this.keepAliveNamesMap[prevTabKey].splice(index, 1);
-          }
-
-          // 处理当前路由，如果跳转到主页面，则清理其他相同tabKey的页面缓存
-          if (currentRouteMeta.isMainPage) {
-            this.keepAliveNamesMap[currentTabKey].forEach((name) => {
-              if (name !== currentRouteName) {
-                const index = this.keepAliveNames.indexOf(name);
-                this.keepAliveNames.splice(index, 1);
+              // 存在tab列表里面，则替换
+              if (validTabKey) {
+                this.activeTabIndex = index;
+                this.tabList.splice(index, 1, currentRoute);
               }
+              return validTabKey;
             });
-            this.keepAliveNamesMap[currentTabKey] = [currentRouteName];
-          }
 
-          // 不存在tab列表里面，则插入
-          if (!exist) {
-            this.tabList.push(currentRoute);
-            this.$nextTick(() => {
-              this.activeTabIndex = this.tabList.length - 1;
-            });
+            // 不存在缓存列表里面，则插入
+            if (!this.keepAliveNames.includes(currentRouteName)) {
+              this.keepAliveNames.push(currentRouteName);
+              if (!this.keepAliveNamesMap[currentTabKey]) {
+                this.keepAliveNamesMap[currentTabKey] = [];
+              }
+              if (!this.keepAliveNamesMap[currentTabKey].includes(currentRouteName)) {
+                this.keepAliveNamesMap[currentTabKey].push(currentRouteName);
+              }
+            }
+
+            // 处理前一个路由
+            if (prevRouteMeta && !prevRouteMeta.isMainPage && prevTabKey === currentTabKey && prevRouteNameIndex >= 0) {
+              const index = this.keepAliveNamesMap[prevTabKey].indexOf(prevRouteName);
+              this.keepAliveNames.splice(prevRouteNameIndex, 1);
+              this.keepAliveNamesMap[prevTabKey].splice(index, 1);
+            }
+
+            // 处理当前路由，如果跳转到主页面，则清理其他相同tabKey的页面缓存
+            if (currentRouteMeta.isMainPage) {
+              this.keepAliveNamesMap[currentTabKey].forEach((name) => {
+                if (name !== currentRouteName) {
+                  const index = this.keepAliveNames.indexOf(name);
+                  this.keepAliveNames.splice(index, 1);
+                }
+              });
+              this.keepAliveNamesMap[currentTabKey] = [currentRouteName];
+            }
+
+            // 不存在tab列表里面，则插入
+            if (!exist) {
+              this.tabList.push(currentRoute);
+              this.$nextTick(() => {
+                this.activeTabIndex = this.tabList.length - 1;
+              });
+            }
           }
         },
         immediate: true,
@@ -230,8 +236,8 @@
 
 
           this.keepAliveNamesMap[tabKey].forEach((name) => {
-            const index = this.keepAliveNames.indexOf(name);
-            this.keepAliveNames.splice(index, 1);
+            const keepAliveNameIndex = this.keepAliveNames.indexOf(name);
+            this.keepAliveNames.splice(keepAliveNameIndex);
           });
           this.keepAliveNamesMap[tabKey] = null;
 
@@ -354,6 +360,18 @@
     padding: 15px;
     border-radius: 6px;
     background-color: #fff;
+    &.app-login {
+      position: fixed;
+      z-index: 2000;
+      top: 0;
+      left: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 0;
+      overflow: hidden;
+      background: linear-gradient(to bottom right, #FF5B5B, #5C9ACF);
+    }
   }
 
   //tab
