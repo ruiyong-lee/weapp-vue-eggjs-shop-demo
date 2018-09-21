@@ -1,12 +1,20 @@
 # weapp-eggjs-shop-demo
 
-**适用于日用品、干货等商城，后台管理+微信小程序**
+**适用于日用品、干货等商城，后台管理 + 微信小程序**
 
 **您的 `星星` 和 `建议` 是我的动力 :blush::blush::blush:**
 
-**后端代码用的是 `node.js`，用阿里的 `egg.js` 框架，写法有错误之处请批评指正**
+## 技术栈
 
-暂时还有没有管理端，正在开发，小程序的代码写法有点旧，之后有时间修改，暂时不打算建分支和tag
+前端：vue2 + vuex + vue-router + vue-cli3 + ES6
+
+后端：node + egg.js + ES6
+
+**写法有错误之处请批评指正**
+
+管理端正在开发，小程序的代码写法有点旧，之后有时间修改，暂时不打算建分支和tag
+
+## 接口
 
 > **小程序接口**：
 
@@ -31,12 +39,15 @@
 
 > **pc管理端接口**：
 
-##### 本地搭建步骤
+✔ 登录&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 新增商家&nbsp;&nbsp;&nbsp;&nbsp;
+
+## 项目本地运行
 ```
 补充中...
 ```
 
-##### 目录结构
+## 目录结构
 
 ```
 .
@@ -48,6 +59,6 @@
 
 ***
 
-### 非常感谢以下开源项目或作者：
+## 非常感谢以下开源项目或作者：
 
 [**weui-wxss**](https://github.com/Tencent/weui-wxss) | [**zanui-weapp**](https://github.com/youzan/zanui-weapp) | [**nodejs**](https://github.com/nodejs) | [**egg**](https://github.com/eggjs/egg) | [**koajs**](https://github.com/koajs) | [**ESLint**](https://github.com/eslint) | [**mysql**](https://github.com/mysqljs/mysql) | [**sequelize**](https://github.com/sequelize/sequelize) | [**lodash**](https://github.com/lodash/lodash)
