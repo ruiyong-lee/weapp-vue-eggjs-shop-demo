@@ -1,5 +1,6 @@
 'use strict';
 const _ = require('lodash');
+const fecha = require('fecha');
 
 const handlers = {}; // 任务处理器map
 const events = {}; // 任务类型map
@@ -10,6 +11,34 @@ const TRANSITION = Symbol('Application#transition');
 
 module.exports = {
   _,
+  dayFormat: '%Y-%m-%d',
+  dayTimeFormat: '%Y-%m-%d %H:%i:%s',
+
+  // 日期格式化
+  formatToDay(date) {
+    return fecha.format(date, 'YYYY-MM-DD');
+  },
+  formatToDayTime(date) {
+    return fecha.format(date, 'YYYY-MM-DD HH:mm:ss');
+  },
+
+  // create所需的一些公共字段
+  getCrateInfo(creatorId, creatorName) {
+    return {
+      creatorId,
+      creatorName,
+      lastModifierId: creatorId,
+      lastModifierName: creatorName,
+    };
+  },
+  // modify所需的一些公共字段
+  getModifyInfo({ version, openId, nickName }) {
+    return {
+      version: version + 1,
+      lastModifierId: openId || 'system',
+      lastModifierName: nickName || 'system',
+    };
+  },
 
   // 事务
   async transition() {

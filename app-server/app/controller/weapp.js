@@ -192,7 +192,7 @@ class WeappController extends Controller {
     const sessionid = ctx.helper.uuidv1();
 
     // 根据merchantUuid获取商家
-    const merchant = await ctx.service.user.common.getMerchant(merchantUuid);
+    const merchant = await ctx.service.user.merchant.getMerchant(merchantUuid);
 
     if (app._.isEmpty(merchant)) {
       return this.fail(999, '该应用未绑定商家');

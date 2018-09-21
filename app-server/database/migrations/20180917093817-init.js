@@ -27,9 +27,8 @@ module.exports = {
         creatorName: 'system',
         creatorId: 'system',
         name: '管理员',
-        registerPlatform: 'service',
         enableStatus: 'enabled',
-        userType: 'admin',
+        userType: 'superAdmin',
         userName: 'admin',
         password: '21232f297a57a5a743894a0e4a801fc3', // admin
         version: 0,
@@ -39,13 +38,8 @@ module.exports = {
     }
   },
 
-  down: async (queryInterface, Sequelize) => {
-    /*
-      Add reverting commands here.
-      Return a promise to correctly handle asynchronicity.
-
-      Example:
-      return queryInterface.dropTable('users');
-    */
+  down: async queryInterface => {
+    // 删除所有表
+    await queryInterface.dropAllTables();
   },
 };

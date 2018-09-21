@@ -80,12 +80,12 @@ class AddressService extends Service {
   /**
    * 新增用户地址
    * @param {Object} params 条件
-   * @return {String|Null} 查找结果
+   * @return {String|Null} 用户地址uuid
    */
   async saveNew(params = {}) {
-    let { address, openId } = params;
-    const { app, ctx } = this;
-    const crateInfo = ctx.helper.getCrateInfo(params);
+    let { address, openId, nickName } = params;
+    const { app } = this;
+    const crateInfo = app.getCrateInfo(openId, nickName);
 
     address = { ...address, ...crateInfo, openId };
 
@@ -99,9 +99,9 @@ class AddressService extends Service {
    */
   async saveModify(params = {}) {
     let { address } = params;
-    const { app, ctx } = this;
+    const { app } = this;
     const { version } = address;
-    const modifyInfo = ctx.helper.getModifyInfo({ version, ...params });
+    const modifyInfo = app.getModifyInfo({ version, ...params });
 
     address = { ...address, ...modifyInfo };
 

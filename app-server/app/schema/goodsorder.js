@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, BIGINT, DATE, DECIMAL, UUIDV1 } = app.Sequelize;
+  const { STRING, BIGINT, DATE, DECIMAL, UUIDV1, ENUM } = app.Sequelize;
 
   return {
     uuid: {
@@ -42,10 +42,8 @@ module.exports = app => {
       type: STRING(20),
       allowNull: true,
     },
-    status: {
-      type: STRING(20),
-      allowNull: true,
-    },
+    // initial: '待处理', audited: '已接单', dispatching: '配送中', completed: '已完成', canceled: '已取消'
+    status: ENUM('initial', 'audited', 'dispatching', 'completed', 'canceled'),
     addressUuid: {
       type: STRING(38),
       allowNull: false,

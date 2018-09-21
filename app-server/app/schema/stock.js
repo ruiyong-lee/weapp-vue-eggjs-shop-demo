@@ -34,22 +34,6 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    warehouseUuid: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    safetyStockQty: {
-      type: DECIMAL,
-      allowNull: true,
-    },
-    goodsCategoryUuid: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    remark: {
-      type: STRING(255),
-      allowNull: true,
-    },
     orgUuid: {
       type: STRING(38),
       allowNull: false,
@@ -62,6 +46,10 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
+    warehouseUuid: STRING(38),
+    safetyStockQty: DECIMAL,
+    goodsCategoryUuid: STRING(38),
+    remark: STRING(255),
     version: BIGINT,
   };
 };

@@ -10,18 +10,6 @@ module.exports = app => {
       primaryKey: true,
       defaultValue: UUIDV1,
     },
-    goodsCategoryName: {
-      type: STRING(76),
-      allowNull: true,
-    },
-    goodsCategoryUuid: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    remark: {
-      type: STRING(255),
-      allowNull: true,
-    },
     unitName: {
       type: STRING(76),
       allowNull: false,
@@ -29,10 +17,6 @@ module.exports = app => {
     salePrice: {
       type: DECIMAL,
       allowNull: false,
-    },
-    goodsSpec: {
-      type: STRING(255),
-      allowNull: true,
     },
     goodsName: {
       type: STRING(76),
@@ -46,14 +30,6 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    hasReturnQty: {
-      type: DECIMAL,
-      allowNull: true,
-    },
-    goodsPic: {
-      type: STRING(255),
-      allowNull: true,
-    },
     goodsQty: {
       type: DECIMAL,
       allowNull: false,
@@ -66,5 +42,11 @@ module.exports = app => {
         key: 'uuid',
       },
     },
+    hasReturnQty: DECIMAL,
+    goodsPic: STRING(255),
+    goodsSpec: STRING(255),
+    goodsCategoryName: STRING(76),
+    goodsCategoryUuid: STRING(38),
+    remark: STRING(255),
   };
 };

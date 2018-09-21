@@ -28,5 +28,5 @@ module.exports = app => {
 
   // 管理端
   router.post('/user/login', user.common.login);
-  router.post('/user/get', user.common.getUserInfo);
+  router.post('/user/merchant/saveNew', user.merchant.saveNew);
 };

@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, BIGINT, DATE, UUIDV1 } = app.Sequelize;
+  const { STRING, BIGINT, DATE, UUIDV1, ENUM } = app.Sequelize;
 
   return {
     uuid: {
@@ -38,28 +38,13 @@ module.exports = app => {
       type: STRING(76),
       allowNull: false,
     },
-    sessionId: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    registerPlatform: {
-      type: STRING(20),
-      allowNull: true,
-    },
+    // enabled: '启用', disabled: '禁用'
     enableStatus: {
-      type: STRING(20),
+      type: ENUM('enabled', 'disabled'),
       allowNull: false,
     },
-    remark: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    registerIP: {
-      type: STRING(15),
-      allowNull: true,
-    },
     userType: {
-      type: STRING(20),
+      type: ENUM('superAdmin'),
       allowNull: false,
     },
     userName: {

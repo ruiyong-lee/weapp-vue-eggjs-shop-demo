@@ -34,10 +34,6 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    status: {
-      type: STRING(20),
-      allowNull: true,
-    },
     sourceBillNumber: {
       type: STRING(38),
       allowNull: false,
@@ -49,10 +45,6 @@ module.exports = app => {
     refundAmount: {
       type: DECIMAL,
       allowNull: false,
-    },
-    remark: {
-      type: STRING(255),
-      allowNull: true,
     },
     orgUuid: {
       type: STRING(38),
@@ -70,6 +62,8 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
+    status: STRING(20),
+    remark: STRING(255),
     version: BIGINT,
   };
 };

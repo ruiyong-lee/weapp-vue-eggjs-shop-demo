@@ -67,7 +67,7 @@ module.exports = app => {
   /**
    * 新增用户地址
    * @param {Object} address 条件
-   * @return {String} 返回地址uuid
+   * @return {String} 地址uuid
    */
   Address.saveNew = async address => {
     if (address.sysDefault) {

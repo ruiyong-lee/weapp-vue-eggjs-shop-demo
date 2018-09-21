@@ -34,21 +34,9 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    status: {
-      type: STRING(20),
-      allowNull: true,
-    },
     stockOutTotalQty: {
       type: DECIMAL,
       allowNull: false,
-    },
-    stockOutType: {
-      type: STRING(20),
-      allowNull: true,
-    },
-    remark: {
-      type: STRING(255),
-      allowNull: true,
     },
     orgUuid: {
       type: STRING(38),
@@ -58,14 +46,11 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    sourceBillNumber: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    warehouseUuid: {
-      type: STRING(255),
-      allowNull: true,
-    },
+    status: STRING(20),
+    stockOutType: STRING(20),
+    remark: STRING(255),
+    sourceBillNumber: STRING(38),
+    warehouseUuid: STRING(255),
     version: BIGINT,
   };
 };

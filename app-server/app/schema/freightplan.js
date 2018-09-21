@@ -42,18 +42,9 @@ module.exports = app => {
       type: DECIMAL,
       allowNull: false,
     },
-    freeFreightAmount: {
-      type: DECIMAL,
-      allowNull: true,
-    },
-    sysDefault: {
-      type: BOOLEAN,
-      allowNull: true,
-    },
-    orgUuid: {
-      type: STRING(38),
-      allowNull: true,
-    },
+    freeFreightAmount: DECIMAL,
+    sysDefault: BOOLEAN,
+    orgUuid: STRING(38),
     version: BIGINT,
   };
 };

@@ -17,6 +17,8 @@ module.exports = (options, app) => {
 
       ctx.request.body.openId = openId;
 
+      await next();
+
       // 过滤登录接口
       if (ctx.path === '/weapp/login') {
         return;
@@ -25,22 +27,21 @@ module.exports = (options, app) => {
       // 判断是否有session
       if (!openId) {
         ctx.body = {
-          errorCode: 100,
+          code: ctx.noLoginCode,
           message: '尚未登录',
         };
       }
-
-      await next();
     } else {
+      // 管理端接口
+      ctx.request.body.userUuid = ctx.request.body.userUuid || ctx.cookies.get('userUuid', { signed: false });
+      ctx.request.body.userName = ctx.request.body.userName || ctx.cookies.get('userName', { signed: false });
+      await next();
+
       // 过滤登录接口
       if (ctx.path === '/user/login') {
         return;
       }
-
       await ctx.verifyToken();
-
-      // 管理端接口
-      await next();
     }
   };
 };

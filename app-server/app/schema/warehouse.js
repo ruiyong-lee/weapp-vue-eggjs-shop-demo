@@ -38,54 +38,21 @@ module.exports = app => {
       type: STRING(76),
       allowNull: false,
     },
-    status: {
-      type: STRING(20),
-      allowNull: true,
-    },
-    systemDefault: {
-      type: BOOLEAN,
-      allowNull: true,
-    },
-    remark: {
-      type: STRING(255),
-      allowNull: true,
-    },
     orgUuid: {
       type: STRING(38),
       allowNull: false,
     },
-    city: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    district: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    township: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    poiName: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    longitude: {
-      type: DOUBLE,
-      allowNull: true,
-    },
-    latitude: {
-      type: DOUBLE,
-      allowNull: true,
-    },
-    poiAddress: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    province: {
-      type: STRING(255),
-      allowNull: true,
-    },
+    status: STRING(20),
+    systemDefault: BOOLEAN,
+    remark: STRING(255),
+    province: STRING(255),
+    city: STRING(255),
+    district: STRING(255),
+    township: STRING(255),
+    poiName: STRING(255),
+    longitude: DOUBLE,
+    latitude: DOUBLE,
+    poiAddress: STRING(255),
     version: BIGINT,
   };
 };

@@ -54,38 +54,17 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    costPrice: {
-      type: DECIMAL,
-      allowNull: true,
-    },
-    spec: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    goodsInfo: {
-      type: TEXT,
-      allowNull: true,
-    },
     unitName: {
       type: STRING(76),
       allowNull: false,
     },
-    salePrice: {
-      type: DECIMAL,
-      allowNull: true,
-    },
-    atlasJsonStr: {
-      type: STRING(2000),
-      allowNull: true,
-    },
-    mainImg: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    imagesJsonStr: {
-      type: STRING(2000),
-      allowNull: true,
-    },
+    costPrice: DECIMAL,
+    spec: STRING(255),
+    goodsInfo: TEXT,
+    salePrice: DECIMAL,
+    atlasJsonStr: STRING(2000),
+    mainImg: STRING(255),
+    imagesJsonStr: STRING(2000),
     version: BIGINT,
   };
 };

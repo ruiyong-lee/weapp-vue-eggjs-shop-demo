@@ -10,10 +10,6 @@ module.exports = app => {
       primaryKey: true,
       defaultValue: UUIDV1,
     },
-    content: {
-      type: STRING(2000),
-      allowNull: true,
-    },
     userName: {
       type: STRING(32),
       allowNull: false,
@@ -42,18 +38,6 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    operateTime: {
-      type: DATE,
-      allowNull: true,
-    },
-    operatorName: {
-      type: STRING(76),
-      allowNull: true,
-    },
-    operatorUuid: {
-      type: STRING(38),
-      allowNull: true,
-    },
     userIdentity: {
       type: STRING(20),
       allowNull: false,
@@ -62,6 +46,10 @@ module.exports = app => {
       type: STRING(255),
       allowNull: false,
     },
+    content: STRING(2000),
+    operateTime: DATE,
+    operatorName: STRING(76),
+    operatorUuid: STRING(38),
     version: BIGINT,
   };
 };

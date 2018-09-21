@@ -24,6 +24,15 @@ module.exports = {
       updatedAt: 'lastModifiedTime',
       version: true,
       freezeTableName: true,
+      getterMethods: {
+        createdTime() {
+          return app.formatToDayTime(this.getDataValue('createdTime'));
+        },
+        lastModifiedTime() {
+          return app.formatToDayTime(this.getDataValue('lastModifiedTime'));
+        },
+      },
+      setterMethods: {},
     });
   },
 };

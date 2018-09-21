@@ -10,25 +10,13 @@ module.exports = app => {
       primaryKey: true,
       defaultValue: UUIDV1,
     },
-    goodsCategoryName: {
-      type: STRING(76),
-      allowNull: true,
-    },
     goodsCategoryUuid: {
       type: STRING(38),
-      allowNull: true,
-    },
-    remark: {
-      type: STRING(255),
       allowNull: true,
     },
     unitName: {
       type: STRING(76),
       allowNull: false,
-    },
-    goodsSpec: {
-      type: STRING(255),
-      allowNull: true,
     },
     goodsName: {
       type: STRING(76),
@@ -54,9 +42,9 @@ module.exports = app => {
         key: 'uuid',
       },
     },
-    returnQty: {
-      type: DECIMAL,
-      allowNull: true,
-    },
+    goodsCategoryName: STRING(76),
+    remark: STRING(255),
+    goodsSpec: STRING(255),
+    returnQty: DECIMAL,
   };
 };

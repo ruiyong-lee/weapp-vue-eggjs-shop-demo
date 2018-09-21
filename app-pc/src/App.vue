@@ -3,7 +3,9 @@
     <el-container class="app-container">
       <el-header class="app-header">
         <div class="app-header__left">
-          <icon name="menu" class="text-primary cursor-pointer" @click.native="isCollapse = !isCollapse"></icon>
+          <el-tooltip :content="isCollapse ? '展开侧边栏' : '收起侧边栏'" placement="top">
+            <icon name="menu" class="text-primary cursor-pointer" @click.native="isCollapse = !isCollapse"></icon>
+          </el-tooltip>
         </div>
         <div class="app-header__center">
           <div class="app-tab" v-tab="activeTabIndex">
@@ -30,7 +32,9 @@
           </div>
         </div>
         <div class="app-header__right">
-          <icon name="sync" class="app-refresh-btn text-primary cursor-pointer"></icon>
+          <el-tooltip content="刷新" placement="top">
+            <icon name="sync" class="app-refresh-btn text-primary cursor-pointer"></icon>
+          </el-tooltip>
           <el-dropdown>
             <span>
               ruiyong.lee <icon name="user" class="text-primary"></icon>
@@ -60,28 +64,58 @@
                 <icon name="home" class="el-icon-v"></icon>
                 <span slot="title">首页</span>
               </el-menu-item>
-              <el-submenu index="about">
-                <template slot="title">
-                  <i class="el-icon-location"></i>
-                  <span>订单</span>
-                </template>
-                <!--<el-menu-item-group>-->
-                <!--<template slot="title">分组一</template>-->
-                <!--<el-menu-item index="1-1">选项1</el-menu-item>-->
-                <!--<el-menu-item index="1-2">选项2</el-menu-item>-->
-                <!--</el-menu-item-group>-->
-                <el-menu-item index="about" :route="{ name: 'about' }">列表</el-menu-item>
-                <el-menu-item index="order" :route="{ name: 'order' }">详情</el-menu-item>
-              </el-submenu>
+
+              <template v-if="user.userType === 'superAdmin'">
+                <el-menu-item index="merchantList" :route="{ name: 'merchantList' }">
+                  <icon name="user" class="el-icon-v"></icon>
+                  <span slot="title">商家管理</span>
+                </el-menu-item>
+              </template>
+
+              <template v-else>
+                <el-submenu index="about">
+                  <template slot="title">
+                    <i class="el-icon-location"></i>
+                    <span>订单</span>
+                  </template>
+                  <!--<el-menu-item-group>-->
+                  <!--<template slot="title">分组一</template>-->
+                  <!--<el-menu-item index="1-1">选项1</el-menu-item>-->
+                  <!--<el-menu-item index="1-2">选项2</el-menu-item>-->
+                  <!--</el-menu-item-group>-->
+                  <el-menu-item index="about" :route="{ name: 'about' }">列表</el-menu-item>
+                  <el-menu-item index="order" :route="{ name: 'order' }">详情</el-menu-item>
+                </el-submenu>
+              </template>
             </el-menu>
           </el-aside>
         </easy-scrollbar>
         <el-main>
-          <el-collapse-transition>
-            <keep-alive :include="keepAliveNames">
-              <router-view class="app-view" :class="{'app-login': route.name === 'login'}"/>
-            </keep-alive>
-          </el-collapse-transition>
+          <section v-if="route.name !== 'login'" class="app-page">
+            <el-collapse-transition>
+              <el-row class="app-page-header" v-if="route.name !== 'home'">
+                <el-col :span="12">
+                  <el-breadcrumb separator-class="el-icon-arrow-right">
+                    <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
+                    <el-breadcrumb-item v-for="item in route.meta && route.meta.breadcrumbs" :key="item.name">
+                      <router-link :to="{name: item.name}">{{item.title}}</router-link>
+                    </el-breadcrumb-item>
+                    <el-breadcrumb-item>{{route.meta && (route.meta.breadcrumbTitle || route.meta.title)}}
+                    </el-breadcrumb-item>
+                  </el-breadcrumb>
+                </el-col>
+              </el-row>
+            </el-collapse-transition>
+
+            <el-collapse-transition>
+              <keep-alive :include="keepAliveNames">
+                <router-view class="app-view"/>
+              </keep-alive>
+            </el-collapse-transition>
+          </section>
+          <section v-else class="app-page app-login">
+            <router-view class="app-view"/>
+          </section>
         </el-main>
       </el-container>
     </el-container>
@@ -89,6 +123,8 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
+
   // 调整tab样式
   const adjustTabLayout = (el, binding) => {
     if (binding.value !== binding.oldValue) {
@@ -130,10 +166,19 @@
         keepAliveNamesMap: {},
       };
     },
+    mounted() {
+      const userUuid = this.$cookie.get('userUuid');
+      const userName = this.$cookie.get('userName');
+      const userType = this.$cookie.get('userType');
+      this.$store.commit('setUser', { userUuid, userName, userType });
+    },
     computed: {
       route() {
         return this.$route || {};
       },
+      ...mapState({
+        user: 'user',
+      }),
     },
     watch: {
       route: {
@@ -141,7 +186,10 @@
           const { name: prevRouteName, meta: prevRouteMeta = {} } = prevRoute;
           const { name: currentRouteName, meta: currentRouteMeta = {} } = currentRoute;
 
-          if (currentRouteName !== 'login') {
+          if (currentRouteName === 'login') {
+            this.keepAliveNames = [];
+            this.keepAliveNamesMap = {};
+          } else {
             const prevRouteNameIndex = this.keepAliveNames.indexOf(prevRouteName);
             const prevTabKey = prevRouteMeta.tabKey;
             const currentTabKey = currentRouteMeta.tabKey;
@@ -356,10 +404,39 @@
     }
   }
 
-  .app-view {
+  .app-page {
+    position: relative;
     padding: 15px;
     border-radius: 6px;
     background-color: #fff;
+    .app-page-header {
+      display: flex;
+      align-items: center;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #5C9ACF;
+    }
+    .app-view {
+      position: relative;
+      padding-top: 15px;
+      .app-view-tools {
+        position: absolute;
+        width: 100%;
+        top: -9px;
+        height: 28px;
+        overflow: hidden;
+        transform: translateY(-100%);
+        .svg-icon {
+          width: 24px;
+          height: 24px;
+          color: #5C9ACF;
+          cursor: pointer;
+        }
+      }
+    }
+    .app-pagination {
+      margin-top: 15px;
+      text-align: center;
+    }
     &.app-login {
       position: fixed;
       z-index: 2000;
@@ -371,6 +448,9 @@
       border-radius: 0;
       overflow: hidden;
       background: linear-gradient(to bottom right, #FF5B5B, #5C9ACF);
+    }
+    .el-breadcrumb__inner.is-link, .el-breadcrumb__inner a {
+      color: #5C9ACF !important;
     }
   }
 
@@ -452,5 +532,13 @@
 
   .app-refresh-btn {
     margin-right: 25px;
+  }
+
+  .content-title {
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    color: #5c9acf;
+    font-weight: bold;
+    border-bottom: 1px solid #e9ecf3;
   }
 </style>

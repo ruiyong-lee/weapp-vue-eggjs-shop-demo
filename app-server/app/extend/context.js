@@ -1,6 +1,11 @@
 'use strict';
 
 module.exports = {
+  sucessCode: 0, // 成功
+  noLoginCode: 100, // 未登录
+  uniqueCode: 200, // 唯一性冲突
+  errorCode: 500, // 失败
+
   // 获取token
   getAccessToken() {
     return this.cookies.get('token', { signed: false });
@@ -14,18 +19,20 @@ module.exports = {
     this.cookies.set('token', token, cookieConfig);
     this.cookies.set('userUuid', data.userUuid, cookieConfig);
     this.cookies.set('userName', data.userName, cookieConfig);
+    this.cookies.set('userType', data.userType, cookieConfig);
   },
   // 校验token
   async verifyToken() {
     const { app } = this;
     const userUuid = this.cookies.get('userUuid', { signed: false });
     const userName = this.cookies.get('userName', { signed: false });
+    const userType = this.cookies.get('userType', { signed: false });
     const token = this.getAccessToken(this);
     const verifyResult = await new Promise(resolve => {
       app.jwt.verify(token, app.config.jwt.secret, (err, decoded) => {
         if (err) {
           if (err.name === 'TokenExpiredError') {
-            this.setToken({ userUuid, userName }); // 刷新token
+            this.setToken({ userUuid, userName, userType }); // 刷新token
           } else {
             resolve({ verify: false, message: err.message });
           }
@@ -44,13 +51,11 @@ module.exports = {
       return false;
     }
 
-    this.request.body.userUuid = userUuid;
-    this.request.body.userName = userName;
     return true;
   },
   // 校验token失败
-  verifyFail(errorCode, message) {
-    this.body = { errorCode, message };
-    this.status = errorCode;
+  verifyFail(code, message) {
+    this.body = { code, message };
+    this.status = code;
   },
 };

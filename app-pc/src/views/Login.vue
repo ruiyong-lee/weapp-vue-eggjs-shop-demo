@@ -5,8 +5,7 @@
         <el-input v-model.trim="loginForm.userName" placeholder="账号"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model.trim="loginForm.password" placeholder="密码"></el-input>
-        <!--<el-input type="password" v-model="loginForm.password"></el-input>-->
+        <el-input v-model.trim="loginForm.password" type="password" placeholder="密码"></el-input>
       </el-form-item>
       <el-form-item class="mb-0">
         <el-button class="login-btn" type="primary" @click="submitForm('loginForm')">登录</el-button>
@@ -38,8 +37,10 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$api.login(this.loginForm).then(() => {
-              this.$router.replace({ name: 'home' });
+            this.$api.login(this.loginForm).then((res) => {
+              this.$store.commit('setUser', res);
+              window.location.hash = '';
+              window.location.reload();
             }).catch(() => {
             });
           } else {
@@ -57,6 +58,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    height: 100%;
     .login-form {
       width: 360px;
       .el-form-item {

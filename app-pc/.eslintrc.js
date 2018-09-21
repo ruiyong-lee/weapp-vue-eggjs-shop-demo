@@ -17,6 +17,10 @@ module.exports = {
     // 配置首行缩进
     'indent': 0
   },
+  'globals': {
+    'document': true,
+    '_': true
+  },
   parserOptions: {
     parser: 'babel-eslint',
   },

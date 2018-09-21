@@ -3,29 +3,11 @@
 const Service = require('egg').Service;
 
 /**
- * Service - 用户
+ * Service - 商家
  * @class
  * @author ruiyong-lee
  */
-class UserService extends Service {
-  /**
-   * 查找某个管理员数据
-   * @param {String} userName 管理员账号
-   * @param {String} password 管理员密码
-   * @return {Object|null} 查找结果
-   */
-  async getAdminByLogin(userName, password) {
-    return await this.app.mysql.get('admin', { userName, password });
-  }
-
-  /**
-   * 查找某个管理员数据
-   * @param {String} uuid 管理uuid
-   * @return {Object|null} 查找结果
-   */
-  async getAdmin(uuid) {
-    return await this.app.mysql.get('admin', { uuid });
-  }
+class MerchantService extends Service {
 
   /**
    * 查找某个商家数据
@@ -45,6 +27,21 @@ class UserService extends Service {
   async getMerchant(uuid) {
     return await this.app.mysql.get('merchant', { uuid });
   }
+
+  /**
+   * 新增商家
+   * @param {Object} params 条件
+   * @return {String|Null} 商家uuid
+   */
+  async saveNew(params = {}) {
+    let { merchant, userUuid, userName } = params;
+    const { app } = this;
+    const crateInfo = app.getCrateInfo(userUuid, userName);
+
+    merchant = { ...merchant, ...crateInfo, userType: 'admin', enableStatus: true };
+
+    return await app.model.User.Merchant.saveNew(merchant);
+  }
 }
 
-module.exports = UserService;
+module.exports = MerchantService;

@@ -10,42 +10,15 @@ module.exports = app => {
       primaryKey: true,
       defaultValue: UUIDV1,
     },
-    transactionId: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    orderBillNumber: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    appId: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    mchId: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    openId: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    bankType: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    payTime: {
-      type: DATE,
-      allowNull: true,
-    },
-    totalFee: {
-      type: DECIMAL,
-      allowNull: true,
-    },
-    cashFee: {
-      type: DECIMAL,
-      allowNull: true,
-    },
+    transactionId: STRING(38),
+    orderBillNumber: STRING(38),
+    appId: STRING(38),
+    mchId: STRING(38),
+    openId: STRING(38),
+    bankType: STRING(38),
+    payTime: DATE,
+    totalFee: DECIMAL,
+    cashFee: DECIMAL,
     version: BIGINT,
   };
 };

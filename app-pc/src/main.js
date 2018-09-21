@@ -1,4 +1,5 @@
 import Element from 'element-ui';
+import VueCookie from 'vue-cookie';
 import EasyScroll from 'easyscrolldt';
 import Icon from 'vue-svg-icon/Icon.vue';
 import _ from 'lodash';
@@ -13,6 +14,7 @@ import './styles/element-variables.scss';
 import './styles/common.scss';
 
 Vue.use(Element);
+Vue.use(VueCookie);
 Vue.use(EasyScroll);
 Vue.use(_);
 Vue.component('icon', Icon);

@@ -13,6 +13,7 @@
     "egg-sequelize": "^4.1.0",
     "egg-session-redis": "^2.0.1",
     "egg-validate": "^1.1.1",
+    "fecha": "^2.3.3",
     "lodash": "^4.17.10",
     "md5": "^2.2.1",
     "mysql2": "^1.6.1",

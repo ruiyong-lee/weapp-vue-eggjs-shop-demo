@@ -1,11 +1,7 @@
 // axios封装
 import axios from 'axios';
-import Vue from 'vue';
-import VueCookie from 'vue-cookie';
 import { MessageBox } from 'element-ui';
 import router from '../router';
-
-Vue.use(VueCookie);
 
 // 环境的切换
 // if (process.env.NODE_ENV === 'development') {
@@ -32,9 +28,9 @@ axios.interceptors.request.use(
 axios.interceptors.response.use(
   (response) => {
     const { data: responseData } = response;
-    const { errorCode, message } = responseData;
+    const { code, message } = responseData;
 
-    if (errorCode !== 0) {
+    if (code !== 0) {
       MessageBox.alert(message, '提示', {
         type: 'warning',
       });

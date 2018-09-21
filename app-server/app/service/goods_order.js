@@ -8,16 +8,6 @@ const Service = require('egg').Service;
  * @author ruiyong-lee
  */
 class GoodsOrderService extends Service {
-  constructors() {
-    this.goodsOrderStatus = {
-      initial: '待处理',
-      audited: '已接单',
-      dispatching: '配送中',
-      completed: '已完成',
-      canceled: '已取消',
-    };
-  }
-
   /**
    * 获取订单列表
    * @param {Object} params 条件
@@ -42,15 +32,13 @@ class GoodsOrderService extends Service {
    * @return {Object|Null} 查找结果
    */
   async get(uuid) {
-    const { app, ctx } = this;
+    const { app } = this;
     const { Sequelize } = app;
-    const { helper } = ctx;
     return await app.model.GoodsOrder.get({
       uuid,
       orderAttributes: [
         'uuid', 'version', 'status', 'billNumber', 'addressUuid', 'linkMan', 'linkPhone', 'address',
-        'deliveryTimeTypeUuid', 'deliveryTimeTypeName', 'deliveryTimeTypeRemark', 'remark',
-        [Sequelize.fn('DATE_FORMAT', Sequelize.col('createdTime'), helper.dayTimeFormat), 'createdTime'],
+        'deliveryTimeTypeUuid', 'deliveryTimeTypeName', 'deliveryTimeTypeRemark', 'remark', 'createdTime',
         [Sequelize.fn('ROUND', Sequelize.col('totalAmount'), 2), 'totalAmount'],
         [Sequelize.fn('ROUND', Sequelize.col('freightAmount'), 2), 'freightAmount'],
         [Sequelize.fn('ROUND', Sequelize.col('paymentAmount'), 2), 'paymentAmount'],
@@ -70,8 +58,8 @@ class GoodsOrderService extends Service {
    * @return {String} 订单uuid
    */
   async createBill({ merchantUuid, goodsOrder = {}, openId, nickName }) {
-    const { app, ctx } = this;
-    const crateInfo = ctx.helper.getCrateInfo({ openId, nickName });
+    const { app } = this;
+    const crateInfo = app.getCrateInfo(openId, nickName);
     const billNumber = await app.getBillNumber('DG');
     const { lines = [] } = goodsOrder;
     const params = {
@@ -108,8 +96,8 @@ class GoodsOrderService extends Service {
    * @return {String} 订单uuid
    */
   async cancelBill(params = {}) {
-    const { app, ctx } = this;
-    const modifyInfo = ctx.helper.getModifyInfo(params);
+    const { app } = this;
+    const modifyInfo = app.getModifyInfo(params);
     return await app.model.GoodsOrder.cancelBill({ ...params, ...modifyInfo });
   }
 }

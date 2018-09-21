@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, BIGINT, DATE, UUIDV1 } = app.Sequelize;
+  const { STRING, BIGINT, DATE, UUIDV1, ENUM } = app.Sequelize;
 
   return {
     uuid: {
@@ -42,32 +42,8 @@ module.exports = app => {
       type: STRING(20),
       allowNull: false,
     },
-    remark: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    registerIP: {
-      type: STRING(15),
-      allowNull: true,
-    },
-    address: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    servicePhone: {
-      type: STRING(12),
-      allowNull: true,
-    },
-    orgName: {
-      type: STRING(76),
-      allowNull: true,
-    },
-    orgUuid: {
-      type: STRING(38),
-      allowNull: true,
-    },
     userType: {
-      type: STRING(20),
+      type: ENUM('admin', 'employee'),
       allowNull: false,
     },
     userName: {
@@ -79,30 +55,17 @@ module.exports = app => {
       type: STRING(100),
       allowNull: false,
     },
-    linkPhone: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    linkMan: {
-      type: STRING(76),
-      allowNull: true,
-    },
-    appId: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    mchKey: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    mchId: {
-      type: STRING(38),
-      allowNull: true,
-    },
-    appSecret: {
-      type: STRING(38),
-      allowNull: true,
-    },
+    remark: STRING(255),
+    address: STRING(255),
+    servicePhone: STRING(12),
+    orgName: STRING(76),
+    orgUuid: STRING(38),
+    linkPhone: STRING(255),
+    linkMan: STRING(76),
+    appId: STRING(38),
+    mchKey: STRING(38),
+    mchId: STRING(38),
+    appSecret: STRING(38),
     version: BIGINT,
   };
 };
