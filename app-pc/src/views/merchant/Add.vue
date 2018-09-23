@@ -22,23 +22,6 @@
           </el-form-item>
         </el-col>
         <el-col :span="11" :offset="2">
-          <h2 class="content-title">关联小程序</h2>
-          <el-form-item label="小程序APPID">
-            <el-input v-model.trim="merchantForm.appId"></el-input>
-          </el-form-item>
-          <el-form-item label="小程序密匙">
-            <el-input v-model.trim="merchantForm.appSecret"></el-input>
-          </el-form-item>
-          <el-form-item label="商户号">
-            <el-input v-model.trim="merchantForm.mchId"></el-input>
-          </el-form-item>
-          <el-form-item label="商户密匙">
-            <el-input v-model.trim="merchantForm.mchKey"></el-input>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="11">
           <h2 class="content-title">登录资料</h2>
           <el-form-item label="账号" prop="userName">
             <el-input v-model.trim="merchantForm.userName"></el-input>
@@ -104,10 +87,6 @@
           userName: '',
           password: '',
           checkPassword: '',
-          appId: '',
-          appSecret: '',
-          mchKey: '',
-          mchId: '',
         },
         rules: {
           name: [
@@ -133,7 +112,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             this.$api.createMechant({ merchant: this.merchantForm }).then((res) => {
-              console.log(res);
+              console.log(res); // TODO
             }).catch(() => {
             });
           }

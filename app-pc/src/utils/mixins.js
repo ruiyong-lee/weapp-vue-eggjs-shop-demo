@@ -1,4 +1,5 @@
 // 混合
+const Pagination = () => import('../components/Pagination.vue');
 
 // page
 export const pageMixin = {
@@ -39,10 +40,10 @@ const PAGINATION = {
   page: PAGE,
   pageSize: PAGESIZE,
   pageSizes: PAGESIZES,
-  layout: 'total, sizes, prev, pager, next, jumper',
 };
 
 export const tableMixin = {
+  components: { Pagination },
   data() {
     return {
       mx_tables: {},
@@ -53,16 +54,10 @@ export const tableMixin = {
     this.mx_initTablePage();
   },
   computed: {
-    mx_isPagination() {
-      return !_.isEmpty(this.params) && !_.isEmpty(this.params.pagination);
-    },
-    mx_isSort() {
-      return !_.isEmpty(this.params) && !_.isEmpty(this.params.sort);
-    },
     // 默认表格不需要在每个页面单独处理
     mx_defaultTableData() {
       const table = this.mx_tables[this.$options.name];
-      return (table && table.tableData) || [];
+      return (table && table.rows) || [];
     },
     mx_defaultPagination() {
       const table = this.mx_tables[this.$options.name];
@@ -75,10 +70,16 @@ export const tableMixin = {
     },
   },
   methods: {
+    // 初始化表格
     mx_initTablePage() {
       const tableData = {
+        params: {
+          filter: {},
+          pagination: {},
+          sort: {},
+        }, // 查询参数
+        rows: [], // 列表
         pagingData: [], // 内存分页
-        tableData: [],
         pagination: _.cloneDeep(this.mx_customize_pagination || PAGINATION),
       };
 
@@ -99,32 +100,51 @@ export const tableMixin = {
           }
         }
 
+        // 在组件内请求表格数据一定要放在这个方法里执行
         return _.isFunction(this.initTable) && this.initTable();
       });
     },
-    mx_setPageAndSizeToFilter(params, target) {
-      params = params || this.params;
-      const targetTable = this.mx_tables[target || this.$options.name];
-
-      if (this.mx_isPagination && !_.isEmpty(targetTable)) {
-        params.pagination.page = targetTable.pagination.page;
-        params.pagination.pageSize = targetTable.pagination.pageSize;
-      }
-    },
+    // 初始化表格数据
     mx_initTableData(data, target) {
-      const targetTable = this.mx_tables[target || this.$options.name];
+      const targetTable = this.mx_getTargetTable(target);
 
       if (!_.isEmpty(data) && !_.isEmpty(targetTable)) {
         targetTable.pagination.count = data.count;
         targetTable.pagination.page = data.page;
-        targetTable.tableData = data.rows;
+        targetTable.rows = data.rows;
       }
+    },
+    // 获取表格
+    mx_getTargetTable(target) {
+      return this.mx_tables[target || this.$options.name] || {};
+    },
+    // 获取表格查询条件
+    mx_getTargetTableParams(target) {
+      const targetTable = this.mx_getTargetTable(target);
+      this.$set(targetTable.params.pagination, 'page', targetTable.pagination.page);
+      this.$set(targetTable.params.pagination, 'pageSize', targetTable.pagination.pageSize);
+
+      return targetTable.params;
+    },
+    // 表格排序变化
+    mx_handleTableSortChange(sort, target) {
+      const sortOrder = sort.order;
+      const targetTable = this.mx_getTargetTable(target);
+
+      targetTable.params.sort = [];
+
+      if (sortOrder) {
+        targetTable.params.sort.splice(0, 1, {
+          fieldName: sort.prop,
+          dir: sortOrder.substring(0, sortOrder.indexOf('ending')),
+        });
+      }
+      return _.isFunction(this.query) && this.query();
     },
     // 内存分页
     mx_paging(data, target) {
-      const targetTable = this.mx_tables[target || this.$options.name];
-      const targetTablePage = targetTable.pagination.page;
-      const targetTablePageSize = targetTable.pagination.pageSize;
+      const targetTable = this.mx_getTargetTable(target);
+      const { page, pageSize } = targetTable.pagination;
 
       if (!_.isEmpty(data) && !_.isEmpty(targetTable)) {
         targetTable.pagingData = data;
@@ -133,38 +153,17 @@ export const tableMixin = {
       }
 
       if (data && _.isArray(data)) {
-        const result = {};
-        const len = data.length;
-        const start = targetTablePage * targetTablePageSize;
-        const end = start + targetTablePageSize;
-        const values = data.slice(start, end);
-
-        result.count = len;
-        result.page = targetTablePage;
-        result.values = values;
+        const count = data.length;
+        const start = page * pageSize;
+        const end = start + pageSize;
+        const rows = data.slice(start, end);
+        const result = {
+          count,
+          page,
+          rows,
+        };
 
         this.mx_initTableData(result, target);
-      }
-    },
-    mx_handlePageChange(page, target) {
-      this.mx_tables[target || this.$options.name].pagination.page = page;
-    },
-    mx_handlePageSizeChange(pageSize, target) {
-      this.mx_tables[target || this.$options.name].pagination.pageSize = pageSize;
-    },
-    mx_handleTableSortChange(sort) {
-      const sortOrder = sort.order;
-
-      if (this.mx_isSort) {
-        this.params.sort = [];
-
-        if (sortOrder) {
-          this.params.sort.splice(0, 1, {
-            fieldName: sort.prop,
-            dir: sortOrder.substring(0, sortOrder.indexOf('ending')),
-          });
-        }
-        return _.isFunction(this.query) && this.query();
       }
     },
   },

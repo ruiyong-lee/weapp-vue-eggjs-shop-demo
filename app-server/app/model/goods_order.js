@@ -14,7 +14,7 @@ module.exports = app => {
   GoodsOrder.hasMany(GoodsOrderLine, { foreignKey: 'billUuid', as: 'lines' });
 
   /**
-   * 分页查询订单列表
+   * 查询订单分页列表
    * @param {Object} { status, attributes, page, pageSize: limit, merchantUuid, openId } 条件
    * @return {Object|Null} 查找结果
    */

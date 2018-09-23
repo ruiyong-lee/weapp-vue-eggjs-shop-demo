@@ -7,34 +7,24 @@
         </el-button>
       </el-col>
     </el-row>
-    <el-table
-      :data="mx_defaultTableData"
-      style="width: 100%">
-      <el-table-column
-        prop="date"
-        label="日期"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="name"
-        label="姓名"
-        width="180">
-      </el-table-column>
-      <el-table-column
-        prop="address"
-        label="地址">
+
+    <el-table :data="mx_defaultTableData" size="mini">
+      <el-table-column prop="userName" label="账号"></el-table-column>
+      <el-table-column prop="name" label="姓名"></el-table-column>
+      <el-table-column prop="linkMan" label="联系人"></el-table-column>
+      <el-table-column prop="linkPhone" label="联系电话"></el-table-column>
+      <el-table-column prop="servicePhone" label="客服电话"></el-table-column>
+      <el-table-column prop="createdTime" label="创建时间" width="180">
       </el-table-column>
     </el-table>
-    <el-pagination
-      class="app-pagination"
-      :current-page="mx_defaultPagination.page"
-      :page-sizes="mx_defaultPagination.pageSizes"
-      :page-size="mx_defaultPagination.pageSize"
-      :layout="mx_defaultPagination.layout"
-      :total="mx_defaultPagination.count"
-      @current-change="mx_handlePageChange"
-      @size-change="mx_handlePageSizeChange">
-    </el-pagination>
+
+    <pagination
+      :totalCount="mx_defaultPagination.count"
+      :currentPage.sync="mx_defaultPagination.page"
+      :pageSize.sync="mx_defaultPagination.pageSize"
+      :pageSizes="mx_defaultPagination.pageSizes"
+      @handlePageChange="query">
+    </pagination>
   </div>
 </template>
 
@@ -49,6 +39,20 @@
       return {};
     },
     mounted() {
+
+    },
+    methods: {
+      initTable() {
+        this.query();
+      },
+      query() {
+        const params = this.mx_getTargetTableParams();
+
+        this.$api.queryMechant(params).then((res) => {
+          this.mx_initTableData(res);
+        }).catch(() => {
+        });
+      },
     },
   };
 </script>

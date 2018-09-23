@@ -38,9 +38,31 @@ class MerchantService extends Service {
     const { app } = this;
     const crateInfo = app.getCrateInfo(userUuid, userName);
 
-    merchant = { ...merchant, ...crateInfo, userType: 'admin', enableStatus: true };
+    merchant = {
+      ...merchant, ...crateInfo,
+      orgUuid: userUuid,
+      orgName: userName,
+      userType: 'admin',
+      enableStatus: true,
+    };
 
     return await app.model.User.Merchant.saveNew(merchant);
+  }
+
+  /**
+   * 获取商家分页列表
+   * @param {Object} params 条件
+   * @return {Object|null} 查找结果
+   */
+  async query(params = {}) {
+    const { app } = this;
+    return await app.model.User.Merchant.query({
+      ...params,
+      attributes: [
+        'uuid', 'version', 'createdTime', 'name', 'enableStatus',
+        'userName', 'servicePhone', 'linkPhone', 'linkMan',
+      ],
+    });
   }
 }
 

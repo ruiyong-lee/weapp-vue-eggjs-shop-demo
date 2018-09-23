@@ -44,7 +44,7 @@ class WeappController extends Controller {
   }
 
   /**
-   * 获取订单列表
+   * 获取订单分页列表
    */
   async queryOrderBill() {
     const { ctx } = this;

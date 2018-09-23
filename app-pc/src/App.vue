@@ -37,7 +37,7 @@
           </el-tooltip>
           <el-dropdown>
             <span>
-              ruiyong.lee <icon name="user" class="text-primary"></icon>
+              {{user.userName}} <icon name="user" class="text-primary"></icon>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item>账号信息</el-dropdown-item>
@@ -432,10 +432,6 @@
           cursor: pointer;
         }
       }
-    }
-    .app-pagination {
-      margin-top: 15px;
-      text-align: center;
     }
     &.app-login {
       position: fixed;

@@ -29,4 +29,5 @@ module.exports = app => {
   // 管理端
   router.post('/user/login', user.common.login);
   router.post('/user/merchant/saveNew', user.merchant.saveNew);
+  router.post('/user/merchant/query', user.merchant.query);
 };

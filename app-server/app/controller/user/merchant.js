@@ -31,6 +31,14 @@ class UserMerchantController extends Controller {
       }
     }
   }
+  /**
+   * 获取商家分页列表
+   */
+  async query() {
+    const { ctx } = this;
+    const merchantData = await ctx.service.user.merchant.query(ctx.request.body);
+    this.success(merchantData);
+  }
 }
 
 module.exports = UserMerchantController;

@@ -9,7 +9,7 @@ const Service = require('egg').Service;
  */
 class GoodsOrderService extends Service {
   /**
-   * 获取订单列表
+   * 获取订单分页列表
    * @param {Object} params 条件
    * @return {Object|null} 查找结果
    */
