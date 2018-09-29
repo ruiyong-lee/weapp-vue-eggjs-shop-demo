@@ -65,6 +65,9 @@ module.exports = app => {
     atlasJsonStr: STRING(2000),
     mainImg: STRING(255),
     imagesJsonStr: STRING(2000),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

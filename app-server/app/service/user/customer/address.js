@@ -98,10 +98,10 @@ class AddressService extends Service {
    * @return {String|Null} 查找结果
    */
   async saveModify(params = {}) {
-    let { address } = params;
+    let { address, openId, nickName } = params;
     const { app } = this;
     const { version } = address;
-    const modifyInfo = app.getModifyInfo({ version, ...params });
+    const modifyInfo = app.getModifyInfo(version, openId, nickName);
 
     address = { ...address, ...modifyInfo };
 

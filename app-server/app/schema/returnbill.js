@@ -64,6 +64,9 @@ module.exports = app => {
     },
     status: STRING(20),
     remark: STRING(255),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

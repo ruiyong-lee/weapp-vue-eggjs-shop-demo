@@ -31,6 +31,20 @@ class UserMerchantController extends Controller {
       }
     }
   }
+
+  /**
+   * 修改商家
+   */
+  async saveModify() {
+    const { ctx } = this;
+    const rule = {
+      merchant: 'object',
+    };
+    ctx.validate(rule);
+    const uuid = await ctx.service.user.merchant.saveModify(ctx.request.body);
+    this.success(uuid);
+  }
+
   /**
    * 获取商家分页列表
    */
@@ -38,6 +52,16 @@ class UserMerchantController extends Controller {
     const { ctx } = this;
     const merchantData = await ctx.service.user.merchant.query(ctx.request.body);
     this.success(merchantData);
+  }
+
+  /**
+   * 根据uuid获取商家
+   */
+  async get() {
+    const { ctx } = this;
+    const { uuid } = ctx.request.body;
+    const merchant = await ctx.service.user.merchant.get(uuid);
+    this.success(merchant);
   }
 }
 

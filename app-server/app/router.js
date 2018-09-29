@@ -28,6 +28,12 @@ module.exports = app => {
 
   // 管理端
   router.post('/user/login', user.common.login);
+  router.post('/user/logout', user.common.logout);
+  router.post('/user/savePasswordModify', user.common.savePasswordModify);
+
+  // admin
   router.post('/user/merchant/saveNew', user.merchant.saveNew);
+  router.post('/user/merchant/saveModify', user.merchant.saveModify);
   router.post('/user/merchant/query', user.merchant.query);
+  router.post('/user/merchant/get', user.merchant.get);
 };

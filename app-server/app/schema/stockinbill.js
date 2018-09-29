@@ -51,6 +51,9 @@ module.exports = app => {
     stockInType: STRING(20),
     remark: STRING(255),
     warehouseUuid: STRING(38),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

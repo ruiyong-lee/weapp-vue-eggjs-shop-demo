@@ -2,17 +2,17 @@
 
 **适用于日用品、干货等商城，pc管理端 + 微信小程序**
 
-**您的 `星星` 和 `建议` 是我的动力 :blush::blush::blush:**
+**您的 `星星` :star::star: 和 `建议` :facepunch::facepunch: 是我的动力 :kissing_heart::kissing_heart::kissing_heart:**
 
 ## 技术栈
 
-微信小程序：ES5 （小程序的代码写法有点旧，之后有时间修改）
+微信小程序：**ES5 （小程序的代码写法有点旧，之后有时间修改）**
 
-pc前端：vue2 + vuex + vue-router + vue-cli3 + ES6
+pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
-后端：node + egg.js + ES6
+后端：**node + egg.js + ES6**
 
-**写法有错误之处请批评指正**， pc管理端正在开发，暂时不打算建分支和tag
+pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和不足之处请批评指正** :joy:
 
 ## 接口
 
@@ -22,7 +22,7 @@ pc前端：vue2 + vuex + vue-router + vue-cli3 + ES6
 ✔ 首页获取类别和商品列表&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取商家运费方案&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取收货时间列表&nbsp;&nbsp;&nbsp;&nbsp;
-✔ 获取用户订单列表&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取用户订单分页列表&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取订单详情&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 创建订单&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 取消订单&nbsp;&nbsp;&nbsp;&nbsp;
@@ -39,8 +39,17 @@ pc前端：vue2 + vuex + vue-router + vue-cli3 + ES6
 
 > **pc管理端接口**：
 
+###### 管理员
+
 ✔ 登录&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 注销&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 修改密码&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 新增商家&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 编辑商家&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取商家&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取商家分页列表&nbsp;&nbsp;&nbsp;&nbsp;
+
+###### 商家
 
 ## 项目本地运行
 ```

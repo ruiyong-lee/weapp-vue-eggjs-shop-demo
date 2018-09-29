@@ -19,6 +19,9 @@ module.exports = app => {
     payTime: DATE,
     totalFee: DECIMAL,
     cashFee: DECIMAL,
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

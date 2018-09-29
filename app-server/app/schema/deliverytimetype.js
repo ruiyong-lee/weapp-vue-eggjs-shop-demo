@@ -41,6 +41,9 @@ module.exports = app => {
     remark: STRING(255),
     surcharge: DECIMAL,
     orgUuid: STRING(38),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

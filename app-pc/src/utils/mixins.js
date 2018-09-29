@@ -1,37 +1,74 @@
 // 混合
+import { mapState } from 'vuex';
+
 const Pagination = () => import('../components/Pagination.vue');
 
 // page
 export const pageMixin = {
   data() {
-    return {
-      dropdownPrevField: '',
-      dropdownField: '',
-      dropdownFlag: false, // el-select 下拉时才执行查询时如果弹出messagebox, 会出现无法关闭messagebox和收起el-select，故需要处理
-    };
+    return {};
   },
-  methods: {
-    mx_focusDropdown(field) {
-      this.dropdownPrevField = this.dropdownField;
-      this.dropdownField = field;
-    },
-    mx_openDropdown(visible) {
-      if (!visible && this.dropdownPrevField === this.dropdownField) return;
+  mounted() {
+    return _.isFunction(this.refreshPage) && this.refreshPage();
+  },
+  activated() {
+    // keep-alive的页面激活后判断是否需要局部刷新数据
+    const refreshDataCallbackMap = this[this.$Constants.REFRESH_DATA_CALLBACK_MAP];
 
-      if (this.dropdownFlag) {
-        this.dropdownFlag = false;
-      } else {
-        this.dropdownFlag = true;
-        if (_.isFunction(this.doAfterOpenDropdown)) {
-          this.doAfterOpenDropdown(this.dropdownField);
+    if (!_.isEmpty(refreshDataCallbackMap)) {
+      Object.entries(refreshDataCallbackMap).forEach((item) => {
+        const key = item[0];
+        const callback = item[1];
+        const refreshDataMap = _.cloneDeep(this.mx_refreshDataMap);
+        const keepAliveNames = refreshDataMap[key] || [];
+        const index = keepAliveNames.indexOf(this.$route.name);
+
+        if (!_.isEmpty(keepAliveNames) && index > -1 && _.isFunction(callback)) {
+          callback();
+          keepAliveNames.splice(index, 1);
+          this.$store.commit('setRefreshDataMap', { key, value: keepAliveNames });
         }
+      });
+    }
+  },
+  beforeDestroy() {
+    // keep-alive的页面销毁后移除记录
+    const refreshDataCallbackMap = this[this.$Constants.REFRESH_DATA_CALLBACK_MAP];
+
+    if (!_.isEmpty(refreshDataCallbackMap)) {
+      Object.keys(refreshDataCallbackMap).forEach((key) => {
+        const refreshDataMap = _.cloneDeep(this.mx_refreshDataMap);
+        const keepAliveNames = refreshDataMap[key] || [];
+        const index = keepAliveNames.indexOf(this.$route.name);
+
+        if (!_.isEmpty(keepAliveNames) && index > -1) {
+          keepAliveNames[key].splice(index, 1);
+          this.$store.commit('setRefreshDataMap', { key, value: keepAliveNames });
+        }
+      });
+    }
+  },
+  watch: {
+    mx_isRefreshPage(refresh) {
+      // 重新刷新页面所有数据
+      if (refresh && _.isFunction(this.refreshPage)) {
+        this.refreshPage();
       }
     },
   },
+  computed: {
+    ...mapState({
+      mx_activeTabKey: 'activeTabKey',
+      mx_refreshDataMap: 'refreshDataMap',
+      mx_isRefreshPage(state) {
+        return state.refreshPageMap[this.mx_activeTabKey];
+      },
+    }),
+  },
+  methods: {},
 };
 
-// 搜索表格页面，每个组件如果有多个表格，除默认表格之外的表格必须有全局唯一的ref属性且以 'Table' 结尾，例如：ref="transportTable"
-// 单独一个表格可以不设置, 但组件必须有全局唯一的name且默认表格如果需要设置ref必须以 'default' 开头，例如：ref="defaultTable"
+// table
 const PAGE = 1;
 const PAGESIZE = 10;
 const PAGESIZES = [10, 30, 50];
@@ -46,66 +83,26 @@ export const tableMixin = {
   components: { Pagination },
   data() {
     return {
-      mx_tables: {},
+      mx_tableMap: {}, // 存放页面内不同表格的信息
       mx_customize_pagination: undefined, // 自定义分页，在组件内定义覆盖此字段
     };
   },
   mounted() {
-    this.mx_initTablePage();
   },
   computed: {
     // 默认表格不需要在每个页面单独处理
     mx_defaultTableData() {
-      const table = this.mx_tables[this.$options.name];
+      const table = this.mx_getTargetTable();
       return (table && table.rows) || [];
     },
     mx_defaultPagination() {
-      const table = this.mx_tables[this.$options.name];
-
-      if (!_.isEmpty(table)) {
-        return (table && table.pagination) || {};
-      }
-
-      return _.cloneDeep(PAGINATION);
+      const table = this.mx_getTargetTable();
+      return (table && table.pagination) || {};
     },
   },
   methods: {
-    // 初始化表格
-    mx_initTablePage() {
-      const tableData = {
-        params: {
-          filter: {},
-          pagination: {},
-          sort: {},
-        }, // 查询参数
-        rows: [], // 列表
-        pagingData: [], // 内存分页
-        pagination: _.cloneDeep(this.mx_customize_pagination || PAGINATION),
-      };
-
-      this.$nextTick(() => {
-        const componentId = this.$options.name;
-
-        Object.keys(this.$refs).forEach((key) => {
-          if (key.match(/^(?!default).*?Table/g)) {
-            this.$set(this.mx_tables, key, _.cloneDeep(tableData));
-          }
-        });
-
-        if (Object.keys(this.mx_tables).length === 0) {
-          if (_.isUndefined(componentId)) {
-            throw new Error("组件内有表格分页需要设置组件的全局唯一的name属性，多个表格除默认表格之外的表格必须有全局唯一的ref属性且以 'Table' 结尾, 例如：ref=\"transportTable\"");
-          } else {
-            this.$set(this.mx_tables, componentId, _.cloneDeep(tableData));
-          }
-        }
-
-        // 在组件内请求表格数据一定要放在这个方法里执行
-        return _.isFunction(this.initTable) && this.initTable();
-      });
-    },
-    // 初始化表格数据
-    mx_initTableData(data, target) {
+    // 设置ajax获取的表格数据
+    mx_setTableData(data, target) {
       const targetTable = this.mx_getTargetTable(target);
 
       if (!_.isEmpty(data) && !_.isEmpty(targetTable)) {
@@ -114,13 +111,10 @@ export const tableMixin = {
         targetTable.rows = data.rows;
       }
     },
-    // 获取表格
-    mx_getTargetTable(target) {
-      return this.mx_tables[target || this.$options.name] || {};
-    },
     // 获取表格查询条件
-    mx_getTargetTableParams(target) {
+    mx_getTableParams(target) {
       const targetTable = this.mx_getTargetTable(target);
+
       this.$set(targetTable.params.pagination, 'page', targetTable.pagination.page);
       this.$set(targetTable.params.pagination, 'pageSize', targetTable.pagination.pageSize);
 
@@ -163,7 +157,57 @@ export const tableMixin = {
           rows,
         };
 
-        this.mx_initTableData(result, target);
+        this.mx_setTableData(result, target);
+      }
+    },
+    // 获取表格
+    mx_getTargetTable(target) {
+      const tableKey = target || this.$options.name;
+
+      if (_.isEmpty(this.mx_tableMap[tableKey])) {
+        const tableData = {
+          params: {
+            filter: {},
+            pagination: {},
+            sort: {},
+          }, // 查询参数
+          rows: [], // 列表
+          pagingData: [], // 内存分页
+          pagination: _.cloneDeep(this.mx_customize_pagination || PAGINATION),
+        };
+
+        this.$set(this.mx_tableMap, tableKey, _.cloneDeep(tableData));
+      }
+
+      return this.mx_tableMap[tableKey] || {};
+    },
+  },
+};
+
+// dropdown
+export const dropdownMixin = {
+  data() {
+    return {
+      dropdownPrevField: '',
+      dropdownField: '',
+      dropdownFlag: false, // el-select 下拉时才执行查询时如果弹出messagebox, 会出现无法关闭messagebox和收起el-select，故需要处理
+    };
+  },
+  methods: {
+    mx_focusDropdown(field) {
+      this.dropdownPrevField = this.dropdownField;
+      this.dropdownField = field;
+    },
+    mx_openDropdown(visible) {
+      if (!visible && this.dropdownPrevField === this.dropdownField) return;
+
+      if (this.dropdownFlag) {
+        this.dropdownFlag = false;
+      } else {
+        this.dropdownFlag = true;
+        if (_.isFunction(this.doAfterOpenDropdown)) {
+          this.doAfterOpenDropdown(this.dropdownField);
+        }
       }
     },
   },

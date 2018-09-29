@@ -14,6 +14,9 @@ module.exports = app => {
       type: STRING(255),
       allowNull: false,
     },
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

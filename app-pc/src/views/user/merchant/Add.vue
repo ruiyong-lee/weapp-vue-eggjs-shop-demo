@@ -8,16 +8,16 @@
           <el-form-item label="商家名称" prop="name">
             <el-input v-model.trim="merchantForm.name"></el-input>
           </el-form-item>
-          <el-form-item label="联系人">
+          <el-form-item label="联系人" prop="linkMan">
             <el-input v-model.trim="merchantForm.linkMan"></el-input>
           </el-form-item>
-          <el-form-item label="联系电话">
+          <el-form-item label="联系电话" prop="linkPhone">
             <el-input v-model.trim="merchantForm.linkPhone"></el-input>
           </el-form-item>
-          <el-form-item label="详细地址">
+          <el-form-item label="详细地址" prop="address">
             <el-input v-model.trim="merchantForm.address"></el-input>
           </el-form-item>
-          <el-form-item label="客服电话">
+          <el-form-item label="客服电话" prop="servicePhone">
             <el-input v-model.trim="merchantForm.servicePhone"></el-input>
           </el-form-item>
         </el-col>
@@ -35,7 +35,7 @@
         </el-col>
       </el-row>
       <el-form-item>
-        <el-button type="primary" @click="submitForm('merchantForm')">立即创建</el-button>
+        <el-button type="primary" @click="submitForm('merchantForm')">保存</el-button>
         <el-button @click="resetForm('merchantForm')">重置</el-button>
       </el-form-item>
     </el-form>
@@ -43,8 +43,8 @@
 </template>
 
 <script>
-  import { pageMixin } from '../../utils/mixins';
-  import { Pattern } from '../../utils/common';
+  import { pageMixin } from '../../../utils/mixins';
+  import { Pattern } from '../../../utils/constants';
 
   export default {
     name: 'merchantAdd',
@@ -111,8 +111,9 @@
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$api.createMechant({ merchant: this.merchantForm }).then((res) => {
-              console.log(res); // TODO
+            this.$api.merchant.saveNew({ merchant: this.merchantForm }).then(() => {
+              this.$message({ message: '新增商家成功', type: 'success' });
+              this.$router.push({ name: 'merchantList' });
             }).catch(() => {
             });
           }

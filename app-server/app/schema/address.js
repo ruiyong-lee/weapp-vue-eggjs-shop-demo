@@ -52,6 +52,9 @@ module.exports = app => {
     },
     sysDefault: BOOLEAN,
     shopName: STRING(76),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

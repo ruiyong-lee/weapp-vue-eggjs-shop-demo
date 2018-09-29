@@ -97,7 +97,8 @@ class GoodsOrderService extends Service {
    */
   async cancelBill(params = {}) {
     const { app } = this;
-    const modifyInfo = app.getModifyInfo(params);
+    const { version, openId, nickName } = params;
+    const modifyInfo = app.getModifyInfo(version, openId, nickName);
     return await app.model.GoodsOrder.cancelBill({ ...params, ...modifyInfo });
   }
 }

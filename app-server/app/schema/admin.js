@@ -44,7 +44,7 @@ module.exports = app => {
       allowNull: false,
     },
     userType: {
-      type: ENUM('superAdmin'),
+      type: ENUM('admin'),
       allowNull: false,
     },
     userName: {
@@ -56,6 +56,9 @@ module.exports = app => {
       type: STRING(100),
       allowNull: false,
     },
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

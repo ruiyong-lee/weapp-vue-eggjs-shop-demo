@@ -26,10 +26,16 @@ module.exports = {
       freezeTableName: true,
       getterMethods: {
         createdTime() {
-          return app.formatToDayTime(this.getDataValue('createdTime'));
+          const createdTime = this.getDataValue('createdTime');
+          if (createdTime) {
+            return app.formatToDayTime(createdTime);
+          }
         },
         lastModifiedTime() {
-          return app.formatToDayTime(this.getDataValue('lastModifiedTime'));
+          const lastModifiedTime = this.getDataValue('lastModifiedTime');
+          if (lastModifiedTime) {
+            return app.formatToDayTime(lastModifiedTime);
+          }
         },
       },
       setterMethods: {},

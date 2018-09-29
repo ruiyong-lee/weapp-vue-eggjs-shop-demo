@@ -1,24 +1,17 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    没错，这就是一个首页
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue';
-
-export default {
-  name: 'home',
-  components: {
-    HelloWorld,
-  },
-  mounted() {
-    this.$api.getUserInfo(this.loginForm).then((res) => {
-      console.log(res);
-    }).catch(() => {
-    });
-  },
-};
+  export default {
+    name: 'home',
+    components: {},
+    mounted() {
+    },
+  };
 </script>
+
+<style>
+</style>

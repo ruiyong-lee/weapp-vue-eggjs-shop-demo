@@ -35,10 +35,13 @@ module.exports = (options, app) => {
       // 管理端接口
       ctx.request.body.userUuid = ctx.request.body.userUuid || ctx.cookies.get('userUuid', { signed: false });
       ctx.request.body.userName = ctx.request.body.userName || ctx.cookies.get('userName', { signed: false });
+      ctx.request.body.userType = ctx.request.body.userType || ctx.cookies.get('userType', { signed: false });
+
       await next();
 
       // 过滤登录接口
-      if (ctx.path === '/user/login') {
+      const ignorePaths = ['/user/login', '/user/logout'];
+      if (ignorePaths.includes(ctx.path)) {
         return;
       }
       await ctx.verifyToken();

@@ -50,6 +50,9 @@ module.exports = app => {
     safetyStockQty: DECIMAL,
     goodsCategoryUuid: STRING(38),
     remark: STRING(255),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

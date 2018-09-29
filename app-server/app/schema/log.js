@@ -32,6 +32,9 @@ module.exports = app => {
     operateTime: DATE,
     operatorName: STRING(76),
     operatorUuid: STRING(38),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

@@ -8,6 +8,7 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import api from './api/api';
+import { Constants } from './utils/constants';
 import './directive/';
 import './styles/reset.css';
 import './styles/element-variables.scss';
@@ -19,6 +20,7 @@ Vue.use(EasyScroll);
 Vue.use(_);
 Vue.component('icon', Icon);
 Vue.prototype.$api = api;
+Vue.prototype.$Constants = Constants;
 
 Vue.config.productionTip = false;
 

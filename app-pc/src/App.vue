@@ -33,16 +33,18 @@
         </div>
         <div class="app-header__right">
           <el-tooltip content="刷新" placement="top">
-            <icon name="sync" class="app-refresh-btn text-primary cursor-pointer"></icon>
+            <icon name="sync" class="app-refresh-btn"
+                  @click.native="refreshCurrentPage"></icon>
           </el-tooltip>
           <el-dropdown>
             <span>
-              {{user.userName}} <icon name="user" class="text-primary"></icon>
+              <span class="app-user-name">{{decodeURI(user.name)}}</span>
+              <icon name="user" class="text-primary"></icon>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>账号信息</el-dropdown-item>
-              <el-dropdown-item>修改密码</el-dropdown-item>
-              <el-dropdown-item>退出登录</el-dropdown-item>
+              <el-dropdown-item v-if="user.userType !== 'admin'">账号信息</el-dropdown-item>
+              <el-dropdown-item @click.native="$router.push({ name: 'passwordEdit'})">修改密码</el-dropdown-item>
+              <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
@@ -65,7 +67,7 @@
                 <span slot="title">首页</span>
               </el-menu-item>
 
-              <template v-if="user.userType === 'superAdmin'">
+              <template v-if="user.userType === 'admin'">
                 <el-menu-item index="merchantList" :route="{ name: 'merchantList' }">
                   <icon name="user" class="el-icon-v"></icon>
                   <span slot="title">商家管理</span>
@@ -83,8 +85,8 @@
                   <!--<el-menu-item index="1-1">选项1</el-menu-item>-->
                   <!--<el-menu-item index="1-2">选项2</el-menu-item>-->
                   <!--</el-menu-item-group>-->
-                  <el-menu-item index="about" :route="{ name: 'about' }">列表</el-menu-item>
-                  <el-menu-item index="order" :route="{ name: 'order' }">详情</el-menu-item>
+                  <!--<el-menu-item index="about" :route="{ name: 'about' }">列表</el-menu-item>-->
+                  <!--<el-menu-item index="order" :route="{ name: 'order' }">详情</el-menu-item>-->
                 </el-submenu>
               </template>
             </el-menu>
@@ -93,14 +95,15 @@
         <el-main>
           <section v-if="route.name !== 'login'" class="app-page">
             <el-collapse-transition>
-              <el-row class="app-page-header" v-if="route.name !== 'home'">
+              <el-row class="app-page-header">
                 <el-col :span="12">
                   <el-breadcrumb separator-class="el-icon-arrow-right">
                     <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
                     <el-breadcrumb-item v-for="item in route.meta && route.meta.breadcrumbs" :key="item.name">
                       <router-link :to="{name: item.name}">{{item.title}}</router-link>
                     </el-breadcrumb-item>
-                    <el-breadcrumb-item>{{route.meta && (route.meta.breadcrumbTitle || route.meta.title)}}
+                    <el-breadcrumb-item v-if="route.name !== 'home'">{{route.meta && (route.meta.breadcrumbTitle ||
+                      route.meta.title)}}
                     </el-breadcrumb-item>
                   </el-breadcrumb>
                 </el-col>
@@ -167,10 +170,12 @@
       };
     },
     mounted() {
+      const name = this.$cookie.get('name');
       const userUuid = this.$cookie.get('userUuid');
       const userName = this.$cookie.get('userName');
       const userType = this.$cookie.get('userType');
-      this.$store.commit('setUser', { userUuid, userName, userType });
+
+      this.$store.commit('setUser', { name, userUuid, userName, userType });
     },
     computed: {
       route() {
@@ -178,6 +183,7 @@
       },
       ...mapState({
         user: 'user',
+        activeTabKey: 'activeTabKey',
       }),
     },
     watch: {
@@ -245,6 +251,22 @@
         },
         immediate: true,
       },
+      activeTabIndex: {
+        handler(index) {
+          const currentRoute = this.tabList[index] || {};
+          const { meta = {} } = currentRoute;
+          const { tabKey } = meta;
+
+          this.$store.commit('setActiveTabKey', tabKey);
+        },
+        immediate: true,
+      },
+      keepAliveNames: {
+        handler(list = []) {
+          this.$store.commit('setKeepAliveNames', list);
+        },
+        immediate: true,
+      },
     },
     methods: {
       // 显示tab上面的图标
@@ -279,7 +301,7 @@
         // 如果关闭当前激活的tab则自动跳转到上一个或下一个tab， 并且清除相同tabKey的所有页面缓存
         if (this.tabList.length !== 1) {
           const currentRoute = this.tabList[index] || {};
-          const { meta = {} } = currentRoute || {};
+          const { meta = {} } = currentRoute;
           const { tabKey } = meta;
 
 
@@ -301,11 +323,24 @@
           this.tabList.splice(index, 1);
         }
       },
+      // 刷新当前页面数据（重新请求数据）
+      refreshCurrentPage() {
+        this.$store.commit('setRefreshPageMap', { key: this.activeTabKey, value: true });
+        this.$nextTick(() => {
+          this.$store.commit('setRefreshPageMap', { key: this.activeTabKey, value: false });
+        });
+      },
       handleOpen(key, keyPath) {
         console.log(key, keyPath);
       },
       handleClose(key, keyPath) {
         console.log(key, keyPath);
+      },
+      logout() {
+        this.$api.logout().then(() => {
+          this.$router.push({ name: 'login' });
+        }).catch(() => {
+        });
       },
     },
     directives: {
@@ -528,6 +563,13 @@
 
   .app-refresh-btn {
     margin-right: 25px;
+    color: #5C9ACF;
+    cursor: pointer;
+  }
+
+  .app-user-name {
+    margin-right: 5px;
+    vertical-align: middle;
   }
 
   .content-title {
@@ -536,5 +578,10 @@
     color: #5c9acf;
     font-weight: bold;
     border-bottom: 1px solid #e9ecf3;
+  }
+
+  .el-switch-text {
+    margin-left: 10px;
+    vertical-align: middle;
   }
 </style>

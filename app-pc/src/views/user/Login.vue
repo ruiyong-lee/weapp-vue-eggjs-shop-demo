@@ -7,6 +7,12 @@
       <el-form-item prop="password">
         <el-input v-model.trim="loginForm.password" type="password" placeholder="密码"></el-input>
       </el-form-item>
+      <el-form-item>
+        <el-radio-group v-model="loginForm.loginType">
+          <el-radio label="merchant">商家</el-radio>
+          <el-radio label="admin">管理员</el-radio>
+        </el-radio-group>
+      </el-form-item>
       <el-form-item class="mb-0">
         <el-button class="login-btn" type="primary" @click="submitForm('loginForm')">登录</el-button>
       </el-form-item>
@@ -22,6 +28,7 @@
         loginForm: {
           userName: '',
           password: '',
+          loginType: 'merchant',
         },
         rules: {
           userName: [
@@ -33,18 +40,18 @@
         },
       };
     },
+    mounted() {
+      console.log(window.history);
+    },
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$api.login(this.loginForm).then((res) => {
-              this.$store.commit('setUser', res);
+            this.$api.login(this.loginForm).then(() => {
               window.location.hash = '';
               window.location.reload();
             }).catch(() => {
             });
-          } else {
-            console.log('error submit!!');
           }
           return valid;
         });
@@ -62,7 +69,10 @@
     .login-form {
       width: 360px;
       .el-form-item {
-        margin-bottom: 32px;
+        margin-bottom: 15px;
+        &:first-child {
+          margin-bottom: 32px;
+        }
         &:last-child {
           margin-bottom: 0;
         }
@@ -76,6 +86,27 @@
       }
       .el-input__inner {
         border-color: #fff !important;
+      }
+      .el-radio {
+        color: #bbb;
+      }
+      .el-radio__inner {
+        background-color: #bbb;
+        &:hover {
+          border-color: #d8dce5;
+        }
+      }
+      .el-radio__input.is-checked {
+        .el-radio__inner {
+          border: 2px solid #fff;
+          background: #fff;
+          &:after {
+            background-color: #1cc09f;
+          }
+        }
+        + .el-radio__label {
+          color: #fff;
+        }
       }
       .login-btn {
         width: 100%;

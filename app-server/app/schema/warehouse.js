@@ -53,6 +53,9 @@ module.exports = app => {
     longitude: DOUBLE,
     latitude: DOUBLE,
     poiAddress: STRING(255),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

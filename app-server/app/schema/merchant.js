@@ -43,7 +43,7 @@ module.exports = app => {
       allowNull: false,
     },
     userType: {
-      type: ENUM('admin', 'employee'),
+      type: ENUM('merchant', 'employee'),
       allowNull: false,
     },
     userName: {
@@ -66,6 +66,9 @@ module.exports = app => {
     mchKey: STRING(38),
     mchId: STRING(38),
     appSecret: STRING(38),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

@@ -1,7 +1,4 @@
-// utils - common
-export const Pattern = {
-  userName: /^[a-zA-Z0-9_-]{1,16}$/,
-};
+// utils - common 公共方法
 
 export const Utils = {};
 

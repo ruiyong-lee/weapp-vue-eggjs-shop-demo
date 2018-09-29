@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import VueCookie from 'vue-cookie';
+import { Constants } from './utils/constants';
 
 Vue.use(Router);
 Vue.use(VueCookie);
@@ -14,7 +15,6 @@ if (process.env.NODE_ENV === 'production') {
 } else {
   customImport = file => require(`@/views/${file}.vue`).default;
 }
-
 
 // meta.title：tab上显示的标题
 // meta.tabKey：tabKey一样的路由会被显示在同一个tab页面下
@@ -32,47 +32,46 @@ const defaultRoutes = [
   {
     path: '/login',
     name: 'login',
-    component: customImport('Login'),
+    component: customImport('user/Login'),
     meta: { title: '登录', tabKey: 'login' },
+  },
+  {
+    path: '/password-edit',
+    name: 'passwordEdit',
+    component: customImport('user/PasswordEdit'),
+    meta: { title: '修改密码', tabKey: 'passwordEdit' },
   },
   { path: '*', redirect: { name: 'home' } },
 ];
 
-if (userType === 'superAdmin') {
+if (userType === 'admin') {
   // 管理员
-  const merchantDefaultMeta = { title: '商家管理', tabKey: 'merchant' };
+  const merchantDefaultMeta = { title: '商家管理', tabKey: Constants.MERCHANT };
   const merchantDefaultBreadcrumbs = { breadcrumbs: [{ title: '商家管理', name: 'merchantList' }] };
 
   routes = [
     {
       path: '/merchant/list',
       name: 'merchantList',
-      component: customImport('merchant/List'),
+      component: customImport('user/merchant/List'),
       meta: { ...merchantDefaultMeta, isMainPage: true },
     },
     {
       path: '/merchant/add',
       name: 'merchantAdd',
-      component: customImport('merchant/Add'),
+      component: customImport('user/merchant/Add'),
       meta: { ...merchantDefaultMeta, ...merchantDefaultBreadcrumbs, breadcrumbTitle: '新增' },
+    },
+    {
+      path: '/merchant/edit/:merchantUuid',
+      name: 'merchantEdit',
+      component: customImport('user/merchant/Edit'),
+      meta: { ...merchantDefaultMeta, ...merchantDefaultBreadcrumbs, breadcrumbTitle: '编辑' },
     },
   ];
 } else {
   // 商家
-  routes = [
-    {
-      path: '/about',
-      name: 'about',
-      component: customImport('About'),
-      meta: { title: '订单', tabKey: 'about', isMainPage: true },
-    },
-    {
-      path: '/order',
-      name: 'order',
-      component: customImport('Order'),
-      meta: { title: '订单详情', tabKey: 'about' },
-    },
-  ];
+  routes = [];
 }
 
 export default new Router({

@@ -45,6 +45,9 @@ module.exports = app => {
     freeFreightAmount: DECIMAL,
     sysDefault: BOOLEAN,
     orgUuid: STRING(38),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

@@ -51,6 +51,9 @@ module.exports = app => {
     remark: STRING(255),
     sourceBillNumber: STRING(38),
     warehouseUuid: STRING(255),
-    version: BIGINT,
+    version: {
+      type: BIGINT,
+      defaultValue: 0,
+    },
   };
 };

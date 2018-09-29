@@ -32,11 +32,11 @@ module.exports = {
     };
   },
   // modify所需的一些公共字段
-  getModifyInfo({ version, openId, nickName }) {
+  getModifyInfo(version, modifyId, modifyName) {
     return {
       version: version + 1,
-      lastModifierId: openId || 'system',
-      lastModifierName: nickName || 'system',
+      lastModifierId: modifyId || 'system',
+      lastModifierName: modifyName || 'system',
     };
   },
 
