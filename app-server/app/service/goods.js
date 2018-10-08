@@ -9,14 +9,14 @@ const Service = require('egg').Service;
  */
 class GoodsService extends Service {
   /**
-   * 批量查询商品数据
+   * 获取key为类别的商品数据
    * @param {String} merchantUuid 商家uuid
    * @return {Object|Null} 查找结果
    */
-  async getGoods(merchantUuid) {
+  async getGoodsWithCategory(merchantUuid) {
     const { app } = this;
     const goodsMap = {};
-    const resultList = await app.model.Goods.getGoods({
+    const resultList = await app.model.Goods.getGoodsWithCategory({
       merchantUuid,
       categoryAttributes: ['name'],
       goodsAttributes: ['uuid', 'code', 'name', 'categoryUuid', 'spec', 'mainImg', 'salePrice', 'unitName'],
@@ -49,6 +49,15 @@ class GoodsService extends Service {
     }
 
     return goodsMap;
+  }
+
+  /**
+   * 获取某类别的商品数量
+   * @param {String} categoryUuid 类别uuid
+   * @return {Number|Null} 商品数量
+   */
+  async countGoodsByCategory(categoryUuid) {
+    return await this.app.model.Goods.countGoodsByCategory(categoryUuid);
   }
 }
 

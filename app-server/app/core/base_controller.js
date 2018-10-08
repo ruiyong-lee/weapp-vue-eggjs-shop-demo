@@ -13,7 +13,7 @@ class BaseController extends Controller {
   }
 
   success(data, status) {
-    this.ctx.body = { code: this.ctx.sucessCode, data };
+    this.ctx.body = { code: this.ctx.SUCCESS_CODE, data };
     this.ctx.status = status || 200;
   }
 

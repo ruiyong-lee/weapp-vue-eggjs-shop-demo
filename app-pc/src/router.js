@@ -19,7 +19,7 @@ if (process.env.NODE_ENV === 'production') {
 // meta.title：tab上显示的标题
 // meta.tabKey：tabKey一样的路由会被显示在同一个tab页面下
 // meta.isMainPage：相同tabKey的主页面，这个页面跳转到其他与此页面相同tabKey的页面会被缓存，比如：主页面是订单列表页，其他页面是订单详情页
-// isMainPage = false的页面跳转到不是相同tabKey的页面，也会被缓存（切换tab），但是跳转到相同tabKey的页面不会被缓存
+// isMainPage = false的页面跳转到不同tabKey的页面，也会被缓存（切换tab），但是跳转到相同tabKey的页面不会被缓存
 
 let routes = [];
 const defaultRoutes = [
@@ -50,6 +50,7 @@ if (userType === 'admin') {
   const merchantDefaultBreadcrumbs = { breadcrumbs: [{ title: '商家管理', name: 'merchantList' }] };
 
   routes = [
+    // 商家管理
     {
       path: '/merchant/list',
       name: 'merchantList',
@@ -71,7 +72,33 @@ if (userType === 'admin') {
   ];
 } else {
   // 商家
-  routes = [];
+  const orderDefaultMeta = { title: '订货单', tabKey: Constants.ORDER };
+  const orderDefaultBreadcrumbs = { breadcrumbs: [{ title: '订货单', name: 'orderList' }] };
+  const goodsCategoryDefaultMeta = { title: '类别管理', tabKey: Constants.GOODS_CATEGORY };
+
+  routes = [
+    // 订货单
+    {
+      path: '/bill/order/list',
+      name: 'orderList',
+      component: customImport('bill/order/List'),
+      meta: { ...orderDefaultMeta, isMainPage: true },
+    },
+    {
+      path: '/bill/order/add',
+      name: 'orderAdd',
+      component: customImport('bill/order/Add'),
+      meta: { ...orderDefaultMeta, ...orderDefaultBreadcrumbs, breadcrumbTitle: '新增' },
+    },
+
+    // 商品类别
+    {
+      path: '/goods/goods_category/list',
+      name: 'goodsCategoryList',
+      component: customImport('goods/category/List'),
+      meta: { ...goodsCategoryDefaultMeta, isMainPage: true },
+    },
+  ];
 }
 
 export default new Router({

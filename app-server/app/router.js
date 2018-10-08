@@ -7,10 +7,10 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  const { weapp, user } = controller;
+  const { weapp, user, goodsCategory } = controller;
 
   // 微信小程序
-  router.post('/weapp/getGoods', weapp.getGoods);
+  router.post('/weapp/getGoodsWithCategory', weapp.getGoodsWithCategory);
   router.post('/weapp/getDefaultFreightPlan', weapp.getDefaultFreightPlan);
   router.post('/weapp/getDeliveryTimeTypeList', weapp.getDeliveryTimeTypeList);
   router.post('/weapp/queryOrderBill', weapp.queryOrderBill);
@@ -36,4 +36,11 @@ module.exports = app => {
   router.post('/user/merchant/saveModify', user.merchant.saveModify);
   router.post('/user/merchant/query', user.merchant.query);
   router.post('/user/merchant/get', user.merchant.get);
+
+  // merchant
+  router.post('/goodsCategory/saveNew', goodsCategory.saveNew);
+  router.post('/goodsCategory/saveModify', goodsCategory.saveModify);
+  router.post('/goodsCategory/delete', goodsCategory.delete);
+  router.post('/goodsCategory/query', goodsCategory.query);
+  router.post('/goodsCategory/get', goodsCategory.get);
 };

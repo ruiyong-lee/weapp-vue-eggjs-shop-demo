@@ -37,6 +37,7 @@ module.exports = app => {
     name: {
       type: STRING(76),
       allowNull: false,
+      unique: true,
     },
     orgUuid: {
       type: STRING(38),

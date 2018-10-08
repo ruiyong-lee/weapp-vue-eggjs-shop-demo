@@ -6,18 +6,6 @@ module.exports = app => {
   const Merchant = db.defineModel(app, 'merchant', merchantSchema);
 
   /**
-   * 查找商家
-   * @param {Object} { uuid, attributes } 条件
-   * @return {Object|Null} 查找结果
-   */
-  Merchant.get = async ({ uuid, attributes }) => {
-    return await Merchant.findOne({
-      attributes,
-      where: { uuid },
-    });
-  };
-
-  /**
    * 新增商家
    * @param {Object} merchant 条件
    * @return {String} 商家uuid
@@ -73,13 +61,13 @@ module.exports = app => {
    * @param {Object} { attributes, pagination, filter } 条件
    * @return {Object|Null} 查找结果
    */
-  Merchant.query = async ({ attributes, pagination = {}, filter = {} }) => {
+  Merchant.query = async ({ userUuid, attributes, pagination = {}, filter = {} }) => {
     const { page, pageSize: limit } = pagination;
     const { count, rows } = await Merchant.findAndCountAll({
       offset: (page - 1) * limit,
       limit,
       attributes,
-      where: filter,
+      where: { ...filter, orgUuid: userUuid },
       order: [['createdTime', 'DESC']],
     });
 
@@ -92,7 +80,6 @@ module.exports = app => {
    * @return {Object|Null} 查找结果
    */
   Merchant.get = async ({ uuid, attributes }) => {
-
     const merchant = await Merchant.findById(uuid, {
       attributes,
     });

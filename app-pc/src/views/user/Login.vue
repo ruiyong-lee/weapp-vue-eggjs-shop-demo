@@ -1,11 +1,11 @@
 <template>
   <div class="login">
-    <el-form :model="loginForm" :rules="rules" ref="loginForm" class="login-form">
+    <el-form :model="loginForm" :rules="rules" ref="loginForm" class="login-form" @submit.native.prevent>
       <el-form-item prop="userName">
         <el-input v-model.trim="loginForm.userName" placeholder="账号"></el-input>
       </el-form-item>
       <el-form-item prop="password">
-        <el-input v-model.trim="loginForm.password" type="password" placeholder="密码"></el-input>
+        <el-input v-model.trim="loginForm.password" type="password" placeholder="密码" @keyup.enter="submitForm('loginForm')"></el-input>
       </el-form-item>
       <el-form-item>
         <el-radio-group v-model="loginForm.loginType">

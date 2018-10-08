@@ -7,6 +7,8 @@ export const Pattern = {
 
 export const Constants = {
   MERCHANT: 'merchant',
+  ORDER: 'order',
+  GOODS_CATEGORY: 'goodsCategory',
   REFRESH_DATA_CALLBACK_MAP: 'refreshDataCallbackMap', // 控制页面局部数据刷新
 
   // 状态

@@ -9,7 +9,6 @@ const Service = require('egg').Service;
  * @author ruiyong-lee
  */
 class MerchantService extends Service {
-
   /**
    * 查找某个商家数据
    * @param {String} userName 商家账号
@@ -18,15 +17,6 @@ class MerchantService extends Service {
    */
   async getMerchantByLogin(userName, password) {
     return await this.app.mysql.get('merchant', { userName, password: md5(password) });
-  }
-
-  /**
-   * 查找某个商家数据
-   * @param {String} uuid 商家uuid
-   * @return {Object|null} 查找结果
-   */
-  async getMerchant(uuid) {
-    return await this.app.mysql.get('merchant', { uuid });
   }
 
   /**

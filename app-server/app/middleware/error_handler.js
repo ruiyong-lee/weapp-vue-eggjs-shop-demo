@@ -31,7 +31,7 @@ module.exports = () => {
 
       // 从 error 对象上读出各个属性，设置到响应中
       ctx.body = {
-        code: ctx.errorCode,
+        code: ctx.ERROR_CODE,
         message: error,
       };
 

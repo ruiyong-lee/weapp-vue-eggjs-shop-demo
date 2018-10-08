@@ -27,7 +27,7 @@ module.exports = (options, app) => {
       // 判断是否有session
       if (!openId) {
         ctx.body = {
-          code: ctx.noLoginCode,
+          code: ctx.NO_LOGIN_CODE,
           message: '尚未登录',
         };
       }

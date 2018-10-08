@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form :model="passwordForm" :rules="rules" ref="passwordForm" label-width="7em" class="default-form"
-             size="small">
+             size="small" @submit.native.prevent>
       <el-row>
         <el-col :span="11">
           <el-form-item label="旧密码" prop="oldPassword">

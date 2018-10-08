@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-form :model="merchantForm" :rules="rules" ref="merchantForm" label-width="7em" class="default-form"
-             size="small">
+             size="small" @submit.native.prevent>
       <el-row>
         <el-col :span="11">
           <h2 class="content-title">基础资料</h2>

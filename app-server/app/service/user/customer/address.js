@@ -41,7 +41,7 @@ class AddressService extends Service {
   /**
    * 设置用户默认地址
    * @param {Object} params 条件
-   * @return {Object|Null} 查找结果
+   * @return {String|Null} 用户地址uuid
    */
   async setDefault(params = {}) {
     const { app } = this;
@@ -53,7 +53,7 @@ class AddressService extends Service {
   /**
    * 删除用户地址
    * @param {Object} params 条件
-   * @return {Object|Null} 查找结果
+   * @return {String|Null} 删除用户地址uuid
    */
   async delete(params = {}) {
     const { app } = this;

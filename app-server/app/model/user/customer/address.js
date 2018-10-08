@@ -31,7 +31,7 @@ module.exports = app => {
   /**
    * 设置用户默认地址
    * @param {Object} { uuid } 条件
-   * @return {Object|Null} 查找结果
+   * @return {String|Null} 用户地址uuid
    */
   Address.setDefault = async ({ uuid }) => {
     const transaction = await app.transition();
@@ -44,10 +44,12 @@ module.exports = app => {
   /**
    * 删除用户地址
    * @param {Object} { uuid } 条件
-   * @return {Object|Null} 查找结果
+   * @return {String|Null} 删除用户地址uuid
    */
   Address.delete = async ({ uuid }) => {
-    await Address.destroy({ where: { uuid } });
+    const result = await Address.destroy({ where: { uuid } });
+
+    app.checkDelete(result);
 
     return uuid;
   };

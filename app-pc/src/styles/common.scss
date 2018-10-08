@@ -167,3 +167,14 @@
 .cursor-pointer {
   cursor: pointer;
 }
+
+//按钮
+.danger-text-btn {
+  color: #FF5B5B;
+  &:focus {
+    color: #FF5B5B;
+  }
+  &:hover {
+    color: #ff8b87;
+  }
+}

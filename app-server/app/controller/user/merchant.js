@@ -25,7 +25,7 @@ class UserMerchantController extends Controller {
       const { fields = {}, name } = err;
 
       if (name === 'SequelizeUniqueConstraintError') {
-        this.fail(ctx.uniqueCode, `账号：${fields.userName} 的商家已存在`);
+        this.fail(ctx.UNIQUE_CODE, `账号：${fields.userName} 的商家已存在`);
       } else {
         throw new Error(err);
       }

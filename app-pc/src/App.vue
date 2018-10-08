@@ -38,7 +38,7 @@
           </el-tooltip>
           <el-dropdown>
             <span>
-              <span class="app-user-name">{{decodeURI(user.name)}}</span>
+              <span class="app-user-name">{{decodeURI(user.name || '')}}</span>
               <icon name="user" class="text-primary"></icon>
             </span>
             <el-dropdown-menu slot="dropdown">
@@ -68,25 +68,28 @@
               </el-menu-item>
 
               <template v-if="user.userType === 'admin'">
-                <el-menu-item index="merchantList" :route="{ name: 'merchantList' }">
+                <el-menu-item index="merchant" :route="{ name: 'merchantList' }">
                   <icon name="user" class="el-icon-v"></icon>
                   <span slot="title">商家管理</span>
                 </el-menu-item>
               </template>
 
               <template v-else>
-                <el-submenu index="about">
+                <el-submenu index="bill">
                   <template slot="title">
-                    <i class="el-icon-location"></i>
+                    <icon name="file-text" class="el-icon-v"></icon>
                     <span>订单</span>
                   </template>
-                  <!--<el-menu-item-group>-->
-                  <!--<template slot="title">分组一</template>-->
-                  <!--<el-menu-item index="1-1">选项1</el-menu-item>-->
-                  <!--<el-menu-item index="1-2">选项2</el-menu-item>-->
-                  <!--</el-menu-item-group>-->
-                  <!--<el-menu-item index="about" :route="{ name: 'about' }">列表</el-menu-item>-->
-                  <!--<el-menu-item index="order" :route="{ name: 'order' }">详情</el-menu-item>-->
+                  <el-menu-item index="orderList" :route="{ name: 'orderList' }">订货单</el-menu-item>
+                  <!--<el-menu-item index="orderList" :route="{ name: 'orderList' }">退货单</el-menu-item>-->
+                </el-submenu>
+                <el-submenu index="goods">
+                  <template slot="title">
+                    <icon name="shopping" class="el-icon-v"></icon>
+                    <span>商品</span>
+                  </template>
+                  <el-menu-item index="goodsCategoryList" :route="{ name: 'goodsCategoryList' }">类别管理</el-menu-item>
+                  <!--<el-menu-item index="orderList" :route="{ name: 'orderList' }">商品管理</el-menu-item>-->
                 </el-submenu>
               </template>
             </el-menu>
@@ -175,7 +178,9 @@
       const userName = this.$cookie.get('userName');
       const userType = this.$cookie.get('userType');
 
-      this.$store.commit('setUser', { name, userUuid, userName, userType });
+      this.$store.commit('setUser', {
+        name, userUuid, userName, userType,
+      });
     },
     computed: {
       route() {

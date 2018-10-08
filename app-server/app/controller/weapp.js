@@ -9,16 +9,16 @@ const Controller = require('../core/base_controller');
  */
 class WeappController extends Controller {
   /**
-   * 获取类别和商品列表
+   * 获取key为类别的商品数据
    */
-  async getGoods() {
+  async getGoodsWithCategory() {
     const { ctx } = this;
     const { merchantUuid } = ctx.request.body;
     const rule = {
       merchantUuid: 'string',
     };
     ctx.validate(rule);
-    const goods = await ctx.service.goods.getGoods(merchantUuid);
+    const goods = await ctx.service.goods.getGoodsWithCategory(merchantUuid);
 
     this.success(goods);
   }
@@ -192,7 +192,7 @@ class WeappController extends Controller {
     const sessionid = ctx.helper.uuidv1();
 
     // 根据merchantUuid获取商家
-    const merchant = await ctx.service.user.merchant.getMerchant(merchantUuid);
+    const merchant = await ctx.service.user.merchant.get(merchantUuid);
 
     if (app._.isEmpty(merchant)) {
       return this.fail(999, '该应用未绑定商家');

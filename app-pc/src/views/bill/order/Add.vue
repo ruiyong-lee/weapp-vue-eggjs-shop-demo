@@ -23,25 +23,15 @@
         </el-col>
         <el-col :span="11" :offset="2">
           <h2 class="content-title">登录资料</h2>
-          <el-form-item label="账号">
-            {{merchantForm.userName}}
+          <el-form-item label="账号" prop="userName">
+            <el-input v-model.trim="merchantForm.userName"></el-input>
           </el-form-item>
-          <el-form-item label="状态">
-            <el-switch v-model="merchantForm.enableStatus" inactive-value="0" active-value="1"></el-switch>
-            <span class="el-switch-text" :class="$Constants.ENABLE_STATUS_CLASS[merchantForm.enableStatus]">{{$Constants.ENABLE_STATUS[merchantForm.enableStatus]}}</span>
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" v-model.trim="merchantForm.password" autocomplete="new-password"></el-input>
           </el-form-item>
-          <el-form-item label="重置密码">
-            <el-switch v-model="resetPassword"></el-switch>
+          <el-form-item label="确认密码" prop="checkPassword">
+            <el-input type="password" v-model.trim="merchantForm.checkPassword" autocomplete="new-password"></el-input>
           </el-form-item>
-          <template v-if="resetPassword">
-            <el-form-item label="新密码" prop="password">
-              <el-input type="password" v-model.trim="merchantForm.password" autocomplete="new-password"></el-input>
-            </el-form-item>
-            <el-form-item label="确认新密码" prop="checkPassword">
-              <el-input type="password" v-model.trim="merchantForm.checkPassword"
-                        autocomplete="new-password"></el-input>
-            </el-form-item>
-          </template>
         </el-col>
       </el-row>
       <el-form-item>
@@ -54,12 +44,20 @@
 
 <script>
   import { pageMixin } from '../../../utils/mixins';
+  import { Pattern } from '../../../utils/constants';
 
   export default {
-    name: 'merchantEdit',
+    name: 'orderAdd',
     mixins: [pageMixin],
     components: {},
     data() {
+      const validateUserName = (rule, value, callback) => {
+        if (Pattern.userName.test(value)) {
+          callback();
+        } else {
+          callback(new Error('请输入1到16位账号（字母，数字，下划线，减号）'));
+        }
+      };
       const validatePass = (rule, value, callback) => {
         if (value === '') {
           callback(new Error('请输入密码'));
@@ -90,10 +88,12 @@
           password: '',
           checkPassword: '',
         },
-        resetPassword: false,
         rules: {
           name: [
             { required: true, message: '请输入商家名称', trigger: 'blur' },
+          ],
+          userName: [
+            { required: true, validator: validateUserName, trigger: 'blur' },
           ],
           password: [
             { required: true, validator: validatePass, trigger: 'blur' },
@@ -104,23 +104,15 @@
         },
       };
     },
-    methods: {
-      refreshPage() {
-        this.get();
-      },
-      get() {
-        const { merchantUuid: uuid } = this.$route.params;
+    mounted() {
 
-        this.$api.merchant.get({ uuid }).then((res) => {
-          this.merchantForm = { ...this.merchantForm, ...res };
-        }).catch(() => {
-        });
-      },
+    },
+    methods: {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            this.$api.merchant.saveModify({ merchant: this.merchantForm }).then(() => {
-              this.$message({ message: '修改商家成功', type: 'success' });
+            this.$api.merchant.saveNew({ merchant: this.merchantForm }).then(() => {
+              this.$message({ message: '新增商家成功', type: 'success' });
               this.$router.push({ name: 'merchantList' });
             }).catch(() => {
             });

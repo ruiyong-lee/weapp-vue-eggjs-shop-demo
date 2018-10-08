@@ -70,6 +70,14 @@ module.exports = {
       throw error;
     }
   },
+  // 检查delete
+  checkDelete(count, message) {
+    if (!count) {
+      const error = new Error(message || '删除失败，请刷新后重试！');
+      error.status = 422;
+      throw error;
+    }
+  },
 
   // 任务处理
   registerTaskHandler(type, handler) {
