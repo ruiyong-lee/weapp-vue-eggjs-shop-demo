@@ -9,7 +9,7 @@
     </el-row>
 
     <el-table :data="mx_defaultTableData" size="mini">
-      <el-table-column prop="name" label="名称"></el-table-column>
+      <el-table-column prop="name" label="名称" class="text-bold"></el-table-column>
       <el-table-column prop="createdTime" label="创建时间" width="180"></el-table-column>
       <el-table-column prop="lastModifiedTime" label="最后修改时间" width="180"></el-table-column>
       <el-table-column label="操作" fixed="right" width="100" align="center">

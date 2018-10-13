@@ -1,4 +1,4 @@
-# weapp-eggjs-shop-demo
+# weapp-vue-eggjs-shop-demo
 
 **适用于日用品、干货等商城，pc管理端 + 微信小程序**
 
@@ -54,6 +54,8 @@ pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和�
 ✔ 登录&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 注销&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 修改密码&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取账号信息&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 编辑账号信息&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 新增商品类别&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 编辑商品类别&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 删除商品类别&nbsp;&nbsp;&nbsp;&nbsp;

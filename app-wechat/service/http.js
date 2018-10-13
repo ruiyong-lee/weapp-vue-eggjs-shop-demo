@@ -31,10 +31,10 @@ function request(config, noLogin) {
     header: header,
     success: (res) => {
       var info = res.data || {}
-      if (info.errorCode === 0) {
+      if (info.code === 0) {
         var success = config.success
         return typeof success === "function" && success(info.data || null, info.extendInfo);
-      } else if (info.errorCode === 100) {
+      } else if (info.code === 100) {
         //未登录或过期
         if (!noLogin) {
           login(() => {

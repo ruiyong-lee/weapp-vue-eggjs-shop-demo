@@ -22,12 +22,12 @@ module.exports = app => {
    */
   Merchant.saveModify = async merchant => {
     const {
-      uuid, name, enableStatus, servicePhone, linkPhone,
-      linkMan, version, password, lastModifierId, lastModifierName,
+      uuid, name, enableStatus, servicePhone, linkPhone, appId, appSecret, mchId,
+      mchKey, linkMan, version, password, lastModifierId, lastModifierName,
     } = merchant;
     const updateField = {
-      version, name, enableStatus, servicePhone,
-      linkPhone, linkMan, lastModifierId, lastModifierName,
+      version, name, enableStatus, servicePhone, appId, appSecret, mchId,
+      mchKey, linkPhone, linkMan, lastModifierId, lastModifierName,
     };
 
     if (password) {

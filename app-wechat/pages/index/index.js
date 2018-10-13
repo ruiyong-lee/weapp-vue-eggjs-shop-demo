@@ -45,7 +45,7 @@ Page(Object.assign({}, cartAdd, {
     var params = app.Http.buildParams();
 
     app.Http.request({
-      url: 'getGoods',
+      url: 'getGoodsWithCategory',
       data: params,
       success: (res) => {
         if (!app.Check.isUndeFinedOrNullOrEmpty(res)) {

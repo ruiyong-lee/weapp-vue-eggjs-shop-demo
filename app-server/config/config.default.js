@@ -24,7 +24,7 @@ module.exports = appInfo => {
       // 密码
       password: '209cfcfaf6',
       // 数据库名
-      database: 'weapp_eggjs_shop_demo',
+      database: 'weapp-vue-eggjs-shop-demo',
     },
     // 所有数据库配置的默认值
     default: {},
@@ -37,7 +37,7 @@ module.exports = appInfo => {
 
   config.sequelize = {
     dialect: 'mysql', // support: mysql, mariadb, postgres, mssql
-    database: 'weapp_eggjs_shop_demo',
+    database: 'weapp-vue-eggjs-shop-demo',
     host: '127.0.0.1',
     port: '3306',
     username: 'root',

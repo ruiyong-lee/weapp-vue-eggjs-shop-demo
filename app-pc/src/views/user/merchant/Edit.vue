@@ -27,21 +27,43 @@
             {{merchantForm.userName}}
           </el-form-item>
           <el-form-item label="状态">
-            <el-switch v-model="merchantForm.enableStatus" inactive-value="0" active-value="1"></el-switch>
-            <span class="el-switch-text" :class="$Constants.ENABLE_STATUS_CLASS[merchantForm.enableStatus]">{{$Constants.ENABLE_STATUS[merchantForm.enableStatus]}}</span>
+            <el-switch v-if="userType === 'admin'" v-model="merchantForm.enableStatus"
+                       inactive-value="0" active-value="1"></el-switch>
+            <span class="el-switch-text" :class="$Constants.ENABLE_STATUS_CLASS[merchantForm.enableStatus]">
+              {{$Constants.ENABLE_STATUS[merchantForm.enableStatus]}}
+            </span>
           </el-form-item>
-          <el-form-item label="重置密码">
-            <el-switch v-model="resetPassword"></el-switch>
-          </el-form-item>
-          <template v-if="resetPassword">
-            <el-form-item label="新密码" prop="password">
-              <el-input type="password" v-model.trim="merchantForm.password" autocomplete="new-password"></el-input>
+          <template v-if="userType === 'admin'">
+            <el-form-item label="重置密码">
+              <el-switch v-model="resetPassword"></el-switch>
             </el-form-item>
-            <el-form-item label="确认新密码" prop="checkPassword">
-              <el-input type="password" v-model.trim="merchantForm.checkPassword"
-                        autocomplete="new-password"></el-input>
-            </el-form-item>
+            <template v-if="resetPassword">
+              <el-form-item label="新密码" prop="password">
+                <el-input type="password" v-model.trim="merchantForm.password" autocomplete="new-password"></el-input>
+              </el-form-item>
+              <el-form-item label="确认新密码" prop="checkPassword">
+                <el-input type="password" v-model.trim="merchantForm.checkPassword"
+                          autocomplete="new-password"></el-input>
+              </el-form-item>
+            </template>
           </template>
+        </el-col>
+      </el-row>
+      <el-row v-if="userType === 'merchant'">
+        <el-col :span="11">
+          <h2 class="content-title">关联小程序</h2>
+          <el-form-item label="小程序ID：">
+            <el-input v-model.trim="merchantForm.appId"></el-input>
+          </el-form-item>
+          <el-form-item label="小程序密匙：">
+            <el-input v-model.trim="merchantForm.appSecret"></el-input>
+          </el-form-item>
+          <el-form-item label="商户号：">
+            <el-input v-model.trim="merchantForm.mchId"></el-input>
+          </el-form-item>
+          <el-form-item label="商户密匙：">
+            <el-input v-model.trim="merchantForm.mchKey"></el-input>
+          </el-form-item>
         </el-col>
       </el-row>
       <el-form-item>
@@ -53,6 +75,7 @@
 </template>
 
 <script>
+  import { mapState } from 'vuex';
   import { pageMixin } from '../../../utils/mixins';
 
   export default {
@@ -89,6 +112,10 @@
           userName: '',
           password: '',
           checkPassword: '',
+          appId: '',
+          appSecret: '',
+          mchId: '',
+          mchKey: '',
         },
         resetPassword: false,
         rules: {
@@ -103,6 +130,11 @@
           ],
         },
       };
+    },
+    computed: {
+      ...mapState({
+        userType: state => state.user.userType,
+      }),
     },
     methods: {
       refreshPage() {
@@ -121,7 +153,17 @@
           if (valid) {
             this.$api.merchant.saveModify({ merchant: this.merchantForm }).then(() => {
               this.$message({ message: '修改商家成功', type: 'success' });
-              this.$router.push({ name: 'merchantList' });
+
+              switch (this.userType) {
+                case 'admin':
+                  this.$router.push({ name: 'merchantList' });
+                  break;
+                case 'merchant':
+                  this.$router.push({ name: 'merchantView' });
+                  break;
+                default:
+                  this.$router.push({ name: '' });
+              }
             }).catch(() => {
             });
           }

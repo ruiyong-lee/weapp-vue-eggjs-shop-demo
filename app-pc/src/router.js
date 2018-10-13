@@ -72,11 +72,26 @@ if (userType === 'admin') {
   ];
 } else {
   // 商家
+  const accountDefaultMeta = { title: '账号信息', tabKey: Constants.MERCHANT };
+  const accountDefaultBreadcrumbs = { breadcrumbs: [{ title: '账号信息', name: 'merchantView' }] };
   const orderDefaultMeta = { title: '订货单', tabKey: Constants.ORDER };
   const orderDefaultBreadcrumbs = { breadcrumbs: [{ title: '订货单', name: 'orderList' }] };
   const goodsCategoryDefaultMeta = { title: '类别管理', tabKey: Constants.GOODS_CATEGORY };
 
   routes = [
+    // 账号信息
+    {
+      path: '/merchant/view/:merchantUuid',
+      name: 'merchantView',
+      component: customImport('user/merchant/View'),
+      meta: { ...accountDefaultMeta, isMainPage: true },
+    },
+    {
+      path: '/merchant/edit/:merchantUuid',
+      name: 'merchantEdit',
+      component: customImport('user/merchant/Edit'),
+      meta: { ...accountDefaultMeta, ...accountDefaultBreadcrumbs, breadcrumbTitle: '编辑' },
+    },
     // 订货单
     {
       path: '/bill/order/list',

@@ -10,7 +10,7 @@
 	"compileType": "miniprogram",
 	"libVersion": "2.0.1",
 	"appid": "wx7d730d2c861c97b1",
-	"projectname": "wechat-shop-demo",
+	"projectname": "weapp-vue-eggjs-shop-demo",
 	"condition": {
 		"search": {
 			"current": -1,

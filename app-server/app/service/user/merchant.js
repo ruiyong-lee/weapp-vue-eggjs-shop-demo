@@ -99,6 +99,7 @@ class MerchantService extends Service {
   /**
    * 根据uuid获取商家
    * @param {Object} uuid 商家uuid
+   * @param {Object} userType 用户类型
    * @return {Object|null} 查找结果
    */
   async get(uuid) {
@@ -106,7 +107,8 @@ class MerchantService extends Service {
     return await app.model.User.Merchant.get({
       uuid,
       attributes: [
-        'uuid', 'version', 'name', 'enableStatus', 'userName', 'servicePhone', 'linkPhone', 'linkMan', 'address',
+        'uuid', 'version', 'name', 'enableStatus', 'userName', 'servicePhone',
+        'linkPhone', 'linkMan', 'address', 'appId', 'appSecret', 'mchId', 'mchKey',
       ],
     });
   }

@@ -42,7 +42,11 @@
               <icon name="user" class="text-primary"></icon>
             </span>
             <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item v-if="user.userType !== 'admin'">账号信息</el-dropdown-item>
+              <el-dropdown-item
+                v-if="user.userType !== 'admin'"
+                @click.native="$router.push({ name: 'merchantView', params: { merchantUuid: user.userUuid }})">
+                账号信息
+              </el-dropdown-item>
               <el-dropdown-item @click.native="$router.push({ name: 'passwordEdit'})">修改密码</el-dropdown-item>
               <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>

@@ -1,7 +1,7 @@
 {
   "development": {
     "dialect": "mysql",
-    "database": "weapp_eggjs_shop_demo",
+    "database": "weapp-vue-eggjs-shop-demo",
     "host": "127.0.0.1",
     "port": "3306",
     "username": "root",
@@ -10,7 +10,7 @@
   },
   "test": {
     "dialect": "mysql",
-    "database": "weapp_eggjs_shop_demo",
+    "database": "weapp-vue-eggjs-shop-demo",
     "host": "127.0.0.1",
     "port": "3306",
     "username": "root",
@@ -19,7 +19,7 @@
   },
   "production": {
     "dialect": "mysql",
-    "database": "weapp_eggjs_shop_demo",
+    "database": "weapp-vue-eggjs-shop-demo",
     "host": "127.0.0.1",
     "port": "3306",
     "username": "root",
