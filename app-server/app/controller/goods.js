@@ -92,7 +92,7 @@ class GoodsController extends Controller {
           if (app.config.env === 'production') {
             // result = await ctx.oss.put('egg-multipart-test/' + part.filename, part);
           } else {
-            const fileName = `${ctx.helper.uuidv1()}.${part.mime.split('/')[1]}`;
+            const fileName = `local-upload-image-${ctx.helper.uuidv1()}.${part.mime.split('/')[1]}`;
             // 创建可写流
             const writerStream = fs.createWriteStream(path.join(this.config.baseDir, `app/public/upload/${fileName}`));
 

@@ -1,5 +1,4 @@
 logs/
-app/public/upload/*
 npm-debug.log
 yarn-error.log
 node_modules/
@@ -11,3 +10,4 @@ run/
 .DS_Store
 *.sw*
 *.un~
+*local-upload-image-*
