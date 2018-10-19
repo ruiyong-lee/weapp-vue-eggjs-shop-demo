@@ -15,8 +15,8 @@ module.exports = app => {
 
   /**
    * 查询订单分页列表
-   * @param {Object} { status, attributes, page, pageSize: limit, merchantUuid, openId } 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} { status, attributes, page, pageSize: limit, merchantUuid, openId } - 条件
+   * @return {object|null} - 查找结果
    */
   GoodsOrder.query = async ({ status, attributes, page, pageSize: limit, merchantUuid, openId }) => {
     const condition = {
@@ -38,8 +38,8 @@ module.exports = app => {
 
   /**
    * 查询订单
-   * @param {Object} { orderAttributes, orderLineAttributes, uuid } 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} { orderAttributes, orderLineAttributes, uuid } - 条件
+   * @return {object|null} - 查找结果
    */
   GoodsOrder.get = async ({ orderAttributes, orderLineAttributes, uuid }) => {
     const ressult = await GoodsOrder.findById(uuid, {
@@ -58,8 +58,8 @@ module.exports = app => {
 
   /**
    * 创建订单
-   * @param {Object} { goodsOrder, goodsOrderLines } 条件
-   * @return {String} 返回订单uuid
+   * @param {object} { goodsOrder, goodsOrderLines } - 条件
+   * @return {string} - 返回订单uuid
    */
   GoodsOrder.createBill = async ({ goodsOrder, goodsOrderLines }) => {
     const transaction = await app.transition();
@@ -77,8 +77,8 @@ module.exports = app => {
 
   /**
    * 取消订单
-   * @param {Object} params 条件
-   * @return {String} 返回订单uuid
+   * @param {object} params - 条件
+   * @return {string} - 订单uuid
    */
   GoodsOrder.cancelBill = async params => {
     const { uuid, version, lastModifierId, lastModifierName } = params;

@@ -80,6 +80,11 @@ module.exports = appInfo => {
     // ignore: '/weapp',
   };
 
+  // 文件上传 File 模式
+  // exports.multipart = {
+  //   mode: 'file',
+  // };
+
   // 中间件
   config.middleware = ['auth', 'errorHandler'];
 

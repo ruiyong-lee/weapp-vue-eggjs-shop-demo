@@ -14,9 +14,9 @@ module.exports = app => {
   Goodscategory.hasMany(Goods, { foreignKey: 'categoryUuid' });
 
   /**
-   * 获取key为类别的商品数据
-   * @param {Object} { categoryAttributes, merchantUuid, goodsAttributes } 条件
-   * @return {Object|Null} 查找结果
+   * 查询key为类别的商品数据
+   * @param {object} { categoryAttributes, merchantUuid, goodsAttributes } - 条件
+   * @return {object|null} - 查找结果
    */
   Goods.getGoodsWithCategory = async ({ categoryAttributes, merchantUuid, goodsAttributes }) => {
     return await Goodscategory.findAll({
@@ -32,14 +32,41 @@ module.exports = app => {
   };
 
   /**
-   * 获取某类别的商品数量
-   * @param {String} categoryUuid 类别uuid
-   * @return {Number|Null} 商品数量
+   * 查询某类别的商品数量
+   * @param {string} categoryUuid - 类别uuid
+   * @return {number|null} - 商品数量
    */
   Goods.countGoodsByCategory = async categoryUuid => {
     return await Goods.count({
       where: { categoryUuid },
     });
+  };
+
+  /**
+   * 查询商品分页列表
+   * @param {object} { attributes, pagination, filter } - 条件
+   * @return {object|null} - 查找结果
+   */
+  Goods.query = async ({ userUuid, attributes, pagination = {}, filter = {} }) => {
+    const { page, pageSize: limit } = pagination;
+    const { count, rows } = await Goods.findAndCountAll({
+      offset: (page - 1) * limit,
+      limit,
+      attributes,
+      where: { ...filter, orgUuid: userUuid },
+      order: [['createdTime', 'DESC']],
+    });
+
+    return { page, count, rows };
+  };
+
+  /**
+   * 查询商品
+   * @param {sting} uuid - 商品uuid
+   * @return {object|null} - 查找结果
+   */
+  Goods.get = async uuid => {
+    return await Goods.findById(uuid);
   };
 
   return Goods;

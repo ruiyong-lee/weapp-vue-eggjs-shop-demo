@@ -7,8 +7,8 @@ module.exports = app => {
 
   /**
    * 查找管理员
-   * @param {Object} { uuid, attributes } 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} { uuid, attributes } - 条件
+   * @return {object|null} - 查找结果
    */
   Admin.get = async ({ uuid, attributes }) => {
     return await Admin.findOne({
@@ -19,8 +19,8 @@ module.exports = app => {
 
   /**
    * 修改商家密码
-   * @param {Object} params 条件
-   * @return {String} 商家uuid
+   * @param {object} params - 条件
+   * @return {string} - 商家uuid
    */
   Admin.savePasswordModify = async params => {
     const { uuid, oldPassword, password, lastModifierId, lastModifierName } = params;

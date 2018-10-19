@@ -60,7 +60,9 @@ pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和�
 ✔ 编辑商品类别&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 删除商品类别&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取商品类别分页列表&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取商品类别下拉列表&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取商品类别&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取商品分页列表&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 项目本地运行
 ```

@@ -7,8 +7,8 @@ module.exports = app => {
 
   /**
    * 新增类别
-   * @param {Object} goodsCategory 条件
-   * @return {String} 类别uuid
+   * @param {object} goodsCategory - 条件
+   * @return {string} - 类别uuid
    */
   GoodsCategory.saveNew = async goodsCategory => {
     await GoodsCategory.create(goodsCategory);
@@ -17,8 +17,8 @@ module.exports = app => {
 
   /**
    * 修改类别
-   * @param {Object} goodsCategory 条件
-   * @return {String} 类别uuid
+   * @param {object} goodsCategory - 条件
+   * @return {string} - 类别uuid
    */
   GoodsCategory.saveModify = async goodsCategory => {
     const { uuid, name, version } = goodsCategory;
@@ -31,8 +31,8 @@ module.exports = app => {
 
   /**
    * 删除类别
-   * @param {Object} uuid 类别uuid
-   * @return {String|Null} 删除类别uuid
+   * @param {object} uuid - 类别uuid
+   * @return {string} - 删除类别uuid
    */
   GoodsCategory.delete = async uuid => {
     const result = await GoodsCategory.destroy({ where: { uuid } });
@@ -44,8 +44,8 @@ module.exports = app => {
 
   /**
    * 查询类别分页列表
-   * @param {Object} { attributes, pagination, filter } 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} { userUuid, attributes, pagination, filter } - 条件
+   * @return {object|null} - 查找结果
    */
   GoodsCategory.query = async ({ userUuid, attributes, pagination = {}, filter = {} }) => {
     const { page, pageSize: limit } = pagination;
@@ -61,16 +61,26 @@ module.exports = app => {
   };
 
   /**
+   * 查询类别列表
+   * @param {object} { userUuid, attributes, filter } - 条件
+   * @return {object|null} - 查找结果
+   */
+  GoodsCategory.getList = async ({ userUuid, attributes, filter = {} }) => {
+    return await GoodsCategory.findAll({
+      attributes,
+      where: { ...filter, orgUuid: userUuid },
+    });
+  };
+
+  /**
    * 根据uuid获取类别
-   * @param {Object} { pagination, filter } 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} { pagination, filter } - 条件
+   * @return {object|null} - 查找结果
    */
   GoodsCategory.get = async ({ uuid, attributes }) => {
-    const goodsCategory = await GoodsCategory.findById(uuid, {
+    return await GoodsCategory.findById(uuid, {
       attributes,
     });
-
-    return goodsCategory;
   };
 
   return GoodsCategory;

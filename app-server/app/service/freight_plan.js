@@ -10,8 +10,8 @@ const Service = require('egg').Service;
 class FreightPlanService extends Service {
   /**
    * 查询默认运费方案
-   * @param {Object} params 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} params - 条件
+   * @return {object|null} - 查找结果
    */
   async getDefault(params = {}) {
     const { app } = this;

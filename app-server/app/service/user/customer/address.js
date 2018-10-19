@@ -10,8 +10,8 @@ const Service = require('egg').Service;
 class AddressService extends Service {
   /**
    * 根据uuid获取用户地址
-   * @param {Object} uuid 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} uuid - 条件
+   * @return {object|null} - 查找结果
    */
   async get(uuid) {
     const { app } = this;
@@ -25,8 +25,8 @@ class AddressService extends Service {
 
   /**
    * 获取用户默认地址
-   * @param {Object} params 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} params - 条件
+   * @return {object|null} - 查找结果
    */
   async getDefault(params = {}) {
     const { app } = this;
@@ -40,8 +40,8 @@ class AddressService extends Service {
 
   /**
    * 设置用户默认地址
-   * @param {Object} params 条件
-   * @return {String|Null} 用户地址uuid
+   * @param {object} params - 条件
+   * @return {string|null} - 用户地址uuid
    */
   async setDefault(params = {}) {
     const { app } = this;
@@ -52,8 +52,8 @@ class AddressService extends Service {
 
   /**
    * 删除用户地址
-   * @param {Object} params 条件
-   * @return {String|Null} 删除用户地址uuid
+   * @param {object} params - 条件
+   * @return {string|null} - 删除用户地址uuid
    */
   async delete(params = {}) {
     const { app } = this;
@@ -64,8 +64,8 @@ class AddressService extends Service {
 
   /**
    * 获取用户地址列表
-   * @param {Object} params 条件
-   * @return {Array|Null} 查找结果
+   * @param {object} params - 条件
+   * @return {Array|null} - 查找结果
    */
   async getList(params = {}) {
     const { app } = this;
@@ -79,8 +79,8 @@ class AddressService extends Service {
 
   /**
    * 新增用户地址
-   * @param {Object} params 条件
-   * @return {String|Null} 用户地址uuid
+   * @param {object} params - 条件
+   * @return {string|null} - 用户地址uuid
    */
   async saveNew(params = {}) {
     let { address, openId, nickName } = params;
@@ -94,8 +94,8 @@ class AddressService extends Service {
 
   /**
    * 修改用户地址
-   * @param {Object} params 条件
-   * @return {String|Null} 查找结果
+   * @param {object} params - 条件
+   * @return {string|null} - 查找结果
    */
   async saveModify(params = {}) {
     let { address, openId, nickName } = params;

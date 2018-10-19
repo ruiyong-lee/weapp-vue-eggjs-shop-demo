@@ -86,10 +86,10 @@ axios.interceptors.response.use(
 
 /**
  * 请求方法封装，主要是为了新增或者修改的接口请求成功后，生成一个记录，其他页面根据此记录来决定数据是否需要刷新
- * @param {String} url 请求地址
- * @param {Object} params 请求参数
- * @param {String} module 请求模块，新增或者修改的接口传此参数会生成一个以module为key记录
- * @return {Object|Null} 查找结果
+ * @param {string} url - 请求地址
+ * @param {object} params - 请求参数
+ * @param {string=} module - 请求模块，新增或者修改的接口传此参数会生成一个以module为key记录
+ * @return {object} - 查找结果
  */
 
 // get方法

@@ -58,10 +58,10 @@ export const pageMixin = {
   },
   computed: {
     ...mapState({
-      mx_activeTabKey: 'activeTabKey',
       mx_refreshDataMap: 'refreshDataMap',
       mx_isRefreshPage(state) {
-        return state.refreshPageMap[this.mx_activeTabKey];
+        const currentRouteName = this.$route.name;
+        return currentRouteName === this.$options.name && state.refreshPageMap[currentRouteName];
       },
     }),
   },

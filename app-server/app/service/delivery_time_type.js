@@ -10,8 +10,8 @@ const Service = require('egg').Service;
 class DeliveryTimeTypeService extends Service {
   /**
    * 查询收货时间列表
-   * @param {Object} params 条件
-   * @return {Array|Null} 查找结果
+   * @param {object} params - 条件
+   * @return {Array|null} - 查找结果
    */
   async getList(params = {}) {
     const { app } = this;

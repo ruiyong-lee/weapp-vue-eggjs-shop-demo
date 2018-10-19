@@ -7,8 +7,8 @@ module.exports = app => {
 
   /**
    * 查找默认运费方案
-   * @param {Object} { merchantUuid, attributes } 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} { merchantUuid, attributes } - 条件
+   * @return {object|null} - 查找结果
    */
   FreightPlan.getDefault = async ({ merchantUuid, attributes }) => {
     return await FreightPlan.findOne({

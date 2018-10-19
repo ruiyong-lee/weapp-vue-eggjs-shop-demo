@@ -7,8 +7,8 @@ module.exports = app => {
 
   /**
    * 新增商家
-   * @param {Object} merchant 条件
-   * @return {String} 商家uuid
+   * @param {object} merchant - 条件
+   * @return {string} - 商家uuid
    */
   Merchant.saveNew = async merchant => {
     await Merchant.create(merchant);
@@ -17,8 +17,8 @@ module.exports = app => {
 
   /**
    * 修改商家
-   * @param {Object} merchant 条件
-   * @return {String} 商家uuid
+   * @param {object} merchant - 条件
+   * @return {string} - 商家uuid
    */
   Merchant.saveModify = async merchant => {
     const {
@@ -43,8 +43,8 @@ module.exports = app => {
 
   /**
    * 修改商家密码
-   * @param {Object} params 条件
-   * @return {String} 商家uuid
+   * @param {object} params - 条件
+   * @return {string} - 商家uuid
    */
   Merchant.savePasswordModify = async params => {
     const { uuid, oldPassword, password, lastModifierId, lastModifierName } = params;
@@ -58,8 +58,8 @@ module.exports = app => {
 
   /**
    * 查询商家分页列表
-   * @param {Object} { attributes, pagination, filter } 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} { attributes, pagination, filter } - 条件
+   * @return {object|null} - 查找结果
    */
   Merchant.query = async ({ userUuid, attributes, pagination = {}, filter = {} }) => {
     const { page, pageSize: limit } = pagination;
@@ -76,8 +76,8 @@ module.exports = app => {
 
   /**
    * 根据uuid获取商家
-   * @param {Object} { pagination, filter } 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} { pagination, filter } - 条件
+   * @return {object|null} - 查找结果
    */
   Merchant.get = async ({ uuid, attributes }) => {
     const merchant = await Merchant.findById(uuid, {

@@ -77,6 +77,8 @@ if (userType === 'admin') {
   const orderDefaultMeta = { title: '订货单', tabKey: Constants.ORDER };
   const orderDefaultBreadcrumbs = { breadcrumbs: [{ title: '订货单', name: 'orderList' }] };
   const goodsCategoryDefaultMeta = { title: '类别管理', tabKey: Constants.GOODS_CATEGORY };
+  const goodsDefaultMeta = { title: '商品管理', tabKey: Constants.GOODS };
+  const goodsDefaultBreadcrumbs = { breadcrumbs: [{ title: '商品管理', name: 'goodsList' }] };
 
   routes = [
     // 账号信息
@@ -105,7 +107,31 @@ if (userType === 'admin') {
       component: customImport('bill/order/Add'),
       meta: { ...orderDefaultMeta, ...orderDefaultBreadcrumbs, breadcrumbTitle: '新增' },
     },
-
+    // 商品
+    {
+      path: '/goods/goods/list',
+      name: 'goodsList',
+      component: customImport('goods/goods/List'),
+      meta: { ...goodsDefaultMeta, isMainPage: true },
+    },
+    {
+      path: '/goods/goods/add',
+      name: 'goodsAdd',
+      component: customImport('goods/goods/Add'),
+      meta: { ...goodsDefaultMeta, ...goodsDefaultBreadcrumbs, breadcrumbTitle: '新增' },
+    },
+    {
+      path: '/goods/goods/edit/:goodsUuid',
+      name: 'goodsEdit',
+      component: customImport('goods/goods/Edit'),
+      meta: { ...goodsDefaultMeta, ...goodsDefaultBreadcrumbs, breadcrumbTitle: '编辑' },
+    },
+    {
+      path: '/goods/goods/view/:goodsUuid',
+      name: 'goodsView',
+      component: customImport('goods/goods/View'),
+      meta: { ...goodsDefaultMeta, ...goodsDefaultBreadcrumbs, breadcrumbTitle: '详情' },
+    },
     // 商品类别
     {
       path: '/goods/goods_category/list',

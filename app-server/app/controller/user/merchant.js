@@ -50,7 +50,7 @@ class UserMerchantController extends Controller {
    */
   async query() {
     const { ctx } = this;
-    const merchantData = await ctx.service.user.merchant.query(ctx.request.body);
+    const merchantData = await ctx.service.user.merchant.query({ ...ctx.request.body, ...ctx.query });
     this.success(merchantData);
   }
 
@@ -59,7 +59,7 @@ class UserMerchantController extends Controller {
    */
   async get() {
     const { ctx } = this;
-    const { uuid } = ctx.request.body;
+    const { uuid } = ctx.query;
     const merchant = await ctx.service.user.merchant.get(uuid);
     this.success(merchant);
   }

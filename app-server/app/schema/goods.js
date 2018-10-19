@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = app => {
-  const { STRING, BIGINT, DATE, DECIMAL, TEXT, UUIDV1 } = app.Sequelize;
+  const { STRING, BIGINT, DATE, DECIMAL, TEXT, UUIDV1, ENUM } = app.Sequelize;
 
   return {
     uuid: {
@@ -39,11 +39,7 @@ module.exports = app => {
       allowNull: false,
     },
     status: {
-      type: STRING(20),
-      allowNull: false,
-    },
-    code: {
-      type: STRING(38),
+      type: ENUM('up', 'down'),
       allowNull: false,
     },
     categoryUuid: {
@@ -58,11 +54,9 @@ module.exports = app => {
       type: STRING(76),
       allowNull: false,
     },
-    costPrice: DECIMAL,
     spec: STRING(255),
     goodsInfo: TEXT,
     salePrice: DECIMAL,
-    atlasJsonStr: STRING(2000),
     mainImg: STRING(255),
     imagesJsonStr: STRING(2000),
     version: {

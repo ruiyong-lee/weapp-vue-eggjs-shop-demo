@@ -11,9 +11,9 @@ const Service = require('egg').Service;
 class MerchantService extends Service {
   /**
    * 查找某个商家数据
-   * @param {String} userName 商家账号
-   * @param {String} password 商家密码
-   * @return {Object|null} 查找结果
+   * @param {string} userName - 商家账号
+   * @param {string} password - 商家密码
+   * @return {object|null} - 查找结果
    */
   async getMerchantByLogin(userName, password) {
     return await this.app.mysql.get('merchant', { userName, password: md5(password) });
@@ -21,8 +21,8 @@ class MerchantService extends Service {
 
   /**
    * 新增商家
-   * @param {Object} params 条件
-   * @return {String|Null} 商家uuid
+   * @param {object} params - 条件
+   * @return {string|null} - 商家uuid
    */
   async saveNew(params = {}) {
     let { merchant, userUuid, userName } = params;
@@ -44,8 +44,8 @@ class MerchantService extends Service {
 
   /**
    * 修改商家
-   * @param {Object} params 条件
-   * @return {String|Null} 商家uuid
+   * @param {object} params - 条件
+   * @return {string|null} - 商家uuid
    */
   async saveModify(params = {}) {
     const { app } = this;
@@ -64,8 +64,8 @@ class MerchantService extends Service {
 
   /**
    * 修改商家密码
-   * @param {Object} params 条件
-   * @return {String|Null} 商家uuid
+   * @param {object} params - 条件
+   * @return {string|null} - 商家uuid
    */
   async savePasswordModify(params = {}) {
     const { app } = this;
@@ -82,13 +82,15 @@ class MerchantService extends Service {
 
   /**
    * 获取商家分页列表
-   * @param {Object} params 条件
-   * @return {Object|null} 查找结果
+   * @param {object} params - 条件
+   * @return {object|null} - 查找结果
    */
   async query(params = {}) {
-    const { app } = this;
+    const { app, ctx } = this;
     return await app.model.User.Merchant.query({
       ...params,
+      filter: ctx.helper.JSONParse(params.filter),
+      pagination: ctx.helper.JSONParse(params.pagination),
       attributes: [
         'uuid', 'version', 'createdTime', 'name', 'enableStatus',
         'userName', 'servicePhone', 'linkPhone', 'linkMan',
@@ -98,9 +100,9 @@ class MerchantService extends Service {
 
   /**
    * 根据uuid获取商家
-   * @param {Object} uuid 商家uuid
-   * @param {Object} userType 用户类型
-   * @return {Object|null} 查找结果
+   * @param {object} uuid - 商家uuid
+   * @param {object} userType - 用户类型
+   * @return {object|null} - 查找结果
    */
   async get(uuid) {
     const { app } = this;

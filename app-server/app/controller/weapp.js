@@ -184,7 +184,7 @@ class WeappController extends Controller {
 
   /**
    * 登录
-   * @return {Function|null} 登录结果
+   * @return {function|null} 登录结果
    */
   async login() {
     const { ctx, app } = this;
@@ -195,7 +195,7 @@ class WeappController extends Controller {
     const merchant = await ctx.service.user.merchant.get(merchantUuid);
 
     if (app._.isEmpty(merchant)) {
-      return this.fail(999, '该应用未绑定商家');
+      return this.fail(ctx.ERROR_CODE, '该应用未绑定商家');
     }
 
     // 登录凭证校验
@@ -210,7 +210,7 @@ class WeappController extends Controller {
       // 保存openId和session_key到redis
       await app.redis.get('default').setex(sessionid, 3600 * 24, result);
     } else {
-      return this.fail(999, weappInfo.data.errmsg);
+      return this.fail(ctx.ERROR_CODE, weappInfo.data.errmsg);
     }
 
     this.success(sessionid);

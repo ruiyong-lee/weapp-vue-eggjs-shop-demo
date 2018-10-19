@@ -92,8 +92,8 @@
                     <icon name="shopping" class="el-icon-v"></icon>
                     <span>商品</span>
                   </template>
+                  <el-menu-item index="goodsList" :route="{ name: 'goodsList' }">商品管理</el-menu-item>
                   <el-menu-item index="goodsCategoryList" :route="{ name: 'goodsCategoryList' }">类别管理</el-menu-item>
-                  <!--<el-menu-item index="orderList" :route="{ name: 'orderList' }">商品管理</el-menu-item>-->
                 </el-submenu>
               </template>
             </el-menu>
@@ -192,7 +192,6 @@
       },
       ...mapState({
         user: 'user',
-        activeTabKey: 'activeTabKey',
       }),
     },
     watch: {
@@ -260,16 +259,6 @@
         },
         immediate: true,
       },
-      activeTabIndex: {
-        handler(index) {
-          const currentRoute = this.tabList[index] || {};
-          const { meta = {} } = currentRoute;
-          const { tabKey } = meta;
-
-          this.$store.commit('setActiveTabKey', tabKey);
-        },
-        immediate: true,
-      },
       keepAliveNames: {
         handler(list = []) {
           this.$store.commit('setKeepAliveNames', list);
@@ -334,9 +323,11 @@
       },
       // 刷新当前页面数据（重新请求数据）
       refreshCurrentPage() {
-        this.$store.commit('setRefreshPageMap', { key: this.activeTabKey, value: true });
+        const currentRouteName = this.$route.name;
+
+        this.$store.commit('setRefreshPageMap', { key: currentRouteName, value: true });
         this.$nextTick(() => {
-          this.$store.commit('setRefreshPageMap', { key: this.activeTabKey, value: false });
+          this.$store.commit('setRefreshPageMap', { key: currentRouteName, value: false });
         });
       },
       handleOpen(key, keyPath) {
@@ -377,6 +368,10 @@
   *:not(input,textarea) {
     -webkit-touch-callout: none;
     -webkit-user-select: none;
+  }
+
+  a {
+    color: #5C9ACF;
   }
 
   input {

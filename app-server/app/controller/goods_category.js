@@ -3,7 +3,7 @@
 const Controller = require('../core/base_controller');
 
 /**
- * Controller - user goodsCategory
+ * Controller - goodsCategory
  * @class
  * @author ruiyong-lee
  */
@@ -66,8 +66,17 @@ class GoodsCategoryController extends Controller {
    */
   async query() {
     const { ctx } = this;
-    const goodsCategoryData = await ctx.service.goodsCategory.query(ctx.request.body);
+    const goodsCategoryData = await ctx.service.goodsCategory.query({ ...ctx.request.body, ...ctx.query });
     this.success(goodsCategoryData);
+  }
+
+  /**
+   * 获取类别下拉列表
+   */
+  async getDropdownList() {
+    const { ctx } = this;
+    const goodsCategoryList = await ctx.service.goodsCategory.getDropdownList(ctx.request.body);
+    this.success(goodsCategoryList);
   }
 
   /**
@@ -75,7 +84,7 @@ class GoodsCategoryController extends Controller {
    */
   async get() {
     const { ctx } = this;
-    const { uuid } = ctx.request.body;
+    const { uuid } = ctx.query;
     const goodsCategory = await ctx.service.goodsCategory.get(uuid);
     this.success(goodsCategory);
   }

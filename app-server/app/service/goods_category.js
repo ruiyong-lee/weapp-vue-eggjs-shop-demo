@@ -10,8 +10,8 @@ const Service = require('egg').Service;
 class GoodsCategoryService extends Service {
   /**
    * 新增类别
-   * @param {Object} params 条件
-   * @return {String|Null} 类别uuid
+   * @param {object} params - 条件
+   * @return {string} - 类别uuid
    */
   async saveNew(params = {}) {
     let { goodsCategory, userUuid, userName } = params;
@@ -25,8 +25,8 @@ class GoodsCategoryService extends Service {
 
   /**
    * 修改类别
-   * @param {Object} params 条件
-   * @return {String|Null} 类别uuid
+   * @param {object} params - 条件
+   * @return {string|null} - 类别uuid
    */
   async saveModify(params = {}) {
     const { app } = this;
@@ -41,8 +41,8 @@ class GoodsCategoryService extends Service {
 
   /**
    * 删除类别
-   * @param {Object} uuid 类别uuid
-   * @return {String|Null} 删除类别uuid
+   * @param {object} uuid - 类别uuid
+   * @return {string|null} - 删除类别uuid
    */
   async delete(uuid) {
     const { app } = this;
@@ -53,21 +53,36 @@ class GoodsCategoryService extends Service {
 
   /**
    * 获取类别分页列表
-   * @param {Object} params 条件
-   * @return {Object|null} 查找结果
+   * @param {object} params - 条件
+   * @return {object|null} - 查找结果
    */
   async query(params = {}) {
-    const { app } = this;
+    const { app, ctx } = this;
     return await app.model.GoodsCategory.query({
       ...params,
+      filter: ctx.helper.JSONParse(params.filter),
+      pagination: ctx.helper.JSONParse(params.pagination),
       attributes: ['uuid', 'version', 'name', 'createdTime', 'lastModifiedTime'],
     });
   }
 
   /**
+   * 获取类别下拉列表
+   * @param {object} params - 条件
+   * @return {object|null} - 查找结果
+   */
+  async getDropdownList(params = {}) {
+    const { app } = this;
+    return await app.model.GoodsCategory.getList({
+      ...params,
+      attributes: ['uuid', 'name'],
+    });
+  }
+
+  /**
    * 根据uuid获取类别
-   * @param {Object} uuid 类别uuid
-   * @return {Object|null} 查找结果
+   * @param {object} uuid 类别uuid
+   * @return {object|null} 查找结果
    */
   async get(uuid) {
     const { app } = this;

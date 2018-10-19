@@ -7,8 +7,8 @@ module.exports = app => {
 
   /**
    * 根据uuid获取用户地址
-   * @param {Object} { uuid, attributes } 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} { uuid, attributes } - 条件
+   * @return {object|null} - 查找结果
    */
   Address.get = async ({ uuid, attributes }) => {
     return await Address.findById(uuid, {
@@ -18,8 +18,8 @@ module.exports = app => {
 
   /**
    * 查询用户默认地址
-   * @param {Object} { openId, attributes } 条件
-   * @return {Object|Null} 查找结果
+   * @param {object} { openId, attributes } - 条件
+   * @return {object|null} - 查找结果
    */
   Address.getDefault = async ({ openId, attributes }) => {
     return await Address.findOne({
@@ -30,8 +30,8 @@ module.exports = app => {
 
   /**
    * 设置用户默认地址
-   * @param {Object} { uuid } 条件
-   * @return {String|Null} 用户地址uuid
+   * @param {object} { uuid } - 条件
+   * @return {string|null} - 用户地址uuid
    */
   Address.setDefault = async ({ uuid }) => {
     const transaction = await app.transition();
@@ -43,8 +43,8 @@ module.exports = app => {
 
   /**
    * 删除用户地址
-   * @param {Object} { uuid } 条件
-   * @return {String|Null} 删除用户地址uuid
+   * @param {object} { uuid } - 条件
+   * @return {string|null} - 删除用户地址uuid
    */
   Address.delete = async ({ uuid }) => {
     const result = await Address.destroy({ where: { uuid } });
@@ -56,8 +56,8 @@ module.exports = app => {
 
   /**
    * 查询用户地址列表
-   * @param {Object} { openId, attributes } 条件
-   * @return {Array|Null} 查找结果
+   * @param {object} { openId, attributes } - 条件
+   * @return {Array|null} - 查找结果
    */
   Address.getList = async ({ openId, attributes }) => {
     return await Address.findAll({
@@ -68,8 +68,8 @@ module.exports = app => {
 
   /**
    * 新增用户地址
-   * @param {Object} address 条件
-   * @return {String} 地址uuid
+   * @param {object} address - 条件
+   * @return {string} - 地址uuid
    */
   Address.saveNew = async address => {
     if (address.sysDefault) {
@@ -85,8 +85,8 @@ module.exports = app => {
 
   /**
    * 修改用户地址
-   * @param {Object} address 条件
-   * @return {String} 返回地址uuid
+   * @param {object} address - 条件
+   * @return {string} - 返回地址uuid
    */
   Address.saveModify = async address => {
     let result;

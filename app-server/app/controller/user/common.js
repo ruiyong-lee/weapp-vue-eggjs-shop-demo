@@ -10,7 +10,7 @@ const Controller = require('../../core/base_controller');
 class UserCommonController extends Controller {
   /**
    * 登录
-   * @return {Function|null} 登录结果
+   * @return {function|null} 登录结果
    */
   async login() {
     const { ctx, app } = this;
@@ -26,7 +26,7 @@ class UserCommonController extends Controller {
     }
 
     if (app._.isEmpty(user)) {
-      return this.fail(999, '账号或密码错误');
+      return this.fail(ctx.ERROR_CODE, '账号或密码错误');
     }
 
     const { uuid: userUuid, userType, name } = user;
@@ -44,7 +44,7 @@ class UserCommonController extends Controller {
 
   /**
    * 修改密码
-   * @return {Function|null} 注销结果
+   * @return {function|null} 注销结果
    */
   async savePasswordModify() {
     const { ctx } = this;

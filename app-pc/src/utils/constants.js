@@ -8,6 +8,7 @@ export const Pattern = {
 export const Constants = {
   MERCHANT: 'merchant',
   ORDER: 'order',
+  GOODS: 'goods',
   GOODS_CATEGORY: 'goodsCategory',
   REFRESH_DATA_CALLBACK_MAP: 'refreshDataCallbackMap', // 控制页面局部数据刷新
 
@@ -19,5 +20,15 @@ export const Constants = {
   ENABLE_STATUS_CLASS: {
     0: 'text-red',
     1: 'text-green',
+  },
+
+  // 商品状态
+  GOODS_STATUS: {
+    up: '上架',
+    down: '下架',
+  },
+  GOODS_STATUS_CLASS: {
+    up: 'text-green',
+    down: 'text-red',
   },
 };

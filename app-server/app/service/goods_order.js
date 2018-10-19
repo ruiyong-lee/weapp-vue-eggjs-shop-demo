@@ -10,14 +10,16 @@ const Service = require('egg').Service;
 class GoodsOrderService extends Service {
   /**
    * 获取订单分页列表
-   * @param {Object} params 条件
-   * @return {Object|null} 查找结果
+   * @param {object} params - 条件
+   * @return {object|null} - 查找结果
    */
   async query(params = {}) {
-    const { app } = this;
+    const { app, ctx } = this;
     const { Sequelize } = app;
     return await app.model.GoodsOrder.query({
       ...params,
+      filter: ctx.helper.JSONParse(params.filter),
+      pagination: ctx.helper.JSONParse(params.pagination),
       attributes: [
         'uuid', 'version', 'status', 'billNumber', 'goodsTotalQty',
         [Sequelize.fn('0+CAST', Sequelize.literal('goodsTotalQty AS CHAR')), 'goodsTotalQty'],
@@ -28,8 +30,8 @@ class GoodsOrderService extends Service {
 
   /**
    * 获取订单
-   * @param {String} uuid 订单uuid
-   * @return {Object|Null} 查找结果
+   * @param {string} uuid - 订单uuid
+   * @return {object|null} - 查找结果
    */
   async get(uuid) {
     const { app } = this;
@@ -54,8 +56,8 @@ class GoodsOrderService extends Service {
 
   /**
    * 创建订单
-   * @param {Object} params 条件
-   * @return {String} 订单uuid
+   * @param {object} params - 条件
+   * @return {string} - 订单uuid
    */
   async createBill({ merchantUuid, goodsOrder = {}, openId, nickName }) {
     const { app } = this;
@@ -92,8 +94,8 @@ class GoodsOrderService extends Service {
 
   /**
    * 取消订单
-   * @param {Object} params 条件
-   * @return {String} 订单uuid
+   * @param {object} params - 条件
+   * @return {string} - 订单uuid
    */
   async cancelBill(params = {}) {
     const { app } = this;

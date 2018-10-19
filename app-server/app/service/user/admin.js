@@ -11,9 +11,9 @@ const Service = require('egg').Service;
 class AdminService extends Service {
   /**
    * 查找某个管理员数据
-   * @param {String} userName 管理员账号
-   * @param {String} password 管理员密码
-   * @return {Object|null} 查找结果q
+   * @param {string} userName - 管理员账号
+   * @param {string} password - 管理员密码
+   * @return {object|null} - 查找结果
    */
   async getAdminByLogin(userName, password) {
     return await this.app.mysql.get('admin', { userName, password: md5(password) });
@@ -21,8 +21,8 @@ class AdminService extends Service {
 
   /**
    * 修改管理员密码
-   * @param {Object} params 条件
-   * @return {String|Null} 商家uuid
+   * @param {object} params - 条件
+   * @return {string|null} - 商家uuid
    */
   async savePasswordModify(params = {}) {
     const { app } = this;

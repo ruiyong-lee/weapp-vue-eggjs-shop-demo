@@ -2,8 +2,8 @@
 
 /**
  * 判断是否登录
- * @param {Object} options 中间件的配置项
- * @param {Egg.Application} app 当前应用的实例
+ * @param {object} options - 中间件的配置项
+ * @param {Egg.Application} app - 当前应用的实例
  * @author ruiyong-lee
  * @return {null} null
  */
