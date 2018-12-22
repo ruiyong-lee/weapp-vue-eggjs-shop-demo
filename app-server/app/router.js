@@ -7,7 +7,7 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  const { weapp, user, goods, goodsCategory } = controller;
+  const { weapp, user, utils, goods, goodsCategory } = controller;
 
   /**
    * 微信小程序
@@ -51,11 +51,10 @@ module.exports = app => {
    */
 
   // 商品
-  // router.post('/goods/saveNew', goods.saveNew);
-  // router.post('/goods/saveModify', goods.saveModify);
+  router.post('/goods/saveNew', goods.saveNew);
+  router.post('/goods/saveModify', goods.saveModify);
   // router.post('/goods/up', goods.up);
   // router.post('/goods/down', goods.down);
-  router.post('/goods/upload', goods.upload);
   router.get('/goods/query', goods.query);
   router.get('/goods/get', goods.get);
 
@@ -66,4 +65,7 @@ module.exports = app => {
   router.get('/goodsCategory/query', goodsCategory.query);
   router.get('/goodsCategory/getDropdownList', goodsCategory.getDropdownList);
   router.get('/goodsCategory/get', goodsCategory.get);
+
+  // utils
+  router.post('/utils/upload', utils.upload.upload);
 };

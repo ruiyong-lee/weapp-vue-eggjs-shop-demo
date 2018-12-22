@@ -104,7 +104,7 @@
         },
       };
     },
-    mounted() {
+    created() {
 
     },
     methods: {

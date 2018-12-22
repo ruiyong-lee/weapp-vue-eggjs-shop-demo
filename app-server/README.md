@@ -8,7 +8,7 @@ app server
 
 ##### 开发环境、工具
 
-- **node.js：** v8.11.0 （>= v8.0.0）
+- **node.js：** v11.4.0 （>= v8.0.0）
 
 - **mysql：** v5.5.51
 
@@ -16,7 +16,7 @@ app server
 
 - **redis配置：** notify-keyspace-events Ex
 
-- **westorm：** 2018.1
+- **westorm：** 2018.2
 
 - **Webstorm配置：** File - Settings - Languages & Frameworks - Node.js and NPM 里面的 coding assistance for node.js 勾选 ，这样就会有代码提示
 

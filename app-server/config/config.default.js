@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = appInfo => {
-  const config = exports = {};
+  const config = {};
 
   // use for cookie sign key, should change to your own and keep security
   config.keys = appInfo.name + '_1523515826308_192';
@@ -51,19 +51,19 @@ module.exports = appInfo => {
       default: {
         host: 'localhost',
         port: '6379',
-        password: 'ruiyong-lee',
+        password: '',
         db: '0',
       },
       subscribe: {
         host: 'localhost',
         port: '6379',
-        password: 'ruiyong-lee',
+        password: '',
         db: '1',
       },
       session: {
         host: 'localhost',
         port: '6379',
-        password: 'ruiyong-lee',
+        password: '',
         db: '2',
       },
     },

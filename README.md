@@ -63,6 +63,9 @@ pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和�
 ✔ 获取商品类别下拉列表&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取商品类别&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取商品分页列表&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取商品&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 新增商品&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 编辑商品&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 项目本地运行
 ```
@@ -83,4 +86,19 @@ pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和�
 
 ## 非常感谢以下开源项目或作者：
 
-[**weui-wxss**](https://github.com/Tencent/weui-wxss) | [**zanui-weapp**](https://github.com/youzan/zanui-weapp) | [**nodejs**](https://github.com/nodejs) | [**egg**](https://github.com/eggjs/egg) | [**koajs**](https://github.com/koajs) | [**ESLint**](https://github.com/eslint) | [**mysql**](https://github.com/mysqljs/mysql) | [**sequelize**](https://github.com/sequelize/sequelize) | [**lodash**](https://github.com/lodash/lodash)
+[**vuejs**](https://github.com/vuejs) |
+[**axios**](https://github.com/axios/axios) |
+[**ElemeFE**](https://github.com/ElemeFE) |
+[**vue-cookie**](https://github.com/alfhen/vue-cookie) |
+[**vue-svg-icon**](https://github.com/cenkai88/vue-svg-icon) |
+[**vue2-transitions**](https://github.com/BinarCode/vue2-transitions) |
+[**nodejs**](https://github.com/nodejs) |
+[**egg**](https://github.com/eggjs/egg) |
+[**ESLint**](https://github.com/eslint) |
+[**mysql**](https://github.com/mysqljs/mysql) |
+[**sequelize**](https://github.com/sequelize/sequelize) |
+[**lodash**](https://github.com/lodash/lodash) |
+[**fecha**](https://github.com/taylorhakes/fecha) |
+[**node-uuid**](https://github.com/kelektiv/node-uuid)
+[**weui-wxss**](https://github.com/Tencent/weui-wxss) |
+[**zanui-weapp**](https://github.com/youzan/zanui-weapp) |

@@ -11,8 +11,8 @@ module.exports = app => {
    * @return {string} - 类别uuid
    */
   GoodsCategory.saveNew = async goodsCategory => {
-    await GoodsCategory.create(goodsCategory);
-    return goodsCategory.uuid;
+    const result = await GoodsCategory.create(goodsCategory);
+    return result.uuid;
   };
 
   /**

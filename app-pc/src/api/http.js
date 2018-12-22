@@ -9,11 +9,11 @@ let loadingInstance; // loading
 
 // 环境的切换
 // if (process.env.NODE_ENV === 'development') {
-//   axios.defaults.baseURL = '/api';
+//   axios.defaults.baseURL = 'http://localhost:8081';
 // } else if (process.env.NODE_ENV === 'debug') {
-//   axios.defaults.baseURL = '';
+//   axios.defaults.baseURL = 'http://localhost:8081';
 // } else if (process.env.NODE_ENV === 'production') {
-//   axios.defaults.baseURL = 'http://api.123dailu.com/';
+//   axios.defaults.baseURL = 'http://localhost:8081';
 // }
 
 // 请求超时时间
@@ -70,6 +70,7 @@ axios.interceptors.response.use(
         // 未登录或过期
         router.push({ name: 'login' });
         break;
+      case 404:
       case 500:
         MessageBox.alert('服务器出错', '提示', {
           type: 'error',
@@ -119,4 +120,3 @@ export function post(url, params, module) {
     });
   });
 }
-

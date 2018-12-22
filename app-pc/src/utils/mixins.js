@@ -1,20 +1,22 @@
 // 混合
 import { mapState } from 'vuex';
 
-const Pagination = () => import('../components/Pagination.vue');
-
 // page
 export const pageMixin = {
   data() {
     return {};
   },
-  mounted() {
+  created() {
+    this.$store.commit('setAppPageToolsMap', {
+      key: this.$route.name,
+      value: this[this.$Constants.APP_PAGE_TOOLS],
+    });
     return _.isFunction(this.refreshPage) && this.refreshPage();
   },
   activated() {
-    // keep-alive的页面激活后判断是否需要局部刷新数据
     const refreshDataCallbackMap = this[this.$Constants.REFRESH_DATA_CALLBACK_MAP];
 
+    // keep-alive的页面激活后判断是否需要局部刷新数据
     if (!_.isEmpty(refreshDataCallbackMap)) {
       Object.entries(refreshDataCallbackMap).forEach((item) => {
         const key = item[0];
@@ -32,9 +34,14 @@ export const pageMixin = {
     }
   },
   beforeDestroy() {
-    // keep-alive的页面销毁后移除记录
     const refreshDataCallbackMap = this[this.$Constants.REFRESH_DATA_CALLBACK_MAP];
 
+    this.$store.commit('setAppPageToolsMap', {
+      key: this.$options.name,
+      value: null,
+    });
+
+    // keep-alive的页面销毁后移除记录
     if (!_.isEmpty(refreshDataCallbackMap)) {
       Object.keys(refreshDataCallbackMap).forEach((key) => {
         const refreshDataMap = _.cloneDeep(this.mx_refreshDataMap);
@@ -42,7 +49,7 @@ export const pageMixin = {
         const index = keepAliveNames.indexOf(this.$route.name);
 
         if (!_.isEmpty(keepAliveNames) && index > -1) {
-          keepAliveNames[key].splice(index, 1);
+          keepAliveNames.splice(index, 1);
           this.$store.commit('setRefreshDataMap', { key, value: keepAliveNames });
         }
       });
@@ -80,14 +87,13 @@ const PAGINATION = {
 };
 
 export const tableMixin = {
-  components: { Pagination },
   data() {
     return {
       mx_tableMap: {}, // 存放页面内不同表格的信息
       mx_customize_pagination: undefined, // 自定义分页，在组件内定义覆盖此字段
     };
   },
-  mounted() {
+  created() {
   },
   computed: {
     // 默认表格不需要在每个页面单独处理
@@ -151,11 +157,7 @@ export const tableMixin = {
         const start = page * pageSize;
         const end = start + pageSize;
         const rows = data.slice(start, end);
-        const result = {
-          count,
-          page,
-          rows,
-        };
+        const result = { count, page, rows };
 
         this.mx_setTableData(result, target);
       }
@@ -212,4 +214,3 @@ export const dropdownMixin = {
     },
   },
 };
-

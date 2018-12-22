@@ -34,7 +34,7 @@
           </view>
           <view class="goods-item zan-card" wx:for="{{goodsItems}}" wx:key="{{item.goods ? item.goods.uuid : index}}" data-goods="{{item}}">
             <view class="zan-card__thumb">
-              <image class="zan-card__img" src="{{item.mainImg}}" mode="aspectFill" data-src="{{item.mainImg}}" bindtap="openImgDialog" lazy-load="{{true}}"></image>
+              <image class="zan-card__img" src="{{item.thumbnail}}" mode="aspectFill" data-src="{{item.thumbnail}}" bindtap="openImgDialog" lazy-load="{{true}}"></image>
             </view>
             <view class="zan-card__detail">
               <view class="zan-card__detail-row minh-40">

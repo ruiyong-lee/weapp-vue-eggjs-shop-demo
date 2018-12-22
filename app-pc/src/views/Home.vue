@@ -1,6 +1,6 @@
 <template>
   <div class="home">
-    没错，这就是一个首页
+    没错，这就是一个首页，还没计划放什么
   </div>
 </template>
 
@@ -8,7 +8,7 @@
   export default {
     name: 'home',
     components: {},
-    mounted() {
+    created() {
     },
   };
 </script>

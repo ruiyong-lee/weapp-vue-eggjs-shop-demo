@@ -9,6 +9,37 @@ const Service = require('egg').Service;
  */
 class GoodsService extends Service {
   /**
+   * 新增商品
+   * @param {object} params - 条件
+   * @return {string} - 商品uuid
+   */
+  async saveNew(params = {}) {
+    let { goods, userUuid, userName } = params;
+    const { app } = this;
+    const crateInfo = app.getCrateInfo(userUuid, userName);
+
+    goods = { ...goods, ...crateInfo, orgUuid: userUuid };
+
+    return await app.model.Goods.saveNew(goods);
+  }
+
+  /**
+   * 修改商品
+   * @param {object} params - 条件
+   * @return {string|null} - 商品uuid
+   */
+  async saveModify(params = {}) {
+    const { app } = this;
+    let { goods, userUuid, userName } = params;
+    const { version } = goods;
+    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
+
+    goods = { ...goods, ...modifyInfo };
+
+    return await app.model.Goods.saveModify(goods);
+  }
+
+  /**
    * 获取key为类别的商品数据
    * @param {string} merchantUuid - 商家uuid
    * @return {object|null} - 查找结果
@@ -19,7 +50,7 @@ class GoodsService extends Service {
     const resultList = await app.model.Goods.getGoodsWithCategory({
       merchantUuid,
       categoryAttributes: ['name'],
-      goodsAttributes: ['uuid', 'code', 'name', 'categoryUuid', 'spec', 'mainImg', 'salePrice', 'unitName'],
+      goodsAttributes: ['uuid', 'name', 'categoryUuid', 'spec', 'thumbnail', 'salePrice', 'unitName'],
     });
 
     for (const resultItem of resultList) {
@@ -39,7 +70,7 @@ class GoodsService extends Service {
           },
           goodsSpec: goodsItem.spec,
           salePrice: goodsItem.salePrice,
-          mainImg: goodsItem.mainImg,
+          thumbnail: goodsItem.thumbnail,
           unitName: goodsItem.unitName,
         };
 
@@ -71,7 +102,7 @@ class GoodsService extends Service {
       ...params,
       filter: ctx.helper.JSONParse(params.filter),
       pagination: ctx.helper.JSONParse(params.pagination),
-      attributes: ['uuid', 'version', 'name', 'status', 'unitName', 'spec', 'goodsInfo', 'salePrice', 'mainImg', 'categoryUuid'],
+      attributes: ['uuid', 'version', 'name', 'status', 'unitName', 'spec', 'goodsInfo', 'salePrice', 'thumbnail', 'categoryUuid'],
     });
 
     if (goodsData.count > 0) {

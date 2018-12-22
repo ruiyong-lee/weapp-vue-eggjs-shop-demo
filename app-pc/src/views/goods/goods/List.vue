@@ -1,18 +1,10 @@
 <template>
   <div>
-    <el-row class="app-view-tools">
-      <el-col class="text-right" :span="12" :offset="12">
-        <el-button type="primary" icon="el-icon-plus" size="mini" round @click="$router.push({ name: 'goodsAdd' })">
-          新增
-        </el-button>
-      </el-col>
-    </el-row>
-
     <el-table :data="mx_defaultTableData" size="mini">
       <el-table-column prop="name" label="名称" min-width="300">
         <div class="flex-y-center" slot-scope="scope">
-          <safe-img :src="scope.row.mainImg" width="30px" height="30px"></safe-img>
-          <router-link class="ml-15 text-bold" :to="{name: 'goodsView', params: { goodsUuid: scope.row.uuid }}">
+          <safe-img :src="scope.row.thumbnail" width="30px" height="30px"></safe-img>
+          <router-link class="ml-15 text-bold" :to="{name: 'goodsEdit', params: { goodsUuid: scope.row.uuid }}">
             {{scope.row.name}}
           </router-link>
         </div>
@@ -34,7 +26,13 @@
       </el-table-column>
       <el-table-column label="操作" fixed="right" width="100" align="center">
         <template slot-scope="scope">
-          <el-button type="text" size="mini" @click="showDialog('edit', scope.row)">编辑</el-button>
+          <el-button
+            type="text"
+            size="mini"
+            @click="$router.push({ name: 'goodsEdit', params: { goodsUuid: scope.row.uuid } })"
+          >
+            编辑
+          </el-button>
           <el-button v-if="scope.row.status === 'down'" type="text" size="mini" @click="upGoods">
             上架
           </el-button>
@@ -63,12 +61,19 @@
     mixins: [pageMixin, tableMixin],
     components: {},
     data() {
-      return {
-        [this.$Constants.REFRESH_DATA_CALLBACK_MAP]: {
-          [this.$Constants.GOODS]: this.query,
-          [this.$Constants.GOODS_CATEGORY]: this.query,
-        },
+      this[this.$Constants.REFRESH_DATA_CALLBACK_MAP] = {
+        [this.$Constants.GOODS]: this.query,
+        [this.$Constants.GOODS_CATEGORY]: this.query,
       };
+      this[this.$Constants.APP_PAGE_TOOLS] = [
+        {
+          icon: 'el-icon-plus',
+          content: '新增',
+          callback: () => this.$router.push({ name: 'goodsAdd' }),
+          type: 'primary',
+        },
+      ];
+      return {};
     },
     methods: {
       refreshPage() {

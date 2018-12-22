@@ -1,13 +1,5 @@
 <template>
   <div>
-    <el-row class="app-view-tools">
-      <el-col class="text-right" :span="12" :offset="12">
-        <el-button type="primary" icon="el-icon-edit" size="mini" round @click="$router.push({name: 'merchantEdit'})">
-          编辑
-        </el-button>
-      </el-col>
-    </el-row>
-
     <el-form :model="merchantForm" label-width="7em" class="default-form"
              size="small" @submit.native.prevent>
       <el-row>
@@ -70,10 +62,18 @@
     mixins: [pageMixin],
     components: {},
     data() {
-      return {
-        [this.$Constants.REFRESH_DATA_CALLBACK_MAP]: {
-          [this.$Constants.MERCHANT]: this.get,
+      this[this.$Constants.REFRESH_DATA_CALLBACK_MAP] = {
+        [this.$Constants.MERCHANT]: this.get,
+      };
+      this[this.$Constants.APP_PAGE_TOOLS] = [
+        {
+          icon: 'el-icon-edit',
+          content: '编辑',
+          callback: () => this.$router.push({ name: 'merchantEdit' }),
+          type: 'primary',
         },
+      ];
+      return {
         merchantForm: {},
       };
     },

@@ -14,6 +14,30 @@ module.exports = app => {
   Goodscategory.hasMany(Goods, { foreignKey: 'categoryUuid' });
 
   /**
+   * 新增商品
+   * @param {object} goods - 条件
+   * @return {string} - 类别uuid
+   */
+  Goods.saveNew = async goods => {
+    const result = await Goods.create(goods);
+    return result.uuid;
+  };
+
+  /**
+   * 修改商品
+   * @param {object} goods - 条件
+   * @return {string} - 商品uuid
+   */
+  Goods.saveModify = async goods => {
+    const { uuid, version } = goods;
+    const result = await Goods.update(goods, { where: { uuid, version: version - 1 } });
+
+    app.checkUpdate(result);
+
+    return uuid;
+  };
+
+  /**
    * 查询key为类别的商品数据
    * @param {object} { categoryAttributes, merchantUuid, goodsAttributes } - 条件
    * @return {object|null} - 查找结果

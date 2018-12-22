@@ -84,7 +84,7 @@ App({
       var cartItem = {
         goods: goods.goods,
         unitName: goods.unitName,
-        goodsPic: goods.mainImg,
+        goodsPic: goods.thumbnail,
         salePrice: goods.salePrice,
         goodsQty: item.goodsQty,
         remark: item.goodsQty,

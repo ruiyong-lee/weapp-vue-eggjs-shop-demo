@@ -57,7 +57,7 @@ module.exports = app => {
     spec: STRING(255),
     goodsInfo: TEXT,
     salePrice: DECIMAL,
-    mainImg: STRING(255),
+    thumbnail: STRING(255),
     imagesJsonStr: STRING(2000),
     version: {
       type: BIGINT,

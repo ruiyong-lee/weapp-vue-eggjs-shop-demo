@@ -5,8 +5,8 @@ Vue.directive('auto-windows-height', {
   inserted(el, binding) {
     const difference = Number(binding.value) || 0;
     el.style.height = `${window.innerHeight - difference}px`;
-    window.onresize = () => {
+    window.addEventListener('resize', () => {
       el.style.height = `${window.innerHeight - difference}px`;
-    };
+    });
   },
 });

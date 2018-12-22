@@ -40,7 +40,7 @@
         },
       };
     },
-    mounted() {
+    created() {
       console.log(window.history);
     },
     methods: {

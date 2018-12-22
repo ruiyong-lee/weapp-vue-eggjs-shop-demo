@@ -45,19 +45,24 @@
         <h2 class="content-title">商品图册</h2>
         <el-upload
           class="mb-15"
-          action="goods/upload"
+          action="utils/upload"
           list-type="picture-card"
           :on-remove="handleUploadRemove"
+          :on-success="handleUploadSuccess"
+          :on-error="handleUploadError"
           multiple>
           <i class="el-icon-plus"></i>
         </el-upload>
       </el-row>
-      <div class="text-center">
-        <el-form-item label-width="0">
-          <el-button type="primary" @click="submitForm('goodsForm')">保存</el-button>
-          <el-button @click="resetForm('goodsForm')">重置</el-button>
-        </el-form-item>
-      </div>
+      <el-row>
+        <h2 class="content-title">商品介绍</h2>
+        <el-input
+          type="textarea"
+          :rows="2"
+          placeholder="请输入商品介绍"
+          v-model="goodsForm.goodsInfo">
+        </el-input>
+      </el-row>
     </el-form>
   </div>
 </template>
@@ -70,7 +75,22 @@
     mixins: [pageMixin],
     components: {},
     data() {
+      this[this.$Constants.REFRESH_DATA_CALLBACK_MAP] = {
+        [this.$Constants.GOODS_CATEGORY]: this.getCategoryDropdownList,
+      };
+      this[this.$Constants.APP_PAGE_TOOLS] = [
+        {
+          content: '保存',
+          callback: this.submitForm,
+          type: 'primary',
+        },
+        {
+          content: '重置',
+          callback: this.resetForm,
+        },
+      ];
       return {
+        fileList: [],
         categoryList: [],
         goodsForm: {
           name: '',
@@ -79,6 +99,9 @@
           categoryUuid: '',
           salePrice: undefined,
           status: 'up',
+          goodsInfo: '',
+          thumbnail: '',
+          imagesJsonStr: '',
         },
         rules: {
           name: [
@@ -107,10 +130,25 @@
         });
       },
       handleUploadRemove(file, fileList) {
-        console.log(file, fileList);
+        this.fileList = fileList;
       },
-      submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+      handleUploadSuccess(response, file, fileList) {
+        this.fileList = fileList;
+      },
+      handleUploadError() {
+        this.$message({ message: '上传失败', type: 'error' });
+      },
+      formatImagesJsonStr() {
+        const images = this.fileList.map((item = {}) => {
+          const { response = {} } = item;
+          return response.data;
+        });
+        this.goodsForm.thumbnail = images[0] || '';
+        this.goodsForm.imagesJsonStr = JSON.stringify(images);
+      },
+      submitForm() {
+        this.formatImagesJsonStr();
+        this.$refs.goodsForm.validate((valid) => {
           if (valid) {
             this.$api.goods.saveNew({ goods: this.goodsForm }).then(() => {
               this.$message({ message: '新增商品成功', type: 'success' });
@@ -120,8 +158,8 @@
           }
         });
       },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
+      resetForm() {
+        this.$refs.goodsForm.resetFields();
       },
     },
   };

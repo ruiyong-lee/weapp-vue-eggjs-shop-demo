@@ -54,11 +54,11 @@
         </div>
       </el-header>
       <el-container>
-        <easy-scrollbar>
+        <easy-scrollbar :barOption="$Constants.SCROLLBAR_OPTION">
           <el-aside class="app-aside" :width="isCollapse ? '64px' : '200px'" v-auto-windows-height="100">
             <el-menu
               class="app-menu"
-              :default-active="route.name"
+              :default-active="$route.name"
               :collapse="isCollapse"
               text-color="#485a6a"
               active-text-color="#5C9ACF"
@@ -100,28 +100,58 @@
           </el-aside>
         </easy-scrollbar>
         <el-main>
-          <section v-if="route.name !== 'login'" class="app-page">
-            <el-collapse-transition>
-              <el-row class="app-page-header">
+          <section v-if="$route.name !== 'login'" class="app-page">
+            <div class="app-page-header">
+              <el-row class="app-page-header__row">
                 <el-col :span="12">
                   <el-breadcrumb separator-class="el-icon-arrow-right">
                     <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
-                    <el-breadcrumb-item v-for="item in route.meta && route.meta.breadcrumbs" :key="item.name">
+                    <el-breadcrumb-item v-for="item in $route.meta && $route.meta.breadcrumbs" :key="item.name">
                       <router-link :to="{name: item.name}">{{item.title}}</router-link>
                     </el-breadcrumb-item>
-                    <el-breadcrumb-item v-if="route.name !== 'home'">{{route.meta && (route.meta.breadcrumbTitle ||
-                      route.meta.title)}}
+                    <el-breadcrumb-item v-if="$route.name !== 'home'">{{$route.meta && ($route.meta.breadcrumbTitle ||
+                      $route.meta.title)}}
                     </el-breadcrumb-item>
                   </el-breadcrumb>
                 </el-col>
+                <!--不同页面渲染不同的工具按钮，在页面内自定义，根据屏幕宽度判断是否收起-->
+                <el-col class="app-page-tools" :span="12" v-tools="isCollapse">
+                  <div class="app-page-tools__expand">
+                    <el-button
+                      :type="item.type"
+                      :icon="item.icon"
+                      size="mini"
+                      round
+                      v-for="item in appPageTools"
+                      :key="item.content"
+                      @click="item.callback"
+                    >
+                      {{item.content}}
+                    </el-button>
+                  </div>
+                  <div class="app-page-tools__collapse">
+                    <el-dropdown>
+                      <icon name="ellipsis" class="el-icon-v"></icon>
+                      <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item
+                          v-for="item in appPageTools"
+                          :key="item.content"
+                          @click.native="item.callback"
+                        >
+                          {{item.content}}
+                        </el-dropdown-item>
+                      </el-dropdown-menu>
+                    </el-dropdown>
+                  </div>
+                </el-col>
               </el-row>
-            </el-collapse-transition>
+            </div>
 
-            <el-collapse-transition>
+            <easy-scrollbar :barOption="$Constants.SCROLLBAR_OPTION">
               <keep-alive :include="keepAliveNames">
-                <router-view class="app-view"/>
+                <router-view class="app-view" v-auto-windows-height="174"/>
               </keep-alive>
-            </el-collapse-transition>
+            </easy-scrollbar>
           </section>
           <section v-else class="app-page app-login">
             <router-view class="app-view"/>
@@ -164,6 +194,30 @@
     }
   };
 
+  // 调整tools样式
+  const adjustToolsLayout = (el, binding) => {
+    const expandElement = el.querySelector('.app-page-tools__expand');
+    const collapseElement = el.querySelector('.app-page-tools__collapse');
+
+    if (expandElement) {
+      const elWidth = el.offsetWidth;
+      const expandElementWidth = expandElement.offsetWidth;
+      let isCollapse;
+
+      // 68是侧边栏展开与收起的高宽度差，binding.value代表侧边栏展开与收起情况
+      if (!!binding.value === !!binding.oldValue) {
+        isCollapse = expandElementWidth > elWidth;
+      } else if (binding.value) {
+        isCollapse = expandElementWidth > (elWidth + 68);
+      } else {
+        isCollapse = expandElementWidth > (elWidth - 68);
+      }
+
+      expandElement.style.visibility = isCollapse ? 'hidden' : 'visible';
+      collapseElement.style.visibility = isCollapse ? 'visible' : 'hidden';
+    }
+  };
+
   export default {
     data() {
       return {
@@ -176,7 +230,7 @@
         keepAliveNamesMap: {},
       };
     },
-    mounted() {
+    created() {
       const name = this.$cookie.get('name');
       const userUuid = this.$cookie.get('userUuid');
       const userName = this.$cookie.get('userName');
@@ -187,15 +241,16 @@
       });
     },
     computed: {
-      route() {
-        return this.$route || {};
+      appPageTools() {
+        return this.appPageToolsMap[this.$route.name] || {};
       },
       ...mapState({
         user: 'user',
+        appPageToolsMap: 'appPageToolsMap',
       }),
     },
     watch: {
-      route: {
+      $route: {
         handler(currentRoute = {}, prevRoute = {}) {
           const { name: prevRouteName, meta: prevRouteMeta = {} } = prevRoute;
           const { name: currentRouteName, meta: currentRouteMeta = {} } = currentRoute;
@@ -316,7 +371,7 @@
               this.switchNextTab();
             }
           } else if (index < this.activeTabIndex) {
-            this.activeTabIndex -= this.activeTabIndex;
+            this.activeTabIndex -= 1;
           }
           this.tabList.splice(index, 1);
         }
@@ -350,6 +405,17 @@
         },
         update(el, binding) {
           adjustTabLayout(el, binding);
+        },
+      },
+      tools: {
+        inserted(el, binding) {
+          adjustToolsLayout(el, binding);
+          window.addEventListener('resize', () => {
+            adjustToolsLayout(el, binding);
+          });
+        },
+        componentUpdated(el, binding) {
+          adjustToolsLayout(el, binding);
         },
       },
     },
@@ -417,6 +483,7 @@
     border-radius: 6px;
     border-right: 0 !important;
     overflow: hidden;
+
     &:not(.el-menu--collapse) {
       width: 200px;
     }
@@ -429,15 +496,18 @@
     font-size: 12px;
     background-color: #fff;
     box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+
     .app-header__left {
       flex: 0 0 64px;
       text-align: center;
     }
+
     .app-header__center {
       padding: 0 15px;
       flex: 1;
       overflow-x: auto;
     }
+
     .app-header__right {
       text-align: right;
     }
@@ -445,33 +515,49 @@
 
   .app-page {
     position: relative;
-    padding: 15px;
+    padding: 10px 5px 15px;
     border-radius: 6px;
     background-color: #fff;
+
     .app-page-header {
-      display: flex;
-      align-items: center;
-      padding-bottom: 15px;
-      border-bottom: 1px solid #5C9ACF;
+      padding: 0 15px;
+      margin-bottom: 10px;
+
+      .app-page-header__row {
+        display: flex;
+        align-items: center;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #5C9ACF;
+      }
     }
-    .app-view {
+
+    .app-page-tools {
       position: relative;
-      padding-top: 15px;
-      .app-view-tools {
+      height: 28px;
+      text-align: right;
+      overflow: hidden;
+
+      .app-page-tools__expand {
         position: absolute;
-        width: 100%;
-        top: -9px;
-        height: 28px;
-        overflow: hidden;
-        transform: translateY(-100%);
+        right: 0;
+        white-space: nowrap;
+      }
+
+      .app-page-tools__collapse {
         .svg-icon {
-          width: 24px;
-          height: 24px;
+          width: 28px;
+          height: 28px;
           color: #5C9ACF;
           cursor: pointer;
         }
       }
     }
+
+    .app-view {
+      position: relative;
+      padding: 5px 15px 0;
+    }
+
     &.app-login {
       position: fixed;
       z-index: 2000;
@@ -484,6 +570,7 @@
       overflow: hidden;
       background: linear-gradient(to bottom right, #FF5B5B, #5C9ACF);
     }
+
     .el-breadcrumb__inner.is-link, .el-breadcrumb__inner a {
       color: #5C9ACF !important;
     }
@@ -500,10 +587,12 @@
     height: 26px;
     overflow: hidden;
     transition: all 0.3s ease-in-out;
+
     .switch-tab-prev, .switch-tab-next {
       color: #5C9ACF;
       cursor: pointer;
     }
+
     .app-tab-content {
       position: relative;
       flex: 1;
@@ -512,10 +601,12 @@
       white-space: nowrap;
       overflow: hidden;
       transition: inherit;
+
       .tab-ul {
         position: absolute;
         left: 0;
         transition: inherit;
+
         .tab-li {
           position: relative;
           display: inline-block;
@@ -527,6 +618,7 @@
           vertical-align: middle;
           transition: inherit;
           overflow: hidden;
+
           .tab-li-content {
             display: flex;
             align-items: center;
@@ -534,27 +626,33 @@
             color: #999;
             cursor: pointer;
             transition: inherit;
+
             .tab-li-icon {
               width: 0;
               height: 14px;
               transition: inherit;
             }
+
             &.tab-li-icon__show {
               padding: 0 7px;
+
               .tab-li-icon {
                 width: 14px;
                 color: #999;
               }
             }
+
             .tab-li-title {
               padding: 0 7px;
             }
           }
+
           &.active {
             .tab-li-content {
               color: #fff;
               border-color: #5C9ACF;
               background-color: #5C9ACF;
+
               .tab-li-icon {
                 color: #fff !important;
               }

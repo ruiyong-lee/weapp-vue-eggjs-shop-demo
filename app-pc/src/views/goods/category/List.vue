@@ -1,13 +1,5 @@
 <template>
   <div>
-    <el-row class="app-view-tools">
-      <el-col class="text-right" :span="12" :offset="12">
-        <el-button type="primary" icon="el-icon-plus" size="mini" round @click="showDialog">
-          新增
-        </el-button>
-      </el-col>
-    </el-row>
-
     <el-table :data="mx_defaultTableData" size="mini">
       <el-table-column prop="name" label="名称">
         <template slot-scope="scope">
@@ -57,10 +49,18 @@
     mixins: [pageMixin, tableMixin],
     components: {},
     data() {
-      return {
-        [this.$Constants.REFRESH_DATA_CALLBACK_MAP]: {
-          [this.$Constants.GOODS_CATEGORY]: this.query,
+      this[this.$Constants.REFRESH_DATA_CALLBACK_MAP] = {
+        [this.$Constants.GOODS_CATEGORY]: this.query,
+      };
+      this[this.$Constants.APP_PAGE_TOOLS] = [
+        {
+          icon: 'el-icon-plus',
+          content: '新增',
+          callback: this.showDialog,
+          type: 'primary',
         },
+      ];
+      return {
         dialogForm: {
           name: '',
         },
