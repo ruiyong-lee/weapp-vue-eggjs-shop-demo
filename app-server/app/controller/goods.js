@@ -35,19 +35,21 @@ class GoodsController extends Controller {
   }
 
   /**
-   * 删除商品
+   * 上架商品
    */
-  async delete() {
+  async up() {
     const { ctx } = this;
-    const { categoryUuid } = ctx.request.body;
-    const goodsCount = await ctx.service.goods.countGoodsByCategory(categoryUuid);
+    const uuid = await ctx.service.goods.up(ctx.request.body);
+    this.success(uuid);
+  }
 
-    if (goodsCount > 0) {
-      this.fail(ctx.ERROR_CODE, '该商品尚有商品在使用，无法删除！');
-    } else {
-      const uuid = await ctx.service.goods.delete(categoryUuid);
-      this.success(uuid);
-    }
+  /**
+   * 下架商品
+   */
+  async down() {
+    const { ctx } = this;
+    const uuid = await ctx.service.goods.down(ctx.request.body);
+    this.success(uuid);
   }
 
   /**

@@ -66,6 +66,8 @@ pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和�
 ✔ 获取商品&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 新增商品&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 编辑商品&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 上架商品&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 下架商品&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 项目本地运行
 ```

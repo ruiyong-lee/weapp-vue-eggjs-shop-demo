@@ -40,6 +40,34 @@ class GoodsService extends Service {
   }
 
   /**
+   * 上架商品
+   * @param {object} params - 条件
+   * @return {string|null} - 商品uuid
+   */
+  async up(params) {
+    const { app } = this;
+    const { uuid, version, userUuid, userName } = params;
+    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
+    await app.model.Goods.up(uuid, modifyInfo);
+
+    return uuid;
+  }
+
+  /**
+   * 下架商品
+   * @param {object} params - 条件
+   * @return {string|null} - 商品uuid
+   */
+  async down(params) {
+    const { app } = this;
+    const { uuid, version, userUuid, userName } = params;
+    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
+    await app.model.Goods.down(uuid, modifyInfo);
+
+    return uuid;
+  }
+
+  /**
    * 获取key为类别的商品数据
    * @param {string} merchantUuid - 商家uuid
    * @return {object|null} - 查找结果

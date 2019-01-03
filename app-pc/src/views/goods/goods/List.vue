@@ -33,11 +33,11 @@
           >
             编辑
           </el-button>
-          <el-button v-if="scope.row.status === 'down'" type="text" size="mini" @click="upGoods">
+          <el-button v-if="scope.row.status === 'down'" type="text" size="mini" @click="upGoods(scope.row)">
             上架
           </el-button>
           <el-button v-if="scope.row.status === 'up'" class="danger-text-btn"
-                     type="text" size="mini" @click="downGoods">下架
+                     type="text" size="mini" @click="downGoods(scope.row)">下架
           </el-button>
         </template>
       </el-table-column>
@@ -87,11 +87,21 @@
         }).catch(() => {
         });
       },
-      upGoods() {
-
+      upGoods(goods = {}) {
+        const { uuid, version } = goods;
+        this.$api.goods.up({ uuid, version }).then(() => {
+          this.$message({ message: '商品上架成功', type: 'success' });
+          this.query();
+        }).catch(() => {
+        });
       },
-      downGoods() {
-
+      downGoods(goods = {}) {
+        const { uuid, version } = goods;
+        this.$api.goods.down({ uuid, version }).then(() => {
+          this.$message({ message: '商品下架成功', type: 'success' });
+          this.query();
+        }).catch(() => {
+        });
       },
     },
   };

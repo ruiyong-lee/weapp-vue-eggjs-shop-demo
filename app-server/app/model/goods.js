@@ -38,6 +38,44 @@ module.exports = app => {
   };
 
   /**
+   * 上架商品
+   * @param {object} uuid - 商品uuid
+   * @param {object} modifyInfo - 商品修改信息
+   * @return {string} - 商品uuid
+   */
+  Goods.up = async (uuid, modifyInfo = {}) => {
+    const result = await Goods.update({ ...modifyInfo, status: 'up' }, {
+      where: {
+        uuid,
+        version: modifyInfo.version - 1,
+      },
+    });
+
+    app.checkUpdate(result);
+
+    return uuid;
+  };
+
+  /**
+   * 下架商品
+   * @param {object} uuid - 商品uuid
+   * @param {object} modifyInfo - 商品修改信息
+   * @return {string} - 商品uuid
+   */
+  Goods.down = async (uuid, modifyInfo = {}) => {
+    const result = await Goods.update({ ...modifyInfo, status: 'down' }, {
+      where: {
+        uuid,
+        version: modifyInfo.version - 1,
+      },
+    });
+
+    app.checkUpdate(result);
+
+    return uuid;
+  };
+
+  /**
    * 查询key为类别的商品数据
    * @param {object} { categoryAttributes, merchantUuid, goodsAttributes } - 条件
    * @return {object|null} - 查找结果

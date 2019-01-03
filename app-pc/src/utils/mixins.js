@@ -23,9 +23,10 @@ export const pageMixin = {
         const callback = item[1];
         const refreshDataMap = _.cloneDeep(this.mx_refreshDataMap);
         const keepAliveNames = refreshDataMap[key] || [];
-        const index = keepAliveNames.indexOf(this.$route.name);
+        const { meta = {}, name } = this.$route;
+        const index = keepAliveNames.indexOf(name);
 
-        if (!_.isEmpty(keepAliveNames) && index > -1 && _.isFunction(callback)) {
+        if (meta.tabKey !== key && !_.isEmpty(keepAliveNames) && index > -1 && _.isFunction(callback)) {
           callback();
           keepAliveNames.splice(index, 1);
           this.$store.commit('setRefreshDataMap', { key, value: keepAliveNames });

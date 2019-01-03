@@ -53,8 +53,8 @@ module.exports = app => {
   // 商品
   router.post('/goods/saveNew', goods.saveNew);
   router.post('/goods/saveModify', goods.saveModify);
-  // router.post('/goods/up', goods.up);
-  // router.post('/goods/down', goods.down);
+  router.post('/goods/up', goods.up);
+  router.post('/goods/down', goods.down);
   router.get('/goods/query', goods.query);
   router.get('/goods/get', goods.get);
 
