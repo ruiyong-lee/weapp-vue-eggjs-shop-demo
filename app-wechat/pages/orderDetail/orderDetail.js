@@ -1,14 +1,14 @@
 // pages/orderDetail/orderDetail.js
-var ZanToast = require('../../style/zanui/toast/index');//引入消息提示框控件
+var ZanToast = require('../../style/zanui/toast/index'); //引入消息提示框控件
 
 var app = getApp();
-var isGetAddress = false;//是否成功获取收货地址
-var isGetDeliveryTimeType = false;//是否成功获取收货时间
-var isGetFreightPlane = false;//是否成功获取运费方案
+var isGetAddress = false; //是否成功获取收货地址
+var isGetDeliveryTimeType = false; //是否成功获取收货时间
+var isGetFreightPlane = false; //是否成功获取运费方案
 
 Page(Object.assign({}, ZanToast, {
   data: {
-    isAccount: false,//结算状态，尚未提交订单到后台
+    isAccount: false, //结算状态，尚未提交订单到后台
     orderStatusTipMap: app.Constants.orderStatusTipMap,
     address: null,
     goodsOrder: {},
@@ -144,12 +144,12 @@ Page(Object.assign({}, ZanToast, {
     })
   },
   //选择收货时间
-  selectDeliveryTimeType: function () {
+  selectDeliveryTimeType: function() {
     var that = this;
     var list = that.data.deliveryTimeArr;
     wx.showActionSheet({
       itemList: list,
-      success: function (res) {
+      success: function(res) {
         if (!res.cancel) {
           var key = list[res.tapIndex];
           var item = that.data.deliveryTimeMap[key];
@@ -177,17 +177,19 @@ Page(Object.assign({}, ZanToast, {
       url: 'getDefaultFreightPlan',
       data: params,
       success(res) {
-        var freight = 0;
-        var basicFreight = res.basicFreight;//基础运费
-        var freeFreightAmount = res.freeFreightAmount;//免运费金额
-        var totalAmount = that.data.goodsOrder.totalAmount;//商品总金额
+        if (res) {
+          var freight = 0;
+          var basicFreight = res.basicFreight; //基础运费
+          var freeFreightAmount = res.freeFreightAmount; //免运费金额
+          var totalAmount = that.data.goodsOrder.totalAmount; //商品总金额
 
-        that.setData({
-          "goodsOrder.freightAmount": totalAmount >= freeFreightAmount ? 0 : basicFreight,
-          freeFreightAmount: freeFreightAmount
-        })
-        that.calculatePaymentAmount();
-        isGetFreightPlane = true;
+          that.setData({
+            "goodsOrder.freightAmount": totalAmount >= freeFreightAmount ? 0 : basicFreight,
+            freeFreightAmount: freeFreightAmount
+          })
+          that.calculatePaymentAmount();
+          isGetFreightPlane = true;
+        }
       }
     })
   },
@@ -209,7 +211,7 @@ Page(Object.assign({}, ZanToast, {
   },
   getCountDown(createdTime, orderUuid) {
     var that = this;
-    var interval = setInterval(function () {
+    var interval = setInterval(function() {
       var startTime = new Date(createdTime.replace(/-/g, '/')).getTime()
       var nowTime = new Date().getTime()
       var countDown = app.Format.formatCountDown(nowTime - startTime)
@@ -236,7 +238,7 @@ Page(Object.assign({}, ZanToast, {
       wx.showModal({
         title: '无法下单',
         confirmColor: '#20a0ff',
-        content: !isGetAddress ? app.Constants.selectAddressTip : app.Constants.requestFailTip,
+        content: !isGetAddress ? app.Constants.selectAddressTip : '商家必须配置送货时间和运费方案才能下单，请联系商家',
         showCancel: false
       })
     } else if (!isGetAddress) {
@@ -265,7 +267,7 @@ Page(Object.assign({}, ZanToast, {
     if (orderUuid) {
       that.toPay(orderUuid)
     } else {
-      that.saveOrder(function (uuid) {
+      that.saveOrder(function(uuid) {
         wx.showToast({
           title: '下单成功，但是支付功能暂未实现',
           icon: 'success',
@@ -303,7 +305,7 @@ Page(Object.assign({}, ZanToast, {
           package: res.package,
           signType: 'MD5',
           paySign: res.sign,
-          success: function (res) {
+          success: function(res) {
             wx.showToast({
               title: '支付成功',
               icon: 'success',
@@ -314,7 +316,7 @@ Page(Object.assign({}, ZanToast, {
               url: '../orderDetail/orderDetail?uuid=' + orderUuid
             })
           },
-          fail: function (res) {
+          fail: function(res) {
 
           }
         })
@@ -330,16 +332,16 @@ Page(Object.assign({}, ZanToast, {
   completeOrder(e) {
     var that = this;
     var order = that.data.goodsOrder;
-    app.completeOrderBill(order, function () {
+    app.completeOrderBill(order, function() {
       that.getOrder(order.uuid);
     });
   },
   //下拉刷新
-  onPullDownRefresh: function () {
+  onPullDownRefresh: function() {
     var goodsOrder = this.data.goodsOrder;
     var isAccount = this.data.isAccount;
     var orderUuid = goodsOrder.uuid;
-    this.init(isAccount, orderUuid, function () {
+    this.init(isAccount, orderUuid, function() {
       wx.stopPullDownRefresh();
     });
   }

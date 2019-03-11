@@ -48,7 +48,7 @@ class GoodsCategoryController extends Controller {
   /**
    * 删除类别
    */
-  async delete() {
+  async remove() {
     const { ctx } = this;
     const { categoryUuid } = ctx.request.body;
     const goodsCount = await ctx.service.goods.countGoodsByCategory(categoryUuid);
@@ -56,7 +56,7 @@ class GoodsCategoryController extends Controller {
     if (goodsCount > 0) {
       this.fail(ctx.ERROR_CODE, '该类别尚有商品在使用，无法删除！');
     } else {
-      const uuid = await ctx.service.goodsCategory.delete(categoryUuid);
+      const uuid = await ctx.service.goodsCategory.remove(categoryUuid);
       this.success(uuid);
     }
   }

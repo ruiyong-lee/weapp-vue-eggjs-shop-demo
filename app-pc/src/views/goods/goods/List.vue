@@ -9,15 +9,15 @@
           </router-link>
         </div>
       </el-table-column>
-      <el-table-column prop="salePrice" label="售价">
+      <el-table-column prop="salePrice" label="售价" align="center">
         <template slot-scope="scope">
-          <span class="text-red text-bold">{{scope.row.salePrice}} 元</span>
+          <span v-if="scope.row.salePrice" class="text-red text-bold">{{scope.row.salePrice}} 元</span>
         </template>
       </el-table-column>
-      <el-table-column prop="categoryName" label="类别"></el-table-column>
-      <el-table-column prop="unitName" label="单位"></el-table-column>
-      <el-table-column prop="spec" label="规格"></el-table-column>
-      <el-table-column prop="status" label="状态">
+      <el-table-column prop="categoryName" label="类别" align="center"></el-table-column>
+      <el-table-column prop="unitName" label="单位" align="center"></el-table-column>
+      <el-table-column prop="spec" label="规格" align="center"></el-table-column>
+      <el-table-column prop="status" label="状态" align="center">
         <template slot-scope="scope">
           <span :class="$Constants.GOODS_STATUS_CLASS[scope.row.status]">
             {{$Constants.GOODS_STATUS[scope.row.status]}}
@@ -79,29 +79,22 @@
       refreshPage() {
         this.query();
       },
-      query() {
+      async query() {
         const params = this.mx_getTableParams();
-
-        this.$api.goods.query(params).then((res) => {
-          this.mx_setTableData(res);
-        }).catch(() => {
-        });
+        const res = await this.$api.goods.query(params);
+        this.mx_setTableData(res);
       },
-      upGoods(goods = {}) {
+      async upGoods(goods = {}) {
         const { uuid, version } = goods;
-        this.$api.goods.up({ uuid, version }).then(() => {
-          this.$message({ message: '商品上架成功', type: 'success' });
-          this.query();
-        }).catch(() => {
-        });
+        await this.$api.goods.up({ uuid, version });
+        this.$message({ message: '商品上架成功', type: 'success' });
+        this.query();
       },
-      downGoods(goods = {}) {
+      async downGoods(goods = {}) {
         const { uuid, version } = goods;
-        this.$api.goods.down({ uuid, version }).then(() => {
-          this.$message({ message: '商品下架成功', type: 'success' });
-          this.query();
-        }).catch(() => {
-        });
+        await this.$api.goods.down({ uuid, version });
+        this.$message({ message: '商品下架成功', type: 'success' });
+        this.query();
       },
     },
   };

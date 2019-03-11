@@ -73,13 +73,11 @@
     },
     methods: {
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            this.$api.savePasswordModify(this.passwordForm).then(() => {
-              this.$message({ message: '修改密码成功', type: 'success' });
-              this.$router.push({ name: 'login' });
-            }).catch(() => {
-            });
+            await this.$api.savePasswordModify(this.passwordForm);
+            this.$message({ message: '修改密码成功', type: 'success' });
+            this.$router.push({ name: 'login' });
           }
         });
       },

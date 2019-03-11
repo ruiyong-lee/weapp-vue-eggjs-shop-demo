@@ -139,7 +139,7 @@ class WeappController extends Controller {
    */
   async deleteAddress() {
     const { ctx } = this;
-    const uuid = await ctx.service.user.customer.address.delete(ctx.request.body);
+    const uuid = await ctx.service.user.customer.address.remove(ctx.request.body);
 
     this.success(uuid);
   }

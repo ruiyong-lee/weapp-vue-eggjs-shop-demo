@@ -81,13 +81,9 @@
       refreshPage() {
         this.get();
       },
-      get() {
+      async get() {
         const { merchantUuid: uuid } = this.$route.params;
-
-        this.$api.merchant.get({ uuid }).then((res) => {
-          this.merchantForm = res;
-        }).catch(() => {
-        });
+        this.merchantForm = await this.$api.merchant.get({ uuid });
       },
     },
   };

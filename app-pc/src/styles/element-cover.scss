@@ -1,0 +1,8 @@
+// el-input-number组件按钮在右边时设置输入框的文字水平左边对齐
+.el-input-number {
+  &.is-controls-right {
+    .el-input__inner {
+      text-align: left;
+    }
+  }
+}

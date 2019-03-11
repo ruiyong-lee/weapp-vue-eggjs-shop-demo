@@ -79,6 +79,7 @@ if (userType === 'admin') {
   const goodsCategoryDefaultMeta = { title: '类别管理', tabKey: Constants.GOODS_CATEGORY };
   const goodsDefaultMeta = { title: '商品管理', tabKey: Constants.GOODS };
   const goodsDefaultBreadcrumbs = { breadcrumbs: [{ title: '商品管理', name: 'goodsList' }] };
+  const freightPlanDefaultMeta = { title: '运费方案', tabKey: Constants.FREIGHTPLAN };
 
   routes = [
     // 账号信息
@@ -138,6 +139,13 @@ if (userType === 'admin') {
       name: 'goodsCategoryList',
       component: customImport('goods/category/List'),
       meta: { ...goodsCategoryDefaultMeta, isMainPage: true },
+    },
+    // 运费方案
+    {
+      path: '/logistics/freight_plan/list',
+      name: 'freightPlanList',
+      component: customImport('logistics/freight_plan/List'),
+      meta: { ...freightPlanDefaultMeta, isMainPage: true },
     },
   ];
 }

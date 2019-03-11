@@ -7,7 +7,7 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  const { weapp, user, utils, goods, goodsCategory } = controller;
+  const { weapp, user, utils, goods, goodsCategory, freightPlan } = controller;
 
   /**
    * 微信小程序
@@ -61,10 +61,17 @@ module.exports = app => {
   // 商品类别
   router.post('/goodsCategory/saveNew', goodsCategory.saveNew);
   router.post('/goodsCategory/saveModify', goodsCategory.saveModify);
-  router.post('/goodsCategory/delete', goodsCategory.delete);
+  router.post('/goodsCategory/remove', goodsCategory.remove);
   router.get('/goodsCategory/query', goodsCategory.query);
   router.get('/goodsCategory/getDropdownList', goodsCategory.getDropdownList);
   router.get('/goodsCategory/get', goodsCategory.get);
+
+  // 运费方案
+  router.post('/freightPlan/saveNew', freightPlan.saveNew);
+  router.post('/freightPlan/saveModify', freightPlan.saveModify);
+  router.post('/freightPlan/remove', freightPlan.remove);
+  router.get('/freightPlan/query', freightPlan.query);
+  router.get('/freightPlan/get', freightPlan.get);
 
   // utils
   router.post('/utils/upload', utils.upload.upload);

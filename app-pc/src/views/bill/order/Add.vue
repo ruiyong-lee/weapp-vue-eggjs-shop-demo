@@ -109,13 +109,11 @@
     },
     methods: {
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            this.$api.merchant.saveNew({ merchant: this.merchantForm }).then(() => {
-              this.$message({ message: '新增商家成功', type: 'success' });
-              this.$router.push({ name: 'merchantList' });
-            }).catch(() => {
-            });
+            await this.$api.merchant.saveNew({ merchant: this.merchantForm });
+            this.$message({ message: '新增商家成功', type: 'success' });
+            this.$router.push({ name: 'merchantList' });
           }
         });
       },

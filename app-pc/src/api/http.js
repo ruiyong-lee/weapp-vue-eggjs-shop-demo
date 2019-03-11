@@ -71,7 +71,6 @@ axios.interceptors.response.use(
         router.push({ name: 'login' });
         break;
       case 404:
-      case 500:
         MessageBox.alert('服务器出错', '提示', {
           type: 'error',
         });

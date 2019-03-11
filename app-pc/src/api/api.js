@@ -13,10 +13,10 @@ export default {
 
   // 订单
   order: {
-    saveNew: params => post('bill/order/saveNew', params, Constants.ORDER), // 新增商家
-    saveModify: params => post('bill/order/saveModify', params, Constants.ORDER), // 保存商家修改
-    query: params => get('bill/order/query', params), // 获取分页商家列表
-    get: params => get('bill/order/get', params), // 获取商家
+    saveNew: params => post('bill/order/saveNew', params, Constants.ORDER), // 新增订单
+    saveModify: params => post('bill/order/saveModify', params, Constants.ORDER), // 保存订单修改
+    query: params => get('bill/order/query', params), // 获取分页订单列表
+    get: params => get('bill/order/get', params), // 获取订单
   },
 
   // 商品
@@ -33,10 +33,19 @@ export default {
   goodsCategory: {
     saveNew: params => post('goodsCategory/saveNew', params, Constants.GOODS_CATEGORY), // 新增类别
     saveModify: params => post('goodsCategory/saveModify', params, Constants.GOODS_CATEGORY), // 保存类别修改
-    delete: params => post('goodsCategory/delete', params, Constants.GOODS_CATEGORY), // 删除类别
+    remove: params => post('goodsCategory/remove', params, Constants.GOODS_CATEGORY), // 删除类别
     query: params => get('goodsCategory/query', params), // 获取分页类别列表
     get: params => get('goodsCategory/get', params), // 获取类别
     getDropdownList: params => get('goodsCategory/getDropdownList', params), // 获取类别
+  },
+
+  // 运费方案
+  freightPlan: {
+    saveNew: params => post('freightPlan/saveNew', params, Constants.GOODS_CATEGORY), // 新增运费方案
+    saveModify: params => post('freightPlan/saveModify', params, Constants.GOODS_CATEGORY), // 保存运费方案修改
+    remove: params => post('freightPlan/remove', params, Constants.GOODS_CATEGORY), // 删除运费方案
+    query: params => get('freightPlan/query', params), // 获取分页运费方案列表
+    get: params => get('freightPlan/get', params), // 获取运费方案
   },
 
   // 公共

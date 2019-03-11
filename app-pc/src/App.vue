@@ -95,6 +95,14 @@
                   <el-menu-item index="goodsList" :route="{ name: 'goodsList' }">商品管理</el-menu-item>
                   <el-menu-item index="goodsCategoryList" :route="{ name: 'goodsCategoryList' }">类别管理</el-menu-item>
                 </el-submenu>
+                <el-submenu index="logistics">
+                  <template slot="title">
+                    <icon name="car" class="el-icon-v"></icon>
+                    <span>物流</span>
+                  </template>
+                  <el-menu-item index="freightPlan" :route="{ name: 'freightPlanList' }">运费方案</el-menu-item>
+                  <!--<el-menu-item index="deliveryTimeType" :route="{ name: 'deliveryTimeTypeList' }">送货时间</el-menu-item>-->
+                </el-submenu>
               </template>
             </el-menu>
           </el-aside>
@@ -109,8 +117,8 @@
                     <el-breadcrumb-item v-for="item in $route.meta && $route.meta.breadcrumbs" :key="item.name">
                       <router-link :to="{name: item.name}">{{item.title}}</router-link>
                     </el-breadcrumb-item>
-                    <el-breadcrumb-item v-if="$route.name !== 'home'">{{$route.meta && ($route.meta.breadcrumbTitle ||
-                      $route.meta.title)}}
+                    <el-breadcrumb-item v-if="$route.name !== 'home'">
+                      {{$route.meta && ($route.meta.breadcrumbTitle || $route.meta.title)}}
                     </el-breadcrumb-item>
                   </el-breadcrumb>
                 </el-col>
@@ -391,11 +399,9 @@
       handleClose(key, keyPath) {
         console.log(key, keyPath);
       },
-      logout() {
-        this.$api.logout().then(() => {
-          this.$router.push({ name: 'login' });
-        }).catch(() => {
-        });
+      async logout() {
+        await this.$api.logout();
+        this.$router.push({ name: 'login' });
       },
     },
     directives: {

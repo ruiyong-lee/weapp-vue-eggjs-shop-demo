@@ -55,9 +55,9 @@ class AddressService extends Service {
    * @param {object} params - 条件
    * @return {string|null} - 删除用户地址uuid
    */
-  async delete(params = {}) {
+  async remove(params = {}) {
     const { app } = this;
-    const uuid = await app.model.User.Customer.Address.delete(params);
+    const uuid = await app.model.User.Customer.Address.remove(params);
 
     return uuid;
   }

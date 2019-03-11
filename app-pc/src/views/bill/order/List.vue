@@ -59,13 +59,10 @@
       refreshPage() {
         this.query();
       },
-      query() {
+      async query() {
         const params = this.mx_getTableParams();
-
-        this.$api.order.query(params).then((res) => {
-          this.mx_setTableData(res);
-        }).catch(() => {
-        });
+        const res = await this.$api.order.query(params);
+        this.mx_setTableData(res);
       },
     },
   };

@@ -44,9 +44,9 @@ class GoodsCategoryService extends Service {
    * @param {object} uuid - 类别uuid
    * @return {string|null} - 删除类别uuid
    */
-  async delete(uuid) {
+  async remove(uuid) {
     const { app } = this;
-    await app.model.GoodsCategory.delete(uuid);
+    await app.model.GoodsCategory.remove(uuid);
 
     return uuid;
   }
@@ -58,10 +58,11 @@ class GoodsCategoryService extends Service {
    */
   async query(params = {}) {
     const { app, ctx } = this;
+    const { JSONParse } = ctx.helper;
     return await app.model.GoodsCategory.query({
       ...params,
-      filter: ctx.helper.JSONParse(params.filter),
-      pagination: ctx.helper.JSONParse(params.pagination),
+      filter: JSONParse(params.filter),
+      pagination: JSONParse(params.pagination),
       attributes: ['uuid', 'version', 'name', 'createdTime', 'lastModifiedTime'],
     });
   }

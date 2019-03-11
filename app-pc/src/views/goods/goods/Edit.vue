@@ -37,7 +37,8 @@
             </el-select>
           </el-form-item>
           <el-form-item label="售价" prop="salePrice">
-            <el-input v-model.number="goodsForm.salePrice"></el-input>
+            <el-input-number class="wp-100" v-model="goodsForm.salePrice" placeholder="元"
+                             controls-position="right" :min="0"></el-input-number>
           </el-form-item>
         </el-col>
       </el-row>
@@ -111,23 +112,18 @@
         this.get();
         this.getCategoryDropdownList();
       },
-      get() {
+      async get() {
         const params = {
           uuid: this.$route.params.goodsUuid,
         };
 
-        this.$api.goods.get(params).then((res) => {
-          this.goodsForm = res;
-          const images = JSON.parse(res.imagesJsonStr) || [];
-          this.fileList = images.map(item => ({ url: item }));
-        }).catch(() => {
-        });
+        const res = await this.$api.goods.get(params);
+        this.goodsForm = res;
+        const images = JSON.parse(res.imagesJsonStr) || [];
+        this.fileList = images.map(item => ({ url: item }));
       },
-      getCategoryDropdownList() {
-        this.$api.goodsCategory.getDropdownList().then((res) => {
-          this.categoryList = res;
-        }).catch(() => {
-        });
+      async getCategoryDropdownList() {
+        this.categoryList = await this.$api.goodsCategory.getDropdownList();
       },
       handleUploadRemove(file, fileList) {
         this.fileList = fileList;
@@ -148,13 +144,11 @@
       },
       submitForm() {
         this.formatImagesJsonStr();
-        this.$refs.goodsForm.validate((valid) => {
+        this.$refs.goodsForm.validate(async (valid) => {
           if (valid) {
-            this.$api.goods.saveModify({ goods: this.goodsForm }).then(() => {
-              this.$message({ message: '修改商品成功', type: 'success' });
-              this.$router.push({ name: 'goodsList' });
-            }).catch(() => {
-            });
+            await this.$api.goods.saveModify({ goods: this.goodsForm });
+            this.$message({ message: '修改商品成功', type: 'success' });
+            this.$router.push({ name: 'goodsList' });
           }
         });
       },

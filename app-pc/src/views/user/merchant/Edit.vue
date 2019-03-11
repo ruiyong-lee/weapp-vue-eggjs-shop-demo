@@ -140,32 +140,27 @@
       refreshPage() {
         this.get();
       },
-      get() {
+      async get() {
         const { merchantUuid: uuid } = this.$route.params;
 
-        this.$api.merchant.get({ uuid }).then((res) => {
-          this.merchantForm = { ...this.merchantForm, ...res };
-        }).catch(() => {
-        });
+        const res = await this.$api.merchant.get({ uuid });
+        this.merchantForm = { ...this.merchantForm, ...res };
       },
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            this.$api.merchant.saveModify({ merchant: this.merchantForm }).then(() => {
-              this.$message({ message: '修改商家成功', type: 'success' });
-
-              switch (this.userType) {
-                case 'admin':
-                  this.$router.push({ name: 'merchantList' });
-                  break;
-                case 'merchant':
-                  this.$router.push({ name: 'merchantView' });
-                  break;
-                default:
-                  this.$router.push({ name: '' });
-              }
-            }).catch(() => {
-            });
+            await this.$api.merchant.saveModify({ merchant: this.merchantForm });
+            this.$message({ message: '修改商家成功', type: 'success' });
+            switch (this.userType) {
+              case 'admin':
+                this.$router.push({ name: 'merchantList' });
+                break;
+              case 'merchant':
+                this.$router.push({ name: 'merchantView' });
+                break;
+              default:
+                this.$router.push({ name: '' });
+            }
           }
         });
       },

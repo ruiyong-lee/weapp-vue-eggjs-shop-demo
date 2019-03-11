@@ -6,12 +6,17 @@
           <span class="text-bold">{{scope.row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createdTime" label="创建时间" width="180"></el-table-column>
-      <el-table-column prop="lastModifiedTime" label="最后修改时间" width="180"></el-table-column>
+      <el-table-column prop="basicFreight" label="基础运费" width="180" align="center"></el-table-column>
+      <el-table-column prop="freeFreightAmount" label="免运费金额" width="180" align="center"></el-table-column>
+      <el-table-column prop="sysDefault" label="是否默认" width="80" align="center">
+        <template slot-scope="scope">
+          <i class="el-icon-check"></i>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" fixed="right" width="100" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="mini" @click="showDialog('edit', scope.row)">编辑</el-button>
-          <el-button type="text" class="danger-text-btn" size="mini" @click="deleteCategory(scope.row.uuid)">
+          <el-button type="text" class="danger-text-btn" size="mini" @click="deleteFreightPlan(scope.row.uuid)">
             删除
           </el-button>
         </template>
@@ -29,8 +34,19 @@
     <!--新增、编辑弹窗-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" center @close="handleDialogClose">
       <el-form :model="dialogForm" :rules="dialogRules" ref="dialogForm" @submit.native.prevent>
-        <el-form-item label="类别名称" label-width="6em" prop="name">
+        <el-form-item label="名称" label-width="7em" prop="name">
           <el-input v-model="dialogForm.name" autocomplete="off" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="基础运费" label-width="7em" prop="basicFreight">
+          <el-input-number class="wp-100" v-model="dialogForm.basicFreight"
+                           controls-position="right" :min="0"></el-input-number>
+        </el-form-item>
+        <el-form-item label="免运费金额" label-width="7em" prop="freeFreightAmount">
+          <el-input-number class="wp-100" v-model="dialogForm.freeFreightAmount"
+                           controls-position="right" :min="0"></el-input-number>
+        </el-form-item>
+        <el-form-item label="设为默认" label-width="7em" prop="sysDefault">
+          <el-switch v-model="dialogForm.sysDefault"></el-switch>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -45,7 +61,7 @@
   import { pageMixin, tableMixin } from '../../../utils/mixins';
 
   export default {
-    name: 'goodsCategoryList',
+    name: 'freightPlanList',
     mixins: [pageMixin, tableMixin],
     components: {},
     data() {
@@ -60,10 +76,16 @@
       return {
         dialogForm: {
           name: '',
+          basicFreight: 0,
+          freeFreightAmount: 0,
+          sysDefault: false,
         },
         dialogRules: {
           name: [
-            { required: true, message: '请输入类别名称', trigger: 'blur' },
+            { required: true, message: '请输入运费方案名称', trigger: 'blur' },
+          ],
+          basicFreight: [
+            { required: true, message: '请输入基础运费', trigger: 'blur' },
           ],
         },
         dialogType: '',
@@ -77,18 +99,18 @@
       },
       async query() {
         const params = this.mx_getTableParams();
-        const res = await this.$api.goodsCategory.query(params);
+        const res = await this.$api.freightPlan.query(params);
         this.mx_setTableData(res);
       },
-      showDialog(type, goodsCategory) {
+      showDialog(type, freightPlan) {
         const isEdit = type === 'edit';
 
         this.dialogType = type;
         this.dialogVisible = true;
         this.dialogTitle = isEdit ? '编辑' : '新增';
 
-        if (!_.isEmpty(goodsCategory)) {
-          this.dialogForm = _.cloneDeep(goodsCategory);
+        if (!_.isEmpty(freightPlan)) {
+          this.dialogForm = _.cloneDeep(freightPlan);
         }
       },
       hideDialog() {
@@ -103,13 +125,13 @@
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
             if (this.dialogType === 'edit') {
-              await this.$api.goodsCategory.saveModify({ goodsCategory: this.dialogForm });
-              this.$message({ message: '修改类别成功', type: 'success' });
+              await this.$api.freightPlan.saveModify({ freightPlan: this.dialogForm });
+              this.$message({ message: '修改运费方案成功', type: 'success' });
               this.hideDialog();
               this.query();
             } else {
-              await this.$api.goodsCategory.saveNew({ goodsCategory: this.dialogForm });
-              this.$message({ message: '新增类别成功', type: 'success' });
+              await this.$api.freightPlan.saveNew({ freightPlan: this.dialogForm });
+              this.$message({ message: '新增运费方案成功', type: 'success' });
               this.hideDialog();
               this.query();
             }
@@ -119,12 +141,12 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-      deleteCategory(categoryUuid) {
-        this.$confirm('将永久删除该类别, 是否继续?', '提示', {
+      deleteFreightPlan(categoryUuid) {
+        this.$confirm('将永久删除该运费方案, 是否继续?', '提示', {
           type: 'warning',
         }).then(async () => {
-          await this.$api.goodsCategory.remove({ categoryUuid });
-          this.$message({ message: '删除类别成功', type: 'success' });
+          await this.$api.freightPlan.remove({ categoryUuid });
+          this.$message({ message: '删除运费方案成功', type: 'success' });
           this.query();
         }).catch(() => {
         });

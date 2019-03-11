@@ -34,7 +34,7 @@ module.exports = app => {
    * @param {object} uuid - 类别uuid
    * @return {string} - 删除类别uuid
    */
-  GoodsCategory.delete = async uuid => {
+  GoodsCategory.remove = async uuid => {
     const result = await GoodsCategory.destroy({ where: { uuid } });
 
     app.checkDelete(result);

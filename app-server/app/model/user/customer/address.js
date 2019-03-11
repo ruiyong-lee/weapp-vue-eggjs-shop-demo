@@ -46,7 +46,7 @@ module.exports = app => {
    * @param {object} { uuid } - 条件
    * @return {string|null} - 删除用户地址uuid
    */
-  Address.delete = async ({ uuid }) => {
+  Address.remove = async ({ uuid }) => {
     const result = await Address.destroy({ where: { uuid } });
 
     app.checkDelete(result);

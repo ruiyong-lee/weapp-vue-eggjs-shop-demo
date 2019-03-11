@@ -45,13 +45,11 @@
     },
     methods: {
       submitForm(formName) {
-        this.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            this.$api.login(this.loginForm).then(() => {
-              window.location.hash = '';
-              window.location.reload();
-            }).catch(() => {
-            });
+            await this.$api.login(this.loginForm);
+            window.location.hash = '';
+            window.location.reload();
           }
           return valid;
         });
