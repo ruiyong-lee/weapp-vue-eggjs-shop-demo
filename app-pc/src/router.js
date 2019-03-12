@@ -79,7 +79,8 @@ if (userType === 'admin') {
   const goodsCategoryDefaultMeta = { title: '类别管理', tabKey: Constants.GOODS_CATEGORY };
   const goodsDefaultMeta = { title: '商品管理', tabKey: Constants.GOODS };
   const goodsDefaultBreadcrumbs = { breadcrumbs: [{ title: '商品管理', name: 'goodsList' }] };
-  const freightPlanDefaultMeta = { title: '运费方案', tabKey: Constants.FREIGHTPLAN };
+  const freightPlanDefaultMeta = { title: '运费方案', tabKey: Constants.FREIGHT_PLAN };
+  const deliveryTimeTypeDefaultMeta = { title: '送货时间', tabKey: Constants.DELIVERY_TIME_TYPE };
 
   routes = [
     // 账号信息
@@ -146,6 +147,13 @@ if (userType === 'admin') {
       name: 'freightPlanList',
       component: customImport('logistics/freight_plan/List'),
       meta: { ...freightPlanDefaultMeta, isMainPage: true },
+    },
+    // 送货时间
+    {
+      path: '/logistics/delivery_time_type/list',
+      name: 'deliveryTimeTypeList',
+      component: customImport('logistics/delivery_time_type/List'),
+      meta: { ...deliveryTimeTypeDefaultMeta, isMainPage: true },
     },
   ];
 }

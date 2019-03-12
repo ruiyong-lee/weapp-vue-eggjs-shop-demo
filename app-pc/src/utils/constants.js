@@ -10,8 +10,8 @@ export const Constants = {
   ORDER: 'order',
   GOODS: 'goods',
   GOODS_CATEGORY: 'goodsCategory',
-  FREIGHTPLAN: 'freightPlan',
-  DELIVERYTIMETYPE: 'deliveryTimeType',
+  FREIGHT_PLAN: 'freightPlan',
+  DELIVERY_TIME_TYPE: 'deliveryTimeType',
 
   APP_PAGE_TOOLS: 'appPageTools', // 页面工具栏列表
   REFRESH_DATA_CALLBACK_MAP: 'refreshDataCallbackMap', // 控制页面局部数据刷新

@@ -73,6 +73,11 @@ pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和�
 ✔ 删除运费方案&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取运费方案分页列表&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取运费方案&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 新增送货时间&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 编辑送货时间&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 删除送货时间&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取送货时间分页列表&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取送货时间&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 项目本地运行
 ```

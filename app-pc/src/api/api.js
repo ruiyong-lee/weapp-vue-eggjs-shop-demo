@@ -48,6 +48,15 @@ export default {
     get: params => get('freightPlan/get', params), // 获取运费方案
   },
 
+  // 运费方案
+  deliveryTimeType: {
+    saveNew: params => post('deliveryTimeType/saveNew', params, Constants.DELIVERY_TIME_TYPE), // 新增送货时间
+    saveModify: params => post('deliveryTimeType/saveModify', params, Constants.DELIVERY_TIME_TYPE), // 保存送货时间修改
+    remove: params => post('deliveryTimeType/remove', params, Constants.DELIVERY_TIME_TYPE), // 删除送货时间
+    query: params => get('deliveryTimeType/query', params), // 获取分页送货时间列表
+    get: params => get('deliveryTimeType/get', params), // 获取送货时间
+  },
+
   // 公共
   login: params => post('user/login', params), // 登录
   logout: params => post('user/logout', params), // 注销

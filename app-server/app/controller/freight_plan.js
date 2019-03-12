@@ -13,23 +13,12 @@ class FreightPlanController extends Controller {
    */
   async saveNew() {
     const { ctx } = this;
-
-    try {
-      const rule = {
-        freightPlan: 'object',
-      };
-      ctx.validate(rule);
-      const uuid = await ctx.service.freightPlan.saveNew(ctx.request.body);
-      this.success(uuid);
-    } catch (err) {
-      const { fields = {}, name } = err;
-
-      if (name === 'SequelizeUniqueConstraintError') {
-        this.fail(ctx.UNIQUE_CODE, `名称：${fields.name} 的运费方案已存在`);
-      } else {
-        throw new Error(err);
-      }
-    }
+    const rule = {
+      freightPlan: 'object',
+    };
+    ctx.validate(rule);
+    const uuid = await ctx.service.freightPlan.saveNew(ctx.request.body);
+    this.success(uuid);
   }
 
   /**

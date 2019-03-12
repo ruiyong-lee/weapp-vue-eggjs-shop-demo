@@ -101,7 +101,7 @@
                     <span>物流</span>
                   </template>
                   <el-menu-item index="freightPlan" :route="{ name: 'freightPlanList' }">运费方案</el-menu-item>
-                  <!--<el-menu-item index="deliveryTimeType" :route="{ name: 'deliveryTimeTypeList' }">送货时间</el-menu-item>-->
+                  <el-menu-item index="deliveryTimeType" :route="{ name: 'deliveryTimeTypeList' }">送货时间</el-menu-item>
                 </el-submenu>
               </template>
             </el-menu>
