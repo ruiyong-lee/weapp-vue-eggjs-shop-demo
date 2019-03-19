@@ -142,6 +142,10 @@
   vertical-align: middle;
 }
 
+.lh-1 {
+  line-height: 1;
+}
+
 //文本超过长度显示...
 .ellipsis {
   list-style: none;
@@ -168,6 +172,7 @@
   width: 18px;
   height: 18px;
   vertical-align: middle;
+
   path {
     fill: currentColor;
   }
@@ -181,9 +186,11 @@
 //按钮
 .danger-text-btn {
   color: #FF5B5B;
+
   &:focus {
     color: #FF5B5B;
   }
+
   &:hover {
     color: #ff8b87;
   }

@@ -14,9 +14,9 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和不足之处请批评指正** :joy:
 
-## 接口
+## 已完成（界面和接口）
 
-> **小程序接口**：
+> **小程序**：
 
 ✔ 登录&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 首页获取类别和商品列表&nbsp;&nbsp;&nbsp;&nbsp;
@@ -37,7 +37,7 @@ pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和�
 ✔ 新增用户地址&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 编辑用户地址&nbsp;&nbsp;&nbsp;&nbsp;
 
-> **pc管理端接口**：
+> **pc管理端**：
 
 ###### 管理员
 
@@ -78,6 +78,7 @@ pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和�
 ✔ 删除送货时间&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取送货时间分页列表&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取送货时间&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取订货单分页列表&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 项目本地运行
 ```

@@ -48,13 +48,7 @@ class WeappController extends Controller {
    */
   async queryOrderBill() {
     const { ctx } = this;
-    const rule = {
-      merchantUuid: 'string',
-      page: { type: 'int', min: 1 },
-      pageSize: 'int',
-    };
-    ctx.validate(rule);
-    const goodsOrderData = await ctx.service.goodsOrder.query(ctx.request.body);
+    const goodsOrderData = await ctx.service.goodsOrder.queryForWeapp({ ...ctx.request.body, ...ctx.query });
 
     this.success(goodsOrderData);
   }

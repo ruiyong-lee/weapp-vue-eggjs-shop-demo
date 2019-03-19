@@ -37,7 +37,7 @@
 }
 .zan-quantity--small view {
   min-width: 36px;
-  line-height: 18px;
+  line-height: 19px;
 }
 .zan-quantity--small .zan-quantity__text {
   width: 36px;

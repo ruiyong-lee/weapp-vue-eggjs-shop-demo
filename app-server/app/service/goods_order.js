@@ -21,7 +21,28 @@ class GoodsOrderService extends Service {
       filter: ctx.helper.JSONParse(params.filter),
       pagination: ctx.helper.JSONParse(params.pagination),
       attributes: [
-        'uuid', 'version', 'status', 'billNumber', 'goodsTotalQty',
+        'uuid', 'version', 'status', 'billNumber', 'customerName', 'deliveryTimeTypeName',
+        'remark', 'createdTime', 'linkMan', 'linkPhone',
+        [Sequelize.fn('0+CAST', Sequelize.literal('goodsTotalQty AS CHAR')), 'goodsTotalQty'],
+        [Sequelize.fn('ROUND', Sequelize.col('paymentAmount'), 2), 'paymentAmount'],
+      ],
+    });
+  }
+
+  /**
+   * 获取订单分页列表（小程序使用）
+   * @param {object} params - 条件
+   * @return {object|null} - 查找结果
+   */
+  async queryForWeapp(params = {}) {
+    const { app, ctx } = this;
+    const { Sequelize } = app;
+    return await app.model.GoodsOrder.query({
+      ...params,
+      filter: ctx.helper.JSONParse(params.filter),
+      pagination: ctx.helper.JSONParse(params.pagination),
+      attributes: [
+        'uuid', 'version', 'status', 'billNumber',
         [Sequelize.fn('0+CAST', Sequelize.literal('goodsTotalQty AS CHAR')), 'goodsTotalQty'],
         [Sequelize.fn('ROUND', Sequelize.col('paymentAmount'), 2), 'paymentAmount'],
       ],
@@ -47,7 +68,7 @@ class GoodsOrderService extends Service {
         [Sequelize.fn('ROUND', Sequelize.col('deliveryTimeTypeSurcharge'), 2), 'deliveryTimeTypeSurcharge'],
       ],
       orderLineAttributes: [
-        'uuid', 'goodsPic', 'unitName', 'goodsName', 'goodsCode', 'goodsUuid', 'remark',
+        'uuid', 'goodsPic', 'unitName', 'goodsName', 'goodsUuid', 'remark',
         [Sequelize.fn('ROUND', Sequelize.col('salePrice'), 2), 'salePrice'],
         [Sequelize.fn('0+CAST', Sequelize.literal('goodsQty AS CHAR')), 'goodsQty'],
       ],
@@ -78,7 +99,6 @@ class GoodsOrderService extends Service {
         return {
           ...line,
           goodsUuid: goods.uuid,
-          goodsCode: goods.code,
           goodsName: goods.name,
         };
       }),

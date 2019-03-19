@@ -35,11 +35,11 @@ Page(Object.assign({}, ZanTab, {
     var { page, pageSize, tab } = this.data
     var params = app.Http.buildParams({
       status: tab.selectedId === 'all' ? '' : tab.selectedId,
-      page,
-      pageSize
+      pagination: { page, pageSize }
     })
 
     app.Http.request({
+      type: 'GET',
       url: 'queryOrderBill',
       data: params,
       success: (res = {}) => {

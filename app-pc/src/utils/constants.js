@@ -31,6 +31,20 @@ export const Constants = {
     0: 'text-red',
     1: 'text-green',
   },
+  ORDER_STATUS: {
+    initial: '待付款',
+    audited: '待发货',
+    dispatching: '待收货',
+    completed: '已完成',
+    canceled: '已取消',
+  },
+  ORDER_STATUS_CLASS: {
+    initial: 'text-red',
+    audited: 'text-primary',
+    dispatching: 'text-green',
+    completed: 'text-dark-gray',
+    canceled: 'text-gray',
+  },
 
   // 商品状态
   GOODS_STATUS: {

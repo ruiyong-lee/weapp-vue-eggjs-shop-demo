@@ -13,8 +13,6 @@ export default {
 
   // 订单
   order: {
-    saveNew: params => post('bill/order/saveNew', params, Constants.ORDER), // 新增订单
-    saveModify: params => post('bill/order/saveModify', params, Constants.ORDER), // 保存订单修改
     query: params => get('bill/order/query', params), // 获取分页订单列表
     get: params => get('bill/order/get', params), // 获取订单
   },

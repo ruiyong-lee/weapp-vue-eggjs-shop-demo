@@ -22,10 +22,6 @@ module.exports = app => {
       type: STRING(76),
       allowNull: false,
     },
-    goodsCode: {
-      type: STRING(38),
-      allowNull: false,
-    },
     goodsUuid: {
       type: STRING(38),
       allowNull: false,

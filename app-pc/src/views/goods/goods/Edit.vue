@@ -101,6 +101,9 @@
           categoryUuid: [
             { required: true, message: '请选择类别', trigger: 'change' },
           ],
+          salePrice: [
+            { required: true, message: '请输入售价', trigger: 'blur' },
+          ],
           status: [
             { required: true, message: '请选择状态', trigger: 'change' },
           ],

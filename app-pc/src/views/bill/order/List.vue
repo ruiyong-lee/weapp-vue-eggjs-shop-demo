@@ -1,26 +1,42 @@
 <template>
   <div>
     <el-table :data="mx_defaultTableData" size="mini">
-      <el-table-column prop="userName" label="账号"></el-table-column>
-      <el-table-column prop="name" label="姓名"></el-table-column>
-      <el-table-column prop="linkMan" label="联系人"></el-table-column>
-      <el-table-column prop="linkPhone" label="联系电话"></el-table-column>
-      <el-table-column prop="servicePhone" label="客服电话"></el-table-column>
-      <el-table-column prop="createdTime" label="创建时间" width="180"></el-table-column>
-      <el-table-column label="状态" width="60">
+      <el-table-column label="单号/下单时间">
         <template slot-scope="scope">
-          <span :class="$Constants.ENABLE_STATUS_CLASS[scope.row.enableStatus]">{{$Constants.ENABLE_STATUS[scope.row.enableStatus]}}</span>
+          <router-link class="text-bold" :to="{name: 'orderView', params: { uuid: scope.row.uuid }}">
+            {{scope.row.billNumber}}
+          </router-link>
+          <p class="text-gray lh-1">{{scope.row.createdTime}}</p>
         </template>
       </el-table-column>
-      <el-table-column label="操作" fixed="right" width="60" align="center">
+      <el-table-column label="客户">
         <template slot-scope="scope">
-          <el-button
-            type="text"
-            size="mini"
-            @click="$router.push({name: 'merchantEdit', params: {merchantUuid: scope.row.uuid}})">
-            编辑
-          </el-button>
+          <p>{{scope.row.customerName}}</p>
+          <p class="text-gray lh-1">{{scope.row.linkMan}}（{{scope.row.linkPhone}}）</p>
         </template>
+      </el-table-column>
+      <el-table-column label="商品金额" align="center">
+        <template slot-scope="scope">
+          <span v-if="scope.row.paymentAmount" class="text-red text-bold">{{scope.row.paymentAmount}} 元</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="deliveryTimeTypeName" label="交货时间" align="center"></el-table-column>
+      <el-table-column label="状态" align="center" width="100">
+        <template slot-scope="scope">
+          <span
+            :class="$Constants.ORDER_STATUS_CLASS[scope.row.status]">{{$Constants.ORDER_STATUS[scope.row.status]}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="remark" label="备注" align="center" show-overflow-tooltip></el-table-column>
+      <el-table-column label="操作" fixed="right" width="60" align="center">
+        <!--<template slot-scope="scope">-->
+          <!--<el-button-->
+            <!--type="text"-->
+            <!--size="mini"-->
+            <!--@click="$router.push({name: 'merchantEdit', params: {merchantUuid: scope.row.uuid}})">-->
+            <!--编辑-->
+          <!--</el-button>-->
+        <!--</template>-->
       </el-table-column>
     </el-table>
 
@@ -42,17 +58,6 @@
     mixins: [pageMixin, tableMixin],
     components: {},
     data() {
-      this[this.$Constants.REFRESH_DATA_CALLBACK_MAP] = {
-        [this.$Constants.MERCHANT]: this.query,
-      };
-      this[this.$Constants.APP_PAGE_TOOLS] = [
-        {
-          icon: 'el-icon-plus',
-          content: '新增',
-          callback: () => this.$router.push({ name: 'orderAdd' }),
-          type: 'primary',
-        },
-      ];
       return {};
     },
     methods: {

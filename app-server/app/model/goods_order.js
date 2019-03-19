@@ -18,17 +18,25 @@ module.exports = app => {
    * @param {object} { status, attributes, page, pageSize: limit, merchantUuid, openId } - 条件
    * @return {object|null} - 查找结果
    */
-  GoodsOrder.query = async ({ status, attributes, page, pageSize: limit, merchantUuid, openId }) => {
+  GoodsOrder.query = async ({ userType, userUuid, status, attributes, pagination = {}, filter = {}, merchantUuid, openId }) => {
+    const { page, pageSize: limit } = pagination;
     const condition = {
       offset: (page - 1) * limit,
       limit,
       attributes,
-      where: { orgUuid: merchantUuid, customerUuid: openId },
+      where: filter,
       order: [['createdTime', 'DESC']],
     };
 
+    if (userType === 'merchant') {
+      condition.where.orgUuid = userUuid;
+    } else {
+      condition.where.orgUuid = merchantUuid;
+      condition.where.customerUuid = openId;
+    }
+
     if (status) {
-      condition.where = { ...condition.where, status };
+      condition.where.status = status;
     }
 
     const { count, rows } = await GoodsOrder.findAndCountAll(condition);

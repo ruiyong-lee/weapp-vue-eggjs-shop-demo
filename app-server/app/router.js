@@ -7,7 +7,7 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  const { weapp, user, utils, goods, goodsCategory, freightPlan, deliveryTimeType } = controller;
+  const { weapp, user, utils, goodsOrder, goods, goodsCategory, freightPlan, deliveryTimeType } = controller;
 
   /**
    * 微信小程序
@@ -16,7 +16,7 @@ module.exports = app => {
   router.post('/weapp/getGoodsWithCategory', weapp.getGoodsWithCategory);
   router.post('/weapp/getDefaultFreightPlan', weapp.getDefaultFreightPlan);
   router.post('/weapp/getDeliveryTimeTypeList', weapp.getDeliveryTimeTypeList);
-  router.post('/weapp/queryOrderBill', weapp.queryOrderBill);
+  router.get('/weapp/queryOrderBill', weapp.queryOrderBill);
   router.post('/weapp/getOrderBill', weapp.getOrderBill);
   router.post('/weapp/createBill', weapp.createBill);
   router.post('/weapp/cancelBill', weapp.cancelBill);
@@ -49,6 +49,10 @@ module.exports = app => {
   /**
    * 管理端-商家
    */
+
+  // 订货单
+  router.get('/bill/order/query', goodsOrder.query);
+  router.get('/bill/order/get', goodsOrder.get);
 
   // 商品
   router.post('/goods/saveNew', goods.saveNew);
