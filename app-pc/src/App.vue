@@ -63,8 +63,6 @@
               text-color="#485a6a"
               active-text-color="#5C9ACF"
               router
-              @open="handleOpen"
-              @close="handleClose"
             >
               <el-menu-item index="home" :route="{ name: 'home' }">
                 <icon name="home" class="el-icon-v"></icon>
@@ -177,27 +175,29 @@
   const adjustTabLayout = (el, binding) => {
     if (binding.value !== binding.oldValue) {
       const activeTabLiElementIndex = binding.value;
+      const appTabContent = el.querySelector('.app-tab-content');
       const tabUlElement = el.querySelector('.tab-ul');
       const switchTabPrevElement = el.querySelector('.switch-tab-prev');
       const switchTabNextElement = el.querySelector('.switch-tab-next');
       const tabLiElements = tabUlElement.querySelectorAll('.tab-li');
       const activeTabLiElement = tabLiElements[activeTabLiElementIndex];
-      const elWidth = el.offsetWidth;
 
       if (activeTabLiElement) {
+        const appTabContentWidth = appTabContent.offsetWidth;
+        const tabUlElementWidth = tabUlElement.offsetWidth;
         const activeTabLiElementWidth = activeTabLiElement.offsetWidth;
         const activeTabLiElementLeft = activeTabLiElement.offsetLeft;
-        const distance = elWidth - activeTabLiElementWidth - activeTabLiElementLeft;
+        const distance = appTabContentWidth - activeTabLiElementWidth - activeTabLiElementLeft;
+        const showSwitchTab = tabUlElementWidth < appTabContentWidth ? 'hidden' : 'visible';
 
         if (distance < 0) {
           tabUlElement.style.left = `${distance}px`;
-          switchTabPrevElement.style.visibility = 'visible';
-          switchTabNextElement.style.visibility = 'visible';
         } else if (activeTabLiElementLeft <= 0) {
           tabUlElement.style.left = 0;
-          switchTabPrevElement.style.visibility = 'hidden';
-          switchTabNextElement.style.visibility = 'hidden';
         }
+
+        switchTabPrevElement.style.visibility = showSwitchTab;
+        switchTabNextElement.style.visibility = showSwitchTab;
       }
     }
   };
@@ -246,6 +246,12 @@
 
       this.$store.commit('setUser', {
         name, userUuid, userName, userType,
+      });
+    },
+    mounted() {
+      window.addEventListener('resize', () => {
+        adjustTabLayout(document.querySelector('.app-tab'), { value: this.activeTabIndex });
+        adjustToolsLayout(document.querySelector('.app-page-tools'), { value: this.isCollapse });
       });
     },
     computed: {
@@ -393,12 +399,6 @@
           this.$store.commit('setRefreshPageMap', { key: currentRouteName, value: false });
         });
       },
-      handleOpen(key, keyPath) {
-        console.log(key, keyPath);
-      },
-      handleClose(key, keyPath) {
-        console.log(key, keyPath);
-      },
       async logout() {
         await this.$api.logout();
         this.$router.push({ name: 'login' });
@@ -416,9 +416,6 @@
       tools: {
         inserted(el, binding) {
           adjustToolsLayout(el, binding);
-          window.addEventListener('resize', () => {
-            adjustToolsLayout(el, binding);
-          });
         },
         componentUpdated(el, binding) {
           adjustToolsLayout(el, binding);

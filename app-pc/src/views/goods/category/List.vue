@@ -120,7 +120,7 @@
         this.$refs[formName].resetFields();
       },
       deleteCategory(categoryUuid) {
-        this.$confirm('将永久删除该类别, 是否继续?', '提示', {
+        this.$confirm('将永久删除该类别, 是否继续？', '提示', {
           type: 'warning',
         }).then(async () => {
           await this.$api.goodsCategory.remove({ categoryUuid });

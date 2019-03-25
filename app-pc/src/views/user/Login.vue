@@ -40,9 +40,6 @@
         },
       };
     },
-    created() {
-      console.log(window.history);
-    },
     methods: {
       submitForm(formName) {
         this.$refs[formName].validate(async (valid) => {

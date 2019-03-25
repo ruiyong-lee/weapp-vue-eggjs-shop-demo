@@ -76,7 +76,7 @@ axios.interceptors.response.use(
         });
         break;
       default:
-        MessageBox.alert(data.message, '提示', {
+        MessageBox.alert(data.message || '服务器出错', '提示', {
           type: 'error',
         });
     }

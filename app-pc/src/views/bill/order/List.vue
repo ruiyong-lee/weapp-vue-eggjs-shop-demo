@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-table :data="mx_defaultTableData" size="mini">
-      <el-table-column label="单号/下单时间">
+      <el-table-column label="单号 / 下单时间">
         <template slot-scope="scope">
           <router-link class="text-bold" :to="{name: 'orderView', params: { uuid: scope.row.uuid }}">
             {{scope.row.billNumber}}
@@ -28,15 +28,12 @@
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="备注" align="center" show-overflow-tooltip></el-table-column>
-      <el-table-column label="操作" fixed="right" width="60" align="center">
-        <!--<template slot-scope="scope">-->
-          <!--<el-button-->
-            <!--type="text"-->
-            <!--size="mini"-->
-            <!--@click="$router.push({name: 'merchantEdit', params: {merchantUuid: scope.row.uuid}})">-->
-            <!--编辑-->
-          <!--</el-button>-->
-        <!--</template>-->
+      <el-table-column label="操作" fixed="right" width="80" align="center">
+        <template slot-scope="scope">
+          <el-button v-if="scope.row.status === 'audited'" type="text" size="mini" @click="dispatch(scope.row)">开始配送</el-button>
+          <el-button v-else-if="scope.row.status === 'dispatching'" type="text" size="mini" @click="complete(scope.row)">完成</el-button>
+          <span v-else>--</span>
+        </template>
       </el-table-column>
     </el-table>
 
@@ -68,6 +65,28 @@
         const params = this.mx_getTableParams();
         const res = await this.$api.order.query(params);
         this.mx_setTableData(res);
+      },
+      async dispatch(order) {
+        const { billNumber = '', uuid, version } = order;
+        this.$confirm(`将开始配送订单：${billNumber}, 是否继续？`, '提示', {
+          type: 'warning',
+        }).then(async () => {
+          await this.$api.order.dispatch({ uuid, version });
+          this.$message({ message: '订单已开始配送', type: 'success' });
+          this.query();
+        }).catch(() => {
+        });
+      },
+      async complete(order) {
+        const { billNumber = '', uuid, version } = order;
+        this.$confirm(`将完成订单：${billNumber}, 是否继续？`, '提示', {
+          type: 'warning',
+        }).then(async () => {
+          await this.$api.order.complete({ uuid, version });
+          this.$message({ message: '订单已完成', type: 'success' });
+          this.query();
+        }).catch(() => {
+        });
       },
     },
   };

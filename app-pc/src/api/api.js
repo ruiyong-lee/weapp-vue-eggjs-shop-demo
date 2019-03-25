@@ -15,6 +15,8 @@ export default {
   order: {
     query: params => get('bill/order/query', params), // 获取分页订单列表
     get: params => get('bill/order/get', params), // 获取订单
+    dispatch: params => post('bill/order/dispatch', params), // 配送订单
+    complete: params => post('bill/order/complete', params), // 完成订单
   },
 
   // 商品

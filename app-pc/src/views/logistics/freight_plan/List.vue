@@ -142,7 +142,7 @@
         this.$refs[formName].resetFields();
       },
       deleteFreightPlan(categoryUuid) {
-        this.$confirm('将永久删除该运费方案, 是否继续?', '提示', {
+        this.$confirm('将永久删除该运费方案, 是否继续？', '提示', {
           type: 'warning',
         }).then(async () => {
           await this.$api.freightPlan.remove({ categoryUuid });

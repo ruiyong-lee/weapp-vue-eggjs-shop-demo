@@ -129,7 +129,7 @@
         this.$refs[formName].resetFields();
       },
       deleteDeliveryTimeType(categoryUuid) {
-        this.$confirm('将永久删除该送货时间, 是否继续?', '提示', {
+        this.$confirm('将永久删除该送货时间, 是否继续？', '提示', {
           type: 'warning',
         }).then(async () => {
           await this.$api.deliveryTimeType.remove({ categoryUuid });
