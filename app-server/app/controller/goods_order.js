@@ -32,6 +32,36 @@ class GoodsOrderController extends Controller {
 
     this.success(goodsOrder);
   }
+
+  /**
+   * 配送订单
+   */
+  async dispatch() {
+    const { ctx } = this;
+    const rule = {
+      uuid: 'string',
+      version: 'number',
+    };
+    ctx.validate(rule);
+    const uuid = await ctx.service.goodsOrder.dispatch(ctx.request.body);
+
+    this.success(uuid);
+  }
+
+  /**
+   * 完成订单
+   */
+  async complete() {
+    const { ctx } = this;
+    const rule = {
+      uuid: 'string',
+      version: 'number',
+    };
+    ctx.validate(rule);
+    const uuid = await ctx.service.goodsOrder.complete(ctx.request.body);
+
+    this.success(uuid);
+  }
 }
 
 module.exports = GoodsOrderController;

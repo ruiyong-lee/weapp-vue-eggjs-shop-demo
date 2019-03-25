@@ -77,7 +77,7 @@ class WeappController extends Controller {
       goodsOrder: 'object',
     };
     ctx.validate(rule);
-    const uuid = await ctx.service.goodsOrder.createBill(ctx.request.body);
+    const uuid = await ctx.service.goodsOrder.saveNew(ctx.request.body);
 
     this.success(uuid);
   }
@@ -92,7 +92,7 @@ class WeappController extends Controller {
       version: 'number',
     };
     ctx.validate(rule);
-    const uuid = await ctx.service.goodsOrder.cancelBill(ctx.request.body);
+    const uuid = await ctx.service.goodsOrder.cancel(ctx.request.body);
 
     this.success(uuid);
   }

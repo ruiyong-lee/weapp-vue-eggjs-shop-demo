@@ -80,7 +80,7 @@ class GoodsOrderService extends Service {
    * @param {object} params - 条件
    * @return {string} - 订单uuid
    */
-  async createBill({ merchantUuid, goodsOrder = {}, openId, nickName }) {
+  async saveNew({ merchantUuid, goodsOrder = {}, openId, nickName }) {
     const { app } = this;
     const crateInfo = app.getCrateInfo(openId, nickName);
     const billNumber = await app.getBillNumber('DG');
@@ -104,7 +104,7 @@ class GoodsOrderService extends Service {
       }),
     };
 
-    const goodsUuid = await app.model.GoodsOrder.createBill(params);
+    const goodsUuid = await app.model.GoodsOrder.saveNew(params);
 
     // 超过30分钟自动取消订单
     app.addDelayTask('cancelOrder', goodsUuid, {}, 30 * 60);
@@ -117,11 +117,35 @@ class GoodsOrderService extends Service {
    * @param {object} params - 条件
    * @return {string} - 订单uuid
    */
-  async cancelBill(params = {}) {
+  async cancel(params = {}) {
     const { app } = this;
     const { version, openId, nickName } = params;
     const modifyInfo = app.getModifyInfo(version, openId, nickName);
-    return await app.model.GoodsOrder.cancelBill({ ...params, ...modifyInfo });
+    return await app.model.GoodsOrder.cancel({ ...params, ...modifyInfo });
+  }
+
+  /**
+   * 配送订单
+   * @param {object} params - 条件
+   * @return {string} - 订单uuid
+   */
+  async dispatch(params = {}) {
+    const { app } = this;
+    const { version, userUuid, userName } = params;
+    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
+    return await app.model.GoodsOrder.dispatch({ ...params, ...modifyInfo });
+  }
+
+  /**
+   * 完成订单
+   * @param {object} params - 条件
+   * @return {string} - 订单uuid
+   */
+  async complete(params = {}) {
+    const { app } = this;
+    const { version, userUuid, userName } = params;
+    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
+    return await app.model.GoodsOrder.complete({ ...params, ...modifyInfo });
   }
 }
 

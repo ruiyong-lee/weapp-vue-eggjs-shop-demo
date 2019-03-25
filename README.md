@@ -79,6 +79,7 @@ pc管理端正在开发，暂时不打算建分支和tag，**写法有错误和�
 ✔ 获取送货时间分页列表&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取送货时间&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取订货单分页列表&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 完成订货单&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 项目本地运行
 ```

@@ -53,6 +53,8 @@ module.exports = app => {
   // 订货单
   router.get('/bill/order/query', goodsOrder.query);
   router.get('/bill/order/get', goodsOrder.get);
+  router.post('/bill/order/dispatch', goodsOrder.dispatch);
+  router.post('/bill/order/complete', goodsOrder.complete);
 
   // 商品
   router.post('/goods/saveNew', goods.saveNew);

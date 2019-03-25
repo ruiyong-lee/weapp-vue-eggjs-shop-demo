@@ -69,7 +69,7 @@ module.exports = app => {
    * @param {object} { goodsOrder, goodsOrderLines } - 条件
    * @return {string} - 返回订单uuid
    */
-  GoodsOrder.createBill = async ({ goodsOrder, goodsOrderLines }) => {
+  GoodsOrder.saveNew = async ({ goodsOrder, goodsOrderLines }) => {
     const transaction = await app.transition();
 
     goodsOrder = await GoodsOrder.create(goodsOrder, { transaction });
@@ -88,10 +88,42 @@ module.exports = app => {
    * @param {object} params - 条件
    * @return {string} - 订单uuid
    */
-  GoodsOrder.cancelBill = async params => {
+  GoodsOrder.cancel = async params => {
     const { uuid, version, lastModifierId, lastModifierName } = params;
-    const result = await GoodsOrder.update({ status: 'audited', lastModifierId, lastModifierName }, {
-      where: { uuid, version: version - 1 },
+    const result = await GoodsOrder.update({ status: 'canceled', lastModifierId, lastModifierName }, {
+      where: { uuid, status: 'initial', version: version - 1 },
+      fields: ['status', 'lastModifierId', 'lastModifierName'],
+    });
+    app.checkUpdate(result);
+
+    return uuid;
+  };
+
+  /**
+   * 配送订单
+   * @param {object} params - 条件
+   * @return {string} - 订单uuid
+   */
+  GoodsOrder.dispatch = async params => {
+    const { uuid, version, lastModifierId, lastModifierName } = params;
+    const result = await GoodsOrder.update({ status: 'dispatching', lastModifierId, lastModifierName }, {
+      where: { uuid, status: 'audited', version: version - 1 },
+      fields: ['status', 'lastModifierId', 'lastModifierName'],
+    });
+    app.checkUpdate(result);
+
+    return uuid;
+  };
+
+  /**
+   * 完成订单
+   * @param {object} params - 条件
+   * @return {string} - 订单uuid
+   */
+  GoodsOrder.complete = async params => {
+    const { uuid, version, lastModifierId, lastModifierName } = params;
+    const result = await GoodsOrder.update({ status: 'completed', lastModifierId, lastModifierName }, {
+      where: { uuid, status: 'dispatching', version: version - 1 },
       fields: ['status', 'lastModifierId', 'lastModifierName'],
     });
     app.checkUpdate(result);
