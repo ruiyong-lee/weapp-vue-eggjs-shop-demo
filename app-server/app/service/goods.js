@@ -157,7 +157,13 @@ class GoodsService extends Service {
    */
   async get(uuid) {
     const { app } = this;
-    const goodsData = await app.model.Goods.get(uuid);
+    const goodsData = await app.model.Goods.get(uuid) || {};
+    const goodsCategory = await app.model.GoodsCategory.get({
+      uuid: goodsData.categoryUuid,
+      attributes: ['name'],
+    }) || {};
+
+    goodsData.dataValues.categoryName = goodsCategory.name;
 
     return goodsData;
   }

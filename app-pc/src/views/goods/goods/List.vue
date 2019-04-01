@@ -4,7 +4,7 @@
       <el-table-column prop="name" label="名称" min-width="300">
         <div class="flex-y-center" slot-scope="scope">
           <safe-img :src="scope.row.thumbnail" width="30px" height="30px"></safe-img>
-          <router-link class="ml-15 text-bold" :to="{name: 'goodsEdit', params: { goodsUuid: scope.row.uuid }}">
+          <router-link class="ml-15 text-bold" :to="{name: 'goodsView', params: { goodsUuid: scope.row.uuid }}">
             {{scope.row.name}}
           </router-link>
         </div>
@@ -33,11 +33,13 @@
           >
             编辑
           </el-button>
-          <el-button v-if="scope.row.status === 'down'" type="text" size="mini" @click="upGoods(scope.row)">
+          <el-button v-if="scope.row.status === 'down'" class="success-text-btn"
+                     type="text" size="mini" @click="upGoods(scope.row)">
             上架
           </el-button>
           <el-button v-if="scope.row.status === 'up'" class="danger-text-btn"
-                     type="text" size="mini" @click="downGoods(scope.row)">下架
+                     type="text" size="mini" @click="downGoods(scope.row)">
+            下架
           </el-button>
         </template>
       </el-table-column>
@@ -61,11 +63,15 @@
     mixins: [pageMixin, tableMixin],
     components: {},
     data() {
-      this[this.$Constants.REFRESH_DATA_CALLBACK_MAP] = {
-        [this.$Constants.GOODS]: this.query,
-        [this.$Constants.GOODS_CATEGORY]: this.query,
+      const {
+        REFRESH_DATA_CALLBACK_MAP, GOODS,
+        GOODS_CATEGORY, APP_PAGE_TOOLS,
+      } = this.$Constants;
+      this[REFRESH_DATA_CALLBACK_MAP] = {
+        [GOODS]: this.query,
+        [GOODS_CATEGORY]: this.query,
       };
-      this[this.$Constants.APP_PAGE_TOOLS] = [
+      this[APP_PAGE_TOOLS] = [
         {
           icon: 'el-icon-plus',
           content: '新增',

@@ -28,14 +28,14 @@
 
     <!--新增、编辑弹窗-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" center @close="handleDialogClose">
-      <el-form :model="dialogForm" :rules="dialogRules" ref="dialogForm" @submit.native.prevent>
-        <el-form-item label="名称" label-width="7em" prop="name">
+      <el-form :model="dialogForm" :rules="dialogRules" ref="dialogForm" label-width="5em" @submit.native.prevent>
+        <el-form-item label="名称" prop="name">
           <el-input v-model="dialogForm.name" autocomplete="off" clearable></el-input>
         </el-form-item>
-        <el-form-item label="备注" label-width="7em" prop="remark">
+        <el-form-item label="备注" prop="remark">
           <el-input v-model="dialogForm.remark" autocomplete="off" clearable></el-input>
         </el-form-item>
-        <el-form-item label="附加费用" label-width="7em" prop="surcharge">
+        <el-form-item label="附加费用" prop="surcharge">
           <el-input-number class="wp-100" v-model="dialogForm.surcharge"
                            controls-position="right" :min="0"></el-input-number>
         </el-form-item>

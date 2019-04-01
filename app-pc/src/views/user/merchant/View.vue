@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :model="merchantForm" label-width="7em" class="default-form"
+    <el-form :model="merchantForm" label-width="7em"
              size="small" @submit.native.prevent>
       <el-row>
         <el-col :span="11">
@@ -62,10 +62,11 @@
     mixins: [pageMixin],
     components: {},
     data() {
-      this[this.$Constants.REFRESH_DATA_CALLBACK_MAP] = {
-        [this.$Constants.MERCHANT]: this.get,
+      const { REFRESH_DATA_CALLBACK_MAP, MERCHANT, APP_PAGE_TOOLS } = this.$Constants;
+      this[REFRESH_DATA_CALLBACK_MAP] = {
+        [MERCHANT]: this.get,
       };
-      this[this.$Constants.APP_PAGE_TOOLS] = [
+      this[APP_PAGE_TOOLS] = [
         {
           icon: 'el-icon-edit',
           content: '编辑',

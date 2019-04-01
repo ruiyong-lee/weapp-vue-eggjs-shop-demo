@@ -1,56 +1,31 @@
 <template>
   <div>
-    <el-form :model="merchantForm" label-width="7em" class="default-form"
-             size="small" @submit.native.prevent>
-      <el-row>
-        <el-col :span="11">
-          <h2 class="content-title">基础资料</h2>
-          <el-form-item label="商家名称">
-            {{merchantForm.name}}
-          </el-form-item>
-          <el-form-item label="联系人">
-            {{merchantForm.linkMan}}
-          </el-form-item>
-          <el-form-item label="联系电话">
-            {{merchantForm.linkPhone}}
-          </el-form-item>
-          <el-form-item label="详细地址">
-            {{merchantForm.address}}
-          </el-form-item>
-          <el-form-item label="客服电话">
-            {{merchantForm.servicePhone}}
-          </el-form-item>
-        </el-col>
-        <el-col :span="11" :offset="2">
-          <h2 class="content-title">登录资料</h2>
-          <el-form-item label="账号">
-            {{merchantForm.userName}}
-          </el-form-item>
-          <el-form-item label="状态">
-            <span class="el-switch-text" :class="$Constants.ENABLE_STATUS_CLASS[merchantForm.enableStatus]">
-              {{$Constants.ENABLE_STATUS[merchantForm.enableStatus]}}
+    <el-row>
+      <h2 class="content-title">基本信息</h2>
+      <section class="goods-panel">
+        <el-carousel class="goods-images" :autoplay="false" height="240px">
+          <el-carousel-item v-for="item in imagesList" :key="item">
+            <safe-img :src="item" width="240px" height="240px"></safe-img>
+          </el-carousel-item>
+        </el-carousel>
+        <div class="goods-data">
+          <h3 class="goods-name">{{goods.name}}</h3>
+          <p>类别：<span class="text-bold">{{goods.categoryName}}</span></p>
+          <p>规格：<span class="text-bold">{{goods.spec}}</span></p>
+          <p>单位：<span class="text-bold">{{goods.unitName}}</span></p>
+          <p>售价：<span class="text-red text-bold">{{goods.salePrice}} 元</span></p>
+          <p>状态：
+            <span class="text-bold" :class="$Constants.GOODS_STATUS_CLASS[goods.status]">
+              {{$Constants.GOODS_STATUS[goods.status]}}
             </span>
-          </el-form-item>
-        </el-col>
-      </el-row>
-      <el-row>
-        <el-col :span="11">
-          <h2 class="content-title">关联小程序</h2>
-          <el-form-item label="小程序ID：">
-            {{merchantForm.appId}}
-          </el-form-item>
-          <el-form-item label="小程序密匙：">
-            {{merchantForm.appSecret}}
-          </el-form-item>
-          <el-form-item label="商户号：">
-            {{merchantForm.mchId}}
-          </el-form-item>
-          <el-form-item label="商户密匙：">
-            {{merchantForm.mchKey}}
-          </el-form-item>
-        </el-col>
-      </el-row>
-    </el-form>
+          </p>
+        </div>
+      </section>
+    </el-row>
+    <el-row class="mt-20">
+      <h2 class="content-title">商品介绍</h2>
+      <div class="goods-info">{{goods.info || '暂无介绍'}}</div>
+    </el-row>
   </div>
 </template>
 
@@ -62,29 +37,99 @@
     mixins: [pageMixin],
     components: {},
     data() {
-      this[this.$Constants.REFRESH_DATA_CALLBACK_MAP] = {
-        [this.$Constants.MERCHANT]: this.get,
-      };
       this[this.$Constants.APP_PAGE_TOOLS] = [
+        {},
         {
-          icon: 'el-icon-edit',
           content: '编辑',
-          callback: () => this.$router.push({ name: 'merchantEdit' }),
+          callback: this.linkToEdit,
           type: 'primary',
         },
       ];
       return {
-        merchantForm: {},
+        goods: {},
+        imagesList: [],
       };
     },
     methods: {
-      refreshPage() {
-        this.get();
+      async refreshPage() {
+        await this.get();
+        this.addAppPageTool();
       },
       async get() {
-        const { merchantUuid: uuid } = this.$route.params;
-        this.merchantForm = await this.$api.merchant.get({ uuid });
+        const params = {
+          uuid: this.$route.params.goodsUuid,
+        };
+
+        const res = await this.$api.goods.get(params);
+        this.goods = res;
+        this.imagesList = JSON.parse(res.imagesJsonStr) || [];
+      },
+      async upGoods() {
+        const { uuid, version } = this.goods;
+        await this.$api.goods.up({ uuid, version });
+        this.$message({ message: '商品上架成功', type: 'success' });
+        this.refreshPage();
+      },
+      async downGoods() {
+        const { uuid, version } = this.goods;
+        await this.$api.goods.down({ uuid, version });
+        this.$message({ message: '商品下架成功', type: 'success' });
+        this.refreshPage();
+      },
+      linkToEdit() {
+        this.$router.push({ name: 'goodsEdit', params: { goodsUuid: this.goods.uuid } });
+      },
+      addAppPageTool() {
+        switch (this.goods.status) {
+          case 'up':
+            this[this.$Constants.APP_PAGE_TOOLS].splice(0, 1, {
+              content: '下架',
+              callback: this.downGoods,
+              type: 'danger',
+            });
+            break;
+          case 'down':
+            this[this.$Constants.APP_PAGE_TOOLS].splice(0, 1, {
+              content: '上架',
+              callback: this.upGoods,
+              type: 'success',
+            });
+            break;
+          default:
+            break;
+        }
       },
     },
   };
 </script>
+
+<style lang="scss" scoped>
+  .goods-panel {
+    display: flex;
+
+    .goods-images {
+      flex: 0 0 240px;
+      border: 1px solid #eee;
+      border-radius: 6px;
+      background: url("../../../assets/no-pic.png") no-repeat;
+      background-size: 70%;
+      background-position: 50% 50%;
+    }
+
+    .goods-data {
+      flex: 1;
+      padding-left: 30px;
+      font-size: 16px;
+      line-height: 2.2;
+
+      .goods-name {
+        font-size: 22px;
+        font-weight: bold;
+      }
+    }
+  }
+
+  .goods-info {
+    /*text-indent: 2em;*/
+  }
+</style>

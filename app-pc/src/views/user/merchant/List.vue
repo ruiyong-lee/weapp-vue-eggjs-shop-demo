@@ -42,10 +42,11 @@
     mixins: [pageMixin, tableMixin],
     components: {},
     data() {
-      this[this.$Constants.REFRESH_DATA_CALLBACK_MAP] = {
-        [this.$Constants.MERCHANT]: this.query,
+      const { REFRESH_DATA_CALLBACK_MAP, MERCHANT, APP_PAGE_TOOLS } = this.$Constants;
+      this[REFRESH_DATA_CALLBACK_MAP] = {
+        [MERCHANT]: this.query,
       };
-      this[this.$Constants.APP_PAGE_TOOLS] = [
+      this[APP_PAGE_TOOLS] = [
         {
           icon: 'el-icon-plus',
           content: '新增',

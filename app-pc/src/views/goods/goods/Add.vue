@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-form :model="goodsForm" :rules="rules" ref="goodsForm" label-width="7em" class="default-form"
+    <el-form :model="goodsForm" :rules="rules" ref="goodsForm" label-width="7em"
              size="small" @submit.native.prevent>
       <el-row>
         <h2 class="content-title">基本信息</h2>
@@ -76,10 +76,11 @@
     mixins: [pageMixin],
     components: {},
     data() {
-      this[this.$Constants.REFRESH_DATA_CALLBACK_MAP] = {
-        [this.$Constants.GOODS_CATEGORY]: this.getCategoryDropdownList,
+      const { REFRESH_DATA_CALLBACK_MAP, GOODS_CATEGORY, APP_PAGE_TOOLS } = this.$Constants;
+      this[REFRESH_DATA_CALLBACK_MAP] = {
+        [GOODS_CATEGORY]: this.getCategoryDropdownList,
       };
-      this[this.$Constants.APP_PAGE_TOOLS] = [
+      this[APP_PAGE_TOOLS] = [
         {
           content: '保存',
           callback: this.submitForm,

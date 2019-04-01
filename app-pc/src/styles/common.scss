@@ -184,6 +184,18 @@
 }
 
 //按钮
+.success-text-btn {
+  color: #67C23A;
+
+  &:focus {
+    color: #67C23A;
+  }
+
+  &:hover {
+    color: #5daf34;
+  }
+}
+
 .danger-text-btn {
   color: #FF5B5B;
 

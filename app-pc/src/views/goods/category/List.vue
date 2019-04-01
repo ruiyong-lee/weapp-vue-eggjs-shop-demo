@@ -28,8 +28,8 @@
 
     <!--新增、编辑弹窗-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" center @close="handleDialogClose">
-      <el-form :model="dialogForm" :rules="dialogRules" ref="dialogForm" @submit.native.prevent>
-        <el-form-item label="类别名称" label-width="6em" prop="name">
+      <el-form :model="dialogForm" :rules="dialogRules" ref="dialogForm" label-width="6em" @submit.native.prevent>
+        <el-form-item label="类别名称" prop="name">
           <el-input v-model="dialogForm.name" autocomplete="off" clearable></el-input>
         </el-form-item>
       </el-form>

@@ -33,19 +33,19 @@
 
     <!--新增、编辑弹窗-->
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" center @close="handleDialogClose">
-      <el-form :model="dialogForm" :rules="dialogRules" ref="dialogForm" @submit.native.prevent>
-        <el-form-item label="名称" label-width="7em" prop="name">
+      <el-form :model="dialogForm" :rules="dialogRules" ref="dialogForm" label-width="6em" @submit.native.prevent>
+        <el-form-item label="名称" prop="name">
           <el-input v-model="dialogForm.name" autocomplete="off" clearable></el-input>
         </el-form-item>
-        <el-form-item label="基础运费" label-width="7em" prop="basicFreight">
+        <el-form-item label="基础运费" prop="basicFreight">
           <el-input-number class="wp-100" v-model="dialogForm.basicFreight"
                            controls-position="right" :min="0"></el-input-number>
         </el-form-item>
-        <el-form-item label="免运费金额" label-width="7em" prop="freeFreightAmount">
+        <el-form-item label="免运费金额" prop="freeFreightAmount">
           <el-input-number class="wp-100" v-model="dialogForm.freeFreightAmount"
                            controls-position="right" :min="0"></el-input-number>
         </el-form-item>
-        <el-form-item label="设为默认" label-width="7em" prop="sysDefault">
+        <el-form-item label="设为默认" prop="sysDefault">
           <el-switch v-model="dialogForm.sysDefault"></el-switch>
         </el-form-item>
       </el-form>
