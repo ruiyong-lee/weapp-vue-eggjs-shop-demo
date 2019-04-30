@@ -10,7 +10,7 @@
       <el-table-column prop="freeFreightAmount" label="免运费金额" width="180" align="center"></el-table-column>
       <el-table-column prop="sysDefault" label="是否默认" width="80" align="center">
         <template slot-scope="scope">
-          <i class="el-icon-check"></i>
+          <i v-if="scope.row.sysDefault" class="el-icon-check"></i>
         </template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" width="100" align="center">
@@ -80,6 +80,7 @@
           freeFreightAmount: 0,
           sysDefault: false,
         },
+        selectedData: {},
         dialogRules: {
           name: [
             { required: true, message: '请输入运费方案名称', trigger: 'blur' },
@@ -110,7 +111,14 @@
         this.dialogTitle = isEdit ? '编辑' : '新增';
 
         if (!_.isEmpty(freightPlan)) {
-          this.dialogForm = _.cloneDeep(freightPlan);
+          this.$nextTick(() => {
+            const selectedData = _.cloneDeep(freightPlan);
+            this.selectedData = selectedData;
+            this.dialogForm.name = selectedData.name;
+            this.dialogForm.basicFreight = selectedData.basicFreight;
+            this.dialogForm.freeFreightAmount = selectedData.freeFreightAmount;
+            this.dialogForm.sysDefault = selectedData.sysDefault;
+          });
         }
       },
       hideDialog() {
@@ -122,10 +130,11 @@
         this.resetForm('dialogForm');
       },
       submitForm(formName) {
+        const { dialogType, dialogForm, selectedData } = this;
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            if (this.dialogType === 'edit') {
-              await this.$api.freightPlan.saveModify({ freightPlan: this.dialogForm });
+            if (dialogType === 'edit') {
+              await this.$api.freightPlan.saveModify({ freightPlan: { ...selectedData, ...dialogForm } });
               this.$message({ message: '修改运费方案成功', type: 'success' });
               this.hideDialog();
               this.query();
@@ -141,11 +150,11 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-      deleteFreightPlan(categoryUuid) {
+      deleteFreightPlan(uuid) {
         this.$confirm('将永久删除该运费方案, 是否继续？', '提示', {
           type: 'warning',
         }).then(async () => {
-          await this.$api.freightPlan.remove({ categoryUuid });
+          await this.$api.freightPlan.remove({ uuid });
           this.$message({ message: '删除运费方案成功', type: 'success' });
           this.query();
         }).catch(() => {

@@ -123,29 +123,33 @@
                 <!--不同页面渲染不同的工具按钮，在页面内自定义，根据屏幕宽度判断是否收起-->
                 <el-col class="app-page-tools" :span="12" v-tools="isCollapse">
                   <div class="app-page-tools__expand">
-                    <el-button
-                      :type="item.type"
-                      :icon="item.icon"
-                      size="mini"
-                      round
-                      v-for="item in appPageTools"
-                      :key="item.content"
-                      @click="item.callback"
-                    >
-                      {{item.content}}
-                    </el-button>
+                    <template v-for="item in appPageTools">
+                      <el-button
+                        :type="item.type"
+                        :icon="item.icon"
+                        size="mini"
+                        round
+                        v-if="item.content"
+                        :key="item.content"
+                        @click="item.callback"
+                      >
+                        {{item.content}}
+                      </el-button>
+                    </template>
                   </div>
                   <div class="app-page-tools__collapse">
                     <el-dropdown>
                       <icon name="ellipsis" class="el-icon-v"></icon>
                       <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item
-                          v-for="item in appPageTools"
-                          :key="item.content"
-                          @click.native="item.callback"
-                        >
-                          {{item.content}}
-                        </el-dropdown-item>
+                        <template v-for="item in appPageTools">
+                          <el-dropdown-item
+                            v-if="item.content"
+                            :key="item.content"
+                            @click.native="item.callback"
+                          >
+                            {{item.content}}
+                          </el-dropdown-item>
+                        </template>
                       </el-dropdown-menu>
                     </el-dropdown>
                   </div>

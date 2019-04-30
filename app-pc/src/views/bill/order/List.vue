@@ -23,7 +23,7 @@
       <el-table-column prop="deliveryTimeTypeName" label="交货时间" align="center"></el-table-column>
       <el-table-column label="状态" align="center" width="100">
         <template slot-scope="scope">
-          <span
+          <span class="badge"
             :class="$Constants.ORDER_STATUS_CLASS[scope.row.status]">{{$Constants.ORDER_STATUS[scope.row.status]}}</span>
         </template>
       </el-table-column>

@@ -1,3 +1,43 @@
+//按钮
+.success-text-btn {
+  color: #67C23A;
+
+  &:focus {
+    color: #67C23A;
+  }
+
+  &:hover {
+    color: #5daf34;
+  }
+}
+
+.danger-text-btn {
+  color: #FF5B5B;
+
+  &:focus {
+    color: #FF5B5B;
+  }
+
+  &:hover {
+    color: #ff8b87;
+  }
+}
+
+//badge
+.badge {
+  display: inline-block;
+  min-width: 10px;
+  padding: 3px 8px;
+  font-size: 12px;
+  color: #fff;
+  line-height: 1;
+  vertical-align: middle;
+  white-space: nowrap;
+  text-align: center;
+  background-color: #999999;
+  border-radius: 10px;
+}
+
 //dispaly
 .flex-y-center {
   display: flex;
@@ -167,6 +207,26 @@
   background-color: #FFFFFF;
 }
 
+.bg-dark-gray {
+  background-color: #666666;
+}
+
+.bg-gray {
+  background-color: #999999;
+}
+
+.bg-red {
+  background-color: #FF5B5B;
+}
+
+.bg-green {
+  background-color: #1cc09f;
+}
+
+.bg-primary {
+  background-color: #5C9ACF;
+}
+
 //svg
 .svg-icon {
   width: 18px;
@@ -181,29 +241,4 @@
 //鼠标
 .cursor-pointer {
   cursor: pointer;
-}
-
-//按钮
-.success-text-btn {
-  color: #67C23A;
-
-  &:focus {
-    color: #67C23A;
-  }
-
-  &:hover {
-    color: #5daf34;
-  }
-}
-
-.danger-text-btn {
-  color: #FF5B5B;
-
-  &:focus {
-    color: #FF5B5B;
-  }
-
-  &:hover {
-    color: #ff8b87;
-  }
 }

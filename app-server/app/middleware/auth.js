@@ -14,8 +14,8 @@ module.exports = (options, app) => {
       const sessionid = ctx.get('sessionid');
       const session = ctx.helper.JSONParse(await app.redis.get('default').get(sessionid)) || {};
       const { openId } = session;
-
       ctx.request.body.openId = openId;
+      ctx.request.body = { ...ctx.request.body, ...ctx.query };
 
       await next();
 
@@ -33,9 +33,13 @@ module.exports = (options, app) => {
       }
     } else {
       // 管理端接口
-      ctx.request.body.userUuid = ctx.request.body.userUuid || ctx.cookies.get('userUuid', { signed: false });
-      ctx.request.body.userName = ctx.request.body.userName || ctx.cookies.get('userName', { signed: false });
-      ctx.request.body.userType = ctx.request.body.userType || ctx.cookies.get('userType', { signed: false });
+      const { userUuid, userName, userType, orgUuid } = ctx.request.body;
+      ctx.request.body.userUuid = userUuid || ctx.cookies.get('userUuid', { signed: false });
+      ctx.request.body.userName = userName || ctx.cookies.get('userName', { signed: false });
+      ctx.request.body.userType = userType || ctx.cookies.get('userType', { signed: false });
+      ctx.request.body.orgUuid = orgUuid || ctx.cookies.get('orgUuid', { signed: false });
+      // 将get请求的ctx.query合并到ctx.request.body
+      ctx.request.body = { ...ctx.request.body, ...ctx.query };
 
       await next();
 

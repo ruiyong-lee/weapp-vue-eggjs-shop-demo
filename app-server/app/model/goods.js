@@ -29,8 +29,8 @@ module.exports = app => {
    * @return {string} - 商品uuid
    */
   Goods.saveModify = async goods => {
-    const { uuid, version } = goods;
-    const result = await Goods.update(goods, { where: { uuid, version: version - 1 } });
+    const { uuid, orgUuid, version } = goods;
+    const result = await Goods.update(goods, { where: { uuid, orgUuid, version: version - 1 } });
 
     app.checkUpdate(result);
 
@@ -39,16 +39,14 @@ module.exports = app => {
 
   /**
    * 上架商品
-   * @param {object} uuid - 商品uuid
+   * @param {string} uuid - 商品uuid
+   * @param {string} orgUuid - 组织uuid
    * @param {object} modifyInfo - 商品修改信息
    * @return {string} - 商品uuid
    */
-  Goods.up = async (uuid, modifyInfo = {}) => {
+  Goods.up = async (uuid, orgUuid, modifyInfo = {}) => {
     const result = await Goods.update({ ...modifyInfo, status: 'up' }, {
-      where: {
-        uuid,
-        version: modifyInfo.version - 1,
-      },
+      where: { uuid, orgUuid, version: modifyInfo.version - 1 },
     });
 
     app.checkUpdate(result);
@@ -58,16 +56,14 @@ module.exports = app => {
 
   /**
    * 下架商品
-   * @param {object} uuid - 商品uuid
+   * @param {string} uuid - 商品uuid
+   * @param {string} orgUuid - 组织uuid
    * @param {object} modifyInfo - 商品修改信息
    * @return {string} - 商品uuid
    */
-  Goods.down = async (uuid, modifyInfo = {}) => {
+  Goods.down = async (uuid, orgUuid, modifyInfo = {}) => {
     const result = await Goods.update({ ...modifyInfo, status: 'down' }, {
-      where: {
-        uuid,
-        version: modifyInfo.version - 1,
-      },
+      where: { uuid, orgUuid, version: modifyInfo.version - 1 },
     });
 
     app.checkUpdate(result);
@@ -77,13 +73,13 @@ module.exports = app => {
 
   /**
    * 查询key为类别的商品数据
-   * @param {object} { categoryAttributes, merchantUuid, goodsAttributes } - 条件
+   * @param {object} { categoryAttributes, orgUuid, goodsAttributes } - 条件
    * @return {object|null} - 查找结果
    */
-  Goods.getGoodsWithCategory = async ({ categoryAttributes, merchantUuid, goodsAttributes }) => {
+  Goods.getGoodsWithCategory = async ({ categoryAttributes, orgUuid, goodsAttributes }) => {
     return await Goodscategory.findAll({
       attributes: categoryAttributes,
-      where: { orgUuid: merchantUuid },
+      where: { orgUuid },
       include: [
         {
           model: Goods,
@@ -106,16 +102,16 @@ module.exports = app => {
 
   /**
    * 查询商品分页列表
-   * @param {object} { attributes, pagination, filter } - 条件
+   * @param {object} { orgUuid, attributes, pagination, filter } - 条件
    * @return {object|null} - 查找结果
    */
-  Goods.query = async ({ userUuid, attributes, pagination = {}, filter = {} }) => {
+  Goods.query = async ({ orgUuid, attributes, pagination = {}, filter = {} }) => {
     const { page, pageSize: limit } = pagination;
     const { count, rows } = await Goods.findAndCountAll({
       offset: (page - 1) * limit,
       limit,
       attributes,
-      where: { ...filter, orgUuid: userUuid },
+      where: { ...filter, orgUuid },
       order: [['createdTime', 'DESC']],
     });
 
@@ -124,11 +120,13 @@ module.exports = app => {
 
   /**
    * 查询商品
-   * @param {sting} uuid - 商品uuid
+   * @param {object} { uuid, orgUuid } - 条件
    * @return {object|null} - 查找结果
    */
-  Goods.get = async uuid => {
-    return await Goods.findById(uuid);
+  Goods.get = async ({ uuid, orgUuid }) => {
+    return await Goods.findOne({
+      where: { uuid, orgUuid },
+    });
   };
 
   return Goods;

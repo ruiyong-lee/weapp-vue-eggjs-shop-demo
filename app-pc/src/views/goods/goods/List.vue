@@ -19,7 +19,7 @@
       <el-table-column prop="spec" label="规格" align="center"></el-table-column>
       <el-table-column prop="status" label="状态" align="center">
         <template slot-scope="scope">
-          <span :class="$Constants.GOODS_STATUS_CLASS[scope.row.status]">
+          <span class="badge" :class="$Constants.GOODS_STATUS_CLASS[scope.row.status]">
             {{$Constants.GOODS_STATUS[scope.row.status]}}
           </span>
         </template>

@@ -5,32 +5,34 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "theme-init": "et --init src/styles/element-variables.scss"
   },
   "dependencies": {
     "axios": "^0.18.0",
     "easyscrolldt": "^1.0.6",
-    "element-ui": "^2.6.1",
+    "element-ui": "^2.8.2",
     "fecha": "^2.3.3",
     "lodash": "^4.17.11",
-    "vue": "^2.6.8",
+    "vue": "^2.6.10",
     "vue-cookie": "^1.1.4",
-    "vue-router": "^3.0.2",
+    "vue-router": "^3.0.6",
     "vue-svg-icon": "^1.2.9",
     "vue2-transitions": "^0.2.3",
     "vuex": "^3.1.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.5.0",
-    "@vue/cli-plugin-eslint": "^3.5.0",
-    "@vue/cli-service": "^3.5.0",
+    "@vue/cli-plugin-babel": "^3.6.0",
+    "@vue/cli-plugin-eslint": "^3.6.0",
+    "@vue/cli-service": "^3.6.0",
     "@vue/eslint-config-airbnb": "^4.0.0",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-plugin-syntax-jsx": "^6.18.0",
     "babel-plugin-transform-vue-jsx": "^3.7.0",
     "babel-preset-env": "^1.7.0",
-    "node-sass": "^4.11.0",
+    "element-theme-chalk": "^2.8.2",
+    "node-sass": "^4.12.0",
     "sass-loader": "^7.1.0",
-    "vue-template-compiler": "^2.6.8"
+    "vue-template-compiler": "^2.6.10"
   }
 }

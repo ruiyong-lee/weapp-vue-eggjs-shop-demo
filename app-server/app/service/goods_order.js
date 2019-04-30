@@ -14,12 +14,10 @@ class GoodsOrderService extends Service {
    * @return {object|null} - 查找结果
    */
   async query(params = {}) {
-    const { app, ctx } = this;
+    const { app } = this;
     const { Sequelize } = app;
     return await app.model.GoodsOrder.query({
       ...params,
-      filter: ctx.helper.JSONParse(params.filter),
-      pagination: ctx.helper.JSONParse(params.pagination),
       attributes: [
         'uuid', 'version', 'status', 'billNumber', 'customerName', 'deliveryTimeTypeName',
         'remark', 'createdTime', 'linkMan', 'linkPhone',
@@ -35,12 +33,10 @@ class GoodsOrderService extends Service {
    * @return {object|null} - 查找结果
    */
   async queryForWeapp(params = {}) {
-    const { app, ctx } = this;
+    const { app } = this;
     const { Sequelize } = app;
     return await app.model.GoodsOrder.query({
       ...params,
-      filter: ctx.helper.JSONParse(params.filter),
-      pagination: ctx.helper.JSONParse(params.pagination),
       attributes: [
         'uuid', 'version', 'status', 'billNumber',
         [Sequelize.fn('0+CAST', Sequelize.literal('goodsTotalQty AS CHAR')), 'goodsTotalQty'],
@@ -51,14 +47,14 @@ class GoodsOrderService extends Service {
 
   /**
    * 获取订单
-   * @param {string} uuid - 订单uuid
+   * @param {object} params - 条件
    * @return {object|null} - 查找结果
    */
-  async get(uuid) {
+  async get(params = {}) {
     const { app } = this;
     const { Sequelize } = app;
     return await app.model.GoodsOrder.get({
-      uuid,
+      ...params,
       orderAttributes: [
         'uuid', 'version', 'status', 'billNumber', 'addressUuid', 'linkMan', 'linkPhone', 'address',
         'deliveryTimeTypeUuid', 'deliveryTimeTypeName', 'deliveryTimeTypeRemark', 'remark', 'createdTime',
@@ -76,11 +72,21 @@ class GoodsOrderService extends Service {
   }
 
   /**
+   * 根据uuid获取订单，不验证组织
+   * @param {string} uuid - 条件
+   * @return {object|null} - 查找结果
+   */
+  async getByUuid(uuid) {
+    const { app } = this;
+    return await app.model.GoodsOrder.getByUuid(uuid);
+  }
+
+  /**
    * 创建订单
    * @param {object} params - 条件
    * @return {string} - 订单uuid
    */
-  async saveNew({ merchantUuid, goodsOrder = {}, openId, nickName }) {
+  async saveNew({ orgUuid, goodsOrder = {}, openId, nickName }) {
     const { app } = this;
     const crateInfo = app.getCrateInfo(openId, nickName);
     const billNumber = await app.getBillNumber('DG');
@@ -90,7 +96,7 @@ class GoodsOrderService extends Service {
         ...goodsOrder,
         ...crateInfo,
         billNumber,
-        orgUuid: merchantUuid,
+        orgUuid,
         customerUuid: openId,
         customerName: nickName,
       },
@@ -107,7 +113,7 @@ class GoodsOrderService extends Service {
     const goodsUuid = await app.model.GoodsOrder.saveNew(params);
 
     // 超过30分钟自动取消订单
-    app.addDelayTask('cancelOrder', goodsUuid, {}, 30 * 60);
+    app.addDelayTask('cancelOrder', goodsUuid, {}, 10);
 
     return goodsUuid;
   }
@@ -119,9 +125,9 @@ class GoodsOrderService extends Service {
    */
   async cancel(params = {}) {
     const { app } = this;
-    const { version, openId, nickName } = params;
-    const modifyInfo = app.getModifyInfo(version, openId, nickName);
-    return await app.model.GoodsOrder.cancel({ ...params, ...modifyInfo });
+    const { version, openId, nickName, userUuid, userName, orgUuid } = params;
+    const modifyInfo = app.getModifyInfo(version, openId || userUuid, nickName || userName);
+    return await app.model.GoodsOrder.cancel({ ...params, ...modifyInfo, orgUuid });
   }
 
   /**
@@ -131,9 +137,9 @@ class GoodsOrderService extends Service {
    */
   async dispatch(params = {}) {
     const { app } = this;
-    const { version, userUuid, userName } = params;
+    const { version, userUuid, userName, orgUuid } = params;
     const modifyInfo = app.getModifyInfo(version, userUuid, userName);
-    return await app.model.GoodsOrder.dispatch({ ...params, ...modifyInfo });
+    return await app.model.GoodsOrder.dispatch({ ...params, ...modifyInfo, orgUuid });
   }
 
   /**
@@ -143,9 +149,9 @@ class GoodsOrderService extends Service {
    */
   async complete(params = {}) {
     const { app } = this;
-    const { version, userUuid, userName } = params;
-    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
-    return await app.model.GoodsOrder.complete({ ...params, ...modifyInfo });
+    const { version, openId, nickName, userUuid, userName, orgUuid } = params;
+    const modifyInfo = app.getModifyInfo(version, openId || userUuid, nickName || userName);
+    return await app.model.GoodsOrder.complete({ ...params, ...modifyInfo, orgUuid });
   }
 }
 

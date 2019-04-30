@@ -13,12 +13,8 @@ class WeappController extends Controller {
    */
   async getGoodsWithCategory() {
     const { ctx } = this;
-    const { merchantUuid } = ctx.request.body;
-    const rule = {
-      merchantUuid: 'string',
-    };
-    ctx.validate(rule);
-    const goods = await ctx.service.goods.getGoodsWithCategory(merchantUuid);
+    const { orgUuid } = ctx.request.body;
+    const goods = await ctx.service.goods.getGoodsWithCategory(orgUuid);
 
     this.success(goods);
   }
@@ -48,7 +44,7 @@ class WeappController extends Controller {
    */
   async queryOrderBill() {
     const { ctx } = this;
-    const goodsOrderData = await ctx.service.goodsOrder.queryForWeapp({ ...ctx.request.body, ...ctx.query });
+    const goodsOrderData = await ctx.service.goodsOrder.queryForWeapp(ctx.request.body);
 
     this.success(goodsOrderData);
   }
@@ -58,12 +54,7 @@ class WeappController extends Controller {
    */
   async getOrderBill() {
     const { ctx } = this;
-    const { uuid } = ctx.request.body;
-    const rule = {
-      uuid: 'string',
-    };
-    ctx.validate(rule);
-    const goodsOrder = await ctx.service.goodsOrder.get(uuid);
+    const goodsOrder = await ctx.service.goodsOrder.get(ctx.request.body);
 
     this.success(goodsOrder);
   }
@@ -102,8 +93,7 @@ class WeappController extends Controller {
    */
   async getAddress() {
     const { ctx } = this;
-    const { uuid } = ctx.request.body;
-    const address = await ctx.service.user.customer.address.get(uuid);
+    const address = await ctx.service.user.customer.address.get(ctx.request.body);
 
     this.success(address);
   }
@@ -182,11 +172,11 @@ class WeappController extends Controller {
    */
   async login() {
     const { ctx, app } = this;
-    const { merchantUuid, code } = ctx.request.body;
+    const { orgUuid, code } = ctx.request.body;
     const sessionid = ctx.helper.uuidv1();
 
-    // 根据merchantUuid获取商家
-    const merchant = await ctx.service.user.merchant.get(merchantUuid);
+    // 根据orgUuid获取商家
+    const merchant = await ctx.service.user.merchant.get(orgUuid);
 
     if (app._.isEmpty(merchant)) {
       return this.fail(ctx.ERROR_CODE, '该应用未绑定商家');

@@ -10,13 +10,13 @@ const Service = require('egg').Service;
 class AddressService extends Service {
   /**
    * 根据uuid获取用户地址
-   * @param {object} uuid - 条件
+   * @param {object} params - 条件
    * @return {object|null} - 查找结果
    */
-  async get(uuid) {
+  async get(params = {}) {
     const { app } = this;
     const address = await app.model.User.Customer.Address.get({
-      uuid,
+      ...params,
       attributes: ['uuid', 'version', 'linkMan', 'linkPhone', 'shopName', 'address', 'sysDefault'],
     });
 
@@ -103,7 +103,7 @@ class AddressService extends Service {
     const { version } = address;
     const modifyInfo = app.getModifyInfo(version, openId, nickName);
 
-    address = { ...address, ...modifyInfo };
+    address = { ...address, ...modifyInfo, openId };
 
     return await app.model.User.Customer.Address.saveModify(address);
   }

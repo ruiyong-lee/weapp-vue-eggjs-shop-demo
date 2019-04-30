@@ -16,7 +16,7 @@ module.exports = app => {
   router.post('/weapp/getGoodsWithCategory', weapp.getGoodsWithCategory);
   router.post('/weapp/getDefaultFreightPlan', weapp.getDefaultFreightPlan);
   router.post('/weapp/getDeliveryTimeTypeList', weapp.getDeliveryTimeTypeList);
-  router.get('/weapp/queryOrderBill', weapp.queryOrderBill);
+  router.post('/weapp/queryOrderBill', weapp.queryOrderBill);
   router.post('/weapp/getOrderBill', weapp.getOrderBill);
   router.post('/weapp/createBill', weapp.createBill);
   router.post('/weapp/cancelBill', weapp.cancelBill);
@@ -43,7 +43,7 @@ module.exports = app => {
 
   router.post('/user/merchant/saveNew', user.merchant.saveNew);
   router.post('/user/merchant/saveModify', user.merchant.saveModify);
-  router.get('/user/merchant/query', user.merchant.query);
+  router.post('/user/merchant/query', user.merchant.query);
   router.get('/user/merchant/get', user.merchant.get);
 
   /**
@@ -51,7 +51,7 @@ module.exports = app => {
    */
 
   // 订货单
-  router.get('/bill/order/query', goodsOrder.query);
+  router.post('/bill/order/query', goodsOrder.query);
   router.get('/bill/order/get', goodsOrder.get);
   router.post('/bill/order/dispatch', goodsOrder.dispatch);
   router.post('/bill/order/complete', goodsOrder.complete);
@@ -61,14 +61,14 @@ module.exports = app => {
   router.post('/goods/saveModify', goods.saveModify);
   router.post('/goods/up', goods.up);
   router.post('/goods/down', goods.down);
-  router.get('/goods/query', goods.query);
+  router.post('/goods/query', goods.query);
   router.get('/goods/get', goods.get);
 
   // 商品类别
   router.post('/goodsCategory/saveNew', goodsCategory.saveNew);
   router.post('/goodsCategory/saveModify', goodsCategory.saveModify);
   router.post('/goodsCategory/remove', goodsCategory.remove);
-  router.get('/goodsCategory/query', goodsCategory.query);
+  router.post('/goodsCategory/query', goodsCategory.query);
   router.get('/goodsCategory/getDropdownList', goodsCategory.getDropdownList);
   router.get('/goodsCategory/get', goodsCategory.get);
 
@@ -76,14 +76,14 @@ module.exports = app => {
   router.post('/freightPlan/saveNew', freightPlan.saveNew);
   router.post('/freightPlan/saveModify', freightPlan.saveModify);
   router.post('/freightPlan/remove', freightPlan.remove);
-  router.get('/freightPlan/query', freightPlan.query);
+  router.post('/freightPlan/query', freightPlan.query);
   router.get('/freightPlan/get', freightPlan.get);
 
   // 送货时间
   router.post('/deliveryTimeType/saveNew', deliveryTimeType.saveNew);
   router.post('/deliveryTimeType/saveModify', deliveryTimeType.saveModify);
   router.post('/deliveryTimeType/remove', deliveryTimeType.remove);
-  router.get('/deliveryTimeType/query', deliveryTimeType.query);
+  router.post('/deliveryTimeType/query', deliveryTimeType.query);
   router.get('/deliveryTimeType/get', deliveryTimeType.get);
 
   // utils

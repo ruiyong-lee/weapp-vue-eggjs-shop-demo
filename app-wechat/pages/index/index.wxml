@@ -13,8 +13,8 @@
     <!-- 类别列表 -->
     <scroll-view scroll-y class="goods-sidebar content-scroll" scroll-into-view="{{activeCategoryItem}}" scroll-with-animation="{{true}}">
       <view class="content-scroll-child">
-        <view class="category-item {{selectedCategory === category ? 'active' : ''}}" wx:for="{{goodsMap}}" wx:for-index="category" wx:key="{{category}}" data-category="{{category}}" data-category-panel="goods{{item[0] && item[0].goodsCategory ? item[0].goodsCategory.id : ''}}"
-          id="category{{item[0] && item[0].goodsCategory ? item[0].goodsCategory.id : ''}}" bindtap="selectCategory">
+        <view class="category-item {{selectedCategory === category ? 'active' : ''}}" wx:for="{{goodsMap}}" wx:for-index="category" wx:key="{{category}}" data-category="{{category}}" data-category-panel="goods{{item[0] && item[0].categoryUuid}}"
+          id="category{{item[0] && item[0].categoryUuid}}" bindtap="selectCategory">
           {{category}}
         </view>
       </view>
@@ -28,7 +28,7 @@
     <!-- 商品列表 -->
     <scroll-view id="goods_content_scroll" scroll-y class="goods-content content-scroll" scroll-into-view="{{activeCategoryPanel}}" scroll-with-animation="{{true}}" scroll-top="{{goodsPanelScrollTop}}" bindscroll="handleScrollGoodsContent">
       <view class="content-scroll-child">
-        <view wx:for="{{goodsMap}}" wx:for-index="category" wx:for-item="goodsItems" wx:key="{{category}}" id="goods{{goodsItems[0] && goodsItems[0].goodsCategory ? goodsItems[0].goodsCategory.id : ''}}">
+        <view wx:for="{{goodsMap}}" wx:for-index="category" wx:for-item="goodsItems" wx:key="{{category}}" id="goods{{goodsItems[0] && goodsItems[0].categoryUuid}}">
           <view class="goods-category">
             <view class="goods-category-title">{{category}}</view>
           </view>

@@ -61,13 +61,13 @@ module.exports = app => {
    * @param {object} { attributes, pagination, filter } - 条件
    * @return {object|null} - 查找结果
    */
-  Merchant.query = async ({ userUuid, attributes, pagination = {}, filter = {} }) => {
+  Merchant.query = async ({ attributes, pagination = {}, filter = {} }) => {
     const { page, pageSize: limit } = pagination;
     const { count, rows } = await Merchant.findAndCountAll({
       offset: (page - 1) * limit,
       limit,
       attributes,
-      where: { ...filter, orgUuid: userUuid },
+      where: { ...filter },
       order: [['createdTime', 'DESC']],
     });
 

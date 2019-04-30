@@ -39,7 +39,6 @@ Page(Object.assign({}, ZanTab, {
     })
 
     app.Http.request({
-      type: 'GET',
       url: 'queryOrderBill',
       data: params,
       success: (res = {}) => {

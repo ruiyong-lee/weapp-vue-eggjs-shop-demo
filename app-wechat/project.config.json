@@ -11,6 +11,8 @@
 	"libVersion": "2.0.1",
 	"appid": "wxd5f43aeb67cd5192",
 	"projectname": "weapp-vue-eggjs-shop-demo",
+	"simulatorType": "wechat",
+	"simulatorPluginLibVersion": {},
 	"condition": {
 		"search": {
 			"current": -1,

@@ -50,7 +50,7 @@ class UserMerchantController extends Controller {
    */
   async query() {
     const { ctx } = this;
-    const merchantData = await ctx.service.user.merchant.query({ ...ctx.request.body, ...ctx.query });
+    const merchantData = await ctx.service.user.merchant.query(ctx.request.body);
     this.success(merchantData);
   }
 

@@ -9,10 +9,10 @@ module.exports = app => {
 
     // 创建订单过期自动取消任务
     app.registerTaskHandler('cancelOrder', async uuid => {
-      const goodsOrder = await ctx.service.goodsOrder.get(uuid);
+      const goodsOrder = await ctx.service.goodsOrder.getByUuid(uuid);
 
       if (goodsOrder.status === 'initial') {
-        await ctx.service.goodsOrder.cancelBill(goodsOrder.dataValues);
+        await ctx.service.goodsOrder.cancel(goodsOrder.dataValues);
         console.log(`过期自动取消订单: uuid=${uuid}`);
       }
     });

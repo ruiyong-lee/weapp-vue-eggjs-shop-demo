@@ -8,7 +8,7 @@ module.exports = {
   ORG_NAME_KEY: 'orgName',
   USER_UUID_KEY: 'userUuid',
   USER_NAME_KEY: 'userName',
-  MERCHANT_UUID: 'cff9c960-1ead-11e9-a89c-591ecd71c270', //根据不同商家手动配置
+  MERCHANT_UUID: '9ff57530-6afb-11e9-96c7-852592cbf8e8', //根据不同商家手动配置
 
   //分页
   pageSize: 5,

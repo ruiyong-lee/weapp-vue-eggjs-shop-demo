@@ -50,13 +50,13 @@ class GoodsCategoryController extends Controller {
    */
   async remove() {
     const { ctx } = this;
-    const { categoryUuid } = ctx.request.body;
-    const goodsCount = await ctx.service.goods.countGoodsByCategory(categoryUuid);
+    const { uuid } = ctx.request.body;
+    const goodsCount = await ctx.service.goods.countGoodsByCategory(uuid);
 
     if (goodsCount > 0) {
       this.fail(ctx.ERROR_CODE, '该类别尚有商品在使用，无法删除！');
     } else {
-      const uuid = await ctx.service.goodsCategory.remove(categoryUuid);
+      const uuid = await ctx.service.goodsCategory.remove(ctx.request.body);
       this.success(uuid);
     }
   }
@@ -66,7 +66,7 @@ class GoodsCategoryController extends Controller {
    */
   async query() {
     const { ctx } = this;
-    const goodsCategoryData = await ctx.service.goodsCategory.query({ ...ctx.request.body, ...ctx.query });
+    const goodsCategoryData = await ctx.service.goodsCategory.query(ctx.request.body);
     this.success(goodsCategoryData);
   }
 
@@ -84,8 +84,7 @@ class GoodsCategoryController extends Controller {
    */
   async get() {
     const { ctx } = this;
-    const { uuid } = ctx.query;
-    const goodsCategory = await ctx.service.goodsCategory.get(uuid);
+    const goodsCategory = await ctx.service.goodsCategory.get(ctx.request.body);
     this.success(goodsCategory);
   }
 }

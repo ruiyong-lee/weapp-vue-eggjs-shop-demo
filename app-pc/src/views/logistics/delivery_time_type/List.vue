@@ -70,6 +70,7 @@
           remark: '',
           surcharge: 0,
         },
+        selectedData: {},
         dialogRules: {
           name: [
             { required: true, message: '请输入送货时间名称', trigger: 'blur' },
@@ -97,7 +98,13 @@
         this.dialogTitle = isEdit ? '编辑' : '新增';
 
         if (!_.isEmpty(deliveryTimeType)) {
-          this.dialogForm = _.cloneDeep(deliveryTimeType);
+          this.$nextTick(() => {
+            const selectedData = _.cloneDeep(deliveryTimeType);
+            this.selectedData = selectedData;
+            this.dialogForm.name = selectedData.name;
+            this.dialogForm.remark = selectedData.remark;
+            this.dialogForm.surcharge = selectedData.surcharge;
+          });
         }
       },
       hideDialog() {
@@ -109,10 +116,11 @@
         this.resetForm('dialogForm');
       },
       submitForm(formName) {
+        const { dialogType, dialogForm, selectedData } = this;
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            if (this.dialogType === 'edit') {
-              await this.$api.deliveryTimeType.saveModify({ deliveryTimeType: this.dialogForm });
+            if (dialogType === 'edit') {
+              await this.$api.deliveryTimeType.saveModify({ deliveryTimeType: { ...selectedData, ...dialogForm } });
               this.$message({ message: '修改送货时间成功', type: 'success' });
               this.hideDialog();
               this.query();
@@ -128,11 +136,11 @@
       resetForm(formName) {
         this.$refs[formName].resetFields();
       },
-      deleteDeliveryTimeType(categoryUuid) {
+      deleteDeliveryTimeType(uuid) {
         this.$confirm('将永久删除该送货时间, 是否继续？', '提示', {
           type: 'warning',
         }).then(async () => {
-          await this.$api.deliveryTimeType.remove({ categoryUuid });
+          await this.$api.deliveryTimeType.remove({ uuid });
           this.$message({ message: '删除送货时间成功', type: 'success' });
           this.query();
         }).catch(() => {

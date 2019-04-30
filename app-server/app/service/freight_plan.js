@@ -14,11 +14,11 @@ class FreightPlanService extends Service {
    * @return {string} - 运费方案uuid
    */
   async saveNew(params = {}) {
-    let { freightPlan, userUuid, userName } = params;
+    let { freightPlan, userUuid, userName, orgUuid } = params;
     const { app } = this;
     const crateInfo = app.getCrateInfo(userUuid, userName);
 
-    freightPlan = { ...freightPlan, ...crateInfo, orgUuid: userUuid };
+    freightPlan = { ...freightPlan, ...crateInfo, orgUuid };
 
     return await app.model.FreightPlan.saveNew(freightPlan);
   }
@@ -30,25 +30,25 @@ class FreightPlanService extends Service {
    */
   async saveModify(params = {}) {
     const { app } = this;
-    let { freightPlan, userUuid, userName } = params;
+    let { freightPlan, userUuid, userName, orgUuid } = params;
     const { version } = freightPlan;
     const modifyInfo = app.getModifyInfo(version, userUuid, userName);
 
-    freightPlan = { ...freightPlan, ...modifyInfo };
+    freightPlan = { ...freightPlan, ...modifyInfo, orgUuid };
 
     return await app.model.FreightPlan.saveModify(freightPlan);
   }
 
   /**
    * 删除运费方案
-   * @param {object} uuid - 运费方案uuid
+   * @param {object} params - 条件
    * @return {string|null} - 删除运费方案uuid
    */
-  async remove(uuid) {
+  async remove(params = {}) {
     const { app } = this;
-    await app.model.FreightPlan.remove(uuid);
+    await app.model.FreightPlan.remove(params);
 
-    return uuid;
+    return params.uuid;
   }
 
   /**
@@ -57,25 +57,22 @@ class FreightPlanService extends Service {
    * @return {object|null} - 查找结果
    */
   async query(params = {}) {
-    const { app, ctx } = this;
-    const { JSONParse } = ctx.helper;
+    const { app } = this;
     return await app.model.FreightPlan.query({
       ...params,
-      filter: JSONParse(params.filter),
-      pagination: JSONParse(params.pagination),
       attributes: ['uuid', 'version', 'name', 'basicFreight', 'freeFreightAmount', 'sysDefault', 'createdTime', 'lastModifiedTime'],
     });
   }
 
   /**
    * 根据uuid获取运费方案
-   * @param {object} uuid 运费方案uuid
+   * @param {object} params - 条件
    * @return {object|null} 查找结果
    */
-  async get(uuid) {
+  async get(params = {}) {
     const { app } = this;
     return await app.model.FreightPlan.get({
-      uuid,
+      ...params,
       attributes: ['uuid', 'version', 'name', 'basicFreight', 'freeFreightAmount', 'sysDefault', 'createdTime', 'lastModifiedTime'],
     });
   }

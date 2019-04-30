@@ -39,15 +39,8 @@ class DeliveryTimeTypeController extends Controller {
    */
   async remove() {
     const { ctx } = this;
-    const { categoryUuid } = ctx.request.body;
-    const goodsCount = await ctx.service.goods.countGoodsByCategory(categoryUuid);
-
-    if (goodsCount > 0) {
-      this.fail(ctx.ERROR_CODE, '该送货时间尚有商品在使用，无法删除！');
-    } else {
-      const uuid = await ctx.service.deliveryTimeType.remove(categoryUuid);
-      this.success(uuid);
-    }
+    const uuid = await ctx.service.deliveryTimeType.remove(ctx.request.body);
+    this.success(uuid);
   }
 
   /**
@@ -55,7 +48,7 @@ class DeliveryTimeTypeController extends Controller {
    */
   async query() {
     const { ctx } = this;
-    const deliveryTimeTypeData = await ctx.service.deliveryTimeType.query({ ...ctx.request.body, ...ctx.query });
+    const deliveryTimeTypeData = await ctx.service.deliveryTimeType.query(ctx.request.body);
     this.success(deliveryTimeTypeData);
   }
 
@@ -64,8 +57,7 @@ class DeliveryTimeTypeController extends Controller {
    */
   async get() {
     const { ctx } = this;
-    const { uuid } = ctx.query;
-    const deliveryTimeType = await ctx.service.deliveryTimeType.get(uuid);
+    const deliveryTimeType = await ctx.service.deliveryTimeType.get(ctx.request.body);
     this.success(deliveryTimeType);
   }
 }

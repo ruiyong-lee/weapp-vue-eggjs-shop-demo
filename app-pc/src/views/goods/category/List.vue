@@ -61,6 +61,7 @@
         dialogForm: {
           name: '',
         },
+        selectedData: {},
         dialogRules: {
           name: [
             { required: true, message: '请输入类别名称', trigger: 'blur' },
@@ -88,7 +89,11 @@
         this.dialogTitle = isEdit ? '编辑' : '新增';
 
         if (!_.isEmpty(goodsCategory)) {
-          this.dialogForm = _.cloneDeep(goodsCategory);
+          this.$nextTick(() => {
+            const selectedData = _.cloneDeep(goodsCategory);
+            this.selectedData = selectedData;
+            this.dialogForm.name = selectedData.name;
+          });
         }
       },
       hideDialog() {
@@ -100,10 +105,11 @@
         this.resetForm('dialogForm');
       },
       submitForm(formName) {
+        const { dialogType, dialogForm, selectedData } = this;
         this.$refs[formName].validate(async (valid) => {
           if (valid) {
-            if (this.dialogType === 'edit') {
-              await this.$api.goodsCategory.saveModify({ goodsCategory: this.dialogForm });
+            if (dialogType === 'edit') {
+              await this.$api.goodsCategory.saveModify({ goodsCategory: { ...selectedData, ...dialogForm } });
               this.$message({ message: '修改类别成功', type: 'success' });
               this.hideDialog();
               this.query();
@@ -117,13 +123,14 @@
         });
       },
       resetForm(formName) {
+        console.log(this.$refs[formName]);
         this.$refs[formName].resetFields();
       },
-      deleteCategory(categoryUuid) {
+      deleteCategory(uuid) {
         this.$confirm('将永久删除该类别, 是否继续？', '提示', {
           type: 'warning',
         }).then(async () => {
-          await this.$api.goodsCategory.remove({ categoryUuid });
+          await this.$api.goodsCategory.remove({ uuid });
           this.$message({ message: '删除类别成功', type: 'success' });
           this.query();
         }).catch(() => {

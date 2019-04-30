@@ -14,11 +14,11 @@ class GoodsCategoryService extends Service {
    * @return {string} - 类别uuid
    */
   async saveNew(params = {}) {
-    let { goodsCategory, userUuid, userName } = params;
+    let { goodsCategory, userUuid, userName, orgUuid } = params;
     const { app } = this;
     const crateInfo = app.getCrateInfo(userUuid, userName);
 
-    goodsCategory = { ...goodsCategory, ...crateInfo, orgUuid: userUuid };
+    goodsCategory = { ...goodsCategory, ...crateInfo, orgUuid };
 
     return await app.model.GoodsCategory.saveNew(goodsCategory);
   }
@@ -30,25 +30,25 @@ class GoodsCategoryService extends Service {
    */
   async saveModify(params = {}) {
     const { app } = this;
-    let { goodsCategory, userUuid, userName } = params;
+    let { goodsCategory, userUuid, userName, orgUuid } = params;
     const { version } = goodsCategory;
     const modifyInfo = app.getModifyInfo(version, userUuid, userName);
 
-    goodsCategory = { ...goodsCategory, ...modifyInfo };
+    goodsCategory = { ...goodsCategory, ...modifyInfo, orgUuid };
 
     return await app.model.GoodsCategory.saveModify(goodsCategory);
   }
 
   /**
    * 删除类别
-   * @param {object} uuid - 类别uuid
+   * @param {object} params - 条件
    * @return {string|null} - 删除类别uuid
    */
-  async remove(uuid) {
+  async remove(params = {}) {
     const { app } = this;
-    await app.model.GoodsCategory.remove(uuid);
+    await app.model.GoodsCategory.remove(params);
 
-    return uuid;
+    return params.uuid;
   }
 
   /**
@@ -57,12 +57,9 @@ class GoodsCategoryService extends Service {
    * @return {object|null} - 查找结果
    */
   async query(params = {}) {
-    const { app, ctx } = this;
-    const { JSONParse } = ctx.helper;
+    const { app } = this;
     return await app.model.GoodsCategory.query({
       ...params,
-      filter: JSONParse(params.filter),
-      pagination: JSONParse(params.pagination),
       attributes: ['uuid', 'version', 'name', 'createdTime', 'lastModifiedTime'],
     });
   }
@@ -82,13 +79,13 @@ class GoodsCategoryService extends Service {
 
   /**
    * 根据uuid获取类别
-   * @param {object} uuid 类别uuid
+   * @param {object} params 条件
    * @return {object|null} 查找结果
    */
-  async get(uuid) {
+  async get(params = {}) {
     const { app } = this;
     return await app.model.GoodsCategory.get({
-      uuid,
+      ...params,
       attributes: ['uuid', 'version', 'name', 'createdTime', 'lastModifiedTime'],
     });
   }

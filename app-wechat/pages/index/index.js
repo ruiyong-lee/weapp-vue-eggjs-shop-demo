@@ -170,10 +170,10 @@ Page(Object.assign({}, cartAdd, {
   setCategory(category) {
     if (category !== this.data.selectedCategory) {
       var goodsList = this.data.goodsMap[category];
-      var goodsCategoryId = goodsList && goodsList[0].goodsCategory ? goodsList[0].goodsCategory.id : '';
+      var categoryUuid = goodsList && goodsList[0].categoryUuid;
       this.setData({
         selectedCategory: category,
-        activeCategoryItem: 'category' + goodsCategoryId,
+        activeCategoryItem: 'category' + categoryUuid,
       });
     }
   },

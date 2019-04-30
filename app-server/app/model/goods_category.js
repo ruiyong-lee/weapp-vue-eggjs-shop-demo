@@ -21,8 +21,8 @@ module.exports = app => {
    * @return {string} - 类别uuid
    */
   GoodsCategory.saveModify = async goodsCategory => {
-    const { uuid, name, version } = goodsCategory;
-    const result = await GoodsCategory.update({ version, name }, { where: { uuid, version: version - 1 } });
+    const { uuid, name, version, orgUuid } = goodsCategory;
+    const result = await GoodsCategory.update({ version, name }, { where: { uuid, orgUuid, version: version - 1 } });
 
     app.checkUpdate(result);
 
@@ -31,11 +31,11 @@ module.exports = app => {
 
   /**
    * 删除类别
-   * @param {object} uuid - 类别uuid
+   * @param {object} { uuid, orgUuid } - 条件
    * @return {string} - 删除类别uuid
    */
-  GoodsCategory.remove = async uuid => {
-    const result = await GoodsCategory.destroy({ where: { uuid } });
+  GoodsCategory.remove = async ({ uuid, orgUuid }) => {
+    const result = await GoodsCategory.destroy({ where: { uuid, orgUuid } });
 
     app.checkDelete(result);
 
@@ -44,16 +44,16 @@ module.exports = app => {
 
   /**
    * 查询类别分页列表
-   * @param {object} { userUuid, attributes, pagination, filter } - 条件
+   * @param {object} { orgUuid, attributes, pagination, filter } - 条件
    * @return {object|null} - 查找结果
    */
-  GoodsCategory.query = async ({ userUuid, attributes, pagination = {}, filter = {} }) => {
+  GoodsCategory.query = async ({ orgUuid, attributes, pagination = {}, filter = {} }) => {
     const { page, pageSize: limit } = pagination;
     const { count, rows } = await GoodsCategory.findAndCountAll({
       offset: (page - 1) * limit,
       limit,
       attributes,
-      where: { ...filter, orgUuid: userUuid },
+      where: { ...filter, orgUuid },
       order: [['createdTime', 'DESC']],
     });
 
@@ -62,24 +62,25 @@ module.exports = app => {
 
   /**
    * 查询类别列表
-   * @param {object} { userUuid, attributes, filter } - 条件
+   * @param {object} { orgUuid, attributes, filter } - 条件
    * @return {object|null} - 查找结果
    */
-  GoodsCategory.getList = async ({ userUuid, attributes, filter = {} }) => {
+  GoodsCategory.getList = async ({ orgUuid, attributes, filter = {} }) => {
     return await GoodsCategory.findAll({
       attributes,
-      where: { ...filter, orgUuid: userUuid },
+      where: { ...filter, orgUuid },
     });
   };
 
   /**
    * 根据uuid获取类别
-   * @param {object} { pagination, filter } - 条件
+   * @param {object} { uuid, orgUuid, attributes } - 条件
    * @return {object|null} - 查找结果
    */
-  GoodsCategory.get = async ({ uuid, attributes }) => {
-    return await GoodsCategory.findById(uuid, {
+  GoodsCategory.get = async ({ uuid, orgUuid, attributes }) => {
+    return await GoodsCategory.findOne({
       attributes,
+      where: { uuid, orgUuid },
     });
   };
 

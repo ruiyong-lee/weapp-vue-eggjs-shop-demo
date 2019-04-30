@@ -14,11 +14,11 @@ class DeliveryTimeTypeService extends Service {
    * @return {string} - 送货时间uuid
    */
   async saveNew(params = {}) {
-    let { deliveryTimeType, userUuid, userName } = params;
+    let { deliveryTimeType, userUuid, userName, orgUuid } = params;
     const { app } = this;
     const crateInfo = app.getCrateInfo(userUuid, userName);
 
-    deliveryTimeType = { ...deliveryTimeType, ...crateInfo, orgUuid: userUuid };
+    deliveryTimeType = { ...deliveryTimeType, ...crateInfo, orgUuid };
 
     return await app.model.DeliveryTimeType.saveNew(deliveryTimeType);
   }
@@ -30,25 +30,25 @@ class DeliveryTimeTypeService extends Service {
    */
   async saveModify(params = {}) {
     const { app } = this;
-    let { deliveryTimeType, userUuid, userName } = params;
+    let { deliveryTimeType, userUuid, userName, orgUuid } = params;
     const { version } = deliveryTimeType;
     const modifyInfo = app.getModifyInfo(version, userUuid, userName);
 
-    deliveryTimeType = { ...deliveryTimeType, ...modifyInfo };
+    deliveryTimeType = { ...deliveryTimeType, ...modifyInfo, orgUuid };
 
     return await app.model.DeliveryTimeType.saveModify(deliveryTimeType);
   }
 
   /**
    * 删除送货时间
-   * @param {object} uuid - 送货时间uuid
+   * @param {object} params - 条件
    * @return {string|null} - 删除送货时间uuid
    */
-  async remove(uuid) {
+  async remove(params = {}) {
     const { app } = this;
-    await app.model.DeliveryTimeType.remove(uuid);
+    await app.model.DeliveryTimeType.remove(params);
 
-    return uuid;
+    return params.uuid;
   }
 
   /**
@@ -57,25 +57,22 @@ class DeliveryTimeTypeService extends Service {
    * @return {object|null} - 查找结果
    */
   async query(params = {}) {
-    const { app, ctx } = this;
-    const { JSONParse } = ctx.helper;
+    const { app } = this;
     return await app.model.DeliveryTimeType.query({
       ...params,
-      filter: JSONParse(params.filter),
-      pagination: JSONParse(params.pagination),
       attributes: ['uuid', 'version', 'name', 'remark', 'surcharge', 'createdTime', 'lastModifiedTime'],
     });
   }
 
   /**
    * 根据uuid获取送货时间
-   * @param {object} uuid 送货时间uuid
-   * @return {object|null} 查找结果
+   * @param {object} params - 条件
+   * @return {object|null} - 查找结果
    */
-  async get(uuid) {
+  async get(params = {}) {
     const { app } = this;
     return await app.model.DeliveryTimeType.get({
-      uuid,
+      ...params,
       attributes: ['uuid', 'version', 'name', 'remark', 'surcharge', 'createdTime', 'lastModifiedTime'],
     });
   }

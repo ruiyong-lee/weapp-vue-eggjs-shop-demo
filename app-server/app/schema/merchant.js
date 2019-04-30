@@ -1,14 +1,16 @@
 'use strict';
+const uuidv1 = require('uuid/v1');
 
 module.exports = app => {
-  const { STRING, BIGINT, DATE, UUIDV1, ENUM } = app.Sequelize;
+  const { STRING, BIGINT, DATE, ENUM } = app.Sequelize;
+  const uuid = uuidv1(); // 这里单独引入是为了默认保持uuid和orgUuid的统一
 
   return {
     uuid: {
       type: STRING(38),
       allowNull: false,
       primaryKey: true,
-      defaultValue: UUIDV1,
+      defaultValue: uuid,
     },
     lastModifiedTime: {
       type: DATE,
@@ -59,7 +61,10 @@ module.exports = app => {
     address: STRING(255),
     servicePhone: STRING(12),
     orgName: STRING(76),
-    orgUuid: STRING(38),
+    orgUuid: {
+      type: STRING(38),
+      defaultValue: uuid,
+    },
     linkPhone: STRING(255),
     linkMan: STRING(76),
     appId: STRING(38),

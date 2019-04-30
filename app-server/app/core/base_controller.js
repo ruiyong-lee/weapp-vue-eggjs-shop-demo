@@ -18,7 +18,7 @@ class BaseController extends Controller {
   }
 
   fail(code, message) {
-    this.ctx.body = { code, message };
+    this.ctx.body = { code, message, data: {} };
     this.ctx.status = 200;
   }
 

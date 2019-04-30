@@ -10,9 +10,10 @@ module.exports = app => {
    * @param {object} { uuid, attributes } - 条件
    * @return {object|null} - 查找结果
    */
-  Address.get = async ({ uuid, attributes }) => {
-    return await Address.findById(uuid, {
+  Address.get = async ({ uuid, openId, attributes }) => {
+    return await Address.findOne({
       attributes,
+      where: { uuid, openId },
     });
   };
 
@@ -33,10 +34,10 @@ module.exports = app => {
    * @param {object} { uuid } - 条件
    * @return {string|null} - 用户地址uuid
    */
-  Address.setDefault = async ({ uuid }) => {
+  Address.setDefault = async ({ uuid, openId }) => {
     const transaction = await app.transition();
-    await Address.update({ sysDefault: 0 }, { where: { sysDefault: 1 }, transaction });
-    await Address.update({ uuid, sysDefault: 1 }, { where: { uuid }, transaction });
+    await Address.update({ sysDefault: 0 }, { where: { openId, sysDefault: 1 }, transaction });
+    await Address.update({ uuid, sysDefault: 1 }, { where: { uuid, openId }, transaction });
 
     return uuid;
   };
@@ -46,8 +47,8 @@ module.exports = app => {
    * @param {object} { uuid } - 条件
    * @return {string|null} - 删除用户地址uuid
    */
-  Address.remove = async ({ uuid }) => {
-    const result = await Address.destroy({ where: { uuid } });
+  Address.remove = async ({ uuid, openId }) => {
+    const result = await Address.destroy({ where: { uuid, openId } });
 
     app.checkDelete(result);
 
@@ -72,9 +73,11 @@ module.exports = app => {
    * @return {string} - 地址uuid
    */
   Address.saveNew = async address => {
+    const { openId } = address;
+
     if (address.sysDefault) {
       const transaction = await app.transition();
-      await Address.update({ sysDefault: 0 }, { where: { sysDefault: 1 }, transaction });
+      await Address.update({ sysDefault: 0 }, { where: { openId, sysDefault: 1 }, transaction });
       await Address.create(address, { transaction });
     } else {
       await Address.create(address);
@@ -90,14 +93,14 @@ module.exports = app => {
    */
   Address.saveModify = async address => {
     let result;
-    const { uuid, version } = address;
+    const { uuid, openId, version } = address;
 
     if (address.sysDefault) {
       const transaction = await app.transition();
-      await Address.update({ sysDefault: 0 }, { where: { sysDefault: 1 }, transaction });
-      result = await Address.update(address, { where: { uuid, version: version - 1 }, transaction });
+      await Address.update({ sysDefault: 0 }, { where: { openId, sysDefault: 1 }, transaction });
+      result = await Address.update(address, { where: { uuid, openId, version: version - 1 }, transaction });
     } else {
-      result = await Address.update(address, { where: { uuid, version: version - 1 } });
+      result = await Address.update(address, { where: { uuid, openId, version: version - 1 } });
     }
 
     app.checkUpdate(result);

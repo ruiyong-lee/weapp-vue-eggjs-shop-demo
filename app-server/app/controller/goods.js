@@ -57,7 +57,7 @@ class GoodsController extends Controller {
    */
   async query() {
     const { ctx } = this;
-    const goodsData = await ctx.service.goods.query({ ...ctx.request.body, ...ctx.query });
+    const goodsData = await ctx.service.goods.query(ctx.request.body);
     this.success(goodsData);
   }
 
@@ -66,8 +66,7 @@ class GoodsController extends Controller {
    */
   async get() {
     const { ctx } = this;
-    const { uuid } = ctx.query;
-    const goods = await ctx.service.goods.get(uuid);
+    const goods = await ctx.service.goods.get(ctx.request.body);
     this.success(goods);
   }
 }

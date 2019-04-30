@@ -39,11 +39,11 @@ export const Constants = {
     canceled: '已取消',
   },
   ORDER_STATUS_CLASS: {
-    initial: 'text-red',
-    audited: 'text-primary',
-    dispatching: 'text-green',
-    completed: 'text-dark-gray',
-    canceled: 'text-gray',
+    initial: 'bg-red',
+    audited: 'bg-primary',
+    dispatching: 'bg-green',
+    completed: 'bg-dark-gray',
+    canceled: 'bg-gray',
   },
 
   // 商品状态
@@ -52,7 +52,7 @@ export const Constants = {
     down: '下架',
   },
   GOODS_STATUS_CLASS: {
-    up: 'text-green',
-    down: 'text-red',
+    up: 'bg-green',
+    down: 'bg-red',
   },
 };

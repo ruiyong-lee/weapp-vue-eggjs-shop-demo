@@ -2,6 +2,7 @@
 const _ = require('lodash');
 const fecha = require('fecha');
 
+// TODO Redis好像无法对消息持久化存储，这个到时候再看下怎么改进
 const handlers = {}; // 任务处理器map
 const events = {}; // 任务类型map
 const tasks = {}; // 任务列表

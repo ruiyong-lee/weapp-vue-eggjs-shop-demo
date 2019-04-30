@@ -15,23 +15,20 @@ module.exports = app => {
 
   /**
    * 查询订单分页列表
-   * @param {object} { status, attributes, page, pageSize: limit, merchantUuid, openId } - 条件
+   * @param {object} { status, attributes, page, pageSize: limit, orgUuid, openId } - 条件
    * @return {object|null} - 查找结果
    */
-  GoodsOrder.query = async ({ userType, userUuid, status, attributes, pagination = {}, filter = {}, merchantUuid, openId }) => {
+  GoodsOrder.query = async ({ status, attributes, pagination = {}, filter = {}, orgUuid, openId }) => {
     const { page, pageSize: limit } = pagination;
     const condition = {
       offset: (page - 1) * limit,
       limit,
       attributes,
-      where: filter,
+      where: { ...filter, orgUuid },
       order: [['createdTime', 'DESC']],
     };
 
-    if (userType === 'merchant') {
-      condition.where.orgUuid = userUuid;
-    } else {
-      condition.where.orgUuid = merchantUuid;
+    if (openId) {
       condition.where.customerUuid = openId;
     }
 
@@ -46,11 +43,11 @@ module.exports = app => {
 
   /**
    * 查询订单
-   * @param {object} { orderAttributes, orderLineAttributes, uuid } - 条件
+   * @param {object} { orderAttributes, orderLineAttributes, uuid, orgUuid } - 条件
    * @return {object|null} - 查找结果
    */
-  GoodsOrder.get = async ({ orderAttributes, orderLineAttributes, uuid }) => {
-    const ressult = await GoodsOrder.findById(uuid, {
+  GoodsOrder.get = async ({ orderAttributes, orderLineAttributes, uuid, orgUuid }) => {
+    const ressult = await GoodsOrder.findOne({
       attributes: orderAttributes,
       include: [
         {
@@ -59,10 +56,18 @@ module.exports = app => {
           attributes: orderLineAttributes,
         },
       ],
+      where: { uuid, orgUuid },
     });
 
     return ressult;
   };
+
+  /**
+   * 根据uuid查询订单
+   * @param {object} uuid - 订单uuid
+   * @return {object|null} - 查找结果
+   */
+  GoodsOrder.getByUuid = async uuid => await GoodsOrder.findById(uuid);
 
   /**
    * 创建订单
@@ -89,9 +94,9 @@ module.exports = app => {
    * @return {string} - 订单uuid
    */
   GoodsOrder.cancel = async params => {
-    const { uuid, version, lastModifierId, lastModifierName } = params;
+    const { uuid, orgUuid, version, lastModifierId, lastModifierName } = params;
     const result = await GoodsOrder.update({ status: 'canceled', lastModifierId, lastModifierName }, {
-      where: { uuid, status: 'initial', version: version - 1 },
+      where: { uuid, orgUuid, status: 'initial', version: version - 1 },
       fields: ['status', 'lastModifierId', 'lastModifierName'],
     });
     app.checkUpdate(result);
@@ -105,9 +110,9 @@ module.exports = app => {
    * @return {string} - 订单uuid
    */
   GoodsOrder.dispatch = async params => {
-    const { uuid, version, lastModifierId, lastModifierName } = params;
+    const { uuid, orgUuid, version, lastModifierId, lastModifierName } = params;
     const result = await GoodsOrder.update({ status: 'dispatching', lastModifierId, lastModifierName }, {
-      where: { uuid, status: 'audited', version: version - 1 },
+      where: { uuid, orgUuid, status: 'audited', version: version - 1 },
       fields: ['status', 'lastModifierId', 'lastModifierName'],
     });
     app.checkUpdate(result);
@@ -121,9 +126,9 @@ module.exports = app => {
    * @return {string} - 订单uuid
    */
   GoodsOrder.complete = async params => {
-    const { uuid, version, lastModifierId, lastModifierName } = params;
+    const { uuid, orgUuid, version, lastModifierId, lastModifierName } = params;
     const result = await GoodsOrder.update({ status: 'completed', lastModifierId, lastModifierName }, {
-      where: { uuid, status: 'dispatching', version: version - 1 },
+      where: { uuid, orgUuid, status: 'dispatching', version: version - 1 },
       fields: ['status', 'lastModifierId', 'lastModifierName'],
     });
     app.checkUpdate(result);

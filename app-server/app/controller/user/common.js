@@ -29,9 +29,10 @@ class UserCommonController extends Controller {
       return this.fail(ctx.ERROR_CODE, '账号或密码错误');
     }
 
-    const { uuid: userUuid, userType, name } = user;
-    ctx.setToken({ name, userUuid, userName, userType });
-    this.success({ name, userUuid, userName, userType });
+    const { uuid: userUuid, userType, name, orgUuid } = user;
+    const result = { name, userUuid, userName, userType, orgUuid };
+    ctx.setToken(result);
+    this.success(result);
   }
 
   /**

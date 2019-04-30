@@ -14,11 +14,11 @@ class GoodsService extends Service {
    * @return {string} - 商品uuid
    */
   async saveNew(params = {}) {
-    let { goods, userUuid, userName } = params;
+    let { goods, userUuid, userName, orgUuid } = params;
     const { app } = this;
     const crateInfo = app.getCrateInfo(userUuid, userName);
 
-    goods = { ...goods, ...crateInfo, orgUuid: userUuid };
+    goods = { ...goods, ...crateInfo, orgUuid };
 
     return await app.model.Goods.saveNew(goods);
   }
@@ -30,11 +30,11 @@ class GoodsService extends Service {
    */
   async saveModify(params = {}) {
     const { app } = this;
-    let { goods, userUuid, userName } = params;
+    let { goods, userUuid, userName, orgUuid } = params;
     const { version } = goods;
     const modifyInfo = app.getModifyInfo(version, userUuid, userName);
 
-    goods = { ...goods, ...modifyInfo };
+    goods = { ...goods, ...modifyInfo, orgUuid };
 
     return await app.model.Goods.saveModify(goods);
   }
@@ -46,9 +46,9 @@ class GoodsService extends Service {
    */
   async up(params) {
     const { app } = this;
-    const { uuid, version, userUuid, userName } = params;
+    const { uuid, version, userUuid, userName, orgUuid } = params;
     const modifyInfo = app.getModifyInfo(version, userUuid, userName);
-    await app.model.Goods.up(uuid, modifyInfo);
+    await app.model.Goods.up(uuid, orgUuid, modifyInfo);
 
     return uuid;
   }
@@ -60,46 +60,35 @@ class GoodsService extends Service {
    */
   async down(params) {
     const { app } = this;
-    const { uuid, version, userUuid, userName } = params;
+    const { uuid, version, userUuid, userName, orgUuid } = params;
     const modifyInfo = app.getModifyInfo(version, userUuid, userName);
-    await app.model.Goods.down(uuid, modifyInfo);
+    await app.model.Goods.down(uuid, orgUuid, modifyInfo);
 
     return uuid;
   }
 
   /**
    * 获取key为类别的商品数据
-   * @param {string} merchantUuid - 商家uuid
+   * @param {string} orgUuid - 商家uuid
    * @return {object|null} - 查找结果
    */
-  async getGoodsWithCategory(merchantUuid) {
+  async getGoodsWithCategory(orgUuid) {
     const { app } = this;
     const goodsMap = {};
     const resultList = await app.model.Goods.getGoodsWithCategory({
-      merchantUuid,
+      orgUuid,
       categoryAttributes: ['name'],
       goodsAttributes: ['uuid', 'name', 'categoryUuid', 'spec', 'thumbnail', 'salePrice', 'unitName'],
     });
 
     for (const resultItem of resultList) {
       const goodsArr = [];
-      const key = resultItem.name;
-      const goodsList = resultItem.goods;
+      const { name: key, goods: goodsList } = resultItem || {};
       for (const goodsItem of goodsList) {
+        const { uuid, code, name, categoryUuid, spec: goodsSpec, salePrice, thumbnail, unitName } = goodsItem || {};
         const goods = {
-          goods: {
-            uuid: goodsItem.uuid,
-            code: goodsItem.code,
-            name: goodsItem.name,
-          },
-          goodsCategory: {
-            id: goodsItem.categoryUuid,
-            name: goodsItem.name,
-          },
-          goodsSpec: goodsItem.spec,
-          salePrice: goodsItem.salePrice,
-          thumbnail: goodsItem.thumbnail,
-          unitName: goodsItem.unitName,
+          goods: { uuid, code, name },
+          categoryUuid, goodsSpec, salePrice, thumbnail, unitName,
         };
 
         goodsArr.push(goods);
@@ -125,19 +114,19 @@ class GoodsService extends Service {
    * @return {object|null} - 查找结果
    */
   async query(params = {}) {
-    const { app, ctx } = this;
+    const { app } = this;
     const goodsData = await app.model.Goods.query({
       ...params,
-      filter: ctx.helper.JSONParse(params.filter),
-      pagination: ctx.helper.JSONParse(params.pagination),
       attributes: ['uuid', 'version', 'name', 'status', 'unitName', 'spec', 'goodsInfo', 'salePrice', 'thumbnail', 'categoryUuid'],
     });
 
     if (goodsData.count > 0) {
       for (const row of goodsData.rows) {
-        const { categoryUuid } = row || {};
+        const { categoryUuid: uuid } = row || {};
+        const { orgUuid } = params;
         const goodsCategory = await app.model.GoodsCategory.get({
-          uuid: categoryUuid,
+          uuid,
+          orgUuid,
           attributes: ['name'],
         });
 
@@ -152,18 +141,25 @@ class GoodsService extends Service {
 
   /**
    * 获取商品
-   * @param {sting} uuid - 商品uuid
+   * @param {object} params - 条件
    * @return {object|null} - 查找结果
    */
-  async get(uuid) {
-    const { app } = this;
-    const goodsData = await app.model.Goods.get(uuid) || {};
+  async get(params) {
+    const { app, ctx } = this;
+    const goodsData = await app.model.Goods.get(params) || {};
+    const { categoryUuid: uuid, orgUuid } = goodsData;
     const goodsCategory = await app.model.GoodsCategory.get({
-      uuid: goodsData.categoryUuid,
+      uuid,
+      orgUuid,
       attributes: ['name'],
     }) || {};
 
-    goodsData.dataValues.categoryName = goodsCategory.name;
+
+    if (!app._.isEmpty(goodsData.dataValues)) {
+      goodsData.dataValues.categoryName = goodsCategory.name;
+    } else {
+      ctx.throw(200, '查询不到指定的商品');
+    }
 
     return goodsData;
   }

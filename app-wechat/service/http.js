@@ -13,7 +13,7 @@ function buildParams(data = {}) {
   return Object.assign(data, {
     platform: Constants.PLATFORM,
     userIdentity: Constants.USER_IDENTITY,
-    merchantUuid: Constants.MERCHANT_UUID,
+    orgUuid: Constants.MERCHANT_UUID,
     nickName: userInfo ? userInfo.nickName : '',
   });
 }

@@ -37,8 +37,8 @@ axios.interceptors.request.use(
 // 响应拦截器
 axios.interceptors.response.use(
   (response) => {
-    const { data: responseData } = response;
-    const { code, message } = responseData;
+    const { data = {} } = response;
+    const { code, message } = data;
 
     // 关闭loading
     loadingInstance.close();
@@ -55,7 +55,7 @@ axios.interceptors.response.use(
       });
       return Promise.reject(response);
     }
-    return Promise.resolve(responseData);
+    return Promise.resolve(data);
   },
   // 服务器状态码不是200的情况
   (error) => {

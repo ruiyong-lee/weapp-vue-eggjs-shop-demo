@@ -33,8 +33,7 @@ class MerchantService extends Service {
       ...merchant,
       ...crateInfo,
       password: md5(merchant.password),
-      orgUuid: userUuid,
-      orgName: userName,
+      orgName: merchant.name,
       userType: 'merchant',
       enableStatus: true,
     };
@@ -86,11 +85,9 @@ class MerchantService extends Service {
    * @return {object|null} - 查找结果
    */
   async query(params = {}) {
-    const { app, ctx } = this;
+    const { app } = this;
     return await app.model.User.Merchant.query({
       ...params,
-      filter: ctx.helper.JSONParse(params.filter),
-      pagination: ctx.helper.JSONParse(params.pagination),
       attributes: [
         'uuid', 'version', 'createdTime', 'name', 'enableStatus',
         'userName', 'servicePhone', 'linkPhone', 'linkMan',

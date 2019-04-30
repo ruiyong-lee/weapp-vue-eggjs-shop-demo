@@ -39,8 +39,7 @@ class FreightPlanController extends Controller {
    */
   async remove() {
     const { ctx } = this;
-    const { freightPlanUuid } = ctx.request.body;
-    const uuid = await ctx.service.freightPlan.remove(freightPlanUuid);
+    const uuid = await ctx.service.freightPlan.remove(ctx.request.body);
     this.success(uuid);
   }
 
@@ -49,7 +48,7 @@ class FreightPlanController extends Controller {
    */
   async query() {
     const { ctx } = this;
-    const freightPlanData = await ctx.service.freightPlan.query({ ...ctx.request.body, ...ctx.query });
+    const freightPlanData = await ctx.service.freightPlan.query(ctx.request.body);
     this.success(freightPlanData);
   }
 
@@ -58,8 +57,7 @@ class FreightPlanController extends Controller {
    */
   async get() {
     const { ctx } = this;
-    const { uuid } = ctx.query;
-    const freightPlan = await ctx.service.freightPlan.get(uuid);
+    const freightPlan = await ctx.service.freightPlan.get(ctx.request.body);
     this.success(freightPlan);
   }
 

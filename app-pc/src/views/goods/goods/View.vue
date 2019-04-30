@@ -15,7 +15,7 @@
           <p>单位：<span class="text-bold">{{goods.unitName}}</span></p>
           <p>售价：<span class="text-red text-bold">{{goods.salePrice}} 元</span></p>
           <p>状态：
-            <span class="text-bold" :class="$Constants.GOODS_STATUS_CLASS[goods.status]">
+            <span class="badge" :class="$Constants.GOODS_STATUS_CLASS[goods.status]">
               {{$Constants.GOODS_STATUS[goods.status]}}
             </span>
           </p>
@@ -61,8 +61,9 @@
         };
 
         const res = await this.$api.goods.get(params);
+        console.log(res);
         this.goods = res;
-        this.imagesList = JSON.parse(res.imagesJsonStr) || [];
+        this.imagesList = (res.imagesJsonStr && JSON.parse(res.imagesJsonStr)) || [];
       },
       async upGoods() {
         const { uuid, version } = this.goods;
