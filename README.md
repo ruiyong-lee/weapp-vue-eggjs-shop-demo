@@ -80,6 +80,8 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 获取送货时间&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取订货单分页列表&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 完成订货单&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 配送订货单&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取订货单&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 项目本地运行
 ```
