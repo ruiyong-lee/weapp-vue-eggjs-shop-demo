@@ -21,7 +21,7 @@
                        :class="{'tab-li-icon__show': isTabLiIconShow && hoverTabIndex === index}"
                        @mouseover="showTabLiIcon(index)"
                        @mouseout="hideTabLiIcon"
-                       @click="$router.push({ name: item.name })">
+                       @click="$router.push(item)">
                     <span class="tab-li-title">{{item.meta && item.meta.title}}</span>
                     <icon name="close" class="tab-li-icon text-primary" @click.native.stop="closeTab(index)"></icon>
                   </div>
@@ -355,7 +355,7 @@
 
         if (activeTabIndex > 0) {
           const tab = this.tabList[activeTabIndex - 1] || {};
-          this.$router.push({ name: tab.name });
+          this.$router.push(tab);
         }
       },
       // 跳转到下一个tab
@@ -364,7 +364,7 @@
 
         if (activeTabIndex < this.tabList.length - 1) {
           const tab = this.tabList[activeTabIndex + 1] || {};
-          this.$router.push({ name: tab.name });
+          this.$router.push(tab);
         }
       },
       // 关闭tab

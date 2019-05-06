@@ -124,9 +124,9 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
 
     for (var key in cartCheckMap) {
       var item = cartStorage[key];
-      var singlrPrice = app.Count.decimalMultiply(item.salePrice, item.goodsQty, 6);
+      var singlePrice = app.Count.decimalMultiply(item.salePrice, item.goodsQty, 6);
       goodsTotalQty = app.Count.decimalAdd(goodsTotalQty, item.goodsQty, 6);
-      totalAmount = app.Count.decimalAdd(totalAmount, singlrPrice, 2);
+      totalAmount = app.Count.decimalAdd(totalAmount, singlePrice, 2);
     }
 
     this.setData({

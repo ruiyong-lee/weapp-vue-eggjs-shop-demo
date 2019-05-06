@@ -54,9 +54,9 @@ module.exports = {
 
   // 单号生成，暂时是日期+6位
   async getBillNumber(prefix) {
-    const date = new Date();
-    const key = `${prefix || 'B'}${date.getYear()}${date.getMonth()}${date.getDate()}`;
-    const value = await this.redis.get('default').get(key) || 0;
+    const dateStr = fecha.format(new Date(), 'YYYYMMDD');
+    const key = `${prefix || 'B'}${dateStr}`;
+    const value = await this.redis.get('default').get(key) || 1;
 
     await this.redis.get('default').setex(key, 3600 * 24, Number(value) + 1);
 

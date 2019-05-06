@@ -35,7 +35,7 @@
 </template>
 
 <script>
-  import { pageMixin, tableMixin } from '../../../utils/mixins';
+  import { pageMixin, tableMixin } from '../../../utils/mixins/common';
 
   export default {
     name: 'merchantList',

@@ -87,7 +87,7 @@ class GoodsService extends Service {
       for (const goodsItem of goodsList) {
         const { uuid, code, name, categoryUuid, spec: goodsSpec, salePrice, thumbnail, unitName } = goodsItem || {};
         const goods = {
-          goods: { uuid, code, name },
+          goods: { uuid, code, name }, categoryName: key,
           categoryUuid, goodsSpec, salePrice, thumbnail, unitName,
         };
 
@@ -155,7 +155,7 @@ class GoodsService extends Service {
     }) || {};
 
 
-    if (!app._.isEmpty(goodsData.dataValues)) {
+    if (!app._.isEmpty(goodsData)) {
       goodsData.dataValues.categoryName = goodsCategory.name;
     } else {
       ctx.throw(200, '查询不到指定的商品');

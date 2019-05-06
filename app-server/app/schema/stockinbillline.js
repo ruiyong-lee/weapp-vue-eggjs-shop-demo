@@ -10,10 +10,7 @@ module.exports = app => {
       primaryKey: true,
       defaultValue: UUIDV1,
     },
-    goodsCategoryUuid: {
-      type: STRING(38),
-      allowNull: true,
-    },
+    goodsCategoryUuid: STRING(38),
     unitName: {
       type: STRING(76),
       allowNull: false,

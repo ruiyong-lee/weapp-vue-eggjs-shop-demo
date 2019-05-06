@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-row>
-      <h2 class="content-title">基本信息</h2>
+      <h2 class="content-title"><i class="el-icon-tickets"></i> 基本信息</h2>
       <section class="goods-panel">
         <el-carousel class="goods-images" :autoplay="false" height="240px">
           <el-carousel-item v-for="item in imagesList" :key="item">
@@ -13,7 +13,7 @@
           <p>类别：<span class="text-bold">{{goods.categoryName}}</span></p>
           <p>规格：<span class="text-bold">{{goods.spec}}</span></p>
           <p>单位：<span class="text-bold">{{goods.unitName}}</span></p>
-          <p>售价：<span class="text-red text-bold">{{goods.salePrice}} 元</span></p>
+          <p>售价：<span class="text-red text-bold">¥ {{goods.salePrice}}</span></p>
           <p>状态：
             <span class="badge" :class="$Constants.GOODS_STATUS_CLASS[goods.status]">
               {{$Constants.GOODS_STATUS[goods.status]}}
@@ -23,23 +23,25 @@
       </section>
     </el-row>
     <el-row class="mt-20">
-      <h2 class="content-title">商品介绍</h2>
+      <h2 class="content-title"><i class="el-icon-goods"></i> 商品介绍</h2>
       <div class="goods-info">{{goods.info || '暂无介绍'}}</div>
     </el-row>
   </div>
 </template>
 
 <script>
-  import { pageMixin } from '../../../utils/mixins';
+  import { pageMixin } from '../../../utils/mixins/common';
+  import goodsMixin from '../../../utils/mixins/goods';
 
   export default {
     name: 'goodsView',
-    mixins: [pageMixin],
+    mixins: [pageMixin, goodsMixin],
     components: {},
     data() {
       this[this.$Constants.APP_PAGE_TOOLS] = [
         {},
         {
+          icon: 'el-icon-edit',
           content: '编辑',
           callback: this.linkToEdit,
           type: 'primary',
@@ -50,10 +52,37 @@
         imagesList: [],
       };
     },
+    watch: {
+      'goods.status': {
+        handler() {
+          const { APP_PAGE_TOOLS } = this.$Constants;
+          switch (this.goods.status) {
+            case 'up':
+              this[APP_PAGE_TOOLS].splice(0, 1, {
+                icon: 'el-icon-sold-out',
+                content: '下架',
+                callback: this.downGoods,
+                type: 'danger',
+              });
+              break;
+            case 'down':
+              this[APP_PAGE_TOOLS].splice(0, 1, {
+                icon: 'el-icon-sell',
+                content: '上架',
+                callback: this.upGoods,
+                type: 'success',
+              });
+              break;
+            default:
+              break;
+          }
+        },
+        immediate: true,
+      },
+    },
     methods: {
       async refreshPage() {
         await this.get();
-        this.addAppPageTool();
       },
       async get() {
         const params = {
@@ -61,7 +90,6 @@
         };
 
         const res = await this.$api.goods.get(params);
-        console.log(res);
         this.goods = res;
         this.imagesList = (res.imagesJsonStr && JSON.parse(res.imagesJsonStr)) || [];
       },
@@ -79,26 +107,6 @@
       },
       linkToEdit() {
         this.$router.push({ name: 'goodsEdit', params: { goodsUuid: this.goods.uuid } });
-      },
-      addAppPageTool() {
-        switch (this.goods.status) {
-          case 'up':
-            this[this.$Constants.APP_PAGE_TOOLS].splice(0, 1, {
-              content: '下架',
-              callback: this.downGoods,
-              type: 'danger',
-            });
-            break;
-          case 'down':
-            this[this.$Constants.APP_PAGE_TOOLS].splice(0, 1, {
-              content: '上架',
-              callback: this.upGoods,
-              type: 'success',
-            });
-            break;
-          default:
-            break;
-        }
       },
     },
   };

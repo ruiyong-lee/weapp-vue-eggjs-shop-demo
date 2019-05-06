@@ -38,18 +38,12 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    nickName: {
-      type: STRING(76),
-      allowNull: true,
-    },
+    nickName: STRING(76),
     openId: {
       type: STRING(38),
       allowNull: false,
     },
-    unionId: {
-      type: STRING(38),
-      allowNull: true,
-    },
+    unionId: STRING(38),
     version: {
       type: BIGINT,
       defaultValue: 0,

@@ -104,10 +104,10 @@ if (userType === 'admin') {
       meta: { ...orderDefaultMeta, isMainPage: true },
     },
     {
-      path: '/bill/order/add',
-      name: 'orderAdd',
-      component: customImport('bill/order/Add'),
-      meta: { ...orderDefaultMeta, ...orderDefaultBreadcrumbs, breadcrumbTitle: '新增' },
+      path: '/bill/order/view/:orderUuid',
+      name: 'orderView',
+      component: customImport('bill/order/View'),
+      meta: { ...orderDefaultMeta, ...orderDefaultBreadcrumbs, breadcrumbTitle: '详情' },
     },
     // 商品
     {

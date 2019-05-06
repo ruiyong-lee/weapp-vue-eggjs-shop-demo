@@ -65,7 +65,12 @@ module.exports = {
       this.verifyFail(401, '用户 UUID 与 Token 不一致');
       return false;
     }
-
+    this.request.body.userUuid = userUuid;
+    this.request.body.userName = userName;
+    this.request.body.userType = userType;
+    this.request.body.orgUuid = orgUuid;
+    // 将get请求的ctx.query合并到ctx.request.body
+    this.request.body = { ...this.request.body, ...this.query };
     return true;
   },
   // 校验token失败

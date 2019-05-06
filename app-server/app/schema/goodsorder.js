@@ -34,14 +34,8 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    address: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    type: {
-      type: STRING(20),
-      allowNull: true,
-    },
+    address: STRING(255),
+    type: STRING(20),
     // initial: '待处理', audited: '已接单', dispatching: '配送中', completed: '已完成', canceled: '已取消'
     status: ENUM('initial', 'audited', 'dispatching', 'completed', 'canceled'),
     addressUuid: {
@@ -52,18 +46,9 @@ module.exports = app => {
       type: DECIMAL,
       allowNull: false,
     },
-    deliveryTimeTypeSurcharge: {
-      type: DECIMAL,
-      allowNull: true,
-    },
-    paymentAmount: {
-      type: DECIMAL,
-      allowNull: true,
-    },
-    reductionAmount: {
-      type: DECIMAL,
-      allowNull: true,
-    },
+    deliveryTimeTypeSurcharge: DECIMAL,
+    paymentAmount: DECIMAL,
+    reductionAmount: DECIMAL,
     deliveryTimeTypeName: {
       type: STRING(76),
       allowNull: false,
@@ -76,18 +61,9 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    deliveryTimeTypeRemark: {
-      type: STRING(255),
-      allowNull: true,
-    },
-    freightAmount: {
-      type: DECIMAL,
-      allowNull: true,
-    },
-    remark: {
-      type: STRING(255),
-      allowNull: true,
-    },
+    deliveryTimeTypeRemark: STRING(255),
+    freightAmount: DECIMAL,
+    remark: STRING(255),
     linkPhone: {
       type: STRING(20),
       allowNull: false,
@@ -96,10 +72,7 @@ module.exports = app => {
       type: STRING(38),
       allowNull: false,
     },
-    shopName: {
-      type: STRING(76),
-      allowNull: true,
-    },
+    shopName: STRING(76),
     billNumber: {
       type: STRING(38),
       allowNull: false,

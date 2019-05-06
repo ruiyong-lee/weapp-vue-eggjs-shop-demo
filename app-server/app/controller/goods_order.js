@@ -23,10 +23,6 @@ class GoodsOrderController extends Controller {
    */
   async get() {
     const { ctx } = this;
-    const rule = {
-      uuid: 'string',
-    };
-    ctx.validate(rule);
     const goodsOrder = await ctx.service.goodsOrder.get(ctx.request.body);
 
     this.success(goodsOrder);

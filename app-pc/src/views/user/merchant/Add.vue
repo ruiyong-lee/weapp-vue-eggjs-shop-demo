@@ -4,7 +4,7 @@
              size="small" @submit.native.prevent>
       <el-row>
         <el-col :span="11">
-          <h2 class="content-title">基础资料</h2>
+          <h2 class="content-title"><i class="el-icon-tickets"></i> 基础资料</h2>
           <el-form-item label="商家名称" prop="name">
             <el-input v-model.trim="merchantForm.name" placehodler="请输入1到16位账号（字母，数字，下划线，减号）"></el-input>
           </el-form-item>
@@ -22,7 +22,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="11" :offset="2">
-          <h2 class="content-title">登录资料</h2>
+          <h2 class="content-title"><i class="el-icon-tickets"></i> 登录资料</h2>
           <el-form-item label="账号" prop="userName">
             <el-input v-model.trim="merchantForm.userName"></el-input>
           </el-form-item>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-  import { pageMixin } from '../../../utils/mixins';
+  import { pageMixin } from '../../../utils/mixins/common';
   import { Pattern } from '../../../utils/constants';
 
   export default {

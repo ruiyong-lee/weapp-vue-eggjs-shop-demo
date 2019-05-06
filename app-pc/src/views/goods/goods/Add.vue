@@ -3,7 +3,7 @@
     <el-form :model="goodsForm" :rules="rules" ref="goodsForm" label-width="7em"
              size="small" @submit.native.prevent>
       <el-row>
-        <h2 class="content-title">基本信息</h2>
+        <h2 class="content-title"><i class="el-icon-tickets"></i> 基本信息</h2>
         <el-col :span="12">
           <el-form-item label="商品名称" prop="name">
             <el-input v-model.trim="goodsForm.name"></el-input>
@@ -43,7 +43,7 @@
         </el-col>
       </el-row>
       <el-row>
-        <h2 class="content-title">商品图册</h2>
+        <h2 class="content-title"><i class="el-icon-picture-outline"></i> 商品图册</h2>
         <el-upload
           class="mb-15"
           action="utils/upload"
@@ -56,7 +56,7 @@
         </el-upload>
       </el-row>
       <el-row>
-        <h2 class="content-title">商品介绍</h2>
+        <h2 class="content-title"><i class="el-icon-goods"></i> 商品介绍</h2>
         <el-input
           type="textarea"
           :rows="2"
@@ -69,7 +69,7 @@
 </template>
 
 <script>
-  import { pageMixin } from '../../../utils/mixins';
+  import { pageMixin } from '../../../utils/mixins/common';
 
   export default {
     name: 'goodsAdd',

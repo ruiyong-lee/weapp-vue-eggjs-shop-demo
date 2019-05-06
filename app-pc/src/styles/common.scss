@@ -1,4 +1,4 @@
-//按钮
+// 按钮
 .success-text-btn {
   color: #67C23A;
 
@@ -23,7 +23,7 @@
   }
 }
 
-//badge
+// badge
 .badge {
   display: inline-block;
   min-width: 10px;
@@ -38,13 +38,13 @@
   border-radius: 10px;
 }
 
-//dispaly
+// dispaly
 .flex-y-center {
   display: flex;
   align-items: center;
 }
 
-//外边距
+// 外边距
 .mt-0 {
   margin-top: 0 !important;
 }
@@ -85,7 +85,7 @@
   margin-right: 20px !important;
 }
 
-//内边距
+// 内边距
 .p-20 {
   padding: 20px !important;
 }
@@ -112,7 +112,7 @@
   padding-right: 20px !important;
 }
 
-//宽高
+// 宽高
 .wp-100 {
   width: 100%;
 }
@@ -129,7 +129,7 @@
 //  height: 39px !important;
 //}
 
-//字体
+// 字体
 .fs-20 {
   font-size: 20px;
 }
@@ -186,7 +186,7 @@
   line-height: 1;
 }
 
-//文本超过长度显示...
+// 文本超过长度显示...
 .ellipsis {
   list-style: none;
   white-space: nowrap;
@@ -202,7 +202,7 @@
   overflow: hidden;
 }
 
-//背景
+// 背景
 .bg-white {
   background-color: #FFFFFF;
 }
@@ -227,7 +227,7 @@
   background-color: #5C9ACF;
 }
 
-//svg
+// svg
 .svg-icon {
   width: 18px;
   height: 18px;
@@ -238,7 +238,30 @@
   }
 }
 
-//鼠标
+// 鼠标
 .cursor-pointer {
   cursor: pointer;
+}
+
+// border
+.border-top-1 {
+  border-top: 1px solid #e9ecf3;
+}
+
+.border-right-1 {
+  border-right: 1px solid #e9ecf3;
+}
+
+.border-bottom-1 {
+  border-bottom: 1px solid #e9ecf3;
+}
+
+.border-left-1 {
+  border-left: 1px solid #e9ecf3;
+}
+
+// table
+.table-header-cell-gray {
+  color: #666 !important;
+  background-color: #f4f4f4 !important;
 }

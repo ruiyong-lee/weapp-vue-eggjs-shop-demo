@@ -42,10 +42,7 @@ module.exports = app => {
       type: ENUM('up', 'down'),
       allowNull: false,
     },
-    categoryUuid: {
-      type: STRING(38),
-      allowNull: true,
-    },
+    categoryUuid: STRING(38),
     orgUuid: {
       type: STRING(38),
       allowNull: false,

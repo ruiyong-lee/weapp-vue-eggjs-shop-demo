@@ -4,7 +4,7 @@
              size="small" @submit.native.prevent>
       <el-row>
         <el-col :span="11">
-          <h2 class="content-title">基础资料</h2>
+          <h2 class="content-title"><i class="el-icon-tickets"></i> 基础资料</h2>
           <el-form-item label="商家名称">
             {{merchantForm.name}}
           </el-form-item>
@@ -22,7 +22,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="11" :offset="2">
-          <h2 class="content-title">登录资料</h2>
+          <h2 class="content-title"><i class="el-icon-tickets"></i> 登录资料</h2>
           <el-form-item label="账号">
             {{merchantForm.userName}}
           </el-form-item>
@@ -35,7 +35,7 @@
       </el-row>
       <el-row>
         <el-col :span="11">
-          <h2 class="content-title">关联小程序</h2>
+          <h2 class="content-title"><i class="el-icon-connection"></i> 关联小程序</h2>
           <el-form-item label="小程序ID：">
             {{merchantForm.appId}}
           </el-form-item>
@@ -55,7 +55,7 @@
 </template>
 
 <script>
-  import { pageMixin } from '../../../utils/mixins';
+  import { pageMixin } from '../../../utils/mixins/common';
 
   export default {
     name: 'merchantView',

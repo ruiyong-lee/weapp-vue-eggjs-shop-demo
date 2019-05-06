@@ -4,7 +4,7 @@
              size="small" @submit.native.prevent>
       <el-row>
         <el-col :span="11">
-          <h2 class="content-title">基础资料</h2>
+          <h2 class="content-title"><i class="el-icon-tickets"></i> 基础资料</h2>
           <el-form-item label="商家名称" prop="name">
             <el-input v-model.trim="merchantForm.name"></el-input>
           </el-form-item>
@@ -22,7 +22,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="11" :offset="2">
-          <h2 class="content-title">登录资料</h2>
+          <h2 class="content-title"><i class="el-icon-tickets"></i> 登录资料</h2>
           <el-form-item label="账号">
             {{merchantForm.userName}}
           </el-form-item>
@@ -51,7 +51,7 @@
       </el-row>
       <el-row v-if="userType === 'merchant'">
         <el-col :span="11">
-          <h2 class="content-title">关联小程序</h2>
+          <h2 class="content-title"><i class="el-icon-connection"></i> 关联小程序</h2>
           <el-form-item label="小程序ID：">
             <el-input v-model.trim="merchantForm.appId"></el-input>
           </el-form-item>
@@ -76,7 +76,7 @@
 
 <script>
   import { mapState } from 'vuex';
-  import { pageMixin } from '../../../utils/mixins';
+  import { pageMixin } from '../../../utils/mixins/common';
 
   export default {
     name: 'merchantEdit',

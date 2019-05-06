@@ -25,7 +25,7 @@
 </template>
 
 <script>
-  import { pageMixin } from '../../utils/mixins';
+  import { pageMixin } from '../../utils/mixins/common';
 
   export default {
     name: 'passwordEdit',

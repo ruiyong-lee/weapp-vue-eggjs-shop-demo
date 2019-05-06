@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import { pageMixin, tableMixin } from '../../../utils/mixins';
+  import { pageMixin, tableMixin } from '../../../utils/mixins/common';
 
   export default {
     name: 'goodsCategoryList',
@@ -123,7 +123,6 @@
         });
       },
       resetForm(formName) {
-        console.log(this.$refs[formName]);
         this.$refs[formName].resetFields();
       },
       deleteCategory(uuid) {

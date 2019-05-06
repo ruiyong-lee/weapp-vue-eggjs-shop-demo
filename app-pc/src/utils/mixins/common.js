@@ -7,10 +7,7 @@ export const pageMixin = {
     return {};
   },
   created() {
-    this.$store.commit('setAppPageToolsMap', {
-      key: this.$route.name,
-      value: this[this.$Constants.APP_PAGE_TOOLS],
-    });
+    this.mx_setAppPageToolsMap();
     return _.isFunction(this.refreshPage) && this.refreshPage();
   },
   activated() {
@@ -73,7 +70,14 @@ export const pageMixin = {
       },
     }),
   },
-  methods: {},
+  methods: {
+    mx_setAppPageToolsMap() {
+      this.$store.commit('setAppPageToolsMap', {
+        key: this.$route.name,
+        value: this[this.$Constants.APP_PAGE_TOOLS],
+      });
+    },
+  },
 };
 
 // table

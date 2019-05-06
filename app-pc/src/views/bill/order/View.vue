@@ -1,136 +1,194 @@
 <template>
   <div>
-    <el-row>
-      <h2 class="content-title">基本信息</h2>
-      <section class="goods-panel">
-        <el-carousel class="goods-images" :autoplay="false" height="240px">
-          <el-carousel-item v-for="item in imagesList" :key="item">
-            <safe-img :src="item" width="240px" height="240px"></safe-img>
-          </el-carousel-item>
-        </el-carousel>
-        <div class="goods-data">
-          <h3 class="goods-name">{{goods.name}}</h3>
-          <p>类别：<span class="text-bold">{{goods.categoryName}}</span></p>
-          <p>规格：<span class="text-bold">{{goods.spec}}</span></p>
-          <p>单位：<span class="text-bold">{{goods.unitName}}</span></p>
-          <p>售价：<span class="text-red text-bold">{{goods.salePrice}} 元</span></p>
-          <p>状态：
-            <span class="badge" :class="$Constants.GOODS_STATUS_CLASS[goods.status]">
-              {{$Constants.GOODS_STATUS[goods.status]}}
-            </span>
-          </p>
-        </div>
+    <header class="order-header">
+      <div>
+        <span class="order-header-title">单号：{{order.billNumber}}</span>
+        <span class="badge"
+              :class="$Constants.ORDER_STATUS_CLASS[order.status]">{{$Constants.ORDER_STATUS[order.status]}}</span>
+      </div>
+      <p class="order-header-time">下单时间：{{order.createdTime}}</p>
+    </header>
+    <el-row class="mt-20">
+      <h2 class="content-title"><i class="el-icon-tickets"></i> 订单信息</h2>
+      <section class="order-panel">
+        <el-row :gutter="40" type="flex">
+          <el-col :span="8" class="border-right-1">
+            <p>
+              <span class="order-panel-label">订货总量：</span>
+              <span class="text-bold">{{order.goodsTotalQty}}</span>
+            </p>
+            <p>
+              <span class="order-panel-label">订单金额：</span>
+              <span class="text-bold">¥ {{order.totalAmount}}</span>
+            </p>
+            <p>
+              <span class="order-panel-label">基础运费：</span>
+              <span class="text-bold">¥ {{order.freightAmount}}</span>
+            </p>
+            <p>
+              <span class="order-panel-label">加急费：</span>
+              <span class="text-bold">¥ {{order.deliveryTimeTypeSurcharge}}</span>
+            </p>
+            <p>
+              <span class="order-panel-label">减免金额：</span>
+              <span class="text-red text-bold">¥ {{order.reductionAmount}}</span>
+            </p>
+            <p>
+              <span class="order-panel-label">实付金额：</span>
+              <span class="text-red text-bold">¥ {{order.paymentAmount}}</span>
+            </p>
+          </el-col>
+          <el-col :span="8" class="border-right-1">
+            <p class="order-panel-nickname">{{order.customerName}}</p>
+            <p>
+              <span class="order-panel-label">收货人：</span>
+              <span>{{order.linkMan}}</span>
+            </p>
+            <p>
+              <span class="order-panel-label">联系电话：</span>
+              <span>{{order.linkPhone}}</span>
+            </p>
+            <p>
+              <span class="order-panel-label">收货地址：</span>
+              <span>{{order.address}}</span>
+            </p>
+          </el-col>
+          <el-col :span="8">
+            <p>
+              <span class="order-panel-label">配送时间：</span>
+              <span>{{order.deliveryTimeTypeName}}（{{order.deliveryTimeTypeRemark}}）</span>
+            </p>
+            <p>
+              <span class="order-panel-label">备注：</span>
+              <span>{{order.remark}}</span>
+            </p>
+          </el-col>
+        </el-row>
       </section>
     </el-row>
     <el-row class="mt-20">
-      <h2 class="content-title">商品介绍</h2>
-      <div class="goods-info">{{goods.info || '暂无介绍'}}</div>
+      <h2 class="content-title"><i class="el-icon-goods"></i> 商品清单</h2>
+      <el-table :data="order.lines" header-cell-class-name="table-header-cell-gray" size="mini">
+        <el-table-column type="index" width="50"></el-table-column>
+        <el-table-column label="名称">
+          <div class="flex-y-center" slot-scope="scope">
+            <safe-img :src="scope.row.goodsPic" width="30px" height="30px"></safe-img>
+            <span class="ml-15 text-bold">{{scope.row.goodsName}}</span>
+          </div>
+        </el-table-column>
+        <el-table-column prop="goodsCategoryName" label="类别" align="center">类别</el-table-column>
+        <el-table-column prop="unitName" label="单位" align="center"></el-table-column>
+        <el-table-column prop="goodsSpec" label="规格" align="center"></el-table-column>
+        <el-table-column prop="goodsQty" label="订购数" align="center"></el-table-column>
+        <el-table-column label="售价" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.salePrice" class="text-red text-bold">¥ {{scope.row.salePrice}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="金额小计" align="center">
+          <template slot-scope="scope">
+            <span v-if="scope.row.salePrice && scope.row.goodsQty" class="text-red text-bold">¥ {{getSubTotal(scope.row)}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="remark" label="备注" align="center" show-overflow-tooltip></el-table-column>
+      </el-table>
     </el-row>
   </div>
 </template>
 
 <script>
-  import { pageMixin } from '../../../utils/mixins';
+  import { pageMixin } from '../../../utils/mixins/common';
+  import orderMixin from '../../../utils/mixins/order';
 
   export default {
     name: 'orderView',
-    mixins: [pageMixin],
+    mixins: [pageMixin, orderMixin],
     components: {},
     data() {
-      this[this.$Constants.APP_PAGE_TOOLS] = [
-        {},
-        {
-          content: '编辑',
-          callback: this.linkToEdit,
-          type: 'primary',
-        },
-      ];
+      this[this.$Constants.APP_PAGE_TOOLS] = [{}];
       return {
-        goods: {},
-        imagesList: [],
+        order: {},
       };
+    },
+    watch: {
+      'order.status': {
+        handler() {
+          const { APP_PAGE_TOOLS } = this.$Constants;
+          switch (this.order.status) {
+            case 'audited':
+              this[APP_PAGE_TOOLS].splice(0, 1, {
+                icon: 'el-icon-truck',
+                content: '开始配送',
+                callback: this.dispatch,
+                type: 'success',
+              });
+              break;
+            case 'dispatching':
+              this[APP_PAGE_TOOLS].splice(0, 1, {
+                icon: 'el-icon-check',
+                content: '完成',
+                callback: this.complete,
+                type: 'warning',
+              });
+              break;
+            default:
+              break;
+          }
+        },
+        immediate: true,
+      },
     },
     methods: {
       async refreshPage() {
         await this.get();
-        this.addAppPageTool();
       },
       async get() {
         const params = {
-          uuid: this.$route.params.goodsUuid,
+          uuid: this.$route.params.orderUuid,
         };
 
         const res = await this.$api.order.get(params);
-        console.log(res);
-        this.goods = res;
-        this.imagesList = (res.imagesJsonStr && JSON.parse(res.imagesJsonStr)) || [];
+        this.order = res;
       },
-      async upGoods() {
-        const { uuid, version } = this.goods;
-        await this.$api.goods.up({ uuid, version });
-        this.$message({ message: '商品上架成功', type: 'success' });
-        this.refreshPage();
-      },
-      async downGoods() {
-        const { uuid, version } = this.goods;
-        await this.$api.goods.down({ uuid, version });
-        this.$message({ message: '商品下架成功', type: 'success' });
-        this.refreshPage();
-      },
-      linkToEdit() {
-        this.$router.push({ name: 'goodsEdit', params: { goodsUuid: this.goods.uuid } });
-      },
-      addAppPageTool() {
-        switch (this.goods.status) {
-          case 'up':
-            this[this.$Constants.APP_PAGE_TOOLS].splice(0, 1, {
-              content: '下架',
-              callback: this.downGoods,
-              type: 'danger',
-            });
-            break;
-          case 'down':
-            this[this.$Constants.APP_PAGE_TOOLS].splice(0, 1, {
-              content: '上架',
-              callback: this.upGoods,
-              type: 'success',
-            });
-            break;
-          default:
-            break;
-        }
+      // 小计
+      getSubTotal(data = {}) {
+        const { salePrice, goodsQty } = data;
+        return _.round(_.multiply(salePrice, goodsQty), 2);
       },
     },
   };
 </script>
 
 <style lang="scss" scoped>
-  .goods-panel {
-    display: flex;
+  .order-header {
+    line-height: 1.5;
 
-    .goods-images {
-      flex: 0 0 240px;
-      border: 1px solid #eee;
-      border-radius: 6px;
-      background: url("../../../assets/no-pic.png") no-repeat;
-      background-size: 70%;
-      background-position: 50% 50%;
+    .order-header-title {
+      margin-right: 15px;
+      font-size: 18px;
+      font-weight: bold;
+      vertical-align: middle;
     }
 
-    .goods-data {
-      flex: 1;
-      padding-left: 30px;
-      font-size: 16px;
-      line-height: 2.2;
-
-      .goods-name {
-        font-size: 22px;
-        font-weight: bold;
-      }
+    .order-header-time {
+      font-size: 13px;
     }
   }
 
-  .goods-info {
-    /*text-indent: 2em;*/
+  .order-panel {
+    font-size: 14px;
+    line-height: 2;
+
+    .order-panel-label {
+      display: inline-block;
+      padding-right: 0.5em;
+      width: 5.5em;
+      text-align: right;
+    }
+
+    .order-panel-nickname {
+      font-size: 18px;
+      font-weight: bold;
+    }
   }
 </style>

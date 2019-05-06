@@ -51,24 +51,31 @@ class GoodsOrderService extends Service {
    * @return {object|null} - 查找结果
    */
   async get(params = {}) {
-    const { app } = this;
+    const { app, ctx } = this;
     const { Sequelize } = app;
-    return await app.model.GoodsOrder.get({
+    const orderData = await app.model.GoodsOrder.get({
       ...params,
       orderAttributes: [
-        'uuid', 'version', 'status', 'billNumber', 'addressUuid', 'linkMan', 'linkPhone', 'address',
-        'deliveryTimeTypeUuid', 'deliveryTimeTypeName', 'deliveryTimeTypeRemark', 'remark', 'createdTime',
+        'uuid', 'version', 'status', 'billNumber', 'addressUuid', 'linkMan', 'linkPhone', 'address', 'goodsTotalQty',
+        'deliveryTimeTypeUuid', 'deliveryTimeTypeName', 'deliveryTimeTypeRemark', 'remark', 'createdTime', 'customerName',
         [Sequelize.fn('ROUND', Sequelize.col('totalAmount'), 2), 'totalAmount'],
         [Sequelize.fn('ROUND', Sequelize.col('freightAmount'), 2), 'freightAmount'],
         [Sequelize.fn('ROUND', Sequelize.col('paymentAmount'), 2), 'paymentAmount'],
+        [Sequelize.fn('ROUND', Sequelize.col('reductionAmount'), 2), 'reductionAmount'],
         [Sequelize.fn('ROUND', Sequelize.col('deliveryTimeTypeSurcharge'), 2), 'deliveryTimeTypeSurcharge'],
       ],
       orderLineAttributes: [
-        'uuid', 'goodsPic', 'unitName', 'goodsName', 'goodsUuid', 'remark',
+        'uuid', 'goodsPic', 'unitName', 'goodsName', 'goodsUuid', 'goodsSpec', 'goodsCategoryName', 'remark',
         [Sequelize.fn('ROUND', Sequelize.col('salePrice'), 2), 'salePrice'],
         [Sequelize.fn('0+CAST', Sequelize.literal('goodsQty AS CHAR')), 'goodsQty'],
       ],
     });
+
+    if (app._.isEmpty(orderData)) {
+      ctx.throw(200, '查询不到指定的订单');
+    }
+
+    return orderData;
   }
 
   /**
