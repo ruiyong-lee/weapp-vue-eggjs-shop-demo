@@ -1,6 +1,6 @@
 // pages/cart/cart.js
-var ZanQuantity = require('../../style/zanui/quantity/index')//引入数字输入控件
-var ZanTopTips = require('../../style/zanui/toptips/index')//引入提示控件
+var ZanQuantity = require('../../style/zanui/quantity/index') //引入数字输入控件
+var ZanTopTips = require('../../style/zanui/toptips/index') //引入提示控件
 var app = getApp();
 
 Page(Object.assign({}, ZanQuantity, ZanTopTips, {
@@ -29,7 +29,7 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
       deliveryTimeTypeName: '',
       deliveryTimeTypeRemark: '',
       deliveryTimeTypeSurcharge: 0,
-      remark: 0,
+      remark: '',
       lines: [],
     },
     zanQuantityConfig: {
@@ -61,8 +61,8 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
     var isEdit = this.data.isEdit;
     var checked = this.data.checkAll;
     var cartStorage = this.data.cartStorage;
-    var cartCheckMap = {};//勾选
-    var hasOneUpGoodsAtLeast = false;//至少有一个上架的商品
+    var cartCheckMap = {}; //勾选
+    var hasOneUpGoodsAtLeast = false; //至少有一个上架的商品
 
     if (!checked) {
       for (var key in cartStorage) {
@@ -117,8 +117,8 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
   },
   //计算总额、总数
   calculateAmount() {
-    var totalAmount = 0;//总额
-    var goodsTotalQty = 0;//总数
+    var totalAmount = 0; //总额
+    var goodsTotalQty = 0; //总数
     var cartStorage = this.data.cartStorage;
     var cartCheckMap = this.data.cartCheckMap;
 
@@ -176,7 +176,7 @@ Page(Object.assign({}, ZanQuantity, ZanTopTips, {
         title: '提示',
         confirmColor: '#20a0ff',
         content: '确定要删除这' + num + '种商品吗？',
-        success: function (res) {
+        success: function(res) {
           if (res.confirm) {
             for (var key in cartCheckMap) {
               delete cartStorage[key];

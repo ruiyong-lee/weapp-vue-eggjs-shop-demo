@@ -8,6 +8,7 @@
     "pages/person/person",
     "pages/address/address",
     "pages/addressEdit/addressEdit",
+    "pages/authorize/authorize",
     "pages/logs/logs"
   ],
   "window": {

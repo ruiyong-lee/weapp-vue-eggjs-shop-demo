@@ -1,25 +1,25 @@
 //app.js
 
 var Http = require('service/http.js');
-var Util = require('utils/util.js');//引入util.js
-var Constants = require('utils/constants.js')//引入constants.js
-var Check = Util.Check;//验证相关方法
-var Count = Util.Count;//计算相关方法
-var Format = Util.Format;//format相关方法
-var Storage = Util.Storage;//数据缓存
+var Util = require('utils/util.js'); //引入util.js
+var Constants = require('utils/constants.js') //引入constants.js
+var Check = Util.Check; //验证相关方法
+var Count = Util.Count; //计算相关方法
+var Format = Util.Format; //format相关方法
+var Storage = Util.Storage; //数据缓存
 
 App({
-  onLaunch: function (options) {
-    this.getUserInfo();
+  onLaunch: function(options) {
+    this.getUserInfo()
   },
-  onShow: function (options) {
+  onShow: function(options) {
     var globalData = this.globalData;
     if (!globalData.isPreviewImage) {
       globalData.isReloadGoods = true;
       globalData.isPreviewImage = false;
     }
   },
-  onError: function (msg) {
+  onError: function(msg) {
     console.log(msg);
   },
 
@@ -37,11 +37,22 @@ App({
     if (!Check.isUndeFinedOrNullOrEmpty(this.globalData.userInfo)) {
       return typeof cb == "function" && cb(this.globalData.userInfo);
     } else {
-      wx.getUserInfo({
-        withCredentials: false,
-        success: function (res) {
-          that.globalData.userInfo = res.userInfo;
-          return typeof cb == "function" && cb(that.globalData.userInfo);
+      wx.getSetting({
+        success(res) {
+          if (res.authSetting['scope.userInfo']) {
+            // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+            wx.getUserInfo({
+              withCredentials: false,
+              success: function(res) {
+                that.globalData.userInfo = res.userInfo;
+                return typeof cb == "function" && cb(that.globalData.userInfo);
+              }
+            })
+          } else {
+            wx.reLaunch({
+              url: '/pages/authorize/authorize',
+            })
+          }
         }
       })
     }
@@ -84,10 +95,13 @@ App({
       var cartItem = {
         goods: goods.goods,
         unitName: goods.unitName,
+        goodsPic: goodsInfo.thumbnail,
+        goodsCategoryUuid: goods.goodsCategoryUuid,
+        goodsCategoryName: goods.goodsCategoryName,
         goodsPic: goods.thumbnail,
         salePrice: goods.salePrice,
         goodsQty: item.goodsQty,
-        remark: item.goodsQty,
+        remark: item.remark,
         hasReturnQty: 0
       };
       cartStorage[key] = cartItem;
@@ -106,7 +120,7 @@ App({
     wx.showModal({
       title: '提示',
       content: '狠心取消订单？',
-      success: function (res) {
+      success: function(res) {
         if (res.confirm) {
           var params = Http.buildParams()
           params.uuid = order.uuid
@@ -116,7 +130,11 @@ App({
             url: 'cancelBill',
             data: params,
             success(res) {
-              wx.showToast({ title: '取消订单成功', icon: 'success', duration: 2000 })
+              wx.showToast({
+                title: '取消订单成功',
+                icon: 'success',
+                duration: 2000
+              })
               return typeof cb == "function" && cb();
             }
           })
@@ -131,7 +149,7 @@ App({
     wx.showModal({
       title: '提示',
       content: '确认已收到货品？',
-      success: function (res) {
+      success: function(res) {
         if (res.confirm) {
           var params = Http.buildParams()
           params.uuid = order.uuid
@@ -141,7 +159,11 @@ App({
             url: 'completeOrderBill.do',
             data: params,
             success(res) {
-              wx.showToast({ title: '确认收货成功', icon: 'success', duration: 2000 })
+              wx.showToast({
+                title: '确认收货成功',
+                icon: 'success',
+                duration: 2000
+              })
               return typeof cb == "function" && cb();
             }
           })

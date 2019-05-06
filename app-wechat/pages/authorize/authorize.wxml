@@ -1,0 +1,17 @@
+<!--pages/authorize/authorize.wxml-->
+<view class="page">
+    <view class="weui-msg">
+        <view class="weui-msg__icon-area">
+            <icon type="info" size="93"></icon>
+        </view>
+        <view class="weui-msg__text-area">
+            <view class="weui-msg__title">申请获得以下权限</view>
+            <view class="weui-msg__desc">获得您的公开信息（昵称、头像等）</view>
+        </view>
+        <view class="weui-msg__opr-area">
+            <view class="weui-btn-area">
+                <button class="weui-btn" type="primary" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">确认授权</button>
+            </view>
+        </view>
+    </view>
+</view>

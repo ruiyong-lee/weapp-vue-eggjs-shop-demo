@@ -16,6 +16,7 @@
   margin-right: auto;
   overflow: hidden;
   background-size: cover;
+  background-color:#f5f5f5;
 }
 
 .zan-card__img {
