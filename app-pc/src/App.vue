@@ -54,8 +54,8 @@
         </div>
       </el-header>
       <el-container>
-        <easy-scrollbar :barOption="$Constants.SCROLLBAR_OPTION">
-          <el-aside class="app-aside" :width="isCollapse ? '64px' : '200px'" v-auto-windows-height="100">
+        <el-aside class="app-aside" :width="isCollapse ? '64px' : '200px'" v-auto-windows-height="100">
+          <vue-scroll>
             <el-menu
               class="app-menu"
               :default-active="$route.name"
@@ -103,8 +103,8 @@
                 </el-submenu>
               </template>
             </el-menu>
-          </el-aside>
-        </easy-scrollbar>
+          </vue-scroll>
+        </el-aside>
         <el-main>
           <section v-if="$route.name !== 'login'" class="app-page">
             <div class="app-page-header">
@@ -157,11 +157,11 @@
               </el-row>
             </div>
 
-            <easy-scrollbar :barOption="$Constants.SCROLLBAR_OPTION">
+            <vue-scroll>
               <keep-alive :include="keepAliveNames">
                 <router-view class="app-view" v-auto-windows-height="174"/>
               </keep-alive>
-            </easy-scrollbar>
+            </vue-scroll>
           </section>
           <section v-else class="app-page app-login">
             <router-view class="app-view"/>
@@ -479,20 +479,19 @@
   }
 
   .app-aside {
-    padding: 20px 0 20px 20px;
-    overflow: initial !important;
-    transition: all 0.3s ease-in-out;
-    box-sizing: content-box !important;
-  }
-
-  .app-menu {
-    min-height: 100%;
+    margin: 20px 0 20px 20px;
     border-radius: 6px;
-    border-right: 0 !important;
-    overflow: hidden;
+    background-color: #fff;
+    overflow: hidden !important;
+    transition: all 0.3s ease-in-out;
 
-    &:not(.el-menu--collapse) {
-      width: 200px;
+    .app-menu {
+      min-height: 100%;
+      border-right: 0 !important;
+
+      &:not(.el-menu--collapse) {
+        width: 200px;
+      }
     }
   }
 

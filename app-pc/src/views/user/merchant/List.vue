@@ -1,12 +1,28 @@
 <template>
   <div>
-    <el-table :data="mx_defaultTableData" size="mini">
-      <el-table-column prop="userName" label="账号"></el-table-column>
-      <el-table-column prop="name" label="姓名"></el-table-column>
-      <el-table-column prop="linkMan" label="联系人"></el-table-column>
-      <el-table-column prop="linkPhone" label="联系电话"></el-table-column>
-      <el-table-column prop="servicePhone" label="客服电话"></el-table-column>
-      <el-table-column prop="createdTime" label="创建时间" width="180"></el-table-column>
+    <el-form class="filter-form" :inline="true" ref="filterForm" :model="filter" size="mini" @submit.native.prevent>
+      <el-form-item label="关键字" prop="keywordsLike">
+        <el-input v-model.trim="filter.keywordsLike" placeholder="账号 / 姓名 / 联系人 / 联系电话 / 客服电话"
+                  clearable @keyup.enter.native="query"></el-input>
+      </el-form-item>
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="filter.status" placeholder="状态" clearable>
+          <el-option v-for="(label, key) in $Constants.ENABLE_STATUS" :key="key" :label="label"
+                     :value="key"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="query">查询</el-button>
+        <el-button @click="mx_resetTable()">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-table ref="defaultTable" :data="mx_defaultTableData" size="mini" @sort-change="mx_handleTableSortChange">
+      <el-table-column prop="userName" sortable="custom" label="账号"></el-table-column>
+      <el-table-column prop="name" sortable="custom" label="姓名"></el-table-column>
+      <el-table-column prop="linkMan" sortable="custom" label="联系人"></el-table-column>
+      <el-table-column prop="linkPhone" sortable="custom" label="联系电话"></el-table-column>
+      <el-table-column prop="servicePhone" sortable="custom" label="客服电话"></el-table-column>
+      <el-table-column prop="createdTime" sortable="custom" label="创建时间" width="180"></el-table-column>
       <el-table-column label="状态" width="60">
         <template slot-scope="scope">
           <span :class="$Constants.ENABLE_STATUS_CLASS[scope.row.enableStatus]">{{$Constants.ENABLE_STATUS[scope.row.enableStatus]}}</span>
@@ -54,7 +70,12 @@
           type: 'primary',
         },
       ];
-      return {};
+      return {
+        filter: {
+          keywordsLike: '',
+          status: '',
+        },
+      };
     },
     methods: {
       refreshPage() {
@@ -62,6 +83,7 @@
       },
       async query() {
         const params = this.mx_getTableParams();
+        params.filter = this.filter;
         const res = await this.$api.merchant.query(params);
         this.mx_setTableData(res);
       },

@@ -1,13 +1,27 @@
 <template>
   <div>
-    <el-table :data="mx_defaultTableData" size="mini">
-      <el-table-column prop="name" label="名称">
+    <el-form class="filter-form" :inline="true" ref="filterForm" :model="filter" size="mini" @submit.native.prevent>
+      <el-form-item label="关键字" prop="keywordsLike">
+        <el-input v-model.trim="filter.keywordsLike" placeholder="名称 / 备注"
+                  clearable @keyup.enter.native="query"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="query">查询</el-button>
+        <el-button @click="mx_resetTable()">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-table ref="defaultTable" :data="mx_defaultTableData" size="mini" @sort-change="mx_handleTableSortChange">
+      <el-table-column prop="name" sortable="custom" label="名称">
         <template slot-scope="scope">
           <span class="text-bold">{{scope.row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="remark" label="备注" width="180" align="center"></el-table-column>
-      <el-table-column prop="surcharge" label="附加费用" width="180" align="center"></el-table-column>
+      <el-table-column prop="remark" sortable="custom" label="备注" width="180"></el-table-column>
+      <el-table-column prop="surcharge" sortable="custom" label="附加费用" width="180">
+        <template slot-scope="scope">
+          <span v-if="scope.row.surcharge" class="text-red text-bold">¥ {{scope.row.surcharge}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" fixed="right" width="100" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="mini" @click="showDialog('edit', scope.row)">编辑</el-button>
@@ -30,10 +44,10 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" center @close="handleDialogClose">
       <el-form :model="dialogForm" :rules="dialogRules" ref="dialogForm" label-width="5em" @submit.native.prevent>
         <el-form-item label="名称" prop="name">
-          <el-input v-model="dialogForm.name" autocomplete="off" clearable></el-input>
+          <el-input v-model.trim="dialogForm.name" autocomplete="off" clearable></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="remark">
-          <el-input v-model="dialogForm.remark" autocomplete="off" clearable></el-input>
+          <el-input v-model.trim="dialogForm.remark" autocomplete="off" clearable></el-input>
         </el-form-item>
         <el-form-item label="附加费用" prop="surcharge">
           <el-input-number class="wp-100" v-model="dialogForm.surcharge"
@@ -65,6 +79,9 @@
         },
       ];
       return {
+        filter: {
+          keywordsLike: '',
+        },
         dialogForm: {
           name: '',
           remark: '',
@@ -87,6 +104,7 @@
       },
       async query() {
         const params = this.mx_getTableParams();
+        params.filter = this.filter;
         const res = await this.$api.deliveryTimeType.query(params);
         this.mx_setTableData(res);
       },

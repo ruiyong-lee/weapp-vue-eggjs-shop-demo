@@ -51,15 +51,23 @@ module.exports = app => {
    * @param {object} { orgUuid, attributes, pagination, filter } - 条件
    * @return {object|null} - 查找结果
    */
-  FreightPlan.query = async ({ orgUuid, attributes, pagination = {}, filter = {} }) => {
+  FreightPlan.query = async ({ orgUuid, attributes, pagination = {}, filter = {}, sort = [] }) => {
     const { page, pageSize: limit } = pagination;
-    const { count, rows } = await FreightPlan.findAndCountAll({
+    const { keywordsLike } = filter;
+    const order = app.getSortInfo(sort);
+    const condition = {
       offset: (page - 1) * limit,
       limit,
+      order,
       attributes,
-      where: { ...filter, orgUuid },
-      order: [['createdTime', 'DESC']],
-    });
+      where: { orgUuid },
+    };
+
+    if (keywordsLike) {
+      condition.where.name = { $like: `%%${keywordsLike}%%` };
+    }
+
+    const { count, rows } = await FreightPlan.findAndCountAll(condition);
 
     return { page, count, rows };
   };

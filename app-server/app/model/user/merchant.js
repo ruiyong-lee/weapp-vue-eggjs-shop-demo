@@ -61,15 +61,33 @@ module.exports = app => {
    * @param {object} { attributes, pagination, filter } - 条件
    * @return {object|null} - 查找结果
    */
-  Merchant.query = async ({ attributes, pagination = {}, filter = {} }) => {
+  Merchant.query = async ({ attributes, pagination = {}, filter = {}, sort = [] }) => {
     const { page, pageSize: limit } = pagination;
-    const { count, rows } = await Merchant.findAndCountAll({
+    const { keywordsLike, status } = filter;
+    const order = app.getSortInfo(sort);
+    const condition = {
       offset: (page - 1) * limit,
       limit,
+      order,
       attributes,
-      where: { ...filter },
-      order: [['createdTime', 'DESC']],
-    });
+      where: {},
+    };
+
+    if (status) {
+      condition.where.enableStatus = status;
+    }
+
+    if (keywordsLike) {
+      condition.where.$or = [
+        { userName: { $like: `%%${keywordsLike}%%` } },
+        { name: { $like: `%%${keywordsLike}%%` } },
+        { linkMan: { $like: `%%${keywordsLike}%%` } },
+        { linkPhone: { $like: `%%${keywordsLike}%%` } },
+        { servicePhone: { $like: `%%${keywordsLike}%%` } },
+      ];
+    }
+
+    const { count, rows } = await Merchant.findAndCountAll(condition);
 
     return { page, count, rows };
   };

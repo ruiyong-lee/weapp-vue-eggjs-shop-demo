@@ -1,13 +1,30 @@
 <template>
   <div>
-    <el-table :data="mx_defaultTableData" size="mini">
-      <el-table-column prop="name" label="名称">
+    <el-form class="filter-form" :inline="true" ref="filterForm" :model="filter" size="mini" @submit.native.prevent>
+      <el-form-item label="名称" prop="keywordsLike">
+        <el-input v-model.trim="filter.keywordsLike" placeholder="运费方案名称" clearable @keyup.enter.native="query"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="query">查询</el-button>
+        <el-button @click="mx_resetTable()">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-table ref="defaultTable" :data="mx_defaultTableData" size="mini" @sort-change="mx_handleTableSortChange">
+      <el-table-column prop="name" sortable="custom" label="名称">
         <template slot-scope="scope">
           <span class="text-bold">{{scope.row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="basicFreight" label="基础运费" width="180" align="center"></el-table-column>
-      <el-table-column prop="freeFreightAmount" label="免运费金额" width="180" align="center"></el-table-column>
+      <el-table-column prop="basicFreight" sortable="custom" label="基础运费" width="180">
+        <template slot-scope="scope">
+          <span v-if="scope.row.basicFreight" class="text-red text-bold">¥ {{scope.row.basicFreight}}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="freeFreightAmount" sortable="custom" label="免运费金额" width="180">
+        <template slot-scope="scope">
+          <span v-if="scope.row.freeFreightAmount" class="text-red text-bold">¥ {{scope.row.freeFreightAmount}}</span>
+        </template>
+      </el-table-column>
       <el-table-column prop="sysDefault" label="是否默认" width="80" align="center">
         <template slot-scope="scope">
           <i v-if="scope.row.sysDefault" class="el-icon-check"></i>
@@ -35,7 +52,7 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" center @close="handleDialogClose">
       <el-form :model="dialogForm" :rules="dialogRules" ref="dialogForm" label-width="6em" @submit.native.prevent>
         <el-form-item label="名称" prop="name">
-          <el-input v-model="dialogForm.name" autocomplete="off" clearable></el-input>
+          <el-input v-model.trim="dialogForm.name" autocomplete="off" clearable></el-input>
         </el-form-item>
         <el-form-item label="基础运费" prop="basicFreight">
           <el-input-number class="wp-100" v-model="dialogForm.basicFreight"
@@ -74,6 +91,9 @@
         },
       ];
       return {
+        filter: {
+          keywordsLike: '',
+        },
         dialogForm: {
           name: '',
           basicFreight: 0,
@@ -100,6 +120,7 @@
       },
       async query() {
         const params = this.mx_getTableParams();
+        params.filter = this.filter;
         const res = await this.$api.freightPlan.query(params);
         this.mx_setTableData(res);
       },

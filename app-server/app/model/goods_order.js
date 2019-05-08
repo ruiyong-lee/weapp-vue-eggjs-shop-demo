@@ -18,14 +18,16 @@ module.exports = app => {
    * @param {object} { status, attributes, page, pageSize: limit, orgUuid, openId } - 条件
    * @return {object|null} - 查找结果
    */
-  GoodsOrder.query = async ({ status, attributes, pagination = {}, filter = {}, orgUuid, openId }) => {
+  GoodsOrder.query = async ({ attributes, pagination = {}, filter = {}, sort = [], orgUuid, openId }) => {
     const { page, pageSize: limit } = pagination;
+    const { keywordsLike, daterange, status } = filter;
+    const order = app.getSortInfo(sort);
     const condition = {
       offset: (page - 1) * limit,
       limit,
+      order,
       attributes,
-      where: { ...filter, orgUuid },
-      order: [['createdTime', 'DESC']],
+      where: { orgUuid },
     };
 
     if (openId) {
@@ -34,6 +36,25 @@ module.exports = app => {
 
     if (status) {
       condition.where.status = status;
+    }
+
+    if (keywordsLike) {
+      condition.where.$or = [
+        { billNumber: { $like: `%%${keywordsLike}%%` } },
+        { customerName: { $like: `%%${keywordsLike}%%` } },
+      ];
+    }
+
+    if (!app._.isEmpty(daterange)) {
+      const startDate = new Date(daterange[0]);
+      const endDate = new Date(daterange[1]);
+
+      if (app._.isDate(startDate) && app._.isDate(endDate)) {
+        condition.where.createdTime = {
+          $gt: startDate,
+          $lt: endDate,
+        };
+      }
     }
 
     const { count, rows } = await GoodsOrder.findAndCountAll(condition);

@@ -139,12 +139,15 @@ export const tableMixin = {
       targetTable.params.sort = [];
 
       if (sortOrder) {
-        targetTable.params.sort.splice(0, 1, {
-          fieldName: sort.prop,
-          dir: sortOrder.substring(0, sortOrder.indexOf('ending')),
-        });
+        targetTable.params.sort.splice(0, 1, [sort.prop, sortOrder.substring(0, sortOrder.indexOf('ending'))]);
       }
       return _.isFunction(this.query) && this.query();
+    },
+    mx_resetTable(formTarget = 'filterForm', tableTarget = 'defaultTable') {
+      console.log(formTarget);
+      this.$refs[formTarget].resetFields();
+      this.$refs[tableTarget].clearSort();
+      this.mx_handleTableSortChange({});
     },
     // 内存分页
     mx_paging(data, target) {
@@ -169,7 +172,7 @@ export const tableMixin = {
     },
     // 获取表格
     mx_getTargetTable(target) {
-      const tableKey = target || this.$options.name;
+      const tableKey = target || `${this.$options.name}Table`;
 
       if (_.isEmpty(this.mx_tableMap[tableKey])) {
         const tableData = {

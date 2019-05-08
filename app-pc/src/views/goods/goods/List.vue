@@ -1,7 +1,27 @@
 <template>
   <div>
-    <el-table :data="mx_defaultTableData" size="mini">
-      <el-table-column label="名称" min-width="300">
+    <el-form class="filter-form" :inline="true" ref="filterForm" :model="filter" size="mini" @submit.native.prevent>
+      <el-form-item label="名称" prop="keywordsLike">
+        <el-input v-model.trim="filter.keywordsLike" placeholder="商品名称"
+                  clearable @keyup.enter.native="query"></el-input>
+      </el-form-item>
+      <el-form-item label="类别" prop="categoryUuid">
+        <el-select v-model="filter.categoryUuid" placeholder="类别" clearable>
+          <el-option v-for="item in categoryList" :key="item.uuid" :label="item.name" :value="item.uuid"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item label="状态" prop="status">
+        <el-select v-model="filter.status" placeholder="状态" clearable>
+          <el-option v-for="(label, key) in $Constants.GOODS_STATUS" :key="key" :label="label" :value="key"></el-option>
+        </el-select>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="query">查询</el-button>
+        <el-button @click="mx_resetTable()">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-table ref="defaultTable" :data="mx_defaultTableData" size="mini" @sort-change="mx_handleTableSortChange">
+      <el-table-column prop="name" sortable="custom" label="名称" min-width="300">
         <div class="flex-y-center" slot-scope="scope">
           <safe-img :src="scope.row.thumbnail" width="30px" height="30px"></safe-img>
           <router-link class="ml-15 text-bold" :to="{name: 'goodsView', params: { goodsUuid: scope.row.uuid }}">
@@ -9,14 +29,14 @@
           </router-link>
         </div>
       </el-table-column>
-      <el-table-column label="售价" align="center">
+      <el-table-column prop="salePrice" sortable="custom" label="售价">
         <template slot-scope="scope">
           <span v-if="scope.row.salePrice" class="text-red text-bold">¥ {{scope.row.salePrice}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="categoryName" label="类别" align="center"></el-table-column>
-      <el-table-column prop="unitName" label="单位" align="center"></el-table-column>
-      <el-table-column prop="spec" label="规格" align="center"></el-table-column>
+      <el-table-column prop="unitName" sortable="custom" label="单位"></el-table-column>
+      <el-table-column prop="spec" sortable="custom" label="规格"></el-table-column>
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
           <span class="badge" :class="$Constants.GOODS_STATUS_CLASS[scope.row.status]">
@@ -80,16 +100,28 @@
           type: 'primary',
         },
       ];
-      return {};
+      return {
+        filter: {
+          keywordsLike: '',
+          categoryUuid: '',
+          status: '',
+        },
+        categoryList: [],
+      };
     },
     methods: {
       refreshPage() {
         this.query();
+        this.getCategoryDropdownList();
       },
       async query() {
         const params = this.mx_getTableParams();
+        params.filter = this.filter;
         const res = await this.$api.goods.query(params);
         this.mx_setTableData(res);
+      },
+      async getCategoryDropdownList() {
+        this.categoryList = await this.$api.goodsCategory.getDropdownList();
       },
     },
   };

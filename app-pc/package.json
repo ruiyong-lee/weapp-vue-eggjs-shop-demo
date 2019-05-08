@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
-    "easyscrolldt": "^1.0.6",
     "element-ui": "^2.8.2",
     "fecha": "^2.3.3",
     "lodash": "^4.17.11",
@@ -19,12 +18,13 @@
     "vue-router": "^3.0.6",
     "vue-svg-icon": "^1.2.9",
     "vue2-transitions": "^0.2.3",
+    "vuescroll": "^4.12.2",
     "vuex": "^3.1.0"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.6.0",
-    "@vue/cli-plugin-eslint": "^3.6.0",
-    "@vue/cli-service": "^3.6.0",
+    "@vue/cli-plugin-babel": "^3.7.0",
+    "@vue/cli-plugin-eslint": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
     "@vue/eslint-config-airbnb": "^4.0.0",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
     "babel-plugin-syntax-jsx": "^6.18.0",
@@ -34,5 +34,7 @@
     "node-sass": "^4.12.0",
     "sass-loader": "^7.1.0",
     "vue-template-compiler": "^2.6.10"
-  }
+  },
+  "author": "ruiyong.lee@gmail.com",
+  "license": "MIT"
 }

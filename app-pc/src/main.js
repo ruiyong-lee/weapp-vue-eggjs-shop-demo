@@ -1,9 +1,8 @@
+import Vue from 'vue';
 import Element from 'element-ui';
-import VueCookie from 'vue-cookie';
-import EasyScroll from 'easyscrolldt';
+import vuescroll from 'vuescroll/dist/vuescroll-native';
 import Icon from 'vue-svg-icon/Icon.vue';
 import _ from 'lodash';
-import Vue from 'vue';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -18,16 +17,21 @@ import './styles/element-cover.scss';
 import './styles/common.scss';
 
 Vue.use(Element);
-Vue.use(VueCookie);
-Vue.use(EasyScroll);
+Vue.use(vuescroll);
 Vue.use(_);
 Vue.component('icon', Icon);
 Vue.component('safe-img', SafeImg);
 Vue.component('pagination', Pagination);
 Vue.prototype.$api = api;
 Vue.prototype.$Constants = Constants;
+Vue.prototype.$vuescrollConfig = {
+  bar: {
+    background: '#5C9ACF',
+  },
+};
 
 Vue.config.productionTip = false;
+
 
 new Vue({
   router,

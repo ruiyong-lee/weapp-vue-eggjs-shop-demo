@@ -11,8 +11,8 @@
     <el-row class="mt-20">
       <h2 class="content-title"><i class="el-icon-tickets"></i> 订单信息</h2>
       <section class="order-panel">
-        <el-row :gutter="40" type="flex">
-          <el-col :span="8" class="border-right-1">
+        <el-row type="flex">
+          <el-col :span="8" class="plr-20 border-right-1">
             <p>
               <span class="order-panel-label">订货总量：</span>
               <span class="text-bold">{{order.goodsTotalQty}}</span>
@@ -38,7 +38,7 @@
               <span class="text-red text-bold">¥ {{order.paymentAmount}}</span>
             </p>
           </el-col>
-          <el-col :span="8" class="border-right-1">
+          <el-col :span="8" class="plr-20 border-right-1">
             <p class="order-panel-nickname">{{order.customerName}}</p>
             <p>
               <span class="order-panel-label">收货人：</span>
@@ -53,7 +53,7 @@
               <span>{{order.address}}</span>
             </p>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" class="plr-20">
             <p>
               <span class="order-panel-label">配送时间：</span>
               <span>{{order.deliveryTimeTypeName}}（{{order.deliveryTimeTypeRemark}}）</span>

@@ -1,13 +1,22 @@
 <template>
   <div>
-    <el-table :data="mx_defaultTableData" size="mini">
-      <el-table-column prop="name" label="名称">
+    <el-form class="filter-form" :inline="true" ref="filterForm" :model="filter" size="mini" @submit.native.prevent>
+      <el-form-item label="名称" prop="keywordsLike">
+        <el-input v-model.trim="filter.keywordsLike" placeholder="类别名称" clearable @keyup.enter.native="query"></el-input>
+      </el-form-item>
+      <el-form-item>
+        <el-button type="primary" @click="query">查询</el-button>
+        <el-button @click="mx_resetTable()">重置</el-button>
+      </el-form-item>
+    </el-form>
+    <el-table ref="defaultTable" :data="mx_defaultTableData" size="mini" @sort-change="mx_handleTableSortChange">
+      <el-table-column prop="name" label="名称" sortable="custom">
         <template slot-scope="scope">
           <span class="text-bold">{{scope.row.name}}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="createdTime" label="创建时间" width="180"></el-table-column>
-      <el-table-column prop="lastModifiedTime" label="最后修改时间" width="180"></el-table-column>
+      <el-table-column prop="createdTime" label="创建时间" sortable="custom" width="180"></el-table-column>
+      <el-table-column prop="lastModifiedTime" label="最后修改时间" sortable="custom" width="180"></el-table-column>
       <el-table-column label="操作" fixed="right" width="100" align="center">
         <template slot-scope="scope">
           <el-button type="text" size="mini" @click="showDialog('edit', scope.row)">编辑</el-button>
@@ -30,7 +39,7 @@
     <el-dialog :title="dialogTitle" :visible.sync="dialogVisible" width="30%" center @close="handleDialogClose">
       <el-form :model="dialogForm" :rules="dialogRules" ref="dialogForm" label-width="6em" @submit.native.prevent>
         <el-form-item label="类别名称" prop="name">
-          <el-input v-model="dialogForm.name" autocomplete="off" clearable></el-input>
+          <el-input v-model.trim="dialogForm.name" autocomplete="off" clearable></el-input>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -58,6 +67,9 @@
         },
       ];
       return {
+        filter: {
+          keywordsLike: '',
+        },
         dialogForm: {
           name: '',
         },
@@ -78,6 +90,7 @@
       },
       async query() {
         const params = this.mx_getTableParams();
+        params.filter = this.filter;
         const res = await this.$api.goodsCategory.query(params);
         this.mx_setTableData(res);
       },
@@ -102,7 +115,7 @@
         this.dialogVisible = false;
       },
       handleDialogClose() {
-        this.resetForm('dialogForm');
+        this.$refs.dialogForm.resetFields();
       },
       submitForm(formName) {
         const { dialogType, dialogForm, selectedData } = this;
@@ -121,9 +134,6 @@
             }
           }
         });
-      },
-      resetForm(formName) {
-        this.$refs[formName].resetFields();
       },
       deleteCategory(uuid) {
         this.$confirm('将永久删除该类别, 是否继续？', '提示', {

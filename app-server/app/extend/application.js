@@ -23,6 +23,10 @@ module.exports = {
     return fecha.format(date, 'YYYY-MM-DD HH:mm:ss');
   },
 
+  // 获取排序条件数组
+  getSortInfo(sort) {
+    return _.isEmpty(sort) ? [['createdTime', 'DESC']] : sort;
+  },
   // create所需的一些公共字段
   getCrateInfo(creatorId, creatorName) {
     return {

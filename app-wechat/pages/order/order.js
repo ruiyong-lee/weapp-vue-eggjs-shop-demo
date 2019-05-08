@@ -34,7 +34,7 @@ Page(Object.assign({}, ZanTab, {
   getOrderList(cb) {
     var { page, pageSize, tab } = this.data
     var params = app.Http.buildParams({
-      status: tab.selectedId === 'all' ? '' : tab.selectedId,
+      filter: { status: tab.selectedId === 'all' ? '' : tab.selectedId},
       pagination: { page, pageSize }
     })
 
@@ -44,7 +44,7 @@ Page(Object.assign({}, ZanTab, {
       success: (res = {}) => {
         var result = this.data.goodsOrderList.concat(res.rows)
 
-        if (page * pageSize >= res.count) {
+        if (page * pageSize >= res.count && res.count > 0) {
           this.setData({
             isLastPage: true
           })

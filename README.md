@@ -115,6 +115,13 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 [**sequelize**](https://github.com/sequelize/sequelize) |
 [**lodash**](https://github.com/lodash/lodash) |
 [**fecha**](https://github.com/taylorhakes/fecha) |
-[**node-uuid**](https://github.com/kelektiv/node-uuid)
+[**node-uuid**](https://github.com/kelektiv/node-uuid) |
+[**vuescroll**](https://github.com/YvesCoding/vuescroll) |
 [**weui-wxss**](https://github.com/Tencent/weui-wxss) |
-[**zanui-weapp**](https://github.com/youzan/zanui-weapp) |
+[**zanui-weapp**](https://github.com/youzan/zanui-weapp)
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT)
+
+Copyright (c) 2018-present, ruiyong-lee
