@@ -83,6 +83,17 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 配送订货单&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取订货单&nbsp;&nbsp;&nbsp;&nbsp;
 
+## 计划
+
+1、订单消息推送
+
+2、首页日统计
+
+3、小程序重构
+
+to be continued...
+
+
 ## 项目本地运行
 ```
 补充中...
