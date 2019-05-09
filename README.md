@@ -16,7 +16,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ## 已完成（界面和接口）
 
-> **小程序**：
+> **小程序**
 
 ✔ 登录&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 首页获取类别和商品列表&nbsp;&nbsp;&nbsp;&nbsp;
@@ -37,7 +37,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 新增用户地址&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 编辑用户地址&nbsp;&nbsp;&nbsp;&nbsp;
 
-> **pc管理端**：
+> **pc管理端**
 
 ###### 管理员
 
@@ -82,6 +82,13 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 完成订货单&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 配送订货单&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取订货单&nbsp;&nbsp;&nbsp;&nbsp;
+
+> **功能**
+
+✔ 订单过期自动取消&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 多tab操作&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 表格条件查询&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 表格排序&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 计划
 

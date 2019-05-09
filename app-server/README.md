@@ -32,11 +32,19 @@
 
 5、打开命令提示符，定位到文件夹`app-server`
 
+> 执行下面的命令，安装依赖
+```bash
+npm i
+```
+
 > 执行下面的命令，启动本地服务
 ```bash
-npm i                       // 安装依赖
-npm run dev                 // 启动服务，如果需要断点调试请运行：npm run debug
-open http://localhost:7001/
+npm run dev
+```
+
+> 执行下面的命令，启动本地调试（可断点）
+```bash
+npm run debug
 ```
 
 ## 部署
