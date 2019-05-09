@@ -6,7 +6,7 @@
 
 ## 技术栈
 
-微信小程序：**ES5 （小程序的代码写法有点旧，之后有时间修改）**
+微信小程序：**ES5 （小程序的代码写法有点旧，之后有时间重构）**
 
 pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
@@ -94,7 +94,12 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 to be continued...
 
 
-## 项目本地运行
+## 开发与部署文档
+- [app-server](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-server/README.md)
+- [app-pc](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-pc/README.md)
+- [app-wechat](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-wechat/README.md)
+
+## 界面截图
 ```
 补充中...
 ```
