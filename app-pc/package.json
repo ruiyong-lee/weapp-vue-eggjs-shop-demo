@@ -19,7 +19,7 @@
     "vue-svg-icon": "^1.2.9",
     "vue2-transitions": "^0.2.3",
     "vuescroll": "^4.12.2",
-    "vuex": "^3.1.0"
+    "vuex": "^3.1.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",

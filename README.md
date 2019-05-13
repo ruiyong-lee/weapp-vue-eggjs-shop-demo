@@ -1,6 +1,6 @@
 # weapp-vue-eggjs-shop-demo
 
-**适用于日用品、干货等商城，pc管理端 + 微信小程序**
+**适用于日用品、干货等商城，pc管理端 + 微信小程序 + 后端服务**
 
 **您的 `星星` :star::star: 和 `建议` :facepunch::facepunch: 是我的动力 :kissing_heart::kissing_heart::kissing_heart:**
 
@@ -87,6 +87,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ✔ 订单过期自动取消&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 多tab操作&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 记录接口调用，切换tab判断是否获取最新数据&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 表格条件查询&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 表格排序&nbsp;&nbsp;&nbsp;&nbsp;
 

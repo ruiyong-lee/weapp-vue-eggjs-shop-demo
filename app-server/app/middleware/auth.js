@@ -18,31 +18,22 @@ module.exports = (options, app) => {
       ctx.request.body = { ...ctx.request.body, ...ctx.query };
 
       // 过滤登录接口
-      if (ctx.path === '/weapp/login') {
+      if (openId || ctx.path === '/weapp/login') {
         await next();
-        return;
-      }
-
-      // 判断是否有session
-      if (!openId) {
+      } else {
         ctx.body = {
           code: ctx.NO_LOGIN_CODE,
           message: '尚未登录',
         };
-        return;
       }
-
-      await next();
     } else {
       // 管理端接口
-      // 过滤登录接口
+      // 过滤登录接口和验证token
       const ignorePaths = ['/user/login', '/user/logout'];
-      if (ignorePaths.includes(ctx.path)) {
+      const valid = await ctx.verifyToken();
+      if (valid || ignorePaths.includes(ctx.path)) {
         await next();
-        return;
       }
-      await ctx.verifyToken();
-      await next();
     }
   };
 };
