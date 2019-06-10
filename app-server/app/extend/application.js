@@ -124,7 +124,7 @@ module.exports = {
         const id = result[2];
         const handler = handlers[type];
 
-        if (this._.isFunction(handler)) {
+        if (_.isFunction(handler)) {
           const taskKey = `${type}_${id}`;
           if (tasks[taskKey]) {
             handler(id, tasks[taskKey]);

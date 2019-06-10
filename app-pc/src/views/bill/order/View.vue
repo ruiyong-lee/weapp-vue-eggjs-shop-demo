@@ -147,8 +147,7 @@
           uuid: this.$route.params.orderUuid,
         };
 
-        const res = await this.$api.order.get(params);
-        this.order = res;
+        this.order = await this.$api.order.get(params);
       },
       // 小计
       getSubTotal(data = {}) {

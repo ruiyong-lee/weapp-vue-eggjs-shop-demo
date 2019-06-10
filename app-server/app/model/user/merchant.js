@@ -98,11 +98,9 @@ module.exports = app => {
    * @return {object|null} - 查找结果
    */
   Merchant.get = async ({ uuid, attributes }) => {
-    const merchant = await Merchant.findById(uuid, {
+    return await Merchant.findById(uuid, {
       attributes,
     });
-
-    return merchant;
   };
 
   return Merchant;

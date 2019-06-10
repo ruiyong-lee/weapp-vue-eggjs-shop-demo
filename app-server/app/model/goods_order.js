@@ -68,7 +68,7 @@ module.exports = app => {
    * @return {object|null} - 查找结果
    */
   GoodsOrder.get = async ({ orderAttributes, orderLineAttributes, uuid, orgUuid }) => {
-    const ressult = await GoodsOrder.findOne({
+    return await GoodsOrder.findOne({
       attributes: orderAttributes,
       include: [
         {
@@ -79,8 +79,6 @@ module.exports = app => {
       ],
       where: { uuid, orgUuid },
     });
-
-    return ressult;
   };
 
   /**

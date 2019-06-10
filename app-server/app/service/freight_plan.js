@@ -85,12 +85,10 @@ class FreightPlanService extends Service {
   async getDefault(params = {}) {
     const { app } = this;
     const { Sequelize } = app;
-    const resultList = await app.model.FreightPlan.getDefault({
+    return await app.model.FreightPlan.getDefault({
       ...params,
       attributes: ['uuid', 'basicFreight', [Sequelize.fn('ROUND', Sequelize.col('freeFreightAmount'), 2), 'freeFreightAmount']],
     });
-
-    return resultList;
   }
 
   /**
@@ -100,9 +98,7 @@ class FreightPlanService extends Service {
    */
   async setDefault(params = {}) {
     const { app } = this;
-    const uuid = await app.model.FreightPlan.setDefault(params);
-
-    return uuid;
+    return await app.model.FreightPlan.setDefault(params);
   }
 }
 

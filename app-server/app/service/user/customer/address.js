@@ -15,12 +15,10 @@ class AddressService extends Service {
    */
   async get(params = {}) {
     const { app } = this;
-    const address = await app.model.User.Customer.Address.get({
+    return await app.model.User.Customer.Address.get({
       ...params,
       attributes: ['uuid', 'version', 'linkMan', 'linkPhone', 'shopName', 'address', 'sysDefault'],
     });
-
-    return address;
   }
 
   /**
@@ -30,12 +28,10 @@ class AddressService extends Service {
    */
   async getDefault(params = {}) {
     const { app } = this;
-    const address = await app.model.User.Customer.Address.getDefault({
+    return await app.model.User.Customer.Address.getDefault({
       ...params,
       attributes: ['uuid', 'linkMan', 'linkPhone', 'shopName', 'address'],
     });
-
-    return address;
   }
 
   /**
@@ -45,9 +41,7 @@ class AddressService extends Service {
    */
   async setDefault(params = {}) {
     const { app } = this;
-    const uuid = await app.model.User.Customer.Address.setDefault(params);
-
-    return uuid;
+    return await app.model.User.Customer.Address.setDefault(params);
   }
 
   /**
@@ -57,9 +51,7 @@ class AddressService extends Service {
    */
   async remove(params = {}) {
     const { app } = this;
-    const uuid = await app.model.User.Customer.Address.remove(params);
-
-    return uuid;
+    return await app.model.User.Customer.Address.remove(params);
   }
 
   /**
@@ -69,12 +61,10 @@ class AddressService extends Service {
    */
   async getList(params = {}) {
     const { app } = this;
-    const address = await app.model.User.Customer.Address.getList({
+    return await app.model.User.Customer.Address.getList({
       ...params,
       attributes: ['uuid', 'linkMan', 'linkPhone', 'shopName', 'address', 'sysDefault'],
     });
-
-    return address;
   }
 
   /**

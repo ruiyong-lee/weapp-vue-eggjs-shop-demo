@@ -85,12 +85,10 @@ class DeliveryTimeTypeService extends Service {
   async getList(params = {}) {
     const { app } = this;
     const { Sequelize } = app;
-    const resultList = await app.model.DeliveryTimeType.getList({
+    return await app.model.DeliveryTimeType.getList({
       ...params,
       attributes: ['uuid', 'name', 'remark', [Sequelize.fn('ROUND', Sequelize.col('surcharge'), 2), 'surcharge']],
     });
-
-    return resultList;
   }
 }
 

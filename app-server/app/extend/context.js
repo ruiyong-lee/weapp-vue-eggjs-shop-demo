@@ -69,7 +69,7 @@ module.exports = {
     this.request.body.userName = userName;
     this.request.body.userType = userType;
     this.request.body.orgUuid = orgUuid;
-    // 将get请求的ctx.query合并到ctx.request.body
+    // 将get请求的ctx.query合并到ctx.request.body，这里这么做是暂时的想法，我再考虑下
     this.request.body = { ...this.request.body, ...this.query };
     return true;
   },
