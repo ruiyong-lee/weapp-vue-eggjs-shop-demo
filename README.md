@@ -14,7 +14,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 **暂时不做仓储功能，此项目的初衷并不想做成一个通用的软件，而是学习和交流，所以不做太多复杂的业务逻辑，更多的是技术上的拓展，项目在完整功能实现之前可能会有很大调整，fork的伙伴敬请谅解，完成之后会整理版本**
 
-## 已完成（界面和接口）
+## 界面和接口
 
 > **小程序**
 
@@ -83,21 +83,13 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 配送订货单&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取订货单&nbsp;&nbsp;&nbsp;&nbsp;
 
-> **功能**
-
-✔ 订单过期自动取消&nbsp;&nbsp;&nbsp;&nbsp;
-✔ 多tab操作&nbsp;&nbsp;&nbsp;&nbsp;
-✔ 记录接口调用，切换tab判断是否获取最新数据&nbsp;&nbsp;&nbsp;&nbsp;
-✔ 表格条件查询&nbsp;&nbsp;&nbsp;&nbsp;
-✔ 表格排序&nbsp;&nbsp;&nbsp;&nbsp;
-
-## 计划
+## 功能
 
 > **进行时**（最近很忙，暂缓）
 
 1、对代码写法更细致的完善
 
-> **待完成**
+> **计划**
 
 1、订单消息推送
 
@@ -109,7 +101,11 @@ to be continued...
 
 > **已完成**
 
-暂无
+✔ 订单过期自动取消&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 多tab操作&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 记录接口调用，切换tab判断是否获取最新数据&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 表格条件查询&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 表格排序&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 开发与部署文档
 - [app-server](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-server/README.md)
