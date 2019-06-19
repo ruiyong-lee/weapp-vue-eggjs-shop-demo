@@ -91,12 +91,13 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 表格条件查询&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 表格排序&nbsp;&nbsp;&nbsp;&nbsp;
 
-## 进行时（最近很忙，暂缓）
+## 计划
+
+> **进行时**（最近很忙，暂缓）
+
 1、对代码写法更细致的完善
 
-2、使用Purgecss精简css
-
-## 计划
+> **待完成**
 
 1、订单消息推送
 
@@ -106,6 +107,9 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 to be continued...
 
+> **已完成**
+
+暂无
 
 ## 开发与部署文档
 - [app-server](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-server/README.md)

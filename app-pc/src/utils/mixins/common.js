@@ -82,13 +82,13 @@ export const pageMixin = {
 
 // table
 const PAGE = 1;
-const PAGESIZE = 10;
-const PAGESIZES = [10, 30, 50];
+const PAGE_SIZE = 10;
+const PAGE_SIZES = [10, 30, 50];
 const PAGINATION = {
   count: 0,
   page: PAGE,
-  pageSize: PAGESIZE,
-  pageSizes: PAGESIZES,
+  pageSize: PAGE_SIZE,
+  pageSizes: PAGE_SIZES,
 };
 
 export const tableMixin = {
@@ -144,7 +144,6 @@ export const tableMixin = {
       return _.isFunction(this.query) && this.query();
     },
     mx_resetTable(formTarget = 'filterForm', tableTarget = 'defaultTable') {
-      console.log(formTarget);
       this.$refs[formTarget].resetFields();
       this.$refs[tableTarget].clearSort();
       this.mx_handleTableSortChange({});
