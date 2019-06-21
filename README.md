@@ -111,17 +111,19 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ## 界面截图
 
-<img src="/resource/screenshot/home-2.png"/>
-<img src="/resource/screenshot/order-2.png"/>
+<img src="/resource/screenshot/home.png"/>
+<img src="/resource/screenshot/order-list.png"/>
 <img src="/resource/screenshot/order-detail.png"/>
+<img src="/resource/screenshot/goods-view.png"/>
 
 ## 目录结构
 
 ```
 .
-├── app-wechat        // 小程序目录（已完成）
-├── app-pc     // 小程序pc管理端目录（开发中）
-├── app-server // 小程序服务端目录（开发中）
+├── app-wechat        // 小程序目录（已完成，待重构）
+├── app-pc     // 小程序pc管理端目录（完善中）
+├── app-server // 小程序服务端目录（完善中）
+├── resource // 其他资源
 └── README.md
 ```
 
