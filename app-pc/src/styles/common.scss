@@ -260,6 +260,17 @@
   border-left: 1px solid #e9ecf3;
 }
 
+// 清除浮动
+.clearfix:before,
+.clearfix:after {
+  display: table;
+  content: "";
+}
+
+.clearfix:after {
+  clear: both
+}
+
 // table
 .table-header-cell-gray {
   color: #666 !important;

@@ -96,8 +96,6 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 - 小程序重构
 - 微信支付
 
-to be continued...
-
 > **已完成**
 
 ✔ 订单过期自动取消&nbsp;&nbsp;&nbsp;&nbsp;
@@ -112,9 +110,9 @@ to be continued...
 - [app-wechat](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-wechat/README.md)
 
 ## 界面截图
-```
-补充中...
-```
+
+<img src="https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/resouce/screenshot/home-2.png"/>
+<img src="https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/resouce/screenshot/order-2.png"/>
 
 ## 目录结构
 

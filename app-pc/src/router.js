@@ -24,12 +24,6 @@ if (process.env.NODE_ENV === 'production') {
 let routes = [];
 const defaultRoutes = [
   {
-    path: '/',
-    name: 'home',
-    component: customImport('Home'),
-    meta: { title: '首页', tabKey: 'home', isMainPage: true },
-  },
-  {
     path: '/login',
     name: 'login',
     component: customImport('user/Login'),
@@ -83,6 +77,13 @@ if (userType === 'admin') {
   const deliveryTimeTypeDefaultMeta = { title: '送货时间', tabKey: Constants.DELIVERY_TIME_TYPE };
 
   routes = [
+    // 首页
+    {
+      path: '/',
+      name: 'home',
+      component: customImport('Home'),
+      meta: { title: '首页', tabKey: 'home', isMainPage: true },
+    },
     // 账号信息
     {
       path: '/merchant/view/:merchantUuid',

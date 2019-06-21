@@ -33,10 +33,18 @@
         </div>
         <div class="app-header__right">
           <el-tooltip content="刷新" placement="top">
-            <icon name="sync" class="app-refresh-btn"
+            <icon name="sync" class="app-feature-btn"
                   @click.native="refreshCurrentPage"></icon>
           </el-tooltip>
-          <el-dropdown>
+          <el-popover
+            placement="bottom"
+            width="400"
+            trigger="hover">
+            <el-badge :value="6" :max="99" :hidden="false" slot="reference">
+              <i class="el-icon-bell app-feature-btn"></i>
+            </el-badge>
+          </el-popover>
+          <el-dropdown class="app-user-dropdown">
             <span>
               <span class="app-user-name">{{decodeURI(user.name || '')}}</span>
               <icon name="user" class="text-primary"></icon>
@@ -54,7 +62,7 @@
         </div>
       </el-header>
       <el-container>
-        <el-aside class="app-aside" :width="isCollapse ? '64px' : '200px'" v-auto-windows-height="100">
+        <el-aside class="app-aside" :width="isCollapse ? '64px' : '200px'" v-auto-windows-height="101">
           <vue-scroll>
             <el-menu
               class="app-menu"
@@ -64,11 +72,6 @@
               active-text-color="#5C9ACF"
               router
             >
-              <el-menu-item index="home" :route="{ name: 'home' }">
-                <icon name="home" class="el-icon-v"></icon>
-                <span slot="title">首页</span>
-              </el-menu-item>
-
               <template v-if="user.userType === 'admin'">
                 <el-menu-item index="merchant" :route="{ name: 'merchantList' }">
                   <icon name="user" class="el-icon-v"></icon>
@@ -77,6 +80,10 @@
               </template>
 
               <template v-else>
+                <el-menu-item index="home" :route="{ name: 'home' }">
+                  <icon name="home" class="el-icon-v"></icon>
+                  <span slot="title">首页</span>
+                </el-menu-item>
                 <el-submenu index="bill">
                   <template slot="title">
                     <icon name="file-text" class="el-icon-v"></icon>
@@ -159,7 +166,7 @@
 
             <vue-scroll>
               <keep-alive :include="keepAliveNames">
-                <router-view class="app-view" v-auto-windows-height="174"/>
+                <router-view class="app-view" v-auto-windows-height="175"/>
               </keep-alive>
             </vue-scroll>
           </section>
@@ -456,8 +463,8 @@
   html, body {
     height: 100%;
     width: 100%;
+    min-width: 1200px;
     font-size: 26px;
-    overflow-x: hidden;
     color: #333333;
     background-color: #e9ecf3;
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -669,15 +676,21 @@
     }
   }
 
-  .app-refresh-btn {
-    margin-right: 25px;
+  .app-feature-btn {
+    margin-left: 25px;
     color: #5C9ACF;
+    font-size: 18px;
     cursor: pointer;
+    vertical-align: middle !important;
   }
 
-  .app-user-name {
-    margin-right: 5px;
-    vertical-align: middle;
+  .app-user-dropdown {
+    margin-left: 25px;
+
+    .app-user-name {
+      margin-right: 5px;
+      vertical-align: middle;
+    }
   }
 
   .content-title {

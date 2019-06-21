@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "axios": "^0.18.0",
+    "echarts": "^4.2.1",
     "element-ui": "^2.8.2",
     "fecha": "^2.3.3",
     "lodash": "^4.17.11",
+    "v-charts": "^1.19.0",
     "vue": "^2.6.10",
     "vue-cookie": "^1.1.4",
     "vue-router": "^3.0.6",

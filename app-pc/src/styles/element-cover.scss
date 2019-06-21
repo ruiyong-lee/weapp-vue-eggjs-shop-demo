@@ -7,6 +7,10 @@
   }
 }
 
+.el-badge__content {
+  box-sizing: content-box;
+}
+
 // vuescroll 内容自适应
 .__vuescroll .__view {
   max-width: 100%;
