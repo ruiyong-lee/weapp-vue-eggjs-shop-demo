@@ -113,6 +113,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 <img src="/resource/screenshot/home-2.png"/>
 <img src="/resource/screenshot/order-2.png"/>
+<img src="/resource/screenshot/order-detail.png"/>
 
 ## 目录结构
 
