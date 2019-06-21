@@ -111,8 +111,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ## 界面截图
 
-<img src="https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/resouce/screenshot/home-2.png"/>
-<img src="https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/resouce/screenshot/order-2.png"/>
+<img src="/resource/screenshot/home-2.png"/>
 
 ## 目录结构
 
