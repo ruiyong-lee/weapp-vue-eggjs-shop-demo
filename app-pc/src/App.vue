@@ -345,6 +345,12 @@
         },
         immediate: true,
       },
+      isCollapse: {
+        handler(val) {
+          this.$store.commit('setIsCollapse', val);
+        },
+        immediate: true,
+      },
     },
     methods: {
       // 显示tab上面的图标

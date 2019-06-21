@@ -56,14 +56,14 @@
         <el-card class="chart-card">
           <div slot="header">订单数</div>
           <ve-line :data="chartOrderQtyData" :settings="chartSettings" :extend="chartOrderQtyExtend"
-                   :grid="grid" height="280px" :judge-width="true"></ve-line>
+                   ref="chartOrderQty" :grid="grid" :height="chartHeight"></ve-line>
         </el-card>
       </el-col>
       <el-col :span="12">
         <el-card>
           <div slot="header">订单金额</div>
           <ve-line :data="chartOrderAmountData" :settings="chartSettings" :extend="chartOrderAmountExtend"
-                   :grid="grid" height="280px" :change-delay="20"></ve-line>
+                   ref="chartOrderAmount" :grid="grid" :height="chartHeight"></ve-line>
         </el-card>
       </el-col>
     </el-row>
@@ -71,15 +71,15 @@
       <el-col :span="12">
         <el-card class="chart-card">
           <div slot="header">订购商品数</div>
-          <ve-line :data="chartGoodsQtyData" :settings="chartSettings"
-                   :extend="chartGoodsQtyExtend" :grid="grid" height="280px"></ve-line>
+          <ve-line :data="chartGoodsQtyData" :settings="chartSettings" :extend="chartGoodsQtyExtend"
+                   ref="chartGoodsQty" :grid="grid" :height="chartHeight"></ve-line>
         </el-card>
       </el-col>
       <el-col :span="12">
         <el-card>
           <div slot="header">收款金额</div>
-          <ve-line :data="chartOrderReceiptAmountData" :settings="chartSettings"
-                   :extend="chartOrderAmountExtend" :grid="grid" height="280px"></ve-line>
+          <ve-line :data="chartOrderReceiptAmountData" :settings="chartSettings" :extend="chartOrderAmountExtend"
+                   ref="chartOrderReceiptAmount" :grid="grid" :height="chartHeight"></ve-line>
         </el-card>
       </el-col>
     </el-row>
@@ -147,6 +147,7 @@
         bottom: 0,
         left: 0,
       };
+      this.chartHeight = '280px';
       return {
         chartOrderQtyData: {
           columns: ['日期', '数量'],
@@ -195,11 +196,16 @@
       };
     },
     created() {
-      console.log(this.$parent.$data.isCollapse);
     },
     watch: {
-      '$parent.isCollapse': (val) => {
-        console.log(val);
+      '$store.state.isCollapse': function () {
+        // 侧边栏展开或收起，重新调整图表宽度，延迟300ms，也就是等待动画时间
+        setTimeout(() => {
+          this.$refs.chartOrderQty.echarts.resize();
+          this.$refs.chartOrderAmount.echarts.resize();
+          this.$refs.chartGoodsQty.echarts.resize();
+          this.$refs.chartOrderReceiptAmount.echarts.resize();
+        }, 300);
       },
     },
     methods: {},
