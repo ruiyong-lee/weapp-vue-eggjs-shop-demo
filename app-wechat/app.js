@@ -95,7 +95,7 @@ App({
       var cartItem = {
         goods: goods.goods,
         unitName: goods.unitName,
-        goodsPic: goodsInfo.thumbnail,
+        goodsPic: goods.thumbnail,
         goodsCategoryUuid: goods.goodsCategoryUuid,
         goodsCategoryName: goods.goodsCategoryName,
         goodsPic: goods.thumbnail,

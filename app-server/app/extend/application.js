@@ -16,11 +16,28 @@ module.exports = {
   dayTimeFormat: '%Y-%m-%d %H:%i:%s',
 
   // 日期格式化
-  formatToDay(date) {
+  formatToDay(date = new Date()) {
     return fecha.format(date, 'YYYY-MM-DD');
   },
-  formatToDayTime(date) {
+  formatToDayNoYear(date = new Date()) {
+    return fecha.format(date, 'MM-DD');
+  },
+  formatToDayStart(date = new Date()) {
+    return fecha.format(date, 'YYYY-MM-DD 00:00:00');
+  },
+  formatToDayEnd(date = new Date()) {
+    return fecha.format(date, 'YYYY-MM-DD 23:59:59');
+  },
+  formatToDayTime(date = new Date()) {
     return fecha.format(date, 'YYYY-MM-DD HH:mm:ss');
+  },
+
+  // 获取当前时间相差 count 天的时间
+  getDifferDate(count = 0, date = new Date()) {
+    const time = date.getTime();
+    const oneDayTime = 86400000;
+
+    return new Date(time + oneDayTime * count);
   },
 
   // 获取排序条件数组

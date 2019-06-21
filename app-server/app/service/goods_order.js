@@ -120,7 +120,7 @@ class GoodsOrderService extends Service {
     const goodsUuid = await app.model.GoodsOrder.saveNew(params);
 
     // 超过30分钟自动取消订单
-    app.addDelayTask('cancelOrder', goodsUuid, {}, 10);
+    app.addDelayTask('cancelOrder', goodsUuid, {}, 1800);
 
     return goodsUuid;
   }

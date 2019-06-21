@@ -7,7 +7,7 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  const { weapp, user, utils, goodsOrder, goods, goodsCategory, freightPlan, deliveryTimeType } = controller;
+  const { weapp, user, utils, goodsOrder, goods, goodsCategory, freightPlan, deliveryTimeType, statistics } = controller;
 
   /**
    * 微信小程序
@@ -85,6 +85,10 @@ module.exports = app => {
   router.post('/deliveryTimeType/remove', deliveryTimeType.remove);
   router.post('/deliveryTimeType/query', deliveryTimeType.query);
   router.get('/deliveryTimeType/get', deliveryTimeType.get);
+
+  // 统计
+  router.get('/statistics/order/getForDay', statistics.getForDay);
+  router.get('/statistics/order/getForWeek', statistics.getForWeek);
 
   // utils
   router.post('/utils/upload', utils.upload.upload);

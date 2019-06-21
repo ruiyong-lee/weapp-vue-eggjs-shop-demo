@@ -51,6 +51,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ###### 商家
 
+✔ 首页&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 登录&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 注销&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 修改密码&nbsp;&nbsp;&nbsp;&nbsp;
@@ -87,12 +88,11 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 > **进行时**
   
-- 首页
+- 订单消息推送
 
 > **计划**
 
-- 对代码写法更细致的完善 
-- 订单消息推送
+- 对代码写法更细致的完善
 - 小程序重构
 - 微信支付
 
@@ -103,6 +103,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 记录接口调用，切换tab判断是否获取最新数据&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 表格条件查询&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 表格排序&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 首页统计&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 开发与部署文档
 - [app-server](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-server/README.md)

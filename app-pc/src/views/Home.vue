@@ -8,10 +8,10 @@
             <icon name="status-initial" class="status-card-box__icon text-red"></icon>
             <div class="status-card-box__title">
               <span>待付款</span>
-              <el-progress class="status-card-box__progress" :percentage="50" :show-text="false"
+              <el-progress class="status-card-box__progress" :percentage="initialPercentage" :show-text="false"
                            color="#FF5B5B"></el-progress>
             </div>
-            <span class="status-card-box__value text-red">5</span>
+            <span class="status-card-box__value text-red">{{statusQtyMap.initial || 0}}</span>
           </div>
         </el-col>
         <el-col :span="6" class="border-right-1">
@@ -19,10 +19,10 @@
             <icon name="status-audited" class="status-card-box__icon text-primary"></icon>
             <div class="status-card-box__title">
               <span>待发货</span>
-              <el-progress class="status-card-box__progress" :percentage="20" :show-text="false"
+              <el-progress class="status-card-box__progress" :percentage="auditedPercentage" :show-text="false"
                            color="#5C9ACF"></el-progress>
             </div>
-            <span class="status-card-box__value text-primary">2</span>
+            <span class="status-card-box__value text-primary">{{statusQtyMap.audited || 0}}</span>
           </div>
         </el-col>
         <el-col :span="6" class="border-right-1">
@@ -30,10 +30,10 @@
             <icon name="status-dispatching" class="status-card-box__icon text-green"></icon>
             <div class="status-card-box__title">
               <span>待收货</span>
-              <el-progress class="status-card-box__progress" :percentage="20" :show-text="false"
+              <el-progress class="status-card-box__progress" :percentage="dispatchingPercentage" :show-text="false"
                            color="#1cc09f"></el-progress>
             </div>
-            <span class="status-card-box__value text-green">2</span>
+            <span class="status-card-box__value text-green">{{statusQtyMap.dispatching || 0}}</span>
           </div>
         </el-col>
         <el-col :span="6">
@@ -41,10 +41,10 @@
             <icon name="status-completed" class="status-card-box__icon text-dark-gray"></icon>
             <div class="status-card-box__title">
               <span>已完成</span>
-              <el-progress class="status-card-box__progress" :percentage="10" :show-text="false"
+              <el-progress class="status-card-box__progress" :percentage="completedPercentage" :show-text="false"
                            color="#666666"></el-progress>
             </div>
-            <span class="status-card-box__value text-dark-gray">1</span>
+            <span class="status-card-box__value text-dark-gray">{{statusQtyMap.completed || 0}}</span>
           </div>
         </el-col>
       </el-row>
@@ -87,10 +87,17 @@
 </template>
 
 <script>
+  import { pageMixin } from '../utils/mixins/common';
+
   export default {
     name: 'home',
+    mixins: [pageMixin],
     components: {},
     data() {
+      const { REFRESH_DATA_CALLBACK_MAP, ORDER } = this.$Constants;
+      this[REFRESH_DATA_CALLBACK_MAP] = {
+        [ORDER]: this.refreshPage,
+      };
       this.chartSettings = {
         area: true,
       };
@@ -149,53 +156,24 @@
       };
       this.chartHeight = '280px';
       return {
+        statusQtyMap: {},
         chartOrderQtyData: {
           columns: ['日期', '数量'],
-          rows: [
-            { 日期: '05.03', 数量: 8 },
-            { 日期: '05.04', 数量: 10 },
-            { 日期: '05.05', 数量: 9 },
-            { 日期: '05.06', 数量: 11 },
-            { 日期: '05.07', 数量: 13 },
-            { 日期: '05.08', 数量: 10 },
-          ],
+          rows: [],
         },
         chartOrderAmountData: {
           columns: ['日期', '金额'],
-          rows: [
-            { 日期: '05.03', 金额: 300 },
-            { 日期: '05.04', 金额: 400 },
-            { 日期: '05.05', 金额: 320 },
-            { 日期: '05.06', 金额: 420 },
-            { 日期: '05.07', 金额: 410 },
-            { 日期: '05.08', 金额: 400 },
-          ],
+          rows: [],
         },
         chartGoodsQtyData: {
           columns: ['日期', '数量'],
-          rows: [
-            { 日期: '05.03', 数量: 80 },
-            { 日期: '05.04', 数量: 100 },
-            { 日期: '05.05', 数量: 90 },
-            { 日期: '05.06', 数量: 110 },
-            { 日期: '05.07', 数量: 130 },
-            { 日期: '05.08', 数量: 100 },
-          ],
+          rows: [],
         },
         chartOrderReceiptAmountData: {
           columns: ['日期', '金额'],
-          rows: [
-            { 日期: '05.03', 金额: 300 },
-            { 日期: '05.04', 金额: 400 },
-            { 日期: '05.05', 金额: 320 },
-            { 日期: '05.06', 金额: 420 },
-            { 日期: '05.07', 金额: 410 },
-            { 日期: '05.08', 金额: 400 },
-          ],
+          rows: [],
         },
       };
-    },
-    created() {
     },
     watch: {
       '$store.state.isCollapse': function () {
@@ -208,7 +186,56 @@
         }, 300);
       },
     },
-    methods: {},
+    computed: {
+      initialPercentage() {
+        const { initial = 0, total = 0 } = this.statusQtyMap;
+        return _.round(initial * 100 / total, 0) || 0;
+      },
+      auditedPercentage() {
+        const { audited = 0, total = 0 } = this.statusQtyMap;
+        return _.round(audited * 100 / total, 0) || 0;
+      },
+      dispatchingPercentage() {
+        const { dispatching = 0, total = 0 } = this.statusQtyMap;
+        return _.round(dispatching * 100 / total, 0) || 0;
+      },
+      completedPercentage() {
+        const { completed = 0, total = 0 } = this.statusQtyMap;
+        return _.round(completed * 100 / total, 0) || 0;
+      },
+    },
+    methods: {
+      refreshPage() {
+        this.getForDay();
+        this.getForWeek();
+      },
+      async getForDay() {
+        this.statusQtyMap = await this.$api.statistics.order.getForDay() || {};
+      },
+      async getForWeek() {
+        const chartOrderQtyDataRows = [];
+        const chartOrderAmountDataRows = [];
+        const chartGoodsQtyDataRows = [];
+        const chartOrderReceiptAmountDataRows = [];
+        const res = await this.$api.statistics.order.getForWeek() || {};
+
+        Object.entries(res).forEach((item) => {
+          const { 0: day, 1: obj = {} } = item;
+          const {
+            goodsTotalQty = 0, paymentAmount = 0, totalAmount = 0, orderQty = 0,
+          } = obj;
+          chartOrderQtyDataRows.push({ 日期: day, 数量: orderQty });
+          chartOrderAmountDataRows.push({ 日期: day, 金额: totalAmount });
+          chartGoodsQtyDataRows.push({ 日期: day, 数量: goodsTotalQty });
+          chartOrderReceiptAmountDataRows.push({ 日期: day, 金额: paymentAmount });
+        });
+
+        this.chartOrderQtyData.rows = chartOrderQtyDataRows;
+        this.chartOrderAmountData.rows = chartOrderAmountDataRows;
+        this.chartGoodsQtyData.rows = chartGoodsQtyDataRows;
+        this.chartOrderReceiptAmountData.rows = chartOrderReceiptAmountDataRows;
+      },
+    },
   };
 </script>
 

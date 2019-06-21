@@ -15,7 +15,7 @@ module.exports = app => {
 
   /**
    * 查询订单分页列表
-   * @param {object} { status, attributes, page, pageSize: limit, orgUuid, openId } - 条件
+   * @param {object} { attributes, pagination, filter, sort, orgUuid, openId } - 条件
    * @return {object|null} - 查找结果
    */
   GoodsOrder.query = async ({ attributes, pagination = {}, filter = {}, sort = [], orgUuid, openId }) => {
@@ -60,6 +60,48 @@ module.exports = app => {
     const { count, rows } = await GoodsOrder.findAndCountAll(condition);
 
     return { page, count, rows };
+  };
+
+  /**
+   * 查询订单列表
+   * @param {object} { attributes, filter, orgUuid, openId } - 条件
+   * @return {object|null} - 查找结果
+   */
+  GoodsOrder.getList = async ({ attributes, filter = {}, orgUuid, openId }) => {
+    const { keywordsLike, daterange, status } = filter;
+    const condition = {
+      attributes,
+      where: { orgUuid },
+    };
+
+    if (openId) {
+      condition.where.customerUuid = openId;
+    }
+
+    if (status) {
+      condition.where.status = status;
+    }
+
+    if (keywordsLike) {
+      condition.where.$or = [
+        { billNumber: { $like: `%%${keywordsLike}%%` } },
+        { customerName: { $like: `%%${keywordsLike}%%` } },
+      ];
+    }
+
+    if (!app._.isEmpty(daterange)) {
+      const startDate = new Date(daterange[0]);
+      const endDate = new Date(daterange[1]);
+
+      if (app._.isDate(startDate) && app._.isDate(endDate)) {
+        condition.where.createdTime = {
+          $gt: startDate,
+          $lt: endDate,
+        };
+      }
+    }
+
+    return await GoodsOrder.findAll(condition);
   };
 
   /**
