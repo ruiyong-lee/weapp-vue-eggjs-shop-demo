@@ -55,15 +55,15 @@
       <el-col :span="12">
         <el-card class="chart-card">
           <div slot="header">订单数</div>
-          <ve-line :data="chartOrderQtyData" :settings="chartSettings"
-                   :extend="chartOrderQtyExtend" :grid="grid" height="280px"></ve-line>
+          <ve-line :data="chartOrderQtyData" :settings="chartSettings" :extend="chartOrderQtyExtend"
+                   :grid="grid" height="280px" :judge-width="true"></ve-line>
         </el-card>
       </el-col>
       <el-col :span="12">
         <el-card>
           <div slot="header">订单金额</div>
-          <ve-line :data="chartOrderAmountData" :settings="chartSettings"
-                   :extend="chartOrderAmountExtend" :grid="grid" height="280px"></ve-line>
+          <ve-line :data="chartOrderAmountData" :settings="chartSettings" :extend="chartOrderAmountExtend"
+                   :grid="grid" height="280px" :change-delay="20"></ve-line>
         </el-card>
       </el-col>
     </el-row>
@@ -195,6 +195,12 @@
       };
     },
     created() {
+      console.log(this.$parent.$data.isCollapse);
+    },
+    watch: {
+      '$parent.isCollapse': (val) => {
+        console.log(val);
+      },
     },
     methods: {},
   };
