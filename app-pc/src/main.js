@@ -17,23 +17,23 @@ import './styles/element-variables.scss';
 import './styles/element-cover.scss';
 import './styles/common.scss';
 
-Vue.use(Element);
-Vue.use(vuescroll);
 Vue.use(_);
+Vue.use(Element);
+Vue.use(vuescroll, {
+  ops: {
+    bar: {
+      background: '#5C9ACF',
+      onlyShowBarOnScroll: false,
+    },
+  },
+});
 Vue.component('icon', Icon);
 Vue.component(VeLine.name, VeLine);
 Vue.component('safe-img', SafeImg);
 Vue.component('pagination', Pagination);
 Vue.prototype.$api = api;
 Vue.prototype.$Constants = Constants;
-Vue.prototype.$vuescrollConfig = {
-  bar: {
-    background: '#5C9ACF',
-  },
-};
-
 Vue.config.productionTip = false;
-
 
 new Vue({
   router,

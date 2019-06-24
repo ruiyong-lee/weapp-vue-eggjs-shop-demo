@@ -35,7 +35,6 @@ const defaultRoutes = [
     component: customImport('user/PasswordEdit'),
     meta: { title: '修改密码', tabKey: 'passwordEdit' },
   },
-  { path: '*', redirect: { name: 'home' } },
 ];
 
 if (userType === 'admin') {
@@ -63,6 +62,7 @@ if (userType === 'admin') {
       component: customImport('user/merchant/Edit'),
       meta: { ...merchantDefaultMeta, ...merchantDefaultBreadcrumbs, breadcrumbTitle: '编辑' },
     },
+    { path: '*', redirect: { name: 'merchantList' } },
   ];
 } else {
   // 商家
@@ -156,6 +156,7 @@ if (userType === 'admin') {
       component: customImport('logistics/delivery_time_type/List'),
       meta: { ...deliveryTimeTypeDefaultMeta, isMainPage: true },
     },
+    { path: '*', redirect: { name: 'home' } },
   ];
 }
 
