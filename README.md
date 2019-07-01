@@ -84,13 +84,15 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 配送订货单&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取订货单&nbsp;&nbsp;&nbsp;&nbsp;
 
-## 功能
+## 计划
 
-> **进行时**
+> **进行中**
   
+- scss全局变量
+- 全局过滤器
 - 订单消息推送
 
-> **计划**
+> **未来**
 
 - 对代码写法更细致的完善
 - 小程序重构
