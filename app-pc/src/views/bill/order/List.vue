@@ -25,6 +25,7 @@
         <el-button @click="mx_resetTable()">重置</el-button>
       </el-form-item>
     </el-form>
+
     <el-table ref="defaultTable" :data="mx_defaultTableData" size="mini" @sort-change="mx_handleTableSortChange">
       <el-table-column prop="createdTime" label="单号 / 下单时间" sortable="custom">
         <template slot-scope="scope">
@@ -49,7 +50,7 @@
       <el-table-column label="状态" align="center" width="100">
         <template slot-scope="scope">
           <span class="badge"
-                :class="$Constants.ORDER_STATUS_CLASS[scope.row.status]">{{$Constants.ORDER_STATUS[scope.row.status]}}</span>
+                :class="scope.row.status | formatOrderStatusToClass">{{scope.row.status | formatOrderStatusToCN}}</span>
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="备注" align="center" show-overflow-tooltip></el-table-column>

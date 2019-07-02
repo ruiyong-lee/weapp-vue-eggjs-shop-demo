@@ -4,7 +4,7 @@
       <div>
         <span class="order-header-title">单号：{{order.billNumber}}</span>
         <span class="badge"
-              :class="$Constants.ORDER_STATUS_CLASS[order.status]">{{$Constants.ORDER_STATUS[order.status]}}</span>
+              :class="order.status | formatOrderStatusToClass">{{order.status | formatOrderStatusToCN}}</span>
       </div>
       <p class="order-header-time">下单时间：{{order.createdTime}}</p>
     </header>

@@ -33,16 +33,38 @@
         </div>
         <div class="app-header__right">
           <el-tooltip content="刷新" placement="top">
-            <icon name="sync" class="app-feature-btn"
-                  @click.native="refreshCurrentPage"></icon>
+            <icon name="sync" class="app-feature-btn" @click.native="refreshCurrentPage"></icon>
           </el-tooltip>
           <el-popover
             placement="bottom"
             width="400"
-            trigger="hover">
-            <el-badge :value="6" :max="99" :hidden="false" slot="reference">
-              <i class="el-icon-bell app-feature-btn"></i>
+            trigger="hover"
+            popper-class="p-0">
+            <el-badge class="app-feature-btn" :value="6" :max="99" :hidden="false" slot="reference">
+              <i class="el-icon-bell"></i>
             </el-badge>
+            <div class="app-notice">
+              <div class="app-notice-body">
+                <div class="app-notice-item">
+                  <div>
+                    <div class="app-notice-item__dot"></div>
+                    <span>新订单：DG20190621000003</span>
+                  </div>
+                  <div class="app-notice-item__time">2019-02-02 02:02:02</div>
+                </div>
+                <div class="app-notice-item">
+                  <div>
+                    <div class="app-notice-item__dot"></div>
+                    <span>新订单：DG20190621000003</span>
+                  </div>
+                  <div class="app-notice-item__time">2019-02-02 02:02:02</div>
+                </div>
+              </div>
+              <a class="app-notice-footer" href="#Notice">
+                查看所有通知
+                <i class="el-icon-d-arrow-right text-middle"></i>
+              </a>
+            </div>
           </el-popover>
           <el-dropdown class="app-user-dropdown">
             <span>
@@ -108,6 +130,10 @@
                   <el-menu-item index="freightPlan" :route="{ name: 'freightPlanList' }">运费方案</el-menu-item>
                   <el-menu-item index="deliveryTimeType" :route="{ name: 'deliveryTimeTypeList' }">送货时间</el-menu-item>
                 </el-submenu>
+<!--                <el-menu-item index="noticeList" :route="{ name: 'noticeList' }">-->
+<!--                  <icon name="bell" class="el-icon-v"></icon>-->
+<!--                  <span slot="title">消息</span>-->
+<!--                </el-menu-item>-->
               </template>
             </el-menu>
           </vue-scroll>
@@ -457,7 +483,7 @@
   }
 
   a {
-    color: #5C9ACF;
+    color: $--color-primary;
   }
 
   input {
@@ -484,17 +510,17 @@
 
   .app {
     height: 100%;
-
   }
 
   .app-container {
     height: 100%;
   }
 
+  /*侧边栏*/
   .app-aside {
     margin: 20px 0 20px 20px;
     border-radius: 6px;
-    background-color: #fff;
+    background-color: $--color-white;
     overflow: hidden !important;
     transition: all 0.3s ease-in-out;
 
@@ -508,12 +534,13 @@
     }
   }
 
+  /*头部*/
   .app-header {
     display: flex;
     z-index: 9;
     align-items: center;
     font-size: 12px;
-    background-color: #fff;
+    background-color: $--color-white;
     box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
 
     .app-header__left {
@@ -532,11 +559,59 @@
     }
   }
 
+  /*通知下拉*/
+  .app-notice {
+    .app-notice-body {
+      padding: 0 24px;
+
+      .app-notice-item {
+        padding: 12px 0;
+        color: rgba(0, 0, 0, 0.65);
+
+        &:not(:last-child) {
+          border-bottom: 1px solid #E8E8E8;
+        }
+
+        .app-notice-item__dot {
+          display: inline-block;
+          margin-right: 10px;
+          width: 10px;
+          height: 10px;
+          border-radius: 50%;
+          background-color: $--color-primary;
+          vertical-align: middle;
+        }
+
+        .app-notice-item__title {
+        }
+
+        .app-notice-item__time {
+          margin-top: 5px;
+          padding-left: 20px;
+          font-size: 12px;
+          color: rgba(0, 0, 0, 0.45);
+        }
+      }
+    }
+
+    .app-notice-footer {
+      display: block;
+      height: 48px;
+      line-height: 48px;
+      text-align: center;
+      color: rgba(0, 0, 0, 0.65);
+      text-decoration: none;
+      border-top: 1px solid #E8E8E8;
+      cursor: pointer;
+    }
+  }
+
+  /*页面*/
   .app-page {
     position: relative;
     padding: 10px 5px 15px;
     border-radius: 6px;
-    background-color: #fff;
+    background-color: $--color-white;
 
     .app-page-header {
       padding: 0 15px;
@@ -546,7 +621,7 @@
         display: flex;
         align-items: center;
         padding-bottom: 10px;
-        border-bottom: 1px solid #5C9ACF;
+        border-bottom: 1px solid $--color-primary;
       }
     }
 
@@ -566,7 +641,7 @@
         .svg-icon {
           width: 28px;
           height: 28px;
-          color: #5C9ACF;
+          color: $--color-primary;
           cursor: pointer;
         }
       }
@@ -587,11 +662,11 @@
       height: 100%;
       border-radius: 0;
       overflow: hidden;
-      background: linear-gradient(to bottom right, #FF5B5B, #5C9ACF);
+      background: linear-gradient(to bottom right, $--color-red, $--color-primary);
     }
 
     .el-breadcrumb__inner.is-link, .el-breadcrumb__inner a {
-      color: #5C9ACF !important;
+      color: $--color-primary !important;
     }
   }
 
@@ -608,7 +683,7 @@
     transition: all 0.3s ease-in-out;
 
     .switch-tab-prev, .switch-tab-next {
-      color: #5C9ACF;
+      color: $--color-primary;
       cursor: pointer;
     }
 
@@ -668,12 +743,12 @@
 
           &.active {
             .tab-li-content {
-              color: #fff;
-              border-color: #5C9ACF;
-              background-color: #5C9ACF;
+              color: $--color-white;
+              border-color: $--color-primary;
+              background-color: $--color-primary;
 
               .tab-li-icon {
-                color: #fff !important;
+                color: $--color-white !important;
               }
             }
           }
@@ -682,9 +757,10 @@
     }
   }
 
+  /*功能按钮*/
   .app-feature-btn {
     margin-left: 25px;
-    color: #5C9ACF;
+    color: $--color-primary;
     font-size: 18px;
     cursor: pointer;
     vertical-align: middle !important;
@@ -702,7 +778,7 @@
   .content-title {
     padding-bottom: 10px;
     margin-bottom: 15px;
-    color: #5c9acf;
+    color: $--color-primary;
     font-weight: bold;
     border-bottom: 1px solid #e9ecf3;
   }

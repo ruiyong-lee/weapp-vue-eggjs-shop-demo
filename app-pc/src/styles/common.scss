@@ -12,10 +12,10 @@
 }
 
 .danger-text-btn {
-  color: #FF5B5B;
+  color: $--color-red;
 
   &:focus {
-    color: #FF5B5B;
+    color: $--color-red;
   }
 
   &:hover {
@@ -29,12 +29,12 @@
   min-width: 10px;
   padding: 3px 8px;
   font-size: 12px;
-  color: #fff;
+  color: $--color-white;
   line-height: 1;
   vertical-align: middle;
   white-space: nowrap;
   text-align: center;
-  background-color: #999999;
+  background-color: $--color-gray;
   border-radius: 10px;
 }
 
@@ -86,6 +86,10 @@
 }
 
 // 内边距
+.p-0 {
+  padding: 0;
+}
+
 .p-20 {
   padding: 20px !important;
 }
@@ -151,23 +155,23 @@
 }
 
 .text-dark-gray {
-  color: #666666;
+  color: $--color-dark-gray;
 }
 
 .text-gray {
-  color: #999999;
+  color: $--color-gray;
 }
 
 .text-red {
-  color: #FF5B5B;
+  color: $--color-red;
 }
 
 .text-green {
-  color: #1cc09f;
+  color: $--color-green;
 }
 
 .text-primary {
-  color: #5C9ACF;
+  color: $--color-primary;
 }
 
 .text-center {
@@ -204,27 +208,27 @@
 
 // 背景
 .bg-white {
-  background-color: #FFFFFF;
+  background-color: $--color-white;
 }
 
 .bg-dark-gray {
-  background-color: #666666;
+  background-color: $--color-dark-gray;
 }
 
 .bg-gray {
-  background-color: #999999;
+  background-color: $--color-gray;
 }
 
 .bg-red {
-  background-color: #FF5B5B;
+  background-color: $--color-red;
 }
 
 .bg-green {
-  background-color: #1cc09f;
+  background-color: $--color-green;
 }
 
 .bg-primary {
-  background-color: #5C9ACF;
+  background-color: $--color-primary;
 }
 
 // svg

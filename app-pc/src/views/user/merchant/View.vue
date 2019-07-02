@@ -27,8 +27,8 @@
             {{merchantForm.userName}}
           </el-form-item>
           <el-form-item label="状态">
-            <span class="el-switch-text" :class="$Constants.ENABLE_STATUS_CLASS[merchantForm.enableStatus]">
-              {{$Constants.ENABLE_STATUS[merchantForm.enableStatus]}}
+            <span class="el-switch-text" :class="merchantForm.enableStatus | formatEnableStatusToClass">
+              {{merchantForm.enableStatus | formatEnableStatusToCN}}
             </span>
           </el-form-item>
         </el-col>

@@ -10,6 +10,7 @@ import store from './store';
 import api from './api/api';
 import SafeImg from './components/SafeImg.vue';
 import Pagination from './components/Pagination.vue';
+import filters from './utils/filters';
 import { Constants } from './utils/constants';
 import './directive';
 import './styles/reset.css';
@@ -34,6 +35,11 @@ Vue.component('pagination', Pagination);
 Vue.prototype.$api = api;
 Vue.prototype.$Constants = Constants;
 Vue.config.productionTip = false;
+
+// 全局过滤器
+Object.entries(filters).forEach(([name, fn]) => {
+  Vue.filter(name, fn);
+});
 
 new Vue({
   router,

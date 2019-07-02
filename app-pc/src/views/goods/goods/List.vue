@@ -39,8 +39,8 @@
       <el-table-column prop="spec" sortable="custom" label="规格"></el-table-column>
       <el-table-column label="状态" align="center">
         <template slot-scope="scope">
-          <span class="badge" :class="$Constants.GOODS_STATUS_CLASS[scope.row.status]">
-            {{$Constants.GOODS_STATUS[scope.row.status]}}
+          <span class="badge" :class="scope.row.status | formatGoodsStatusToClass">
+            {{scope.row.status | formatGoodsStatusToCN}}
           </span>
         </template>
       </el-table-column>

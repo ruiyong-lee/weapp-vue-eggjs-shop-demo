@@ -176,6 +176,7 @@
       };
     },
     watch: {
+      // eslint-disable-next-line
       '$store.state.isCollapse': function () {
         // 侧边栏展开或收起，重新调整图表宽度，延迟300ms，也就是等待动画时间
         setTimeout(() => {
@@ -243,7 +244,7 @@
   .home {
     .home-title {
       margin-bottom: 20px;
-      color: #666666;
+      color: $--color-dark-gray;
       font-size: 20px;
       font-weight: bold;
 
@@ -269,7 +270,7 @@
         .status-card-box__title {
           display: inline-block;
           margin: 0 20px;
-          color: #666666;
+          color: $--color-dark-gray;
           min-width: 4em;
           vertical-align: middle;
         }

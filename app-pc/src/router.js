@@ -75,6 +75,7 @@ if (userType === 'admin') {
   const goodsDefaultBreadcrumbs = { breadcrumbs: [{ title: '商品管理', name: 'goodsList' }] };
   const freightPlanDefaultMeta = { title: '运费方案', tabKey: Constants.FREIGHT_PLAN };
   const deliveryTimeTypeDefaultMeta = { title: '送货时间', tabKey: Constants.DELIVERY_TIME_TYPE };
+  const noticeDefaultMeta = { title: '消息', tabKey: Constants.NOTICE };
 
   routes = [
     // 首页
@@ -155,6 +156,13 @@ if (userType === 'admin') {
       name: 'deliveryTimeTypeList',
       component: customImport('logistics/delivery_time_type/List'),
       meta: { ...deliveryTimeTypeDefaultMeta, isMainPage: true },
+    },
+    // 消息
+    {
+      path: '/notice/list',
+      name: 'noticeList',
+      component: customImport('notice/List'),
+      meta: { ...noticeDefaultMeta, isMainPage: true },
     },
     { path: '*', redirect: { name: 'home' } },
   ];

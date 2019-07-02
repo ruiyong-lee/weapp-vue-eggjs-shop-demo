@@ -73,14 +73,14 @@
         }
       }
       .el-form-item__label, .el-form-item__error {
-        color: #fff;
+        color: $--color-white;
       }
       .el-form-item.is-required .el-form-item__label:before {
         content: '';
         margin-left: 0;
       }
       .el-input__inner {
-        border-color: #fff !important;
+        border-color: $--color-white !important;
       }
       .el-radio {
         color: #bbb;
@@ -93,20 +93,20 @@
       }
       .el-radio__input.is-checked {
         .el-radio__inner {
-          border: 2px solid #fff;
-          background: #fff;
+          border: 2px solid $--color-white;
+          background: $--color-white;
           &:after {
-            background-color: #1cc09f;
+            background-color: $--color-green;
           }
         }
         + .el-radio__label {
-          color: #fff;
+          color: $--color-white;
         }
       }
       .login-btn {
         width: 100%;
-        border-color: #1cc09f;
-        background-color: #1cc09f;
+        border-color: $--color-green;
+        background-color: $--color-green;
       }
     }
   }

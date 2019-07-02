@@ -29,8 +29,8 @@
           <el-form-item label="状态">
             <el-switch v-if="userType === 'admin'" v-model="merchantForm.enableStatus"
                        inactive-value="0" active-value="1"></el-switch>
-            <span class="el-switch-text" :class="$Constants.ENABLE_STATUS_CLASS[merchantForm.enableStatus]">
-              {{$Constants.ENABLE_STATUS[merchantForm.enableStatus]}}
+            <span class="el-switch-text" :class="merchantForm.enableStatus | formatEnableStatusToClass">
+              {{merchantForm.enableStatus | formatEnableStatusToCN}}
             </span>
           </el-form-item>
           <template v-if="userType === 'admin'">

@@ -25,7 +25,7 @@
       <el-table-column prop="createdTime" sortable="custom" label="创建时间" width="180"></el-table-column>
       <el-table-column label="状态" width="60">
         <template slot-scope="scope">
-          <span :class="$Constants.ENABLE_STATUS_CLASS[scope.row.enableStatus]">{{$Constants.ENABLE_STATUS[scope.row.enableStatus]}}</span>
+          <span :class="scope.row.enableStatus | formatEnableStatusToClass">{{scope.row.enableStatus | formatEnableStatusToCN}}</span>
         </template>
       </el-table-column>
       <el-table-column label="操作" fixed="right" width="60" align="center">

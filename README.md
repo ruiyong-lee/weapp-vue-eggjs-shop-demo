@@ -88,8 +88,6 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 > **进行中**
   
-- scss全局变量
-- 全局过滤器
 - 订单消息推送
 
 > **未来**
@@ -106,6 +104,8 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 表格条件查询&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 表格排序&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 首页统计&nbsp;&nbsp;&nbsp;&nbsp;
+✔ scss全局变量&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 全局过滤器&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 开发与部署文档
 - [app-server](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-server/README.md)

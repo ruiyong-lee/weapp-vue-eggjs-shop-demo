@@ -15,8 +15,8 @@
           <p>单位：<span class="text-bold">{{goods.unitName}}</span></p>
           <p>售价：<span class="text-red text-bold">¥ {{goods.salePrice}}</span></p>
           <p>状态：
-            <span class="badge" :class="$Constants.GOODS_STATUS_CLASS[goods.status]">
-              {{$Constants.GOODS_STATUS[goods.status]}}
+            <span class="badge" :class="goods.status | formatGoodsStatusToClass">
+              {{goods.status | formatGoodsStatusToCN}}
             </span>
           </p>
         </div>

@@ -6,4 +6,11 @@ module.exports = {
     proxy: 'http://localhost:7001',
     open: true,
   },
+  css: {
+    loaderOptions: {
+      sass: {
+        data: '@import "@/styles/variables.scss";',
+      },
+    },
+  },
 };
