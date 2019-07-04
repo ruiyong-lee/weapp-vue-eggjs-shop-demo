@@ -88,6 +88,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 > **进行中**
   
+- 升级Sequelize版本，优化模型定义
 - 订单消息推送
 
 > **未来**
