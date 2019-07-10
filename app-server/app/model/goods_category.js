@@ -1,9 +1,10 @@
 'use strict';
-const db = require('../../database/db.js');
 
 module.exports = app => {
+  const { Sequelize, model, getSortInfo, checkUpdate, checkDelete } = app;
+  const { Op } = Sequelize;
   const goodsCategorySchema = require('../schema/goodscategory.js')(app);
-  const GoodsCategory = db.defineModel(app, 'goodscategory', goodsCategorySchema);
+  const GoodsCategory = model.define('goodscategory', goodsCategorySchema);
 
   /**
    * 新增类别
@@ -21,10 +22,10 @@ module.exports = app => {
    * @return {string} - 类别uuid
    */
   GoodsCategory.saveModify = async goodsCategory => {
-    const { uuid, name, version, orgUuid } = goodsCategory;
-    const result = await GoodsCategory.update({ version, name }, { where: { uuid, orgUuid, version: version - 1 } });
+    const { uuid, name, version, orgUuid, lastModifierId, lastModifierName } = goodsCategory;
+    const result = await GoodsCategory.update({ version, name, lastModifierId, lastModifierName }, { where: { uuid, orgUuid, version } });
 
-    app.checkUpdate(result);
+    checkUpdate(result);
 
     return uuid;
   };
@@ -37,7 +38,7 @@ module.exports = app => {
   GoodsCategory.remove = async ({ uuid, orgUuid }) => {
     const result = await GoodsCategory.destroy({ where: { uuid, orgUuid } });
 
-    app.checkDelete(result);
+    checkDelete(result);
 
     return uuid;
   };
@@ -50,7 +51,7 @@ module.exports = app => {
   GoodsCategory.query = async ({ orgUuid, attributes, pagination = {}, filter = {}, sort = [] }) => {
     const { page, pageSize: limit } = pagination;
     const { keywordsLike } = filter;
-    const order = app.getSortInfo(sort);
+    const order = getSortInfo(sort);
     const condition = {
       offset: (page - 1) * limit,
       limit,
@@ -60,7 +61,7 @@ module.exports = app => {
     };
 
     if (keywordsLike) {
-      condition.where.name = { $like: `%%${keywordsLike}%%` };
+      condition.where.name = { [Op.like]: `%%${keywordsLike}%%` };
     }
 
     const { count, rows } = await GoodsCategory.findAndCountAll(condition);

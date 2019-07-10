@@ -3,7 +3,7 @@
 const Controller = require('../core/base_controller');
 
 /**
- * Controller - freightPlan
+ * Controller - 运费方案
  * @class
  * @author ruiyong-lee
  */

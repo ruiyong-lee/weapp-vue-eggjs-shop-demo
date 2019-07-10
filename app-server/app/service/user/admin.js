@@ -27,7 +27,7 @@ class AdminService extends Service {
   async savePasswordModify(params = {}) {
     const { app } = this;
     const { userUuid, userName, oldPassword, newPassword } = params;
-    const modifyInfo = app.getModifyInfo(0, userUuid, userName);
+    const modifyInfo = app.getModifyInfo(userUuid, userName);
 
     return await app.model.User.Admin.savePasswordModify({
       uuid: userUuid,

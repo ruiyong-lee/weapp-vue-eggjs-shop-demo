@@ -90,6 +90,8 @@
           type: 'primary',
         },
       ];
+      this.selectedData = {};
+      this.dialogType = '';
       return {
         filter: {
           keywordsLike: '',
@@ -100,7 +102,6 @@
           freeFreightAmount: 0,
           sysDefault: false,
         },
-        selectedData: {},
         dialogRules: {
           name: [
             { required: true, message: '请输入运费方案名称', trigger: 'blur' },
@@ -109,7 +110,6 @@
             { required: true, message: '请输入基础运费', trigger: 'blur' },
           ],
         },
-        dialogType: '',
         dialogTitle: '',
         dialogVisible: false,
       };

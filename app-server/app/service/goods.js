@@ -31,8 +31,7 @@ class GoodsService extends Service {
   async saveModify(params = {}) {
     const { app } = this;
     let { goods, userUuid, userName, orgUuid } = params;
-    const { version } = goods;
-    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
+    const modifyInfo = app.getModifyInfo(userUuid, userName);
 
     goods = { ...goods, ...modifyInfo, orgUuid };
 
@@ -46,9 +45,11 @@ class GoodsService extends Service {
    */
   async up(params) {
     const { app } = this;
-    const { uuid, version, userUuid, userName, orgUuid } = params;
-    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
-    await app.model.Goods.up(uuid, orgUuid, modifyInfo);
+    const { uuid, userUuid, userName, orgUuid, version } = params;
+    const modifyInfo = app.getModifyInfo(userUuid, userName);
+    const goods = { uuid, orgUuid, version, status: 'up', ...modifyInfo };
+
+    await app.model.Goods.saveModify(goods);
 
     return uuid;
   }
@@ -60,9 +61,11 @@ class GoodsService extends Service {
    */
   async down(params) {
     const { app } = this;
-    const { uuid, version, userUuid, userName, orgUuid } = params;
-    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
-    await app.model.Goods.down(uuid, orgUuid, modifyInfo);
+    const { uuid, userUuid, userName, orgUuid, version } = params;
+    const modifyInfo = app.getModifyInfo(userUuid, userName);
+    const goods = { uuid, orgUuid, version, status: 'down', ...modifyInfo };
+
+    await app.model.Goods.saveModify(goods);
 
     return uuid;
   }

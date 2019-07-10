@@ -75,9 +75,9 @@ class StatisticsService extends Service {
       const timeStr = formatToDayNoYear(new Date(createdTime));
 
       if (!_.isEmpty(result[timeStr])) {
-        result[timeStr].goodsTotalQty = _.round(_.add(result[timeStr].goodsTotalQty, goodsTotalQty), 4);
-        result[timeStr].paymentAmount = _.round(_.add(result[timeStr].paymentAmount, paymentAmount), 2);
-        result[timeStr].totalAmount = _.round(_.add(result[timeStr].totalAmount, totalAmount), 2);
+        result[timeStr].goodsTotalQty = _.round(_.add(result[timeStr].goodsTotalQty, Number(goodsTotalQty)), 4);
+        result[timeStr].paymentAmount = _.round(_.add(result[timeStr].paymentAmount, Number(paymentAmount)), 2);
+        result[timeStr].totalAmount = _.round(_.add(result[timeStr].totalAmount, Number(totalAmount)), 2);
         result[timeStr].orderQty += 1;
       }
     });

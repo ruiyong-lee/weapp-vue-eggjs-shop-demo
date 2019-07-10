@@ -31,8 +31,7 @@ class DeliveryTimeTypeService extends Service {
   async saveModify(params = {}) {
     const { app } = this;
     let { deliveryTimeType, userUuid, userName, orgUuid } = params;
-    const { version } = deliveryTimeType;
-    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
+    const modifyInfo = app.getModifyInfo(userUuid, userName);
 
     deliveryTimeType = { ...deliveryTimeType, ...modifyInfo, orgUuid };
 

@@ -6,7 +6,7 @@
       "experimentalObjectRestSpread": true
     }
   },
-  // add your custom rules here
+  "parser": "babel-eslint",
   "rules": {
     "array-bracket-spacing": 0
   }

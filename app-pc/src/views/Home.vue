@@ -5,7 +5,7 @@
       <el-row type="flex" :gutter="0" justify="space-around">
         <el-col :span="6" class="border-right-1">
           <div class="status-card-box">
-            <icon name="status-initial" class="status-card-box__icon text-red"></icon>
+            <i class="iconfont icon-initial status-card-box__icon text-red"></i>
             <div class="status-card-box__title">
               <span>待付款</span>
               <el-progress class="status-card-box__progress" :percentage="initialPercentage" :show-text="false"
@@ -16,7 +16,7 @@
         </el-col>
         <el-col :span="6" class="border-right-1">
           <div class="status-card-box">
-            <icon name="status-audited" class="status-card-box__icon text-primary"></icon>
+            <i class="iconfont icon-audited status-card-box__icon text-primary"></i>
             <div class="status-card-box__title">
               <span>待发货</span>
               <el-progress class="status-card-box__progress" :percentage="auditedPercentage" :show-text="false"
@@ -27,7 +27,7 @@
         </el-col>
         <el-col :span="6" class="border-right-1">
           <div class="status-card-box">
-            <icon name="status-dispatching" class="status-card-box__icon text-green"></icon>
+            <i class="iconfont icon-dispatching status-card-box__icon text-green"></i>
             <div class="status-card-box__title">
               <span>待收货</span>
               <el-progress class="status-card-box__progress" :percentage="dispatchingPercentage" :show-text="false"
@@ -38,7 +38,7 @@
         </el-col>
         <el-col :span="6">
           <div class="status-card-box">
-            <icon name="status-completed" class="status-card-box__icon text-dark-gray"></icon>
+            <i class="iconfont icon-completed status-card-box__icon text-dark-gray"></i>
             <div class="status-card-box__title">
               <span>已完成</span>
               <el-progress class="status-card-box__progress" :percentage="completedPercentage" :show-text="false"
@@ -263,8 +263,8 @@
         text-align: center;
 
         .status-card-box__icon {
-          width: 36px;
-          height: 36px;
+          font-size: 36px;
+          vertical-align: middle;
         }
 
         .status-card-box__title {

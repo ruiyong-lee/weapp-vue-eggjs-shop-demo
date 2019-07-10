@@ -1,11 +1,12 @@
 'use strict';
-const db = require('../../database/db.js');
 
 module.exports = app => {
+  const { Sequelize, model, getSortInfo, checkUpdate } = app;
+  const { Op } = Sequelize;
   const goodsSchema = require('../schema/goods.js')(app);
   const goodsCategorySchema = require('../schema/goodscategory.js')(app);
-  const Goods = db.defineModel(app, 'goods', goodsSchema);
-  const Goodscategory = db.defineModel(app, 'goodscategory', goodsCategorySchema, {
+  const Goods = model.define('goods', goodsSchema);
+  const Goodscategory = model.define('goodscategory', goodsCategorySchema, {
     timestamps: false,
     freezeTableName: true,
   });
@@ -30,43 +31,9 @@ module.exports = app => {
    */
   Goods.saveModify = async goods => {
     const { uuid, orgUuid, version } = goods;
-    const result = await Goods.update(goods, { where: { uuid, orgUuid, version: version - 1 } });
+    const result = await Goods.update(goods, { where: { uuid, orgUuid, version } });
 
-    app.checkUpdate(result);
-
-    return uuid;
-  };
-
-  /**
-   * 上架商品
-   * @param {string} uuid - 商品uuid
-   * @param {string} orgUuid - 组织uuid
-   * @param {object} modifyInfo - 商品修改信息
-   * @return {string} - 商品uuid
-   */
-  Goods.up = async (uuid, orgUuid, modifyInfo = {}) => {
-    const result = await Goods.update({ ...modifyInfo, status: 'up' }, {
-      where: { uuid, orgUuid, version: modifyInfo.version - 1 },
-    });
-
-    app.checkUpdate(result);
-
-    return uuid;
-  };
-
-  /**
-   * 下架商品
-   * @param {string} uuid - 商品uuid
-   * @param {string} orgUuid - 组织uuid
-   * @param {object} modifyInfo - 商品修改信息
-   * @return {string} - 商品uuid
-   */
-  Goods.down = async (uuid, orgUuid, modifyInfo = {}) => {
-    const result = await Goods.update({ ...modifyInfo, status: 'down' }, {
-      where: { uuid, orgUuid, version: modifyInfo.version - 1 },
-    });
-
-    app.checkUpdate(result);
+    checkUpdate(result);
 
     return uuid;
   };
@@ -108,7 +75,7 @@ module.exports = app => {
   Goods.query = async ({ orgUuid, attributes, pagination = {}, filter = {}, sort = [] }) => {
     const { page, pageSize: limit } = pagination;
     const { keywordsLike, categoryUuid, status } = filter;
-    const order = app.getSortInfo(sort);
+    const order = getSortInfo(sort);
     const condition = {
       offset: (page - 1) * limit,
       limit,
@@ -126,7 +93,7 @@ module.exports = app => {
     }
 
     if (keywordsLike) {
-      condition.where.name = { $like: `%%${keywordsLike}%%` };
+      condition.where.name = { [Op.like]: `%%${keywordsLike}%%` };
     }
 
     const { count, rows } = await Goods.findAndCountAll(condition);

@@ -3,7 +3,7 @@
 const Service = require('egg').Service;
 
 /**
- * Service - 类别
+ * Service - 商品类别
  * @class
  * @author ruiyong-lee
  */
@@ -31,8 +31,7 @@ class GoodsCategoryService extends Service {
   async saveModify(params = {}) {
     const { app } = this;
     let { goodsCategory, userUuid, userName, orgUuid } = params;
-    const { version } = goodsCategory;
-    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
+    const modifyInfo = app.getModifyInfo(userUuid, userName);
 
     goodsCategory = { ...goodsCategory, ...modifyInfo, orgUuid };
 

@@ -1,9 +1,10 @@
 'use strict';
-const db = require('../../database/db.js');
 
 module.exports = app => {
+  const { Sequelize, model, getSortInfo, checkUpdate, checkDelete } = app;
+  const { Op } = Sequelize;
   const freightPlanSchema = require('../schema/freightplan.js')(app);
-  const FreightPlan = db.defineModel(app, 'freightplan', freightPlanSchema);
+  const FreightPlan = model.define('freightplan', freightPlanSchema);
 
   /**
    * 新增运费方案
@@ -21,14 +22,14 @@ module.exports = app => {
    * @return {string} - 运费方案uuid
    */
   FreightPlan.saveModify = async freightPlan => {
-    const { uuid, name, version, basicFreight, freeFreightAmount, sysDefault, orgUuid } = freightPlan;
+    const { uuid, name, version, basicFreight, freeFreightAmount, sysDefault, orgUuid, lastModifierId, lastModifierName } = freightPlan;
     const result = await FreightPlan.update({
-      version, name, basicFreight, freeFreightAmount, sysDefault,
+      version, name, basicFreight, freeFreightAmount, sysDefault, lastModifierId, lastModifierName,
     }, {
-      where: { uuid, orgUuid, version: version - 1 },
+      where: { uuid, orgUuid, version },
     });
 
-    app.checkUpdate(result);
+    checkUpdate(result);
 
     return uuid;
   };
@@ -41,7 +42,7 @@ module.exports = app => {
   FreightPlan.remove = async ({ uuid, orgUuid }) => {
     const result = await FreightPlan.destroy({ where: { uuid, orgUuid } });
 
-    app.checkDelete(result);
+    checkDelete(result);
 
     return uuid;
   };
@@ -54,7 +55,7 @@ module.exports = app => {
   FreightPlan.query = async ({ orgUuid, attributes, pagination = {}, filter = {}, sort = [] }) => {
     const { page, pageSize: limit } = pagination;
     const { keywordsLike } = filter;
-    const order = app.getSortInfo(sort);
+    const order = getSortInfo(sort);
     const condition = {
       offset: (page - 1) * limit,
       limit,
@@ -64,7 +65,7 @@ module.exports = app => {
     };
 
     if (keywordsLike) {
-      condition.where.name = { $like: `%%${keywordsLike}%%` };
+      condition.where.name = { [Op.like]: `%%${keywordsLike}%%` };
     }
 
     const { count, rows } = await FreightPlan.findAndCountAll(condition);
@@ -102,7 +103,7 @@ module.exports = app => {
    * @return {string|null} - 运费方案uuid
    */
   FreightPlan.setDefault = async ({ uuid, orgUuid }) => {
-    const transaction = await app.transition();
+    const transaction = await app.getTransition();
     await FreightPlan.update({ sysDefault: 0 }, { where: { sysDefault: 1 }, transaction });
     await FreightPlan.update({ uuid, sysDefault: 1 }, { where: { uuid, orgUuid }, transaction });
 

@@ -1,8 +1,8 @@
 import Vue from 'vue';
 import Element from 'element-ui';
 import vuescroll from 'vuescroll/dist/vuescroll-native';
-import Icon from 'vue-svg-icon/Icon.vue';
 import VeLine from 'v-charts/lib/line.common';
+import VueSocketIO from 'vue-socket.io';
 import _ from 'lodash';
 import App from './App.vue';
 import router from './router';
@@ -28,7 +28,10 @@ Vue.use(vuescroll, {
     },
   },
 });
-Vue.component('icon', Icon);
+Vue.use(new VueSocketIO({
+  debug: true,
+  connection: '/',
+}));
 Vue.component(VeLine.name, VeLine);
 Vue.component('safe-img', SafeImg);
 Vue.component('pagination', Pagination);

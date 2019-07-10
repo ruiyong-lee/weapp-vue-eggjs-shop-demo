@@ -37,3 +37,8 @@ exports.passport = {
   enable: true,
   package: 'egg-passport',
 };
+
+exports.io = {
+  enable: true,
+  package: 'egg-socket.io',
+};

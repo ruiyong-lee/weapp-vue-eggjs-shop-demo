@@ -13,4 +13,12 @@ module.exports = {
       return defaultResult || {};
     }
   },
+
+  // 封装socket.io数据格式
+  parseSocketMsg(action, payload = {}, metadata = {}) {
+    return {
+      meta: { timestamp: Date.now(), ...metadata },
+      data: { action, payload },
+    };
+  },
 };

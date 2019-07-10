@@ -6,8 +6,8 @@
  * @author ruiyong-lee
  */
 module.exports = app => {
-  const { router, controller } = app;
-  const { weapp, user, utils, goodsOrder, goods, goodsCategory, freightPlan, deliveryTimeType, statistics } = controller;
+  const { router, controller, io } = app;
+  const { weapp, user, utils, goodsOrder, goods, goodsCategory, freightPlan, deliveryTimeType, statistics, notice } = controller;
 
   /**
    * 微信小程序
@@ -90,6 +90,14 @@ module.exports = app => {
   router.get('/statistics/order/getForDay', statistics.getForDay);
   router.get('/statistics/order/getForWeek', statistics.getForWeek);
 
+  // 消息通知
+  router.post('/notice/readAll', notice.readAll);
+  router.get('/notice/overview', notice.overview);
+  router.post('/notice/query', notice.query);
+
   // utils
   router.post('/utils/upload', utils.upload.upload);
+
+  // socket.io
+  io.of('/').route('notice', io.controller.notice.ping);
 };

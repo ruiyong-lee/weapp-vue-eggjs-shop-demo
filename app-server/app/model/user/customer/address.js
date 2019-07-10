@@ -1,9 +1,9 @@
 'use strict';
-const db = require('../../../../database/db.js');
 
 module.exports = app => {
+  const { model, checkUpdate, checkDelete } = app;
   const addressSchema = require('../../../schema/address.js')(app);
-  const Address = db.defineModel(app, 'address', addressSchema);
+  const Address = model.define('address', addressSchema);
 
   /**
    * 根据uuid获取用户地址
@@ -35,7 +35,7 @@ module.exports = app => {
    * @return {string|null} - 用户地址uuid
    */
   Address.setDefault = async ({ uuid, openId }) => {
-    const transaction = await app.transition();
+    const transaction = await app.getTransition();
     await Address.update({ sysDefault: 0 }, { where: { openId, sysDefault: 1 }, transaction });
     await Address.update({ uuid, sysDefault: 1 }, { where: { uuid, openId }, transaction });
 
@@ -50,7 +50,7 @@ module.exports = app => {
   Address.remove = async ({ uuid, openId }) => {
     const result = await Address.destroy({ where: { uuid, openId } });
 
-    app.checkDelete(result);
+    checkDelete(result);
 
     return uuid;
   };
@@ -76,7 +76,7 @@ module.exports = app => {
     const { openId } = address;
 
     if (address.sysDefault) {
-      const transaction = await app.transition();
+      const transaction = await app.getTransition();
       await Address.update({ sysDefault: 0 }, { where: { openId, sysDefault: 1 }, transaction });
       await Address.create(address, { transaction });
     } else {
@@ -96,14 +96,14 @@ module.exports = app => {
     const { uuid, openId, version } = address;
 
     if (address.sysDefault) {
-      const transaction = await app.transition();
+      const transaction = await app.getTransition();
       await Address.update({ sysDefault: 0 }, { where: { openId, sysDefault: 1 }, transaction });
-      result = await Address.update(address, { where: { uuid, openId, version: version - 1 }, transaction });
+      result = await Address.update(address, { where: { uuid, openId, version }, transaction });
     } else {
-      result = await Address.update(address, { where: { uuid, openId, version: version - 1 } });
+      result = await Address.update(address, { where: { uuid, openId, version } });
     }
 
-    app.checkUpdate(result);
+    checkUpdate(result);
 
     return address.uuid;
   };

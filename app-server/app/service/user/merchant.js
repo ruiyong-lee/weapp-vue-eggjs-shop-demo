@@ -49,8 +49,8 @@ class MerchantService extends Service {
   async saveModify(params = {}) {
     const { app } = this;
     let { merchant, userUuid, userName } = params;
-    const { version, password } = merchant;
-    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
+    const { password } = merchant;
+    const modifyInfo = app.getModifyInfo(userUuid, userName);
 
     if (password) {
       merchant.password = md5(password);
@@ -69,7 +69,7 @@ class MerchantService extends Service {
   async savePasswordModify(params = {}) {
     const { app } = this;
     const { userUuid, userName, oldPassword, newPassword } = params;
-    const modifyInfo = app.getModifyInfo(0, userUuid, userName);
+    const modifyInfo = app.getModifyInfo(userUuid, userName);
 
     return await app.model.User.Merchant.savePasswordModify({
       uuid: userUuid,

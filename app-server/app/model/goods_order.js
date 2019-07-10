@@ -1,11 +1,12 @@
 'use strict';
-const db = require('../../database/db.js');
 
 module.exports = app => {
+  const { _, Sequelize, model, getSortInfo, checkUpdate } = app;
+  const { Op } = Sequelize;
   const goodsOrderSchema = require('../schema/goodsorder.js')(app);
   const goodsOrderLineSchema = require('../schema/goodsorderline')(app);
-  const GoodsOrder = db.defineModel(app, 'goodsorder', goodsOrderSchema);
-  const GoodsOrderLine = db.defineModel(app, 'goodsorderline', goodsOrderLineSchema, {
+  const GoodsOrder = model.define('goodsorder', goodsOrderSchema);
+  const GoodsOrderLine = model.define('goodsorderline', goodsOrderLineSchema, {
     timestamps: false,
     freezeTableName: true,
   });
@@ -21,7 +22,7 @@ module.exports = app => {
   GoodsOrder.query = async ({ attributes, pagination = {}, filter = {}, sort = [], orgUuid, openId }) => {
     const { page, pageSize: limit } = pagination;
     const { keywordsLike, daterange, status } = filter;
-    const order = app.getSortInfo(sort);
+    const order = getSortInfo(sort);
     const condition = {
       offset: (page - 1) * limit,
       limit,
@@ -39,20 +40,20 @@ module.exports = app => {
     }
 
     if (keywordsLike) {
-      condition.where.$or = [
-        { billNumber: { $like: `%%${keywordsLike}%%` } },
-        { customerName: { $like: `%%${keywordsLike}%%` } },
+      condition.where[Op.or] = [
+        { billNumber: { [Op.like]: `%%${keywordsLike}%%` } },
+        { customerName: { [Op.like]: `%%${keywordsLike}%%` } },
       ];
     }
 
-    if (!app._.isEmpty(daterange)) {
+    if (!_.isEmpty(daterange)) {
       const startDate = new Date(daterange[0]);
       const endDate = new Date(daterange[1]);
 
-      if (app._.isDate(startDate) && app._.isDate(endDate)) {
+      if (_.isDate(startDate) && _.isDate(endDate)) {
         condition.where.createdTime = {
-          $gt: startDate,
-          $lt: endDate,
+          [Op.gt]: startDate,
+          [Op.lt]: endDate,
         };
       }
     }
@@ -83,20 +84,20 @@ module.exports = app => {
     }
 
     if (keywordsLike) {
-      condition.where.$or = [
-        { billNumber: { $like: `%%${keywordsLike}%%` } },
-        { customerName: { $like: `%%${keywordsLike}%%` } },
+      condition.where[Op.or] = [
+        { billNumber: { [Op.like]: `%%${keywordsLike}%%` } },
+        { customerName: { [Op.like]: `%%${keywordsLike}%%` } },
       ];
     }
 
-    if (!app._.isEmpty(daterange)) {
+    if (!_.isEmpty(daterange)) {
       const startDate = new Date(daterange[0]);
       const endDate = new Date(daterange[1]);
 
-      if (app._.isDate(startDate) && app._.isDate(endDate)) {
+      if (_.isDate(startDate) && _.isDate(endDate)) {
         condition.where.createdTime = {
-          $gt: startDate,
-          $lt: endDate,
+          [Op.gt]: startDate,
+          [Op.lt]: endDate,
         };
       }
     }
@@ -128,7 +129,7 @@ module.exports = app => {
    * @param {object} uuid - 订单uuid
    * @return {object|null} - 查找结果
    */
-  GoodsOrder.getByUuid = async uuid => await GoodsOrder.findById(uuid);
+  GoodsOrder.getByUuid = async uuid => await GoodsOrder.findByPk(uuid);
 
   /**
    * 创建订单
@@ -136,7 +137,7 @@ module.exports = app => {
    * @return {string} - 返回订单uuid
    */
   GoodsOrder.saveNew = async ({ goodsOrder, goodsOrderLines }) => {
-    const transaction = await app.transition();
+    const transaction = await app.getTransition();
 
     goodsOrder = await GoodsOrder.create(goodsOrder, { transaction });
     goodsOrderLines = goodsOrderLines.map(item => {
@@ -150,6 +151,21 @@ module.exports = app => {
   };
 
   /**
+   * 修改订单
+   * @param {object} params - 条件
+   * @return {string} - 订单uuid
+   */
+  GoodsOrder.saveModify = async params => {
+    const { uuid, orgUuid, version, lastModifierId, lastModifierName } = params;
+    const result = await GoodsOrder.update({ status: 'canceled', lastModifierId, lastModifierName }, {
+      where: { uuid, orgUuid, status: 'initial', version },
+    });
+    checkUpdate(result);
+
+    return uuid;
+  };
+
+  /**
    * 取消订单
    * @param {object} params - 条件
    * @return {string} - 订单uuid
@@ -157,10 +173,9 @@ module.exports = app => {
   GoodsOrder.cancel = async params => {
     const { uuid, orgUuid, version, lastModifierId, lastModifierName } = params;
     const result = await GoodsOrder.update({ status: 'canceled', lastModifierId, lastModifierName }, {
-      where: { uuid, orgUuid, status: 'initial', version: version - 1 },
-      fields: ['status', 'lastModifierId', 'lastModifierName'],
+      where: { uuid, orgUuid, status: 'initial', version },
     });
-    app.checkUpdate(result);
+    checkUpdate(result);
 
     return uuid;
   };
@@ -173,10 +188,9 @@ module.exports = app => {
   GoodsOrder.dispatch = async params => {
     const { uuid, orgUuid, version, lastModifierId, lastModifierName } = params;
     const result = await GoodsOrder.update({ status: 'dispatching', lastModifierId, lastModifierName }, {
-      where: { uuid, orgUuid, status: 'audited', version: version - 1 },
-      fields: ['status', 'lastModifierId', 'lastModifierName'],
+      where: { uuid, orgUuid, status: 'audited', version },
     });
-    app.checkUpdate(result);
+    checkUpdate(result);
 
     return uuid;
   };
@@ -189,10 +203,9 @@ module.exports = app => {
   GoodsOrder.complete = async params => {
     const { uuid, orgUuid, version, lastModifierId, lastModifierName } = params;
     const result = await GoodsOrder.update({ status: 'completed', lastModifierId, lastModifierName }, {
-      where: { uuid, orgUuid, status: 'dispatching', version: version - 1 },
-      fields: ['status', 'lastModifierId', 'lastModifierName'],
+      where: { uuid, orgUuid, status: 'dispatching', version },
     });
-    app.checkUpdate(result);
+    checkUpdate(result);
 
     return uuid;
   };

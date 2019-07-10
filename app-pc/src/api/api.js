@@ -69,6 +69,13 @@ export default {
     },
   },
 
+  // 消息通知
+  notice: {
+    readAll: params => post('notice/readAll', params), // 全部标记为已读
+    overview: params => get('notice/overview', params), // 获取消息概况（最多5条）
+    query: params => post('notice/query', params), // 获取消息分页列表
+  },
+
   // 公共
   login: params => post('user/login', params), // 登录
   logout: params => post('user/logout', params), // 注销

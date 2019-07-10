@@ -3,7 +3,7 @@
 const Controller = require('../core/base_controller');
 
 /**
- * Controller - deliveryTimeType
+ * Controller - 送货时间
  * @class
  * @author ruiyong-lee
  */

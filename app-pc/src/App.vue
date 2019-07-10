@@ -3,13 +3,16 @@
     <el-container class="app-container">
       <el-header class="app-header">
         <div class="app-header__left">
+          <!--展开/收起侧边栏-->
           <el-tooltip :content="isCollapse ? '展开侧边栏' : '收起侧边栏'" placement="top">
-            <icon name="menu" class="text-primary cursor-pointer" @click.native="isCollapse = !isCollapse"></icon>
+            <i class="iconfont icon-menu text-primary cursor-pointer"
+               @click="isCollapse = !isCollapse"></i>
           </el-tooltip>
         </div>
         <div class="app-header__center">
+          <!--tab-->
           <div class="app-tab" v-tab="activeTabIndex">
-            <icon name="left-circle" class="switch-tab-prev mr-15" @click.native="switchPrevTab"></icon>
+            <i class="iconfont icon-left-circle switch-tab-prev mr-15" @click="switchPrevTab"></i>
             <div class="app-tab-content">
               <ul class="tab-ul">
                 <li v-for="(item, index) in tabList"
@@ -23,53 +26,54 @@
                        @mouseout="hideTabLiIcon"
                        @click="$router.push(item)">
                     <span class="tab-li-title">{{item.meta && item.meta.title}}</span>
-                    <icon name="close" class="tab-li-icon text-primary" @click.native.stop="closeTab(index)"></icon>
+                    <i class="iconfont icon-close tab-li-icon text-primary"
+                       @click.stop="closeTab(index)"></i>
                   </div>
                 </li>
               </ul>
             </div>
-            <icon name="right-circle" class="switch-tab-next ml-15" @click.native="switchNextTab"></icon>
+            <i class="iconfont icon-right-circle switch-tab-next ml-15" @click="switchNextTab"></i>
           </div>
         </div>
         <div class="app-header__right">
+          <!--刷新按钮-->
           <el-tooltip content="刷新" placement="top">
-            <icon name="sync" class="app-feature-btn" @click.native="refreshCurrentPage"></icon>
+            <i class="iconfont icon-sync app-feature-btn" @click="refreshCurrentPage"></i>
           </el-tooltip>
+
+          <!--通知面板-->
           <el-popover
             placement="bottom"
             width="400"
             trigger="hover"
-            popper-class="p-0">
-            <el-badge class="app-feature-btn" :value="6" :max="99" :hidden="false" slot="reference">
-              <i class="el-icon-bell"></i>
+            popper-class="p-0"
+            :disabled="noticeCount === 0">
+            <el-badge class="app-feature-btn" :value="noticeCount" :max="99" :hidden="false"
+                      slot="reference">
+              <i class="el-icon-bell" @click="$router.push({ name: 'noticeList' })"></i>
             </el-badge>
             <div class="app-notice">
-              <div class="app-notice-body">
-                <div class="app-notice-item">
-                  <div>
+              <div class="app-notice-body" @click="$router.push({ name: 'noticeList' })">
+                <div class="app-notice-item" v-for="item in noticeList" :key="item.uuid">
+                  <div class="ellipsis">
                     <div class="app-notice-item__dot"></div>
-                    <span>新订单：DG20190621000003</span>
+                    <span>{{item.title}}：{{item.content}}</span>
                   </div>
-                  <div class="app-notice-item__time">2019-02-02 02:02:02</div>
-                </div>
-                <div class="app-notice-item">
-                  <div>
-                    <div class="app-notice-item__dot"></div>
-                    <span>新订单：DG20190621000003</span>
-                  </div>
-                  <div class="app-notice-item__time">2019-02-02 02:02:02</div>
+                  <div class="app-notice-item__time">{{item.createdTime}}</div>
                 </div>
               </div>
-              <a class="app-notice-footer" href="#Notice">
-                查看所有通知
-                <i class="el-icon-d-arrow-right text-middle"></i>
+              <a class="app-notice-footer" @click="readAll">
+                全部标记为已读
+                <i class="el-icon-view text-middle"></i>
               </a>
             </div>
           </el-popover>
+
+          <!--账号信息下拉-->
           <el-dropdown class="app-user-dropdown">
             <span>
               <span class="app-user-name">{{decodeURI(user.name || '')}}</span>
-              <icon name="user" class="text-primary"></icon>
+              <i class="iconfont icon-user text-primary text-middle"></i>
             </span>
             <el-dropdown-menu slot="dropdown">
               <el-dropdown-item
@@ -77,14 +81,18 @@
                 @click.native="$router.push({ name: 'merchantView', params: { merchantUuid: user.userUuid }})">
                 账号信息
               </el-dropdown-item>
-              <el-dropdown-item @click.native="$router.push({ name: 'passwordEdit'})">修改密码</el-dropdown-item>
+              <el-dropdown-item @click.native="$router.push({ name: 'passwordEdit'})">
+                修改密码
+              </el-dropdown-item>
               <el-dropdown-item @click.native="logout">退出登录</el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
         </div>
       </el-header>
       <el-container>
-        <el-aside class="app-aside" :width="isCollapse ? '64px' : '200px'" v-auto-windows-height="101">
+        <!--侧边栏-->
+        <el-aside class="app-aside" :width="isCollapse ? '64px' : '200px'"
+                  v-auto-windows-height="101">
           <vue-scroll>
             <el-menu
               class="app-menu"
@@ -96,19 +104,19 @@
             >
               <template v-if="user.userType === 'admin'">
                 <el-menu-item index="merchant" :route="{ name: 'merchantList' }">
-                  <icon name="user" class="el-icon-v"></icon>
+                  <i class="iconfont icon-user"></i>
                   <span slot="title">商家管理</span>
                 </el-menu-item>
               </template>
 
               <template v-else>
                 <el-menu-item index="home" :route="{ name: 'home' }">
-                  <icon name="home" class="el-icon-v"></icon>
+                  <i class="app-menu-icon iconfont icon-home"></i>
                   <span slot="title">首页</span>
                 </el-menu-item>
                 <el-submenu index="bill">
                   <template slot="title">
-                    <icon name="file-text" class="el-icon-v"></icon>
+                    <i class="iconfont icon-file-text app-menu-icon"></i>
                     <span>订单</span>
                   </template>
                   <el-menu-item index="orderList" :route="{ name: 'orderList' }">订货单</el-menu-item>
@@ -116,36 +124,44 @@
                 </el-submenu>
                 <el-submenu index="goods">
                   <template slot="title">
-                    <icon name="shopping" class="el-icon-v"></icon>
+                    <i class="iconfont icon-shopping app-menu-icon"></i>
                     <span>商品</span>
                   </template>
                   <el-menu-item index="goodsList" :route="{ name: 'goodsList' }">商品管理</el-menu-item>
-                  <el-menu-item index="goodsCategoryList" :route="{ name: 'goodsCategoryList' }">类别管理</el-menu-item>
+                  <el-menu-item index="goodsCategoryList" :route="{ name: 'goodsCategoryList' }">
+                    类别管理
+                  </el-menu-item>
                 </el-submenu>
                 <el-submenu index="logistics">
                   <template slot="title">
-                    <icon name="car" class="el-icon-v"></icon>
+                    <i class="iconfont icon-car app-menu-icon"></i>
                     <span>物流</span>
                   </template>
-                  <el-menu-item index="freightPlan" :route="{ name: 'freightPlanList' }">运费方案</el-menu-item>
-                  <el-menu-item index="deliveryTimeType" :route="{ name: 'deliveryTimeTypeList' }">送货时间</el-menu-item>
+                  <el-menu-item index="freightPlan" :route="{ name: 'freightPlanList' }">运费方案
+                  </el-menu-item>
+                  <el-menu-item index="deliveryTimeType" :route="{ name: 'deliveryTimeTypeList' }">
+                    送货时间
+                  </el-menu-item>
                 </el-submenu>
-<!--                <el-menu-item index="noticeList" :route="{ name: 'noticeList' }">-->
-<!--                  <icon name="bell" class="el-icon-v"></icon>-->
-<!--                  <span slot="title">消息</span>-->
-<!--                </el-menu-item>-->
+                <el-menu-item index="noticeList" :route="{ name: 'noticeList' }">
+                  <i class="iconfont icon-bell app-menu-icon"></i>
+                  <span slot="title">消息</span>
+                </el-menu-item>
               </template>
             </el-menu>
           </vue-scroll>
         </el-aside>
+
         <el-main>
+          <!--面包屑和工具栏-->
           <section v-if="$route.name !== 'login'" class="app-page">
             <div class="app-page-header">
               <el-row class="app-page-header__row">
                 <el-col :span="12">
                   <el-breadcrumb separator-class="el-icon-arrow-right">
                     <el-breadcrumb-item :to="{ name: 'home' }">首页</el-breadcrumb-item>
-                    <el-breadcrumb-item v-for="item in $route.meta && $route.meta.breadcrumbs" :key="item.name">
+                    <el-breadcrumb-item v-for="item in $route.meta && $route.meta.breadcrumbs"
+                                        :key="item.name">
                       <router-link :to="{name: item.name}">{{item.title}}</router-link>
                     </el-breadcrumb-item>
                     <el-breadcrumb-item v-if="$route.name !== 'home'">
@@ -172,7 +188,7 @@
                   </div>
                   <div class="app-page-tools__collapse">
                     <el-dropdown>
-                      <icon name="ellipsis" class="el-icon-v"></icon>
+                      <i class="iconfont icon-ellipsis app-menu-icon"></i>
                       <el-dropdown-menu slot="dropdown">
                         <template v-for="item in appPageTools">
                           <el-dropdown-item
@@ -190,6 +206,7 @@
               </el-row>
             </div>
 
+            <!--页面-->
             <vue-scroll>
               <keep-alive :include="keepAliveNames">
                 <router-view class="app-view" v-auto-windows-height="175"/>
@@ -273,17 +290,13 @@
         tabList: [],
         keepAliveNames: [],
         keepAliveNamesMap: {},
+        noticeCount: 0,
+        noticeList: [],
       };
     },
     created() {
-      const name = this.$cookie.get('name');
-      const userUuid = this.$cookie.get('userUuid');
-      const userName = this.$cookie.get('userName');
-      const userType = this.$cookie.get('userType');
-
-      this.$store.commit('setUser', {
-        name, userUuid, userName, userType,
-      });
+      this.initUser();
+      this.initNotice();
     },
     mounted() {
       window.addEventListener('resize', () => {
@@ -297,6 +310,7 @@
       },
       ...mapState({
         user: 'user',
+        isReadAll: 'isReadAll',
         appPageToolsMap: 'appPageToolsMap',
       }),
     },
@@ -377,8 +391,63 @@
         },
         immediate: true,
       },
+      isReadAll(val) {
+        if (val) {
+          this.initNotice();
+        }
+      },
+    },
+    sockets: {
+      connect() {
+        console.log('socket connected');
+      },
+      disconnect() {
+        console.warn('socket disconnect');
+      },
+      notice(message = {}) {
+        const { action, payload = {} } = message.data || {};
+        const { title, content } = payload;
+
+        this.$notify.info({
+          title,
+          message: content,
+          offset: 30,
+        });
+
+        switch (action) {
+          case 'new_order':
+            this.initNotice();
+            break;
+          default:
+            break;
+        }
+      },
     },
     methods: {
+      // 初始化用户信息
+      initUser() {
+        const name = this.$cookie.get('name');
+        const userUuid = this.$cookie.get('userUuid');
+        const userName = this.$cookie.get('userName');
+        const userType = this.$cookie.get('userType');
+
+        this.$store.commit('setUser', {
+          name, userUuid, userName, userType,
+        });
+      },
+      // 初始化消息通知
+      async initNotice() {
+        const res = await this.$api.notice.overview();
+        const { count = 0, rows = [] } = res || {};
+        this.noticeCount = count;
+        this.noticeList = rows;
+      },
+      // 消息全部标记为已读
+      async readAll() {
+        await this.$api.notice.readAll();
+        this.$message({ message: '全部标记为已读', type: 'success' });
+        this.$store.dispatch('readAll');
+      },
       // 显示tab上面的图标
       showTabLiIcon(index) {
         this.hoverTabIndex = index;
@@ -436,12 +505,9 @@
       // 刷新当前页面数据（重新请求数据）
       refreshCurrentPage() {
         const currentRouteName = this.$route.name;
-
-        this.$store.commit('setRefreshPageMap', { key: currentRouteName, value: true });
-        this.$nextTick(() => {
-          this.$store.commit('setRefreshPageMap', { key: currentRouteName, value: false });
-        });
+        this.$store.dispatch('refreshPage', currentRouteName);
       },
+      // 退出登录
       async logout() {
         await this.$api.logout();
         this.$router.push({ name: 'login' });
@@ -531,6 +597,14 @@
       &:not(.el-menu--collapse) {
         width: 200px;
       }
+
+      .app-menu-icon {
+        margin-right: 5px;
+        width: 24px;
+        text-align: center;
+        font-size: 18px;
+        vertical-align: middle;
+      }
     }
   }
 
@@ -567,6 +641,7 @@
       .app-notice-item {
         padding: 12px 0;
         color: rgba(0, 0, 0, 0.65);
+        cursor: pointer;
 
         &:not(:last-child) {
           border-bottom: 1px solid #E8E8E8;
@@ -578,7 +653,7 @@
           width: 10px;
           height: 10px;
           border-radius: 50%;
-          background-color: $--color-primary;
+          background-color: $--color-red;
           vertical-align: middle;
         }
 
@@ -599,8 +674,6 @@
       height: 48px;
       line-height: 48px;
       text-align: center;
-      color: rgba(0, 0, 0, 0.65);
-      text-decoration: none;
       border-top: 1px solid #E8E8E8;
       cursor: pointer;
     }
@@ -638,9 +711,8 @@
       }
 
       .app-page-tools__collapse {
-        .svg-icon {
-          width: 28px;
-          height: 28px;
+        .app-menu-icon {
+          font-size: 28px;
           color: $--color-primary;
           cursor: pointer;
         }
@@ -723,8 +795,10 @@
 
             .tab-li-icon {
               width: 0;
-              height: 14px;
+              font-size: 14px;
+              line-height: 1;
               transition: inherit;
+              overflow: hidden;
             }
 
             &.tab-li-icon__show {

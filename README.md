@@ -88,11 +88,11 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 > **进行中**
   
-- 升级Sequelize版本，优化模型定义
-- 订单消息推送
+- 暂无
 
 > **未来**
 
+- 提供线下支付方式
 - 对代码写法更细致的完善
 - 小程序重构
 - 微信支付
@@ -107,18 +107,21 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 首页统计&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ scss全局变量&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 全局过滤器&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 升级Sequelize版本，优化模型定义&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 订单消息推送（此次更新需运行：npm run db:up 数据库新增消息通知表，之后会在release体现更新内容）&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 开发与部署文档
 - [app-server](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-server/README.md)
 - [app-pc](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-pc/README.md)
 - [app-wechat](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-wechat/README.md)
 
-## 界面截图
+## 部分界面截图
 
 <img src="/resource/screenshot/home.png"/>
 <img src="/resource/screenshot/order-list.png"/>
 <img src="/resource/screenshot/order-detail.png"/>
 <img src="/resource/screenshot/goods-view.png"/>
+<img src="/resource/screenshot/notice-list.png"/>
 
 ## 目录结构
 
@@ -139,7 +142,6 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 [**axios**](https://github.com/axios/axios) |
 [**ElemeFE**](https://github.com/ElemeFE) |
 [**vue-cookie**](https://github.com/alfhen/vue-cookie) |
-[**vue-svg-icon**](https://github.com/cenkai88/vue-svg-icon) |
 [**vue2-transitions**](https://github.com/BinarCode/vue2-transitions) |
 [**nodejs**](https://github.com/nodejs) |
 [**egg**](https://github.com/eggjs/egg) |
@@ -150,6 +152,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 [**fecha**](https://github.com/taylorhakes/fecha) |
 [**node-uuid**](https://github.com/kelektiv/node-uuid) |
 [**vuescroll**](https://github.com/YvesCoding/vuescroll) |
+[**Vue-Socket.io**](https://github.com/MetinSeylan/Vue-Socket.io) |
 [**weui-wxss**](https://github.com/Tencent/weui-wxss) |
 [**zanui-weapp**](https://github.com/youzan/zanui-weapp)
 

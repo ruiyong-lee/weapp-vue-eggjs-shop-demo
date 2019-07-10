@@ -78,6 +78,8 @@
           type: 'primary',
         },
       ];
+      this.selectedData = {};
+      this.dialogType = '';
       return {
         filter: {
           keywordsLike: '',
@@ -87,13 +89,11 @@
           remark: '',
           surcharge: 0,
         },
-        selectedData: {},
         dialogRules: {
           name: [
             { required: true, message: '请输入送货时间名称', trigger: 'blur' },
           ],
         },
-        dialogType: '',
         dialogTitle: '',
         dialogVisible: false,
       };

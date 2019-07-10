@@ -90,8 +90,7 @@ class AddressService extends Service {
   async saveModify(params = {}) {
     let { address, openId, nickName } = params;
     const { app } = this;
-    const { version } = address;
-    const modifyInfo = app.getModifyInfo(version, openId, nickName);
+    const modifyInfo = app.getModifyInfo(openId, nickName);
 
     address = { ...address, ...modifyInfo, openId };
 

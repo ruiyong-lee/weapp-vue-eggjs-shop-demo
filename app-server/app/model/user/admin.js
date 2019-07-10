@@ -1,9 +1,9 @@
 'use strict';
-const db = require('../../../database/db.js');
 
 module.exports = app => {
+  const { model, checkUpdate } = app;
   const adminSchema = require('../../schema/admin.js')(app);
-  const Admin = db.defineModel(app, 'admin', adminSchema);
+  const Admin = model.define('admin', adminSchema);
 
   /**
    * 查找管理员
@@ -24,10 +24,14 @@ module.exports = app => {
    */
   Admin.savePasswordModify = async params => {
     const { uuid, oldPassword, password, lastModifierId, lastModifierName } = params;
-    const updateField = { password, lastModifierId, lastModifierName };
-    const result = await Admin.update(updateField, { where: { uuid, password: oldPassword } });
+    const result = await Admin.update({ password, lastModifierId, lastModifierName }, {
+      where: {
+        uuid,
+        password: oldPassword,
+      },
+    });
 
-    app.checkUpdate(result, '旧密码不正确');
+    checkUpdate(result, '旧密码不正确');
 
     return uuid;
   };

@@ -1,9 +1,10 @@
 'use strict';
-const db = require('../../../database/db.js');
 
 module.exports = app => {
+  const { Sequelize, model, getSortInfo, checkUpdate } = app;
+  const { Op } = Sequelize;
   const merchantSchema = require('../../schema/merchant.js')(app);
-  const Merchant = db.defineModel(app, 'merchant', merchantSchema);
+  const Merchant = model.define('merchant', merchantSchema);
 
   /**
    * 新增商家
@@ -34,9 +35,9 @@ module.exports = app => {
       updateField.password = password;
     }
 
-    const result = await Merchant.update(updateField, { where: { uuid, version: version - 1 } });
+    const result = await Merchant.update(updateField, { where: { uuid, version } });
 
-    app.checkUpdate(result);
+    checkUpdate(result);
 
     return uuid;
   };
@@ -48,10 +49,14 @@ module.exports = app => {
    */
   Merchant.savePasswordModify = async params => {
     const { uuid, oldPassword, password, lastModifierId, lastModifierName } = params;
-    const updateField = { password, lastModifierId, lastModifierName };
-    const result = await Merchant.update(updateField, { where: { uuid, password: oldPassword } });
+    const result = await Merchant.update({ password, lastModifierId, lastModifierName }, {
+      where: {
+        uuid,
+        password: oldPassword,
+      },
+    });
 
-    app.checkUpdate(result, '旧密码不正确');
+    checkUpdate(result, '旧密码不正确');
 
     return uuid;
   };
@@ -64,7 +69,7 @@ module.exports = app => {
   Merchant.query = async ({ attributes, pagination = {}, filter = {}, sort = [] }) => {
     const { page, pageSize: limit } = pagination;
     const { keywordsLike, status } = filter;
-    const order = app.getSortInfo(sort);
+    const order = getSortInfo(sort);
     const condition = {
       offset: (page - 1) * limit,
       limit,
@@ -78,12 +83,12 @@ module.exports = app => {
     }
 
     if (keywordsLike) {
-      condition.where.$or = [
-        { userName: { $like: `%%${keywordsLike}%%` } },
-        { name: { $like: `%%${keywordsLike}%%` } },
-        { linkMan: { $like: `%%${keywordsLike}%%` } },
-        { linkPhone: { $like: `%%${keywordsLike}%%` } },
-        { servicePhone: { $like: `%%${keywordsLike}%%` } },
+      condition.where[Op.or] = [
+        { userName: { [Op.like]: `%%${keywordsLike}%%` } },
+        { name: { [Op.like]: `%%${keywordsLike}%%` } },
+        { linkMan: { [Op.like]: `%%${keywordsLike}%%` } },
+        { linkPhone: { [Op.like]: `%%${keywordsLike}%%` } },
+        { servicePhone: { [Op.like]: `%%${keywordsLike}%%` } },
       ];
     }
 
@@ -98,7 +103,7 @@ module.exports = app => {
    * @return {object|null} - 查找结果
    */
   Merchant.get = async ({ uuid, attributes }) => {
-    return await Merchant.findById(uuid, {
+    return await Merchant.findByPk(uuid, {
       attributes,
     });
   };

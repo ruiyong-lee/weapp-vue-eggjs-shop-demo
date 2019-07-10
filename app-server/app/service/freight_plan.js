@@ -31,8 +31,7 @@ class FreightPlanService extends Service {
   async saveModify(params = {}) {
     const { app } = this;
     let { freightPlan, userUuid, userName, orgUuid } = params;
-    const { version } = freightPlan;
-    const modifyInfo = app.getModifyInfo(version, userUuid, userName);
+    const modifyInfo = app.getModifyInfo(userUuid, userName);
 
     freightPlan = { ...freightPlan, ...modifyInfo, orgUuid };
 

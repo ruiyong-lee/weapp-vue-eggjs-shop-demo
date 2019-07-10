@@ -66,6 +66,8 @@
           type: 'primary',
         },
       ];
+      this.selectedData = {};
+      this.dialogType = '';
       return {
         filter: {
           keywordsLike: '',
@@ -73,13 +75,11 @@
         dialogForm: {
           name: '',
         },
-        selectedData: {},
         dialogRules: {
           name: [
             { required: true, message: '请输入类别名称', trigger: 'blur' },
           ],
         },
-        dialogType: '',
         dialogTitle: '',
         dialogVisible: false,
       };

@@ -1,9 +1,10 @@
 'use strict';
-const db = require('../../database/db.js');
 
 module.exports = app => {
+  const { Sequelize, model, getSortInfo, checkUpdate, checkDelete } = app;
+  const { Op } = Sequelize;
   const deliveryTimeTypeSchema = require('../schema/deliverytimetype.js')(app);
-  const DeliveryTimeType = db.defineModel(app, 'deliverytimetype', deliveryTimeTypeSchema);
+  const DeliveryTimeType = model.define('deliverytimetype', deliveryTimeTypeSchema);
 
   /**
    * 新增送货时间
@@ -21,10 +22,10 @@ module.exports = app => {
    * @return {string} - 送货时间uuid
    */
   DeliveryTimeType.saveModify = async deliveryTimeType => {
-    const { uuid, name, version, orgUuid } = deliveryTimeType;
-    const result = await DeliveryTimeType.update({ version, name }, { where: { uuid, orgUuid, version: version - 1 } });
+    const { uuid, name, version, orgUuid, lastModifierId, lastModifierName } = deliveryTimeType;
+    const result = await DeliveryTimeType.update({ version, name, lastModifierId, lastModifierName }, { where: { uuid, orgUuid, version } });
 
-    app.checkUpdate(result);
+    checkUpdate(result);
 
     return uuid;
   };
@@ -37,7 +38,7 @@ module.exports = app => {
   DeliveryTimeType.remove = async ({ uuid, orgUuid }) => {
     const result = await DeliveryTimeType.destroy({ where: { uuid, orgUuid } });
 
-    app.checkDelete(result);
+    checkDelete(result);
 
     return uuid;
   };
@@ -50,7 +51,7 @@ module.exports = app => {
   DeliveryTimeType.query = async ({ orgUuid, attributes, pagination = {}, filter = {}, sort = [] }) => {
     const { page, pageSize: limit } = pagination;
     const { keywordsLike } = filter;
-    const order = app.getSortInfo(sort);
+    const order = getSortInfo(sort);
     const condition = {
       offset: (page - 1) * limit,
       limit,
@@ -60,7 +61,7 @@ module.exports = app => {
     };
 
     if (keywordsLike) {
-      condition.where.name = { $like: `%%${keywordsLike}%%` };
+      condition.where.name = { [Op.like]: `%%${keywordsLike}%%` };
     }
 
     const { count, rows } = await DeliveryTimeType.findAndCountAll(condition);
@@ -89,18 +90,6 @@ module.exports = app => {
     return await DeliveryTimeType.findOne({
       attributes,
       where: { uuid, orgUuid },
-    });
-  };
-
-  /**
-   * 查找送货时间
-   * @param {object} { orgUuid, attributes } - 条件
-   * @return {Array|null} - 查找结果
-   */
-  DeliveryTimeType.getList = async ({ orgUuid, attributes }) => {
-    return await DeliveryTimeType.findAll({
-      attributes,
-      where: { orgUuid },
     });
   };
 
