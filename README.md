@@ -34,7 +34,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ## 界面与接口
 
-**:mega: 暂时放在这嘚瑟一会，以后关进release :joy::joy::joy:**
+**:mega: 暂时放在这嘚瑟一会，以后关进release :see_no_evil::hear_no_evil:**
 
 > **小程序**
 
@@ -110,7 +110,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ## 计划...赶不上变化？
 
-**:mega: 净整一些...有用的 :joy::joy::joy:**
+**:mega: 净整一些...有用的 :see_no_evil::hear_no_evil:**
 
 > **进行中**
   
@@ -140,7 +140,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ## 开发与部署文档
 
-**:mega: 这也叫文档？你过来我保证不打死你 :joy::joy::joy:**
+**:mega: 这也叫文档？你过来我保证不打死你 :hammer::hammer::hammer:**
 
 - [app-server](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-server/README.md)
 - [app-pc](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-pc/README.md)
@@ -148,7 +148,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ## 部分界面截图
 
-**:mega: 骚气的chrome主题，需要的email我 :joy::joy::joy:**
+**:mega: 骚气的chrome主题，需要的email我 :see_no_evil::hear_no_evil:**
 
 <img src="/resource/screenshot/home.png"/>
 <img src="/resource/screenshot/order-list.png"/>
@@ -158,7 +158,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ## 目录结构
 
-**:mega: 简洁大方，秀外慧中 :joy::joy::joy:**
+**:mega: 简洁大方，秀外慧中 :see_no_evil::hear_no_evil:**
 
 ```
 .
@@ -173,7 +173,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ## 非常感谢以下开源项目或作者：
 
-**:mega: 有本事你用我啊 :joy::joy::joy:**
+**:mega: 有本事你用我啊 :see_no_evil::hear_no_evil:**
 
 [**vuejs**](https://github.com/vuejs) |
 [**axios**](https://github.com/axios/axios) |
@@ -195,7 +195,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ## License
 
-**:mega: 也就装逼用 :joy::joy::joy:**
+**:mega: 也就装逼用 :see_no_evil::hear_no_evil:**
 
 [MIT](http://opensource.org/licenses/MIT)
 
