@@ -142,9 +142,9 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 **:mega: 这也叫文档？你过来我保证不打死你 :hammer::hammer:**
 
-- [app-server](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-server/README.md)
-- [app-pc](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-pc/README.md)
-- [app-wechat](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-wechat/README.md)
+- [app-server](./app-server/README.md)
+- [app-pc](./app-pc/README.md)
+- [app-wechat](./app-wechat/README.md)
 
 ## 部分界面截图
 
