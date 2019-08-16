@@ -14,7 +14,7 @@
 
 **呦呦呦...（作者可能受了点刺激...）**
 
-## :candy: 技术栈
+## 技术栈
 
 **:mega: 列了一大堆，搞得好像都用的很好似的 :sweat_smile::sweat_smile:**
 
@@ -24,7 +24,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 后端：**node + egg.js + ES6**
 
-## :candy: 号外号外
+## 号外号外
 
 [**更新日志**](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/releases)
 
@@ -32,7 +32,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 **:mega: 暂时不做仓储功能，此项目的初衷并不想做成一个通用的软件，而是学习和交流，所以不做太多复杂的业务逻辑，更多的是技术上的拓展**
 
-## :candy: 界面与接口
+## 界面与接口
 
 **:mega: 暂时放在这嘚瑟一会，以后关进release :see_no_evil::hear_no_evil:**
 
@@ -108,7 +108,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 配送订货单&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取订货单&nbsp;&nbsp;&nbsp;&nbsp;
 
-## :candy: 计划...赶不上变化？
+## 计划...赶不上变化？
 
 **:mega: 净整一些...有用的 :see_no_evil::hear_no_evil:**
 
@@ -138,7 +138,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 订单消息推送（此次更新需运行：npm run db:up 数据库新增消息通知表，之后会在release体现更新内容）&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 提供线下支付方式&nbsp;&nbsp;&nbsp;&nbsp;
 
-## :candy: 开发与部署文档
+## 开发与部署文档
 
 **:mega: 这也叫文档？你过来我保证不打死你 :hammer::hammer:**
 
@@ -146,7 +146,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 - [app-pc](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-pc/README.md)
 - [app-wechat](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-wechat/README.md)
 
-## :candy: 部分界面截图
+## 部分界面截图
 
 **:mega: 骚气的chrome主题，需要的email我 :see_no_evil::hear_no_evil:**
 
@@ -156,7 +156,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 <img src="/resource/screenshot/goods-view.png"/>
 <img src="/resource/screenshot/notice-list.png"/>
 
-## :candy: 目录结构
+## 目录结构
 
 **:mega: 简洁大方，秀外慧中 :see_no_evil::hear_no_evil:**
 
@@ -171,7 +171,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ***
 
-## :candy: 非常感谢以下开源项目或作者：
+## 非常感谢以下开源项目或作者：
 
 **:mega: 有本事你用他们呀 :see_no_evil::hear_no_evil:**
 
@@ -193,7 +193,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 [**weui-wxss**](https://github.com/Tencent/weui-wxss) |
 [**zanui-weapp**](https://github.com/youzan/zanui-weapp)
 
-## :candy: License
+## License
 
 **:mega: 也就装逼用 :see_no_evil::hear_no_evil:**
 
