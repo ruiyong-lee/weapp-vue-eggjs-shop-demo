@@ -135,7 +135,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 全局过滤器&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 升级Sequelize版本，优化模型定义&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 提供线下支付方式&nbsp;&nbsp;&nbsp;&nbsp;
-✔ 订单消息推送（此次更新需运行：npm run db:up 数据库新增消息通知表，之后会在release体现更新内容）&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 订单消息推送&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 提供线下支付方式&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 开发与部署文档
@@ -197,6 +197,6 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 **:mega: 也就装逼用 :see_no_evil::hear_no_evil:**
 
-[MIT](http://opensource.org/licenses/MIT)
+[MIT](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/LICENSE)
 
 Copyright (c) 2018-present, ruiyong-lee
