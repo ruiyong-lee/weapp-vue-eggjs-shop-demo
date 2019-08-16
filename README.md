@@ -1,6 +1,6 @@
 # weapp-vue-eggjs-shop-demo
 
-**:mega: 这么骚气且又臭又长的名字将来可能会改 :joy::joy::joy:**
+**:mega: 这么骚气且又臭又长的名字将来可能会改 :joy::joy:**
 
 **商城、商店批发或零售，pc管理端 + 微信小程序 + 后端服务**
 
@@ -14,9 +14,9 @@
 
 **呦呦呦...（作者可能受了点刺激...）**
 
-## 技术栈
+## :candy: 技术栈
 
-**:mega: 列了一大堆，搞得好像都用的很好似的 :sweat_smile::sweat_smile::sweat_smile:**
+**:mega: 列了一大堆，搞得好像都用的很好似的 :sweat_smile::sweat_smile:**
 
 微信小程序：**原生小程序代码老旧，300star后用uni-app重构，按关注量是看大家有没有需要（其实就是单纯想要star :scream:）**
 
@@ -24,7 +24,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 后端：**node + egg.js + ES6**
 
-## 号外号外
+## :candy: 号外号外
 
 [**更新日志**](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/releases)
 
@@ -32,7 +32,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 **:mega: 暂时不做仓储功能，此项目的初衷并不想做成一个通用的软件，而是学习和交流，所以不做太多复杂的业务逻辑，更多的是技术上的拓展**
 
-## 界面与接口
+## :candy: 界面与接口
 
 **:mega: 暂时放在这嘚瑟一会，以后关进release :see_no_evil::hear_no_evil:**
 
@@ -108,7 +108,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 配送订货单&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 获取订货单&nbsp;&nbsp;&nbsp;&nbsp;
 
-## 计划...赶不上变化？
+## :candy: 计划...赶不上变化？
 
 **:mega: 净整一些...有用的 :see_no_evil::hear_no_evil:**
 
@@ -121,7 +121,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 - 对代码写法更细致的完善
 - 小程序用uni-app重构
 - 微信支付
-- 停止维护（你说气人不）
+- **停止维护（你说气人不）**
 
 > **已完成**
 
@@ -138,15 +138,15 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 订单消息推送（此次更新需运行：npm run db:up 数据库新增消息通知表，之后会在release体现更新内容）&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 提供线下支付方式&nbsp;&nbsp;&nbsp;&nbsp;
 
-## 开发与部署文档
+## :candy: 开发与部署文档
 
-**:mega: 这也叫文档？你过来我保证不打死你 :hammer::hammer::hammer:**
+**:mega: 这也叫文档？你过来我保证不打死你 :hammer::hammer:**
 
 - [app-server](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-server/README.md)
 - [app-pc](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-pc/README.md)
 - [app-wechat](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/app-wechat/README.md)
 
-## 部分界面截图
+## :candy: 部分界面截图
 
 **:mega: 骚气的chrome主题，需要的email我 :see_no_evil::hear_no_evil:**
 
@@ -156,7 +156,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 <img src="/resource/screenshot/goods-view.png"/>
 <img src="/resource/screenshot/notice-list.png"/>
 
-## 目录结构
+## :candy: 目录结构
 
 **:mega: 简洁大方，秀外慧中 :see_no_evil::hear_no_evil:**
 
@@ -171,9 +171,9 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ***
 
-## 非常感谢以下开源项目或作者：
+## :candy: 非常感谢以下开源项目或作者：
 
-**:mega: 有本事你用我啊 :see_no_evil::hear_no_evil:**
+**:mega: 有本事你用他们呀 :see_no_evil::hear_no_evil:**
 
 [**vuejs**](https://github.com/vuejs) |
 [**axios**](https://github.com/axios/axios) |
@@ -193,7 +193,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 [**weui-wxss**](https://github.com/Tencent/weui-wxss) |
 [**zanui-weapp**](https://github.com/youzan/zanui-weapp)
 
-## License
+## :candy: License
 
 **:mega: 也就装逼用 :see_no_evil::hear_no_evil:**
 
