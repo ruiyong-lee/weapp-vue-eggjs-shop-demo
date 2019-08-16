@@ -197,6 +197,6 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 **:mega: 也就装逼用 :see_no_evil::hear_no_evil:**
 
-[MIT](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/blob/master/LICENSE)
+[MIT](./LICENSE)
 
 Copyright (c) 2018-present, ruiyong-lee
