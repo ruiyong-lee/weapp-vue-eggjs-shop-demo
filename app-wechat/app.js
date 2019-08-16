@@ -156,7 +156,7 @@ App({
           params.version = order.version
 
           Http.request({
-            url: 'completeOrderBill.do',
+            url: 'completeBill',
             data: params,
             success(res) {
               wx.showToast({

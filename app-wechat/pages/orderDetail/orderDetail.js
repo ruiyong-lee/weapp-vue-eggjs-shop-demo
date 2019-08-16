@@ -260,26 +260,54 @@ Page(Object.assign({}, ZanToast, {
     }
   },
   //支付
-  pay() {
+  goPay() {
     var that = this;
-    var orderUuid = that.data.goodsOrder.uuid;
+    var goodsOrder = that.data.goodsOrder;
+    var orderUuid = goodsOrder.uuid;
+    var orderVersion = goodsOrder.version;
 
     if (orderUuid) {
-      that.toPay(orderUuid)
+      that.beforePay(orderUuid, orderVersion)
     } else {
       that.saveOrder(function(uuid) {
+        that.getOrder(uuid);
+        that.beforePay(uuid, orderVersion)
+      })
+    }
+  },
+  beforePay(orderUuid, orderVersion) {
+    var that = this;
+    wx.showModal({
+      title: '提示',
+      content: '在线支付暂未实现，暂时只支持线下支付',
+      confirmText: '线下支付',
+      success(res) {
+        if (res.confirm) {
+          that.auditOrderBill(orderUuid, orderVersion)
+        } else if (res.cancel) {
+          console.log('用户点击取消')
+        }
+      }
+    })
+  },
+  //审核订单
+  auditOrderBill(uuid, version) {
+    var params = app.Http.buildParams()
+    params.uuid = uuid
+    params.version = version
+
+    app.Http.request({
+      url: 'auditBill',
+      data: params,
+      success(res) {
         wx.showToast({
-          title: '下单成功，但是支付功能暂未实现',
+          title: '订单审核成功',
           icon: 'success',
           duration: 2000
         })
-        //没做websocket，暂时先这样
-        wx.redirectTo({
-          url: '../orderDetail/orderDetail?uuid=' + uuid
-        })
-        that.toPay(uuid)
-      })
-    }
+        that.getOrder(uuid);
+      }
+    })
   },
   //预支付
   toPay(orderUuid) {

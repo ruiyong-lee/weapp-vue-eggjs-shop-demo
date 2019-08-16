@@ -89,6 +89,36 @@ class WeappController extends Controller {
   }
 
   /**
+   * 线下支付订单（相当于审核订单）
+   */
+  async auditBill() {
+    const { ctx } = this;
+    const rule = {
+      uuid: 'string',
+      version: 'number',
+    };
+    ctx.validate(rule);
+    const uuid = await ctx.service.goodsOrder.audit(ctx.request.body);
+
+    this.success(uuid);
+  }
+
+  /**
+   * 完成订单
+   */
+  async completeBill() {
+    const { ctx } = this;
+    const rule = {
+      uuid: 'string',
+      version: 'number',
+    };
+    ctx.validate(rule);
+    const uuid = await ctx.service.goodsOrder.complete(ctx.request.body);
+
+    this.success(uuid);
+  }
+
+  /**
    * 根据uuid获取用户地址
    */
   async getAddress() {

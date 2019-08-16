@@ -30,7 +30,7 @@
 			"list": []
 		},
 		"miniprogram": {
-			"current": 4,
+			"current": 2,
 			"list": [
 				{
 					"id": -1,
@@ -45,10 +45,11 @@
 					"query": ""
 				},
 				{
-					"id": -1,
+					"id": 2,
 					"name": "订单详情",
 					"pathName": "pages/orderDetail/orderDetail",
-					"query": "uuid=f39c66885eb7a670015eb82756310030"
+					"query": "uuid=df501bb0-bfd1-11e9-ad55-2b7d72dd7f0e",
+					"scene": null
 				},
 				{
 					"id": -1,
@@ -59,7 +60,8 @@
 				{
 					"id": -1,
 					"name": "新增编辑地址",
-					"pathName": "pages/addressEdit/addressEdit"
+					"pathName": "pages/addressEdit/addressEdit",
+					"query": ""
 				}
 			]
 		}

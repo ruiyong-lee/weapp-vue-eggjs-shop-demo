@@ -28,7 +28,7 @@ module.exports = {
     this.cookies.set('userUuid', userUuid, cookieConfig);
     this.cookies.set('userName', userName, cookieConfig);
     this.cookies.set('userType', userType, cookieConfig);
-    this.cookies.set('orgUuid', orgUuid, cookieConfig);
+    this.cookies.set('orgUuid', orgUuid || userUuid, cookieConfig);
   },
   removeToken() {
     this.cookies.set('token', null);

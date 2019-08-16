@@ -173,6 +173,21 @@ module.exports = app => {
   GoodsOrder.cancel = async params => {
     const { uuid, orgUuid, version, lastModifierId, lastModifierName } = params;
     const result = await GoodsOrder.update({ status: 'canceled', lastModifierId, lastModifierName }, {
+      where: { uuid, orgUuid, status: { [Op.or]: ['initial', 'audited'] }, version },
+    });
+    checkUpdate(result);
+
+    return uuid;
+  };
+
+  /**
+   * 审核订单
+   * @param {object} params - 条件
+   * @return {string} - 订单uuid
+   */
+  GoodsOrder.audit = async params => {
+    const { uuid, orgUuid, version, lastModifierId, lastModifierName } = params;
+    const result = await GoodsOrder.update({ status: 'audited', lastModifierId, lastModifierName }, {
       where: { uuid, orgUuid, status: 'initial', version },
     });
     checkUpdate(result);

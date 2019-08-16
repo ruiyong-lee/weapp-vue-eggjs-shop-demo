@@ -147,6 +147,18 @@ class GoodsOrderService extends Service {
   }
 
   /**
+   * 审核订单
+   * @param {object} params - 条件
+   * @return {string} - 订单uuid
+   */
+  async audit(params = {}) {
+    const { app } = this;
+    const { openId, nickName, userUuid, userName, orgUuid } = params;
+    const modifyInfo = app.getModifyInfo(openId || userUuid, nickName || userName);
+    return await app.model.GoodsOrder.audit({ ...params, ...modifyInfo, orgUuid });
+  }
+
+  /**
    * 配送订单
    * @param {object} params - 条件
    * @return {string} - 订单uuid

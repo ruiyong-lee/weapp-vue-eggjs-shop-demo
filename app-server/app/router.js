@@ -20,6 +20,8 @@ module.exports = app => {
   router.post('/weapp/getOrderBill', weapp.getOrderBill);
   router.post('/weapp/createBill', weapp.createBill);
   router.post('/weapp/cancelBill', weapp.cancelBill);
+  router.post('/weapp/auditBill', weapp.auditBill);
+  router.post('/weapp/completeBill', weapp.completeBill);
   router.post('/weapp/getAddress', weapp.getAddress);
   router.post('/weapp/getDefaultAddress', weapp.getDefaultAddress);
   router.post('/weapp/setDefaultAddress', weapp.setDefaultAddress);
@@ -33,9 +35,15 @@ module.exports = app => {
    * 管理端
    */
 
+  // 账户相关
   router.post('/user/login', user.common.login);
   router.post('/user/logout', user.common.logout);
   router.post('/user/savePasswordModify', user.common.savePasswordModify);
+
+  // 消息通知
+  router.post('/notice/readAll', notice.readAll);
+  router.get('/notice/overview', notice.overview);
+  router.post('/notice/query', notice.query);
 
   /**
    * 管理端-管理员
@@ -89,11 +97,6 @@ module.exports = app => {
   // 统计
   router.get('/statistics/order/getForDay', statistics.getForDay);
   router.get('/statistics/order/getForWeek', statistics.getForWeek);
-
-  // 消息通知
-  router.post('/notice/readAll', notice.readAll);
-  router.get('/notice/overview', notice.overview);
-  router.post('/notice/query', notice.query);
 
   // utils
   router.post('/utils/upload', utils.upload.upload);
