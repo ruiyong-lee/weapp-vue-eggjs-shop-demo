@@ -28,6 +28,8 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 [**更新日志**](https://github.com/ruiyong-lee/weapp-vue-eggjs-shop-demo/releases)
 
+**:mega: 后端的代码之后会细化整理一下，目前只是大概调通了接口，看代码的时候也希望大家有自己的想法，也希望得到你们的建议**
+
 **:mega: 以后更新内容和注意事项都会放到release里面，之前的commit权当测试，如果遇到报错，还请大家从第一个版本v1.0.0重新初始化，之后会迭代更新**
 
 **:mega: 暂时不做仓储功能，此项目的初衷并不想做成一个通用的软件，而是学习和交流，所以不做太多复杂的业务逻辑，更多的是技术上的拓展**
