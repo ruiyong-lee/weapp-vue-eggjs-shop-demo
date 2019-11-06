@@ -18,7 +18,7 @@
 
 **:mega: 列了一大堆，搞得好像都用的很好似的 :sweat_smile::sweat_smile:**
 
-微信小程序：**原生小程序代码老旧，300star后用uni-app重构，按关注量是看大家有没有需要（其实就是单纯想要star :scream:）**
+微信小程序：**原生小程序代码老旧，用uni-app重构中（这段时间太忙，现在才开始做，目前提交在dev分支）**
 
 pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
@@ -116,7 +116,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 > **进行中**
   
-- 小程序用uni-app重构（这段时间才忙，现在才开始做，目前会提交在dev分支）
+- 小程序用uni-app重构
 
 > **未来**
 
