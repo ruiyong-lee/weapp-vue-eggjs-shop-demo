@@ -1,5 +1,5 @@
 {
-  "name": "app-server",
+  "name": "server_eggjs",
   "version": "1.0.0",
   "description": "app server",
   "private": true,

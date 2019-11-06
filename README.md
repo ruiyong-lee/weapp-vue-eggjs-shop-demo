@@ -120,8 +120,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 > **未来**
 
-- 对代码写法更细致的完善
-- 微信支付
+- 对代码写法更细致的完善、整理、改进
 - **停止维护（你说气人不）**
 
 > **已完成**
@@ -143,19 +142,19 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 **:mega: 这也叫文档？你过来我保证不打死你 :hammer::hammer:**
 
-- [app-server](./app-server/README.md)
-- [app-pc](./app-pc/README.md)
-- [app-wechat](./app-wechat/README.md)
+- [server_eggjs](./server_eggjs/README.md)
+- [pc_vue](./pc_vue/README.md)
+- [mobile_uni-app](./mobile_uni-app/README.md)
 
 ## 部分界面截图
 
 **:mega: 骚气的chrome主题，需要的email我 :see_no_evil::hear_no_evil:**
 
-<img src="/resource/screenshot/home.png"/>
-<img src="/resource/screenshot/order-list.png"/>
-<img src="/resource/screenshot/order-detail.png"/>
-<img src="/resource/screenshot/goods-view.png"/>
-<img src="/resource/screenshot/notice-list.png"/>
+<img src="/_resource/screenshot/home.png"/>
+<img src="/_resource/screenshot/order-list.png"/>
+<img src="/_resource/screenshot/order-detail.png"/>
+<img src="/_resource/screenshot/goods-view.png"/>
+<img src="/_resource/screenshot/notice-list.png"/>
 
 ## 目录结构
 
@@ -163,10 +162,11 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ```
 .
-├── app-wechat // 小程序
-├── app-pc     // pc管理端
-├── app-server // 服务端
-├── resource   // 其他资源
+├── mobile_uni-app // 暂时只支持微信小程序，后面重构客户模块（uni-app）
+├── pc_vue     // pc管理端（vue）
+├── server_eggjs // 服务端（eggjs）
+├── _resource   // 其他资源
+├── LICENSE   // 证书
 └── README.md  // 我就是我 是颜色不一样的烟火
 ```
 

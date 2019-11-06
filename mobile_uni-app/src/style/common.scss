@@ -1,0 +1,202 @@
+/* 表格 */
+
+.table-column {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  font-size: rpx(24);
+
+  &.sm {
+    .table-cell {
+      padding: rpx(12) rpx(8);
+    }
+  }
+
+  .table-header {
+    border-top: rpx(1) solid $uni-border-color-light;
+    background-color: #f5f5f5;
+  }
+
+  .table-row {
+    background-color: $uni-white;
+  }
+
+  .table-header, .table-row {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    border-bottom: rpx(1) solid $uni-border-color-light;
+  }
+
+  .table-cell {
+    flex: 1;
+    padding: rpx(24) rpx(8);
+    text-align: center;
+    word-break: break-all;
+  }
+}
+
+/* 底部固定按钮栏 */
+
+.fixed-bottom {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 10;
+  bottom: calc(var(--window-bottom));
+  padding: 0 rpx(32);
+  width: 100%;
+  height: rpx(120);
+  border-top: rpx(1) solid $uni-shadow-color;
+  background-color: $uni-white;
+
+  > .cu-btn, > .fixed-bottom-navigator {
+    flex: 1;
+    margin-right: rpx(32);
+
+    &:last-child {
+      margin-right: 0;
+    }
+  }
+
+  > .fixed-bottom-navigator {
+    padding: 0 rpx(40);
+    border-radius: rpx(12);
+
+    > .cu-btn {
+      width: 100%;
+    }
+  }
+}
+
+.has-fixed-bottom {
+  padding-bottom: rpx(120);
+}
+
+// IphoneX适配
+.fixed-bottom-iphoneX {
+  padding-bottom: rpx(30);
+  height: rpx(150);
+}
+
+.has-fixed-bottom-iphoneX {
+  padding-bottom: rpx(150);
+}
+
+// textarea替换显示，由于textarea层级最高，故失焦时用view代替显示
+.textarea-copy {
+  flex: 1;
+  padding: 0;
+  margin: rpx(32) 0 rpx(30);
+  height: 4.6em;
+  width: 100%;
+  line-height: 1.2em;
+  font-size: rpx(28);
+
+  &.textarea-copy-empty {
+    color: #777777;
+  }
+}
+
+/* 常用 */
+
+.absolute {
+  position: absolute;
+}
+
+.window-top {
+  top: calc(var(--window-top)) !important;
+}
+
+.window-bottom {
+  bottom: calc(var(--window-bottom)) !important;;
+}
+
+.relative {
+  position: relative;
+}
+
+.flex-3em {
+  flex: 0 0 3em !important;
+}
+
+.flex-4_8em {
+  flex: 0 0 4.8em !important;
+}
+
+.flex-5em {
+  flex: 0 0 5em !important;
+}
+
+.flex-6em {
+  flex: 0 0 6em !important;
+}
+
+.flex-7em {
+  flex: 0 0 7em !important;
+}
+
+.flex-8em {
+  flex: 0 0 8em !important;
+}
+
+.flex-180 {
+  flex: 0 0 rpx(185) !important;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.inline {
+  display: inline;
+}
+
+.inline-block {
+  display: inline-block;
+}
+
+.shadow-normal {
+  box-shadow: 0 rpx(4) rpx(12) $uni-border-color-light;
+}
+
+.border-top-1 {
+  border-top: rpx(1) solid $uni-border-color-light;
+}
+
+.border-bottom-1 {
+  border-bottom: rpx(1) solid $uni-border-color-light;
+}
+
+.lh-1 {
+  line-height: 1;
+}
+
+.lh-1_3 {
+  line-height: 1.3;
+}
+
+.break-all {
+  word-break: break-all;
+}
+
+// 文本超过长度显示2行
+.text-cut-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
+// 输入框文字颜色
+.input-text-red {
+  color: #e54d42 !important;
+
+  .uni-input-input {
+    color: #e54d42 !important;
+  }
+}

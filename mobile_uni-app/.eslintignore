@@ -1,0 +1,4 @@
+dist/*
+src/lib/*
+src/components/mescroll-uni
+babel.config.js
