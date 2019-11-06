@@ -5,7 +5,7 @@ import store from '../store';
 import router from '../router';
 
 let saveNewOrModifyModule; // 记录请求的模块
-let loadingInstance; // loading
+const loadingInstances = []; // loading
 
 // 环境的切换
 // if (process.env.NODE_ENV === 'development') {
@@ -26,9 +26,10 @@ let loadingInstance; // loading
 axios.interceptors.request.use(
   (config) => {
     // 加载loading
-    loadingInstance = Loading.service({
+    const loadingInstance = Loading.service({
       background: 'rgb(0,0,0,0)',
     });
+    loadingInstances.push(loadingInstance);
     return config;
   },
   error => Promise.error(error),
@@ -41,7 +42,7 @@ axios.interceptors.response.use(
     const { code, message } = data;
 
     // 关闭loading
-    loadingInstance.close();
+    loadingInstances.pop().close();
 
     // 如果有模块A发起保存请求成功（意味着新建或修改），将模块A名称记录进map
     // 用于下次进入其他模块（比如：模块B）时，如果模块B内有调用模块A的请求数据接口，则触发请求，
@@ -63,7 +64,7 @@ axios.interceptors.response.use(
     const { status, data = {} } = response || {};
 
     // 关闭loading
-    loadingInstance.close();
+    loadingInstances.pop().close();
 
     switch (status) {
       case 401:
