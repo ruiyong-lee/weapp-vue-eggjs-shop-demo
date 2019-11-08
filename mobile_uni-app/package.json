@@ -33,12 +33,12 @@
     "@dcloudio/uni-mp-toutiao": "^2.0.0-23720191024001",
     "@dcloudio/uni-mp-weixin": "^2.0.0-23720191024001",
     "@dcloudio/uni-stat": "^2.0.0-23720191024001",
+    "fecha": "^3.0.3",
     "flyio": "^0.6.2",
-    "regenerator-runtime": "^0.12.1",
-    "vue": "^2.6.10",
-    "vuex": "^3.0.1",
     "lodash": "^4.17.15",
-    "fecha": "^3.0.3"
+    "regenerator-runtime": "^0.13.3",
+    "vue": "^2.6.10",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@dcloudio/uni-cli-shared": "^2.0.0-23720191024001",
@@ -50,15 +50,17 @@
     "@dcloudio/webpack-uni-pages-loader": "^2.0.0-23720191024001",
     "@types/html5plus": "*",
     "@types/uni-app": "*",
-    "@vue/cli-plugin-babel": "3.5.1",
+    "@vue/cli-plugin-babel": "^4.0.5",
+    "@vue/cli-plugin-eslint": "^3.11.0",
     "@vue/cli-service": "^4.0.0",
+    "@vue/eslint-config-airbnb": "^4.0.1",
     "babel-plugin-import": "^1.11.0",
     "mini-types": "*",
-    "miniprogram-api-typings": "^2.8.0-2",
-    "postcss-comment": "^2.0.0",
-    "vue-template-compiler": "^2.6.10",
+    "miniprogram-api-typings": "^2.9.1",
     "node-sass": "^4.12.0",
-    "sass-loader": "^7.1.0"
+    "postcss-comment": "^2.0.0",
+    "sass-loader": "^8.0.0",
+    "vue-template-compiler": "^2.6.10"
   },
   "browserslist": [
     "Android >= 4",

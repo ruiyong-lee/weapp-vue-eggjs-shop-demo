@@ -7,18 +7,21 @@ import constants from './constants';
 let baseUrl = ''; // H5用相对路径
 
 // #ifndef H5
-baseUrl = 'http://dxtms.56shapan.com/app/'; // 非H5用绝对路径
+baseUrl = 'http://localhost:7001/'; // 非H5用绝对路径
 // #endif
 
 export default {
   defaultConfig: {
     baseUrl,
     header: {
-      'DEVICE-TYPE': 'WXA',
       'Content-Type': 'application/json;charset=UTF-8',
-      'X-AUTH-TOKEN': '',
     },
-    data: {},
+    data: {
+      platform: constants.PLATFORM,
+      userIdentity: constants.USER_IDENTITY,
+      orgUuid: constants.MERCHANT_UUID,
+      nickName: '',
+    },
     method: 'GET',
     dataType: 'json', // 如设为json，会对返回的数据做一次 JSON.parse
     responseType: 'text',
@@ -37,8 +40,13 @@ export default {
   request(options = {}) {
     const { defaultConfig, interceptor } = this;
 
+    defaultConfig.header.sessionid = uni.getStorageSync(constants.SESSION);
     options.url = `${options.baseUrl || defaultConfig.baseUrl}${options.url}`;
-    defaultConfig.header['X-AUTH-TOKEN'] = uni.getStorageSync(constants.TOKEN);
+    options.data = {
+      ...defaultConfig.data,
+      ...options.data,
+      nickName: uni.getStorageSync(constants.NICK_NAME),
+    };
 
     return new Promise((resolve, reject) => {
       let config = null;
@@ -67,7 +75,7 @@ export default {
         if (statusCode === 200) {
           // 请求成功
           // 业务状态码
-          if (code === '200') {
+          if (code === 0) {
             resolve(data);
           } else {
             // 其他错误

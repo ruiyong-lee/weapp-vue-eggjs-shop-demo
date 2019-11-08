@@ -5,7 +5,19 @@
 			"style": {
 				"navigationBarTitleText": "首页"
 			}
-		}
+		},
+    {
+      "path": "pages/user/view",
+      "style": {
+        "navigationBarTitleText": "我的"
+      }
+    },
+    {
+      "path": "pages/user/login",
+      "style": {
+        "navigationBarTitleText": "登录"
+      }
+    }
 	],
 	"globalStyle": {
 		"navigationBarTextStyle": "white",
@@ -26,13 +38,19 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/todo/todo",
+        "pagePath": "pages/user/view",
+        "iconPath": "static/cart.png",
+        "selectedIconPath": "static/cart-active.png",
+        "text": "购物车"
+      },
+      {
+        "pagePath": "pages/user/view",
         "iconPath": "static/bill.png",
         "selectedIconPath": "static/bill-active.png",
         "text": "订单"
       },
       {
-        "pagePath": "pages/todo/todo",
+        "pagePath": "pages/user/view",
         "iconPath": "static/user.png",
         "selectedIconPath": "static/user-active.png",
         "text": "我的"
