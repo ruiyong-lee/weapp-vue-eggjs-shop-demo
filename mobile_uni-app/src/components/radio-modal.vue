@@ -38,6 +38,7 @@
 
 <script>
   export default {
+    name: 'radioModal',
     data() {
       return {
         show: false,
@@ -81,7 +82,7 @@
   };
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .radio-modal {
     .radio-modal-header {
       .radio-modal-input {

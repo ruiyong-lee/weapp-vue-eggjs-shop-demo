@@ -18,6 +18,7 @@ module.exports = {
     'import/no-dynamic-require': 0,
     'no-param-reassign': 0,
     'max-len': [0, 80, 4],
+    'object-curly-newline': ["error", { "minProperties": 6, "consistent": true }],
     indent: 0,
   },
 

@@ -7,7 +7,7 @@ import constants from './constants';
 let baseUrl = ''; // H5用相对路径
 
 // #ifndef H5
-baseUrl = 'http://localhost:7001/'; // 非H5用绝对路径
+baseUrl = 'http://192.168.96.129:7001/'; // 非H5用绝对路径
 // #endif
 
 export default {

@@ -6,16 +6,23 @@ export default {
   USER_IDENTITY: 'customer',
   NICK_NAME: 'userName',
   SESSION: '3rd_session',
-  MERCHANT_UUID: '9ff57530-6afb-11e9-96c7-852592cbf8e8', //根据不同商家手动配置
+  MERCHANT_UUID: '9ff57530-6afb-11e9-96c7-852592cbf8e8', // 根据不同商家手动配置
+
+  // 搜索
+  HISTORY_KEYWORDS: 'history_keywords',
+
+  // 购物车
+  CART: 'cart',
+  CART_SUCCESS_TIP: '已添加到购物车',
 
   // 订单
   ORDER_TABS: [
-    { id: 'all', title: '全部' },
-    { id: 'initial', title: '待付款' },
-    { id: 'audited', title: '已接单' },
-    { id: 'dispatching', title: '配送中' },
-    { id: 'completed', title: '已完成' },
-    { id: 'canceled', title: '已取消' }
+    { value: 'all', label: '全部' },
+    { value: 'initial', label: '待付款' },
+    { value: 'audited', label: '已接单' },
+    { value: 'dispatching', label: '配送中' },
+    { value: 'completed', label: '已完成' },
+    { value: 'canceled', label: '已取消' },
   ],
   ORDER_STATUS_LABELS: {
     initial: '等待付款',
@@ -23,6 +30,13 @@ export default {
     dispatching: '正在配送',
     completed: '已完成',
     canceled: '已取消',
+  },
+  ORDER_STATUS_CLASS: {
+    initial: 'cuIcon-pay text-orange',
+    audited: 'cuIcon-form text-blue',
+    dispatching: 'cuIcon-deliver text-green',
+    completed: 'cuIcon-roundcheck text-grey',
+    canceled: 'cuIcon-roundclose text-gray',
   },
 
   // 长度相关

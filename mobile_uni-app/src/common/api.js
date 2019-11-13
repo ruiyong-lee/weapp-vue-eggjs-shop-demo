@@ -8,7 +8,7 @@ import http from './http';
 
 export default {
   goods: {
-    getGoodsWithCategory: (data, options) => http.get('weapp/getGoodsWithCategory', data, options), // 查询符合条件的商家
+    getGoodsWithCategory: (data, options) => http.get('weapp/getGoodsWithCategory', data, options), // 查询带类别的商品信息
   },
   user: {
     login: (data, options) => http.post('weapp/login', data, options), // 用户登录

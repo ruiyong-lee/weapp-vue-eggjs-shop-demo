@@ -7,6 +7,12 @@
 			}
 		},
     {
+      "path": "pages/order/cart",
+      "style": {
+        "navigationBarTitleText": "购物车"
+      }
+    },
+    {
       "path": "pages/user/view",
       "style": {
         "navigationBarTitleText": "我的"
@@ -38,16 +44,10 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/user/view",
+        "pagePath": "pages/order/cart",
         "iconPath": "static/cart.png",
         "selectedIconPath": "static/cart-active.png",
         "text": "购物车"
-      },
-      {
-        "pagePath": "pages/user/view",
-        "iconPath": "static/bill.png",
-        "selectedIconPath": "static/bill-active.png",
-        "text": "订单"
       },
       {
         "pagePath": "pages/user/view",
