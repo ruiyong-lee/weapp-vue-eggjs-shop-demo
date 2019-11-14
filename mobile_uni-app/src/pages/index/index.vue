@@ -31,69 +31,48 @@
         </view>
       </view>
 
-      <view v-else-if="!filterGoodsList || filterGoodsList.length === 0" class="search-empty">
-        <view class="text-center">
-          <view class="search-empty-icon"></view>
-          <view class="margin-top">没有查找到商品</view>
-          <view>换个关键词试试吧</view>
-        </view>
-      </view>
-
       <view v-else>
-        <goods-list :datas="filterGoodsList" @handleRightIconTap="showCartModal"></goods-list>
+        <goods-list
+          :datas="filterGoodsList"
+          :emptyOptions="searchEmptyOptions"
+          right="icon"
+          paddingTop="100rpx"
+          @handleRightIconTap="showCartModal"
+        >
+        </goods-list>
       </view>
     </view>
 
     <!--商品-->
-    <view class="vertical-box">
-      <scroll-view class="vertical-nav nav" scroll-y scroll-with-animation
-                   :scroll-top="verticalNavTop">
-        <view class="cu-item" :class="index === tabCur ? 'text-blue cur' : ''"
-              v-for="(item, index) in goodsList" :key="index" @tap="categoryTabSelect(index)">
-          {{item.label}}
-        </view>
-      </scroll-view>
-      <scroll-view class="vertical-main" scroll-y scroll-with-animation
-                   :scroll-top="verticalMainTop"
-                   :scroll-into-view="'main-' + mainCur" @scroll="handleVerticalMainScroll">
-        <view class="padding-top padding-lr"
-              :class="{ 'padding-bottom': index === goodsList.length - 1 }"
-              v-for="(item, index) in goodsList" :key="index" :id="'main-' + index">
-          <view class="shadow-normal">
-            <view class="cu-bar bg-white solid-bottom category-bar">
-              <view class="action sub-title">
-                <text class="text-xl text-bold text-blue">{{item.label}}</text>
-                <text class="bg-blue"
-                      :style="'width:' + (getStrRealLen(item.label) * 2) + 'em'"></text>
-              </view>
-            </view>
-            <view v-if="!item.list || item.list.length === 0" class="cu-list menu">
-              <view class="cu-item">
-                <view class="content">
-                  <text class="text-grey">暂无{{item.label}}商品</text>
-                </view>
-              </view>
-            </view>
-            <goods-list v-else :datas="item.list" mode="icon"
-                        @handleRightIconTap="showCartModal"></goods-list>
-          </view>
-        </view>
-      </scroll-view>
-    </view>
+    <goods-list
+      :datas.sync="goodsList"
+      :emptyOptions="goodsEmptyOptions"
+      right="icon"
+      paddingTop="100rpx"
+      group
+      scroll
+      @handleRightIconTap="showCartModal"
+    >
+    </goods-list>
 
     <!--添加购物车弹窗-->
-    <view class="cu-modal bottom-modal" :class="{ 'show': cartModalVisible }">
-      <view class="cu-dialog">
+    <view class="cu-modal bottom-modal" :class="{ 'show': cartModalVisible }"
+          @tap="cartModalVisible = false">
+      <view class="cu-dialog" @tap.stop>
         <view class="cu-bar bg-white solid-bottom">
-          <view class="action text-blue" @tap="addToCart">添加到购物车</view>
+          <view class="action text-blue">添加到购物车</view>
           <view class="action text-gray" @tap="cartModalVisible = false">取消</view>
         </view>
         <view class="solid-top">
-          <goods-list :datas="[selectedGoods]" mode="number"
-                      @handleNumberChange="cartModalNumChange"></goods-list>
-          <view class="cu-form-group">
-            <view class="title">备注</view>
-            <input class="text-right" placeholder="请填写备注" v-model="selectedGoods.remark"></input>
+          <goods-list
+            :datas="selectedGoodsList"
+            right="number"
+            height="auto"
+            @handleNumberChange="cartModalNumChange"
+          >
+          </goods-list>
+          <view class="cu-bar bg-white tabbar border shop">
+            <view class="bg-orange submit" @tap="addToCart">添加到购物车</view>
           </view>
         </view>
       </view>
@@ -103,25 +82,33 @@
 
 <script>
   import goodsList from '../../components/goods-list.vue';
+  import dataEmptyIcon from '../../static/data-empty.png';
 
   export default {
     components: { goodsList },
     data() {
-      this.tabTap = false; // 是否点击类别tab
       this.goodsItems = []; // 记录商品项滚动高度
       return {
         keywords: '',
         goodsList: [],
         filterGoodsList: [],
         historyKeywords: [],
-        tabCur: 0,
-        mainCur: 0,
-        verticalNavTop: 0,
-        verticalMainTop: 0,
         selectedGoods: {},
         cartModalVisible: false,
         searchPanelVisible: false,
         historyKeywordsVisible: true,
+
+        // 搜索无数据提示配置
+        searchEmptyOptions: {
+          title: '没有查找到商品',
+          text: '换个关键词试试吧',
+          icon: dataEmptyIcon,
+        },
+        // 商品无数据提示配置
+        goodsEmptyOptions: {
+          title: '该商家没有添加商品',
+          icon: dataEmptyIcon,
+        },
       };
     },
     onLoad() {
@@ -135,12 +122,19 @@
         }
       },
     },
+    computed: {
+      selectedGoodsList() {
+        console.log([{ lines: [this.selectedGoods] }]);
+        return [{ lines: [this.selectedGoods] }];
+      },
+    },
     methods: {
       // 查询带类别的商品信息
       async getGoodsWithCategory() {
+        this.goodsItems = [];
         this.goodsList = await this.$api.goods.getGoodsWithCategory() || [];
-        this.$nextTick(() => {
-          this.initVerticalMainScroll();
+        this.goodsList.forEach((item = {}) => {
+          this.goodsItems = [...this.goodsItems, ...(item.lines || [])];
         });
       },
       // 显示搜索面板
@@ -166,63 +160,20 @@
 
           this.keywords = keywords;
           this.historyKeywordsVisible = false;
-          this.filterGoodsList = this.goodsItems.filter(item => item.name.includes(keywords));
+          this.filterGoodsList = [{ lines: this.goodsItems.filter(item => item.name.includes(keywords)) }];
         } else {
           this.filterGoodsList = [];
         }
       },
-      // 左侧类别tab选中
-      categoryTabSelect(index = 0) {
-        this.tabCur = index;
-        this.mainCur = index;
-        this.verticalNavTop = (index - 1) * 50;
-        this.tabTap = true;
-      },
-      // 初始化右侧商品列表滚动定位
-      initVerticalMainScroll() {
-        let tabHeight = 0;
-
-        this.goodsItems = [];
-        this.goodsList.forEach((item = {}, index) => {
-          const { list = [] } = item;
-          const view = uni.createSelectorQuery().select(`#main-${index}`);
-
-          this.goodsItems = [...this.goodsItems, ...list];
-
-          view.fields({ size: true }, ({ height }) => {
-            item.top = tabHeight;
-            tabHeight += height;
-            item.bottom = tabHeight;
-          }).exec();
-        });
-      },
-      // 右侧商品列表滚动定位
-      handleVerticalMainScroll(e) {
-        const scrollTop = e.detail.scrollTop + 10;
-
-        if (!this.tabTap) {
-          this.goodsList.forEach((item = {}, index) => {
-            const { top, bottom } = item;
-
-            if (scrollTop > top && scrollTop < bottom) {
-              this.verticalNavTop = (index - 1) * 50;
-              this.tabCur = index;
-            }
-          });
-        }
-
-        this.tabTap = false;
-      },
       // 显示添加购物车弹窗
       showCartModal(goods = {}) {
         this.selectedGoods = goods;
-        this.$set(this.selectedGoods, 'remark', '');
         this.$set(this.selectedGoods, 'quantity', 1);
         this.cartModalVisible = true;
       },
       // 添加购物车弹窗数字组件值改变
-      cartModalNumChange(val) {
-        this.selectedGoods.quantity = val;
+      cartModalNumChange(data = {}) {
+        this.selectedGoods.quantity = data.value;
       },
       // 添加到购物车
       addToCart() {
@@ -237,25 +188,21 @@
         }
 
         // 商品Map
-        if (!cartStorage[categoryUuid].goodsMap) {
-          cartStorage[categoryUuid].goodsMap = {};
+        if (!cartStorage[categoryUuid].lines) {
+          cartStorage[categoryUuid].lines = {};
         }
 
         // 如果购物车已有商品，数量叠加，保留勾选状态，其他信息覆盖
-        const { quantity: quantityOld = 0, checked } = cartStorage[categoryUuid].goodsMap[uuid] || {};
+        const { quantity: quantityOld = 0, checked } = cartStorage[categoryUuid].lines[uuid] || {};
         if (quantityOld) {
           selectedGoods.checked = checked;
           selectedGoods.quantity = $util.round($util.add(quantityOld, quantity), 4);
         }
-        cartStorage[categoryUuid].goodsMap[uuid] = selectedGoods;
+        cartStorage[categoryUuid].lines[uuid] = selectedGoods;
 
         uni.setStorageSync($constants.CART, cartStorage);
         uni.showToast({ title: $constants.CART_SUCCESS_TIP });
         this.cartModalVisible = false;
-      },
-      // 获得字符串实际长度，中文2，英文1
-      getStrRealLen() {
-        return this.$util.getStrRealLen;
       },
     },
   };
@@ -319,50 +266,9 @@
       }
     }
 
-    /*类别商品*/
-    .vertical-box {
-      position: absolute;
-      display: flex;
-      top: 0;
-      padding-top: rpx(100);
+    .cart-add-btn {
       width: 100%;
-      height: 100vh;
-
-      .vertical-nav.nav {
-        width: rpx(180);
-        background-color: $uni-white;
-
-        .cu-item {
-          position: relative;
-          display: block;
-          margin: 0;
-          width: 100%;
-          text-align: center;
-          background-color: #fff;
-          border: none;
-
-          &.cur {
-            background-color: #f1f1f1;
-
-            &::after {
-              content: "";
-              width: rpx(8);
-              height: rpx(30);
-              border-radius: rpx(10) 0 0 rpx(10);
-              position: absolute;
-              background-color: currentColor;
-              top: 0;
-              right: 0;
-              bottom: 0;
-              margin: auto;
-            }
-          }
-        }
-      }
-
-      .vertical-main {
-        flex: 1;
-      }
+      border-radius: 0;
     }
   }
 </style>

@@ -1,14 +1,14 @@
 import fecha from 'fecha';
-import isNull from 'lodash/isNull';
-import omitBy from 'lodash/omitBy';
-import round from 'lodash/round';
 import add from 'lodash/add';
+import round from 'lodash/round';
+import isArray from 'lodash/isArray';
+import isObject from 'lodash/isObject';
 
 module.exports = {
-  isNull,
-  omitBy,
-  round,
   add,
+  round,
+  isArray,
+  isObject,
 
   // 日期格式化
   formatToDay(date = new Date()) {
