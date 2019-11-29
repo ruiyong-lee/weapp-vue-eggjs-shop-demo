@@ -1,9 +1,9 @@
 <!--商品列表组件-->
 <template>
-  <view class="vertical-box" :class="{ 'vertical-scroll': scroll, relative: height === 'auto' }"
+  <view class="goods-box" :class="{ 'goods-scroll': scroll, relative: height === 'auto' }"
         :style="{ 'padding-top': paddingTop, 'padding-bottom': paddingBottom, height }">
     <!--侧边tab栏-->
-    <scroll-view v-if="scroll" class="vertical-nav nav"
+    <scroll-view v-if="scroll" class="goods-nav nav"
                  scroll-y scroll-with-animation :scroll-top="verticalNavTop">
       <view class="cu-item" :class="index === tabCur ? 'text-blue cur' : ''"
             v-for="(item, index) in datas" :key="index" @tap="categoryTabSelect(index)">
@@ -12,7 +12,7 @@
     </scroll-view>
 
     <!--主容器-->
-    <scroll-view class="vertical-main" scroll-y scroll-with-animation
+    <scroll-view class="goods-main" scroll-y scroll-with-animation
                  :scroll-into-view="'goods-' + mainCur" @scroll="handleVerticalMainScroll">
       <!--无数据-->
       <view v-if="emptyOptions && (getDatasLen(datas) === 0)" class="goods-empty">
@@ -24,9 +24,9 @@
       </view>
 
       <!--数据列表-->
-      <view v-else>
+      <view v-else :class="{ 'padding': scroll }">
         <view
-          :class="{ 'padding-top padding-lr': scroll, 'padding-bottom': scroll && index === getDatasLen(datas) - 1 }"
+          :class="{ 'padding-bottom': index !== getDatasLen(datas) - 1 }"
           v-for="(item, index) in datas"
           :key="index"
           :id="'goods-' + index"
@@ -34,7 +34,9 @@
           <view :class="{ 'shadow-normal': scroll }">
             <view v-if="group" class="cu-bar bg-white solid-bottom">
               <view class="action" :class="{ 'sub-title': !selectable }">
-                <text v-if="selectable" class="cuIcon-round cart-select text-grey"></text>
+                <text v-if="selectable" class="goods-select"
+                      :class="item.checked ? 'cuIcon-roundcheckfill text-blue' : 'cuIcon-round text-grey'"
+                      @tap="selectCategory(index)"></text>
                 <text class="text-xl text-bold text-blue">{{item.label}}</text>
                 <text v-if="!selectable" class="bg-blue"
                       :style="'width:' + (getStrRealLen(item.label) * 2) + 'em'"></text>
@@ -57,7 +59,9 @@
                 @touchmove="itemTouchMove"
                 @touchend="itemTouchEnd(key)"
               >
-                <text v-if="selectable" class="cuIcon-round goods-item-select text-grey"></text>
+                <text v-if="selectable" class="goods-item-select"
+                      :class="goods.checked ? 'cuIcon-roundcheckfill text-blue' : 'cuIcon-round text-grey'"
+                      @tap="selectGoods(key, index)"></text>
                 <view class="cu-avatar lg goods-item-thumb"
                       :style="goods.thumbnail ? 'background-image:url(' + goods.thumbnail + ');' : ''"></view>
                 <view class="content goods-item-content">
@@ -72,10 +76,10 @@
                 <view class="goods-item-right">
                   <view v-if="right === 'icon'" class="cuIcon-cart text-blue right-icon"
                         @click="rightIconTap(goods, key)"></view>
-                  <uni-number-box v-if="right === 'number'" :value="goods.quantity"
+                  <uni-number-box v-if="right === 'number'" :value="goods.quantity" :min="1"
                                   @change="numChange($event, key, index)"></uni-number-box>
                 </view>
-                <view class="move">
+                <view class="move" @tap="remove(key, index)">
                   <view class="bg-red">删除</view>
                 </view>
               </view>
@@ -84,6 +88,26 @@
         </view>
       </view>
     </scroll-view>
+
+    <!--底部-->
+    <view v-if="selectable && Object.keys(datas).length > 0"
+          class="cu-bar bg-white solid-top goods-footer">
+      <view class="goods-footer-left text-cut">
+        <text class="goods-select"
+              :class="checkedAll ? 'cuIcon-roundcheckfill text-blue' : 'cuIcon-round text-grey'"
+              @tap="selectAll"></text>
+        <text class="margin-right">全选</text>
+        <text class="text-lg">
+          合计：
+          <text class="text-red text-df">￥
+            <text class="text-xl text-bold">{{amount}}</text>
+          </text>
+        </text>
+      </view>
+      <view class="goods-footer-right">
+        <button class="cu-btn bg-red round shadow-blur" @tap="settle">去结算</button>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -115,10 +139,11 @@
       group: Boolean, // 是否根据类别分组展示
       scroll: Boolean, // 是否滚动定位
       emptyOptions: Object, // 无数据提示
-      datas: [Array, Object], // 列表数据
+      datas: [Array, Object], // 列表数据，selectable时必须为Object类型
     },
     data() {
       this.tabTap = false; // 是否点击类别tab
+      this.selectedGoods = []; // 选中的商品
       return {
         tabCur: 0, // tab当前索引
         mainCur: 0, // main当前索引
@@ -126,17 +151,20 @@
         touchKey: '', // 触摸对象的key
         touchStartX: 0, // 触摸开始位置
         touchDirection: null, // 触摸方向
+        checkedAll: false, // 是否全选
+        amount: 0, // 合计
       };
-    },
-    mounted() {
-      console.log(this.datas);
     },
     watch: {
       datas(val) {
-        if (val && this.scroll) {
-          this.$nextTick(() => {
-            this.initVerticalMainScroll();
-          });
+        if (val) {
+          if (this.scroll) {
+            this.$nextTick(() => {
+              this.initVerticalMainScroll();
+            });
+          }
+          this.calAmount();
+          this.judgeCheckedAll();
         }
       },
     },
@@ -163,6 +191,7 @@
         });
 
         this.$emit('update:datas', this.datas);
+        this.$emit('change');
       },
       // 右侧商品列表滚动定位
       handleVerticalMainScroll(e) {
@@ -183,11 +212,13 @@
       },
       // 右侧按钮点击，暂时默认添加购物车按钮，之后有需要的再自定义
       rightIconTap(goods) {
-        this.$emit('handleRightIconTap', goods);
+        this.$emit('rightIconTap', goods);
       },
       // 添加购物车弹窗数字组件值改变
       numChange(value, key, index) {
-        this.$emit('handleNumberChange', { key, value, index });
+        this.datas[index].lines[key].quantity = value;
+        this.$emit('update:datas', this.datas);
+        this.$emit('change');
       },
       // 触摸开始
       itemTouchStart(e) {
@@ -212,6 +243,90 @@
           this.touchDirection = null;
         }
       },
+      // 删除
+      remove(key, index) {
+        this.$delete(this.datas[index].lines, key);
+        // 如果该类别下没有商品了，直接移除类别
+        if (Object.keys(this.datas[index].lines || {}).length === 0) {
+          this.$delete(this.datas, index);
+        }
+        this.$emit('update:datas', this.datas);
+        this.$emit('change');
+      },
+      // 一个类别下的商品全选
+      selectCategory(index) {
+        const { checked, lines = {} } = this.datas[index] || {};
+
+        this.$set(this.datas[index], 'checked', !checked);
+        Object.keys(lines).forEach((key) => {
+          this.$set(lines[key], 'checked', !checked);
+        });
+        this.$emit('update:datas', this.datas);
+        this.$emit('change');
+      },
+      // 选中商品
+      selectGoods(key, index) {
+        const { lines = {} } = this.datas[index] || {};
+        const { checked: goodsChecked } = lines[key] || {};
+
+        this.$set(lines[key], 'checked', !goodsChecked);
+        this.$set(this.datas[index], 'checked', goodsChecked
+          ? false
+          : !Object.values(lines).some(goods => !goods.checked));
+        this.$emit('update:datas', this.datas);
+        this.$emit('change');
+      },
+      // 全选
+      selectAll() {
+        const { checkedAll, datas = {} } = this;
+
+        this.checkedAll = !checkedAll;
+        Object.keys(datas).forEach((key) => {
+          const { lines = {} } = datas[key];
+          this.$set(datas[key], 'checked', !checkedAll);
+          Object.keys(lines).forEach((goodsKey) => {
+            this.$set(lines[goodsKey], 'checked', !checkedAll);
+          });
+        });
+        this.$emit('update:datas', this.datas);
+        this.$emit('change');
+      },
+      // 判断是否全选
+      judgeCheckedAll() {
+        const { datas = {} } = this;
+        this.checkedAll = !Object.keys(datas).some(key => !datas[key].checked);
+      },
+      // 计算金额
+      calAmount() {
+        let amount = 0;
+        const selectedGoods = [];
+        const { datas = {} } = this;
+        const { add, multiply, round } = this.$util;
+
+        Object.keys(datas).forEach((key) => {
+          const { lines = {} } = datas[key];
+          Object.keys(lines).forEach((goodsKey) => {
+            const goods = lines[goodsKey] || {};
+            const { checked, salePrice, quantity } = goods;
+            if (checked) {
+              amount = round(add(amount, multiply(salePrice, quantity)), 2);
+              selectedGoods.push(goods);
+            }
+          });
+        });
+        this.amount = amount;
+        this.selectedGoods = selectedGoods;
+      },
+      // 结算
+      settle() {
+        const { selectedGoods = {} } = this;
+
+        if (Object.keys(selectedGoods).length === 0) {
+          uni.showToast({ title: '请先选择商品', icon: 'none' });
+          return;
+        }
+        // TODO
+      },
       // 获得字符串实际长度，中文2，英文1
       getStrRealLen() {
         return this.$util.getStrRealLen;
@@ -233,14 +348,20 @@
 
 <style lang="scss" scoped>
   /*类别商品*/
-  .vertical-box {
+  .goods-box {
     position: absolute;
     display: flex;
     top: 0;
     width: 100%;
     height: 100%;
 
-    .vertical-nav.nav {
+    .goods-select {
+      margin: 0 !important;
+      padding-right: rpx(20);
+      font-size: rpx(46) !important;
+    }
+
+    .goods-nav.nav {
       width: rpx(180);
       background-color: $uni-white;
 
@@ -272,7 +393,7 @@
       }
     }
 
-    .vertical-main {
+    .goods-main {
       flex: 1;
 
       /*无商品*/
@@ -348,6 +469,24 @@
             }
           }
         }
+      }
+    }
+
+    .goods-footer {
+      position: fixed;
+      bottom: 0;
+      padding: 0 30px !important;
+      width: 100%;
+
+      &-left {
+        display: flex;
+        align-items: center;
+        flex: 1 !important;
+      }
+
+      &-right {
+        flex: 0 0 190px !important;
+        text-align: right;
       }
     }
   }

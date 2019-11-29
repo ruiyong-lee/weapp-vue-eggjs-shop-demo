@@ -33,11 +33,11 @@
 
       <view v-else>
         <goods-list
-          :datas="filterGoodsList"
+          :datas.sync="filterGoodsList"
           :emptyOptions="searchEmptyOptions"
           right="icon"
           paddingTop="100rpx"
-          @handleRightIconTap="showCartModal"
+          @rightIconTap="showCartModal"
         >
         </goods-list>
       </view>
@@ -51,7 +51,7 @@
       paddingTop="100rpx"
       group
       scroll
-      @handleRightIconTap="showCartModal"
+      @rightIconTap="showCartModal"
     >
     </goods-list>
 
@@ -68,7 +68,7 @@
             :datas="selectedGoodsList"
             right="number"
             height="auto"
-            @handleNumberChange="cartModalNumChange"
+            @numberChange="cartModalNumChange"
           >
           </goods-list>
           <view class="cu-bar bg-white tabbar border shop">
@@ -197,6 +197,8 @@
         if (quantityOld) {
           selectedGoods.checked = checked;
           selectedGoods.quantity = $util.round($util.add(quantityOld, quantity), 4);
+        } else {
+          selectedGoods.checked = true;
         }
         cartStorage[categoryUuid].lines[uuid] = selectedGoods;
 

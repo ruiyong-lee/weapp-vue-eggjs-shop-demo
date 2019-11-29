@@ -1,11 +1,13 @@
 import fecha from 'fecha';
 import add from 'lodash/add';
+import multiply from 'lodash/multiply';
 import round from 'lodash/round';
 import isArray from 'lodash/isArray';
 import isObject from 'lodash/isObject';
 
 module.exports = {
   add,
+  multiply,
   round,
   isArray,
   isObject,
