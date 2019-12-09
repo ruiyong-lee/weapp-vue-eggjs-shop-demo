@@ -13,6 +13,12 @@
       }
     },
     {
+      "path": "pages/order/list",
+      "style": {
+        "navigationBarTitleText": "订单列表"
+      }
+    },
+    {
       "path": "pages/user/view",
       "style": {
         "navigationBarTitleText": "我的"
@@ -22,6 +28,12 @@
       "path": "pages/user/login",
       "style": {
         "navigationBarTitleText": "登录"
+      }
+    },
+    {
+      "path": "pages/user/authorize",
+      "style": {
+        "navigationBarTitleText": "授权"
       }
     }
 	],

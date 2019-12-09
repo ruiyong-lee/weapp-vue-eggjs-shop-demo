@@ -55,6 +55,27 @@
 					"id": -1,
 					"name": "pages/order/cart",
 					"pathName": "pages/order/cart",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/user/view",
+					"pathName": "pages/user/view",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/order/list",
+					"pathName": "pages/order/list",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/user/authorize",
+					"pathName": "pages/user/authorize",
 					"scene": null
 				}
 			]

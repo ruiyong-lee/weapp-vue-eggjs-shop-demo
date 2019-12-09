@@ -1,12 +1,12 @@
 /* mescroll-uni
- * version 1.1.5
- * 2019-07-25 wenju
+ * version 1.1.8
+ * 2019-11-01 wenju
  * http://www.mescroll.com
  */
 
 export default function MeScroll(options) {
 	let me = this;
-	me.version = '1.1.5'; // mescroll版本号
+	me.version = '1.1.8'; // mescroll版本号
 	me.options = options || {}; // 配置
 
 	me.isDownScrolling = false; // 是否在执行下拉刷新的回调
@@ -44,7 +44,6 @@ MeScroll.prototype.extendDownScroll = function(optDown) {
 		offset: 80, // 在列表顶部,下拉大于80px,松手即可触发下拉刷新的回调
 		startTop: 100, // scroll-view滚动到顶部时,此时的scroll-top不一定为0, 此值用于控制最大的误差
 		fps: 40, // 下拉节流 (值越大每秒刷新频率越高)
-		supply: 200, // 补帧动画的过渡时长 (只对android小程序生效,用于解决android小程序下拉卡顿的问题)
 		inOffsetRate: 1, // 在列表顶部,下拉的距离小于offset时,改变下拉区域高度比例;值小于1且越接近0,高度变化越小,表现为越往下越难拉
 		outOffsetRate: 0.2, // 在列表顶部,下拉的距离大于offset时,改变下拉区域高度比例;值小于1且越接近0,高度变化越小,表现为越往下越难拉
 		bottomOffset: 20, // 当手指touchmove位置在距离body底部20px范围内的时候结束上拉刷新,避免Webview嵌套导致touchend事件不执行
@@ -259,6 +258,12 @@ MeScroll.prototype.touchendEvent = function(e) {
 
 /* 根据点击滑动事件获取第一个手指的坐标 */
 MeScroll.prototype.getPoint = function(e) {
+	if (!e) {
+		return {
+			x: 0,
+			y: 0
+		}
+	}
 	if (e.touches && e.touches[0]) {
 		return {
 			x: e.touches[0].pageX,
@@ -302,6 +307,7 @@ MeScroll.prototype.endDownScroll = function() {
 		me.downHight = 0;
 		me.isDownScrolling = false;
 		me.optDown.endDownScroll && me.optDown.endDownScroll(me);
+		me.setScrollHeight(0) // 重置滚动区域,使数据不满屏时仍可检查触发翻页
 	}
 	// 结束下拉刷新时的回调
 	let delay = 0;
@@ -374,7 +380,7 @@ MeScroll.prototype.triggerUpScroll = function(isCheck) {
 		// 是否校验在底部; 默认不校验
 		if (isCheck === true) {
 			let canUp = false;
-			// 还有下一页 && 没有锁定 && (不在下拉中 || 支持同时上下拉)
+			// 还有下一页 && 没有锁定 && 不在下拉中
 			if (this.optUp.hasNext && !this.optUp.isLock && !this.isDownScrolling) {
 				if (this.getScrollBottom() <= this.optUp.offset) { // 到底部
 					canUp = true; // 标记可上拉

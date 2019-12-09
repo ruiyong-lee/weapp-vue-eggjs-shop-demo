@@ -2,6 +2,7 @@
  * 通用uni-app网络请求
  * 基于 Promise 对象实现更简单的 request 使用方式，支持请求和响应拦截
  */
+import isEmpty from 'lodash/isEmpty';
 import constants from './constants';
 
 let baseUrl = ''; // H5用相对路径
@@ -37,15 +38,16 @@ export default {
     request: null,
     response: null,
   },
-  request(options = {}) {
-    const { defaultConfig, interceptor } = this;
+  async request(options = {}) {
+    const { defaultConfig, interceptor, getUserInfo } = this;
+    const { nickName } = await getUserInfo();
 
     defaultConfig.header.sessionid = uni.getStorageSync(constants.SESSION);
     options.url = `${options.baseUrl || defaultConfig.baseUrl}${options.url}`;
     options.data = {
       ...defaultConfig.data,
       ...options.data,
-      nickName: uni.getStorageSync(constants.NICK_NAME),
+      nickName,
     };
 
     return new Promise((resolve, reject) => {
@@ -147,6 +149,35 @@ export default {
       url,
       data,
       method: 'DELETE',
+    });
+  },
+  // 获取微信用户信息
+  getUserInfo() {
+    return new Promise((resolve, reject) => {
+      const { userInfo } = getApp().globalData;
+
+      if (!isEmpty(userInfo)) {
+        resolve(userInfo);
+      }
+
+      uni.getSetting({
+        success: (res) => {
+          if (res.authSetting['scope.userInfo']) {
+            // 已经授权，可以直接调用 getUserInfo 获取头像昵称
+            uni.getUserInfo({
+              withCredentials: false,
+              success: ({ userInfo: info = {} }) => {
+                getApp().globalData.userInfo = info;
+                resolve(info);
+              },
+            });
+          } else {
+            // 未授权，跳转授权页面
+            uni.reLaunch({ url: '/pages/user/authorize' });
+            reject();
+          }
+        },
+      });
     });
   },
 };

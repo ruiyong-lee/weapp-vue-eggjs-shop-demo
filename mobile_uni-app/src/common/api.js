@@ -10,6 +10,10 @@ export default {
   goods: {
     getGoodsWithCategory: (data, options) => http.get('weapp/getGoodsWithCategory', data, options), // 查询带类别的商品信息
   },
+  order: {
+    getOrderBill: (data, options) => http.post('weapp/getOrderBill', data, options), // 获取订单
+    queryOrderBill: (data, options) => http.post('weapp/queryOrderBill', data, options), // 获取订单列表
+  },
   user: {
     login: (data, options) => http.post('weapp/login', data, options), // 用户登录
   },

@@ -24,9 +24,9 @@
       </view>
 
       <!--数据列表-->
-      <view v-else :class="{ 'padding': scroll }">
+      <view v-else :class="{ 'padding-right padding-bottom padding-left': scroll }">
         <view
-          :class="{ 'padding-bottom': index !== getDatasLen(datas) - 1 }"
+          :class="{ 'padding-top': scroll && group, 'padding-bottom': !scroll && group }"
           v-for="(item, index) in datas"
           :key="index"
           :id="'goods-' + index"
@@ -54,7 +54,6 @@
                 class="cu-item goods-item"
                 :class="{ 'has-icon': right === 'icon', 'has-number': right === 'number', 'has-select': selectable, 'move-cur': touchKey === key }"
                 v-for="(goods, key) in item.lines"
-                :key="key"
                 @touchstart="itemTouchStart"
                 @touchmove="itemTouchMove"
                 @touchend="itemTouchEnd(key)"
@@ -162,9 +161,10 @@
             this.$nextTick(() => {
               this.initVerticalMainScroll();
             });
+          } else {
+            this.calAmount();
+            this.judgeCheckedAll();
           }
-          this.calAmount();
-          this.judgeCheckedAll();
         }
       },
     },
@@ -198,6 +198,7 @@
         const scrollTop = e.detail.scrollTop + 10;
 
         if (!this.tabTap) {
+          this.mainCur = -1;
           this.datas.forEach((item = {}, index) => {
             const { top, bottom } = item;
 
@@ -245,13 +246,16 @@
       },
       // 删除
       remove(key, index) {
-        this.$delete(this.datas[index].lines, key);
-        // 如果该类别下没有商品了，直接移除类别
-        if (Object.keys(this.datas[index].lines || {}).length === 0) {
-          this.$delete(this.datas, index);
-        }
-        this.$emit('update:datas', this.datas);
-        this.$emit('change');
+        // 600ms是删除动画的时长
+        setTimeout(() => {
+          this.$delete(this.datas[index].lines, key);
+          // 如果该类别下没有商品了，直接移除类别
+          if (Object.keys(this.datas[index].lines || {}).length === 0) {
+            this.$delete(this.datas, index);
+          }
+          this.$emit('update:datas', this.datas);
+          this.$emit('change');
+        }, 600);
       },
       // 一个类别下的商品全选
       selectCategory(index) {
@@ -293,8 +297,17 @@
       },
       // 判断是否全选
       judgeCheckedAll() {
+        let checkedAll = true;
         const { datas = {} } = this;
-        this.checkedAll = !Object.keys(datas).some(key => !datas[key].checked);
+
+        Object.entries(datas).forEach(([index, value = {}]) => {
+          const { lines = {} } = value;
+          const checked = !Object.values(lines).some(goods => !goods.checked);
+
+          if (!checked) checkedAll = false;
+          this.$set(this.datas[index], 'checked', checked);
+        });
+        this.checkedAll = checkedAll;
       },
       // 计算金额
       calAmount() {

@@ -124,18 +124,28 @@
     },
     computed: {
       selectedGoodsList() {
-        console.log([{ lines: [this.selectedGoods] }]);
         return [{ lines: [this.selectedGoods] }];
       },
     },
     methods: {
       // 查询带类别的商品信息
       async getGoodsWithCategory() {
+        const goodsMap = {};
+
         this.goodsItems = [];
         this.goodsList = await this.$api.goods.getGoodsWithCategory() || [];
         this.goodsList.forEach((item = {}) => {
-          this.goodsItems = [...this.goodsItems, ...(item.lines || [])];
+          const { lines } = item;
+
+          this.goodsItems = [...this.goodsItems, ...(lines || [])];
+          lines.forEach((line = {}) => {
+            const { uuid } = line;
+            goodsMap[uuid] = line;
+          });
         });
+
+        // 记录商品map，用于再次购买刷新价格
+        getApp().globalData.goodsMap = goodsMap;
       },
       // 显示搜索面板
       showSearchPanel() {

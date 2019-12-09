@@ -1,7 +1,9 @@
 <script>
   export default {
     globalData: {
-      refreshPage: false,
+      refreshPage: false, // 控制刷新页面，比如保存返回刷新数据
+      goodsMap: {}, // 商品map
+      userInfo: {}, // 微信用户信息
     },
     onLaunch() {
       const res = uni.getSystemInfoSync();

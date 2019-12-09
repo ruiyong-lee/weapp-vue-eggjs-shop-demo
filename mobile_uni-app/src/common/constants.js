@@ -4,7 +4,8 @@ export default {
   // 用户信息
   PLATFORM: 'mobile',
   USER_IDENTITY: 'customer',
-  NICK_NAME: 'userName',
+  NICK_NAME: 'nickName',
+  AVATAR_URL: 'avatarUrl',
   SESSION: '3rd_session',
   MERCHANT_UUID: '9ff57530-6afb-11e9-96c7-852592cbf8e8', // 根据不同商家手动配置
 
@@ -17,7 +18,7 @@ export default {
 
   // 订单
   ORDER_TABS: [
-    { value: 'all', label: '全部' },
+    { value: '', label: '全部' },
     { value: 'initial', label: '待付款' },
     { value: 'audited', label: '已接单' },
     { value: 'dispatching', label: '配送中' },
@@ -37,6 +38,13 @@ export default {
     dispatching: 'cuIcon-deliver text-green',
     completed: 'cuIcon-roundcheck text-grey',
     canceled: 'cuIcon-roundclose text-gray',
+  },
+  ORDER_STATUS_CLASS_NOICON: {
+    initial: 'text-orange',
+    audited: 'text-blue',
+    dispatching: 'text-green',
+    completed: 'text-grey',
+    canceled: 'text-gray',
   },
 
   // 长度相关
