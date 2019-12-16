@@ -15,6 +15,7 @@ export default {
   // 购物车
   CART: 'cart',
   CART_SUCCESS_TIP: '已添加到购物车',
+  ADDRESS: 'address',
 
   // 订单
   ORDER_TABS: [
@@ -32,14 +33,14 @@ export default {
     completed: '已完成',
     canceled: '已取消',
   },
-  ORDER_STATUS_CLASS: {
+  ORDER_STATUS_ICON: {
     initial: 'cuIcon-pay text-orange',
     audited: 'cuIcon-form text-blue',
     dispatching: 'cuIcon-deliver text-green',
     completed: 'cuIcon-roundcheck text-grey',
     canceled: 'cuIcon-roundclose text-gray',
   },
-  ORDER_STATUS_CLASS_NOICON: {
+  ORDER_STATUS_CLASS: {
     initial: 'text-orange',
     audited: 'text-blue',
     dispatching: 'text-green',

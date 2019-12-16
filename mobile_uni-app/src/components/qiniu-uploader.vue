@@ -42,7 +42,6 @@
   const keyPrefix = 'DX-TMS/img/images/'; // key的前缀
 
   export default {
-    name: 'qiniuUploader',
     data() {
       return {
         imgList: [], // 图片列表
@@ -177,7 +176,7 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .qiniu-uploader {
     .qiniu-uploader-error__icon {
       font-size: rpx(36);

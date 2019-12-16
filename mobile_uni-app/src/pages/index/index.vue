@@ -22,6 +22,9 @@
             <text class="text-xl text-bold">历史搜索</text>
             <text class="bg-grey" style="width:2em"></text>
           </view>
+          <view class="action" @tap="clearHistoryKeywords">
+            <text class="cuIcon-delete"></text>
+          </view>
         </view>
         <view class="padding">
           <view class='cu-tag radius' v-for="(item, index) in historyKeywords"
@@ -144,6 +147,7 @@
           });
         });
 
+        this.refreshCartPrice(goodsMap);
         // 记录商品map，用于再次购买刷新价格
         getApp().globalData.goodsMap = goodsMap;
       },
@@ -161,6 +165,7 @@
       search(keywords) {
         if (keywords) {
           const historyKeywordsOld = uni.getStorageSync(this.$constants.HISTORY_KEYWORDS) || [];
+          const lines = this.goodsItems.filter(item => item.name.includes(keywords));
 
           if (!historyKeywordsOld.includes(keywords)) {
             const historyKeywords = [keywords, ...historyKeywordsOld];
@@ -170,10 +175,33 @@
 
           this.keywords = keywords;
           this.historyKeywordsVisible = false;
-          this.filterGoodsList = [{ lines: this.goodsItems.filter(item => item.name.includes(keywords)) }];
+          this.filterGoodsList = lines.length > 0 ? [{ lines }] : [];
         } else {
           this.filterGoodsList = [];
         }
+      },
+      // 清空历史搜索记录
+      clearHistoryKeywords() {
+        this.historyKeywords = [];
+        uni.setStorageSync(this.$constants.HISTORY_KEYWORDS, []);
+      },
+      // 刷新购物车商品价格
+      refreshCartPrice(goodsMap) {
+        const cartStorage = uni.getStorageSync(this.$constants.CART) || {};
+
+        Object.values(cartStorage).forEach(({ lines = {} }) => {
+          Object.values(lines).forEach((item) => {
+            const goods = goodsMap[item.uuid];
+
+            // 存在刷新价格，不存在提示商品下架
+            if (goods) {
+              item.salePrice = goods.salePrice;
+            } else {
+              item.isDown = true;
+            }
+          });
+        });
+        uni.setStorageSync(this.$constants.CART, cartStorage);
       },
       // 显示添加购物车弹窗
       showCartModal(goods = {}) {

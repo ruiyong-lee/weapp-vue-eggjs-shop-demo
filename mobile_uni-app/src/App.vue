@@ -4,6 +4,7 @@
       refreshPage: false, // 控制刷新页面，比如保存返回刷新数据
       goodsMap: {}, // 商品map
       userInfo: {}, // 微信用户信息
+      order: {}, // 待提交的订单
     },
     onLaunch() {
       const res = uni.getSystemInfoSync();

@@ -11,14 +11,14 @@
         <text class="bg-blue" style="width: 5em"></text>
       </view>
       <view class="action">
-        <navigator url="/pages/order/list" hover-class="none">查看全部订单</navigator>
+        <navigator url="/pages/order/list?tabCur=0" hover-class="none">查看全部订单</navigator>
         <text class="cuIcon-right bar-icon-right"></text>
       </view>
     </view>
     <view class="cu-list grid col-4 no-border">
-      <view class="cu-item" v-for="item in orderGirds" :key="item.value">
-        <navigator :url="'/pages/order/list?status=' + item.value">
-          <view :class="ORDER_STATUS_CLASS[item.value]"></view>
+      <view class="cu-item" v-for="(item, index) in orderGirds" :key="item.value">
+        <navigator :url="'/pages/order/list?tabCur=' + (index + 1)">
+          <view :class="ORDER_STATUS_ICON[item.value]"></view>
           <text>{{item.label}}</text>
         </navigator>
       </view>
@@ -50,10 +50,10 @@
 <script>
   export default {
     data() {
-      const { ORDER_TABS, ORDER_STATUS_CLASS } = this.$constants;
+      const { ORDER_TABS, ORDER_STATUS_ICON } = this.$constants;
       return {
         orderGirds: ORDER_TABS.slice(1, 5),
-        ORDER_STATUS_CLASS,
+        ORDER_STATUS_ICON,
       };
     },
     methods: {},

@@ -38,16 +38,15 @@
 
 <script>
   export default {
-    name: 'radioModal',
     data() {
       return {
         show: false,
         keywords: '',
-        selectedIndex: undefined,
       };
     },
     props: {
       list: Array,
+      selectedIndex: [Number, undefined],
       labelField: {
         type: String,
         default: 'label',
@@ -56,7 +55,7 @@
     watch: {
       list() {
         // 列表改变清空选中项
-        this.selectedIndex = undefined;
+        this.$emit('update:selectedIndex', undefined);
       },
     },
     computed: {},
@@ -70,7 +69,7 @@
       radioChange(e) {
         const { value } = e.detail;
         this.show = false;
-        this.selectedIndex = value;
+        this.$emit('update:selectedIndex', value);
         this.$emit('change', value);
       },
       search() {
@@ -82,7 +81,7 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .radio-modal {
     .radio-modal-header {
       .radio-modal-input {

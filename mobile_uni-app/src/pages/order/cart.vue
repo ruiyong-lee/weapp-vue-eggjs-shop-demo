@@ -23,6 +23,9 @@
     data() {
       return {
         cart: {},
+        order: {
+
+        },
 
         // goodsList组件无数据提示配置
         emptyOptions: {

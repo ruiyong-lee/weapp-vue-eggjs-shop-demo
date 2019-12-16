@@ -12,7 +12,7 @@
         <button class="cu-btn bg-blue shadow-blur round" @tap="search">搜索</button>
       </view>
     </view>
-    <scroll-view scroll-x class="bg-white nav" scroll-with-animation :scroll-left="scrollLeft">
+    <scroll-view scroll-x class="bg-white solid-bottom nav" scroll-with-animation :scroll-left="scrollLeft">
       <view class="flex text-center">
         <view class="cu-item flex-sub" :class="index === tabCur  ?'text-blue cur' : ''"
               v-for="(item, index) in ORDER_TABS" :key="index" @tap="tabSelect(index)">
@@ -21,16 +21,16 @@
       </view>
     </scroll-view>
 
-    <mescroll-uni top="190" :up="upOption" @down="downCallback"
-                  @up="upCallback" @init="mescrollInit">
+    <mescroll-uni top="190" :up="upOption" :down="downOption"
+                  @down="downCallback" @up="upCallback" @init="mescrollInit">
       <navigator class="bg-white margin-bottom" v-for="(item, index) in orderList" :key="index"
-                 :url="'/pages/bill/view?uuid=' + item.uuid">
+                 :url="'/pages/order/view?uuid=' + item.uuid">
         <view class="cu-bar">
           <view class="action">
             <text class="cuIcon-form text-blue"></text>
             <text class="text-lg text-bold">{{item.billNumber}}</text>
           </view>
-          <view class="action text-lg" :class="ORDER_STATUS_CLASS_NOICON[item.status]">
+          <view class="action text-lg" :class="ORDER_STATUS_CLASS[item.status]">
             {{item.status | formatOrderStautsToCN}}
           </view>
         </view>
@@ -41,18 +41,18 @@
             <text class="text-red text-xl text-bold">{{item.paymentAmount}}</text>
           </view>
         </view>
-        <view class="flex padding" @tap.stop>
+        <view class="flex padding">
           <view class="flex-sub text-right">
-            <button v-if="item.status === 'initial'"
+            <button v-if="item.status === 'initial'" @tap.stop="cancelBill(index)"
                     class="cu-btn round text-grey line-gray margin-left-sm">取消订单
             </button>
-            <button v-if="item.status !== 'initial'" @tap="beforeOrderAgain(item.uuid)"
-                    class="cu-btn round text-black line-gray margin-left-sm">再次购买
-            </button>
-            <button v-if="item.status === 'initial'"
+            <button v-if="item.status === 'initial'" @tap.stop="pay(index)"
                     class="cu-btn round text-red line-red margin-left-sm">去支付
             </button>
-            <button v-if="item.status === 'dispatching'"
+            <button v-else @tap.stop="beforeOrderAgain(item.uuid)"
+                    class="cu-btn round text-black line-black margin-left-sm">再次购买
+            </button>
+            <button v-if="item.status === 'dispatching'" @tap.stop="completeBill(index)"
                     class="cu-btn round text-red line-red margin-left-sm">确认收货
             </button>
           </view>
@@ -70,9 +70,12 @@
     mixins: [orderMixin],
     components: { MescrollUni },
     data() {
-      const { ORDER_TABS, ORDER_STATUS_CLASS_NOICON } = this.$constants;
+      const { ORDER_TABS, ORDER_STATUS_CLASS } = this.$constants;
       return {
         mescroll: null, // mescroll实例对象
+        downOption: {
+          auto: false, // 初始化不自动执行下拉刷新
+        },
         upOption: {
           empty: {
             tip: '~ 搜索无数据 ~', // 提示
@@ -84,7 +87,7 @@
         scrollLeft: 0,
         orderList: [],
         ORDER_TABS,
-        ORDER_STATUS_CLASS_NOICON,
+        ORDER_STATUS_CLASS,
       };
     },
     methods: {
@@ -140,8 +143,75 @@
         const { lines } = await this.$api.order.getOrderBill({ uuid }) || {};
         this.orderAgain(lines);
       },
+      // 支付
+      pay(index) {
+        const { uuid, version } = this.orderList[index] || {};
+
+        uni.showModal({
+          title: '提示',
+          content: '在线支付暂未实现，暂时只支持线下支付',
+          confirmText: '线下支付',
+          success: async (res) => {
+            if (res.confirm) {
+              await this.$api.order.auditBill({ uuid, version });
+              uni.showToast({ title: '订单审核成功', icon: 'none' });
+              this.afterOperateBill(index, 'audited');
+            }
+          },
+        });
+      },
+      // 取消订单
+      cancelBill(index) {
+        const { uuid, version } = this.orderList[index] || {};
+
+        uni.showModal({
+          title: '提示',
+          content: '确认取消订单？',
+          success: async (res) => {
+            if (res.confirm) {
+              await this.$api.order.cancelBill({ uuid, version });
+              uni.showToast({ title: '取消订单成功', icon: 'none' });
+              this.afterOperateBill(index, 'canceled');
+            }
+          },
+        });
+      },
+      // 完成订单
+      completeBill(index) {
+        const { uuid, version } = this.orderList[index] || {};
+
+        uni.showModal({
+          title: '提示',
+          content: '确认收货？',
+          success: async (res) => {
+            if (res.confirm) {
+              await this.$api.order.completeBill({ uuid, version });
+              uni.showToast({ title: '收货成功', icon: 'none' });
+              this.afterOperateBill(index, 'completed');
+            }
+          },
+        });
+      },
+      // 操作订单之后
+      afterOperateBill(index, status) {
+        const { tabCur, orderList, ORDER_TABS } = this;
+        const { value: tabValue } = ORDER_TABS[tabCur] || {};
+
+        if (orderList.length > 1) {
+          // 列表多条，局部刷新状态
+          if (tabValue) {
+            this.orderList.splice(index, 1);
+          } else {
+            this.orderList[index].status = status;
+          }
+        } else {
+          // 列表只有一条，重新请求
+          this.search();
+        }
+      },
     },
-    onLoad() {
+    onLoad(options) {
+      this.tabSelect(Number(options.tabCur || 0));
     },
     onShow() {
       if (getApp().globalData.refreshPage) {
@@ -154,8 +224,5 @@
 
 <style lang="scss">
   .order {
-    .order-box {
-
-    }
   }
 </style>

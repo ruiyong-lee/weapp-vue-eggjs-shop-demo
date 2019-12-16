@@ -35,7 +35,7 @@
             <view v-if="group" class="cu-bar bg-white solid-bottom">
               <view class="action" :class="{ 'sub-title': !selectable }">
                 <text v-if="selectable" class="goods-select"
-                      :class="item.checked ? 'cuIcon-roundcheckfill text-blue' : 'cuIcon-round text-grey'"
+                      :class="item.checked ? 'cuIcon-roundcheckfill text-red' : 'cuIcon-round text-grey'"
                       @tap="selectCategory(index)"></text>
                 <text class="text-xl text-bold text-blue">{{item.label}}</text>
                 <text v-if="!selectable" class="bg-blue"
@@ -54,12 +54,13 @@
                 class="cu-item goods-item"
                 :class="{ 'has-icon': right === 'icon', 'has-number': right === 'number', 'has-select': selectable, 'move-cur': touchKey === key }"
                 v-for="(goods, key) in item.lines"
+                :key="key"
                 @touchstart="itemTouchStart"
                 @touchmove="itemTouchMove"
                 @touchend="itemTouchEnd(key)"
               >
                 <text v-if="selectable" class="goods-item-select"
-                      :class="goods.checked ? 'cuIcon-roundcheckfill text-blue' : 'cuIcon-round text-grey'"
+                      :class="goods.checked ? 'cuIcon-roundcheckfill text-red' : 'cuIcon-round text-grey'"
                       @tap="selectGoods(key, index)"></text>
                 <view class="cu-avatar lg goods-item-thumb"
                       :style="goods.thumbnail ? 'background-image:url(' + goods.thumbnail + ');' : ''"></view>
@@ -73,9 +74,10 @@
                   </view>
                 </view>
                 <view class="goods-item-right">
-                  <view v-if="right === 'icon'" class="cuIcon-cart text-blue right-icon"
+                  <text v-if="goods.isDown" class="text-red">此商品已下架</text>
+                  <view v-else-if="right === 'icon'" class="cuIcon-cart text-blue right-icon"
                         @click="rightIconTap(goods, key)"></view>
-                  <uni-number-box v-if="right === 'number'" :value="goods.quantity" :min="1"
+                  <uni-number-box v-else-if="right === 'number'" :value="goods.quantity" :min="1"
                                   @change="numChange($event, key, index)"></uni-number-box>
                 </view>
                 <view class="move" @tap="remove(key, index)">
@@ -93,13 +95,13 @@
           class="cu-bar bg-white solid-top goods-footer">
       <view class="goods-footer-left text-cut">
         <text class="goods-select"
-              :class="checkedAll ? 'cuIcon-roundcheckfill text-blue' : 'cuIcon-round text-grey'"
+              :class="checkedAll ? 'cuIcon-roundcheckfill text-red' : 'cuIcon-round text-grey'"
               @tap="selectAll"></text>
         <text class="margin-right">全选</text>
         <text class="text-lg">
           合计：
           <text class="text-red text-df">￥
-            <text class="text-xl text-bold">{{amount}}</text>
+            <text class="text-xl text-bold">{{totalAmount}}</text>
           </text>
         </text>
       </view>
@@ -151,7 +153,8 @@
         touchStartX: 0, // 触摸开始位置
         touchDirection: null, // 触摸方向
         checkedAll: false, // 是否全选
-        amount: 0, // 合计
+        totalQty: 0, // 合计数量
+        totalAmount: 0, // 合计金额
       };
     },
     watch: {
@@ -162,7 +165,7 @@
               this.initVerticalMainScroll();
             });
           } else {
-            this.calAmount();
+            this.calQtyAndAmount();
             this.judgeCheckedAll();
           }
         }
@@ -309,9 +312,10 @@
         });
         this.checkedAll = checkedAll;
       },
-      // 计算金额
-      calAmount() {
-        let amount = 0;
+      // 计算总数量和金额
+      calQtyAndAmount() {
+        let totalQty = 0;
+        let totalAmount = 0;
         const selectedGoods = [];
         const { datas = {} } = this;
         const { add, multiply, round } = this.$util;
@@ -322,23 +326,48 @@
             const goods = lines[goodsKey] || {};
             const { checked, salePrice, quantity } = goods;
             if (checked) {
-              amount = round(add(amount, multiply(salePrice, quantity)), 2);
+              totalQty = add(totalQty, quantity);
+              totalAmount = round(add(totalAmount, multiply(salePrice, quantity)), 2);
               selectedGoods.push(goods);
             }
           });
         });
-        this.amount = amount;
+        this.totalQty = totalQty;
+        this.totalAmount = totalAmount;
         this.selectedGoods = selectedGoods;
       },
       // 结算
       settle() {
         const { selectedGoods = {} } = this;
 
-        if (Object.keys(selectedGoods).length === 0) {
+        if (selectedGoods.length === 0) {
           uni.showToast({ title: '请先选择商品', icon: 'none' });
           return;
         }
-        // TODO
+        if (selectedGoods.some(item => item.isDown)) {
+          uni.showToast({ title: '部分商品已下架，请重新选择', icon: 'none' });
+          return;
+        }
+
+        getApp().globalData.order = this.buildOrder(selectedGoods);
+        uni.navigateTo({ url: '/pages/order/view' });
+      },
+      // 构建订单
+      buildOrder(selectedGoods = []) {
+        return {
+          goodsTotalQty: this.totalQty,
+          totalAmount: this.totalAmount,
+          lines: selectedGoods.map(goods => ({
+            goodsCategoryName: goods.categoryName,
+            goodsName: goods.name,
+            goodsPic: goods.thumbnail,
+            goodsQty: goods.quantity,
+            goodsSpec: goods.spec,
+            goodsUuid: goods.uuid,
+            salePrice: goods.salePrice,
+            unitName: goods.unitName,
+          })),
+        };
       },
       // 获得字符串实际长度，中文2，英文1
       getStrRealLen() {
@@ -427,9 +456,8 @@
 
       /*商品列表项*/
       .goods-item {
-
         &-content {
-          width: calc(100% - 200px) !important;
+          width: rpx(510 - 200) !important;
         }
 
         &-right {
@@ -443,13 +471,13 @@
 
         &.has-icon {
           .goods-item-content {
-            width: calc(100% - 240px) !important;
+            width: rpx(510 - 240) !important;
           }
         }
 
         &.has-number {
           .goods-item-content {
-            width: calc(100% - 420px) !important;
+            width: rpx(510 - 420) !important;
           }
         }
 
@@ -472,13 +500,13 @@
 
           &.has-icon {
             .goods-item-content {
-              width: calc(100% - 305px) !important;
+              width: rpx(750 - 305) !important;
             }
           }
 
           &.has-number {
             .goods-item-content {
-              width: calc(100% - 485px) !important;
+              width: rpx(750 - 485) !important;
             }
           }
         }
@@ -488,7 +516,7 @@
     .goods-footer {
       position: fixed;
       bottom: 0;
-      padding: 0 30px !important;
+      padding: 0 rpx(30) !important;
       width: 100%;
 
       &-left {
@@ -498,7 +526,7 @@
       }
 
       &-right {
-        flex: 0 0 190px !important;
+        flex: 0 0 rpx(190) !important;
         text-align: right;
       }
     }

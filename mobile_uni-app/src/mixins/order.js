@@ -17,10 +17,6 @@ export default {
               return;
             }
 
-            if (!lines) {
-              lines = await this.$api.order.getOrderBill();
-            }
-
             lines.forEach((line = {}) => {
               const { goodsUuid, goodsQty } = line;
               const goods = goodsMap[goodsUuid] || {};
@@ -41,9 +37,10 @@ export default {
               goods.checked = true;
               goods.quantity = goodsQty;
               cartStorage[categoryUuid].lines[goodsUuid] = goods;
-              uni.setStorageSync(this.$constants.CART, cartStorage);
-              uni.switchTab({ url: '/pages/order/cart' });
             });
+
+            uni.setStorageSync(this.$constants.CART, cartStorage);
+            uni.switchTab({ url: '/pages/order/cart' });
           }
         },
       });

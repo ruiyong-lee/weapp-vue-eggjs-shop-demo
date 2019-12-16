@@ -15,7 +15,17 @@
     {
       "path": "pages/order/list",
       "style": {
-        "navigationBarTitleText": "订单列表"
+        "navigationBarTitleText": "订单列表",
+        "disableScroll": true,
+        "app-plus": {
+          "bounce": "none"
+        }
+      }
+    },
+    {
+      "path": "pages/order/view",
+      "style": {
+        "navigationBarTitleText": "订单详情"
       }
     },
     {
@@ -34,6 +44,24 @@
       "path": "pages/user/authorize",
       "style": {
         "navigationBarTitleText": "授权"
+      }
+    },
+    {
+      "path": "pages/user/address",
+      "style": {
+        "navigationBarTitleText": "我的地址"
+      }
+    },
+    {
+      "path": "pages/user/addressAddOrModify",
+      "style": {
+        "navigationBarTitleText": "我的地址"
+      }
+    },
+    {
+      "path": "pages/user/merchant",
+      "style": {
+        "navigationBarTitleText": "商家信息"
       }
     }
 	],

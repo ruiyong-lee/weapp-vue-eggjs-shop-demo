@@ -6,11 +6,17 @@
 	"setting": {
 		"urlCheck": false,
 		"es6": false,
+		"enhance": false,
 		"postcss": false,
-		"minified": true,
+		"preloadBackgroundData": false,
+		"minified": false,
 		"newFeature": true,
 		"coverView": true,
+		"nodeModules": false,
 		"autoAudits": false,
+		"showShadowRootInWxmlPanel": false,
+		"scopeDataCheck": false,
+		"uglifyFileName": false,
 		"checkInvalidKey": true,
 		"checkSiteMap": true,
 		"uploadWithSourceMap": true,
@@ -76,6 +82,34 @@
 					"id": -1,
 					"name": "pages/user/authorize",
 					"pathName": "pages/user/authorize",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": 4,
+					"name": "pages/order/view",
+					"pathName": "pages/order/view",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/user/address",
+					"pathName": "pages/user/address",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/user/addressAddOrModify",
+					"pathName": "pages/user/addressAddOrModify",
+					"query": "",
+					"scene": null
+				},
+				{
+					"id": -1,
+					"name": "pages/user/merchant",
+					"pathName": "pages/user/merchant",
 					"scene": null
 				}
 			]
