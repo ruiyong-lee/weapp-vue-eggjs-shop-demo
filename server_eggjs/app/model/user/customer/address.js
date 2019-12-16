@@ -35,7 +35,7 @@ module.exports = app => {
    * @return {string|null} - 用户地址uuid
    */
   Address.setDefault = async ({ uuid, openId }) => {
-    const transaction = await app.getTransition();
+    const transaction = await app.transaction();
     await Address.update({ sysDefault: 0 }, { where: { openId, sysDefault: 1 }, transaction });
     await Address.update({ uuid, sysDefault: 1 }, { where: { uuid, openId }, transaction });
 
@@ -76,7 +76,7 @@ module.exports = app => {
     const { openId } = address;
 
     if (address.sysDefault) {
-      const transaction = await app.getTransition();
+      const transaction = await app.transaction();
       await Address.update({ sysDefault: 0 }, { where: { openId, sysDefault: 1 }, transaction });
       await Address.create(address, { transaction });
     } else {
@@ -96,7 +96,7 @@ module.exports = app => {
     const { uuid, openId, version } = address;
 
     if (address.sysDefault) {
-      const transaction = await app.getTransition();
+      const transaction = await app.transaction();
       await Address.update({ sysDefault: 0 }, { where: { openId, sysDefault: 1 }, transaction });
       result = await Address.update(address, { where: { uuid, openId, version }, transaction });
     } else {

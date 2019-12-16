@@ -14,13 +14,16 @@ module.exports = (options, app) => {
       const sessionid = ctx.get('sessionid');
       const session = ctx.helper.JSONParse(await app.redis.get('default').get(sessionid)) || {};
       const { openId } = session;
+      const excludedPathList = ['/weapp/login']; // 不需要登录的接口
+
       ctx.request.body.openId = openId;
       ctx.request.body = { ...ctx.request.body, ...ctx.query };
 
       // 过滤登录接口
-      if (openId || ctx.path === '/weapp/login') {
+      if (openId || excludedPathList.includes(ctx.path)) {
         await next();
       } else {
+        ctx.status = 401;
         ctx.body = {
           code: ctx.NO_LOGIN_CODE,
           message: '尚未登录',

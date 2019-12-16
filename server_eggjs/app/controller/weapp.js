@@ -197,6 +197,16 @@ class WeappController extends Controller {
   }
 
   /**
+   * 根据uuid获取商家
+   */
+  async getMerchant() {
+    const { ctx } = this;
+    const { uuid } = ctx.query;
+    const merchant = await ctx.service.user.merchant.get(uuid);
+    this.success(merchant);
+  }
+
+  /**
    * 登录
    * @return {function|null} 登录结果
    */

@@ -136,18 +136,18 @@ module.exports = app => {
    * @param {object} { goodsOrder, goodsOrderLines } - 条件
    * @return {string} - 返回订单uuid
    */
-  GoodsOrder.saveNew = async ({ goodsOrder, goodsOrderLines }) => {
-    const transaction = await app.getTransition();
+  GoodsOrder.saveNew = async (goodsOrder = {}) => {
+    const transaction = await app.transaction();
 
-    goodsOrder = await GoodsOrder.create(goodsOrder, { transaction });
-    goodsOrderLines = goodsOrderLines.map(item => {
-      item.billUuid = goodsOrder.uuid;
+    const { uuid } = await GoodsOrder.create(goodsOrder, { transaction });
+    const lines = goodsOrder.lines.map(item => {
+      item.billUuid = uuid;
       return item;
     });
 
-    await GoodsOrderLine.bulkCreate(goodsOrderLines, { transaction });
+    await GoodsOrderLine.bulkCreate(lines, { transaction });
 
-    return goodsOrder.uuid;
+    return uuid;
   };
 
   /**

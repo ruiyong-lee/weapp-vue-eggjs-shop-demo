@@ -67,7 +67,7 @@ module.exports = app => {
       condition.where.name = { [Op.like]: `%%${keywordsLike}%%` };
     }
 
-    const transaction = await app.getTransition();
+    const transaction = await app.transaction();
     const unread = await Notice.count({ where: { orgUuid, isRead: false }, transaction });
     const { count, rows } = await Notice.findAndCountAll({ ...condition, transaction });
 

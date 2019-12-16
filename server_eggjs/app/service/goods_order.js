@@ -97,25 +97,15 @@ class GoodsOrderService extends Service {
     const { service, app } = this;
     const crateInfo = app.getCrateInfo(openId, nickName);
     const billNumber = await app.getBillNumber('DG');
-    const { lines = [] } = goodsOrder;
     const params = {
-      goodsOrder: {
-        ...goodsOrder,
-        ...crateInfo,
-        billNumber,
-        orgUuid,
-        customerUuid: openId,
-        customerName: nickName,
-      },
-      goodsOrderLines: lines.map((line = {}) => {
-        const { goods } = line;
-        return {
-          ...line,
-          goodsUuid: goods.uuid,
-          goodsName: goods.name,
-        };
-      }),
-    };
+      ...goodsOrder,
+      ...crateInfo,
+      billNumber,
+      orgUuid,
+      customerUuid: openId,
+      customerName: nickName,
+      status: 'initial',
+    }
 
     const goodsUuid = await app.model.GoodsOrder.saveNew(params);
 

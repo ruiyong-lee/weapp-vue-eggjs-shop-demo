@@ -77,29 +77,23 @@ class GoodsService extends Service {
    */
   async getGoodsWithCategory(orgUuid) {
     const { app } = this;
-    const goodsMap = {};
+    const goodsList = [];
     const resultList = await app.model.Goods.getGoodsWithCategory({
       orgUuid,
-      categoryAttributes: ['name'],
+      categoryAttributes: ['uuid', 'name'],
       goodsAttributes: ['uuid', 'name', 'categoryUuid', 'spec', 'thumbnail', 'salePrice', 'unitName'],
     });
 
     for (const resultItem of resultList) {
-      const goodsArr = [];
-      const { name: key, goods: goodsList } = resultItem || {};
-      for (const goodsItem of goodsList) {
-        const { uuid, code, name, categoryUuid, spec: goodsSpec, salePrice, thumbnail, unitName } = goodsItem || {};
-        const goods = {
-          goods: { uuid, code, name }, categoryName: key,
-          categoryUuid, goodsSpec, salePrice, thumbnail, unitName,
-        };
+      const { uuid, name: label, goods: lines } = resultItem || {};
 
-        goodsArr.push(goods);
-      }
-      goodsMap[key] = goodsArr;
+      lines.forEach(item => {
+        item.dataValues.categoryName = label;
+      });
+      goodsList.push({ uuid, label, lines });
     }
 
-    return goodsMap;
+    return goodsList;
   }
 
   /**

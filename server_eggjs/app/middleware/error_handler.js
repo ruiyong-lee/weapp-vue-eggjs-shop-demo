@@ -7,16 +7,15 @@
  */
 module.exports = () => {
   return async function errorHandler(ctx, next) {
-    let transaction;
     try {
       await next();
 
-      transaction = await ctx.app.getTransition();
+      const transaction = await ctx.app.getTransaction();
 
       // 如果有事务自动提交
       if (transaction) {
         transaction.commit();
-        ctx.app.deleteTransition();
+        ctx.app.deleteTransaction();
       }
     } catch (err) {
       // 所有的异常都在 app 上触发一个 error 事件，框架会记录一条错误日志
@@ -40,10 +39,11 @@ module.exports = () => {
       }
       ctx.status = status;
 
+      const transaction = await ctx.app.getTransaction();
       // 如果有事务自动回滚
       if (transaction) {
         transaction.rollback();
-        ctx.app.deleteTransition();
+        ctx.app.deleteTransaction();
       }
     }
   };

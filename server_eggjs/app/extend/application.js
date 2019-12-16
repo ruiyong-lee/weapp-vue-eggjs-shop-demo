@@ -8,7 +8,7 @@ const events = {}; // 任务类型map
 const tasks = {}; // 任务列表
 const delayEventKeyPrefix = 'delay_event_'; // 定时任务key前缀
 
-const TRANSITION = Symbol('Application#transition');
+const TRANSACTION = Symbol('Application#transaction');
 
 module.exports = {
   _,
@@ -62,17 +62,17 @@ module.exports = {
   },
 
   // 事务
-  async transition() {
-    if (!this[TRANSITION]) {
-      this[TRANSITION] = await this.model.transaction();
+  async transaction() {
+    if (!this[TRANSACTION]) {
+      this[TRANSACTION] = await this.model.transaction();
     }
-    return this[TRANSITION];
+    return this[TRANSACTION];
   },
-  getTransition() {
-    return this[TRANSITION];
+  getTransaction() {
+    return this[TRANSACTION];
   },
-  deleteTransition() {
-    this[TRANSITION] = null;
+  deleteTransaction() {
+    this[TRANSACTION] = null;
   },
 
   // 单号生成，暂时是日期+6位
@@ -134,7 +134,6 @@ module.exports = {
 
     // 处理
     this.redis.get('subscribe').on('pmessage', (pattern, channel, message) => {
-      console.log(message);
       // 匹配key
       const result = message.match(new RegExp(`^${delayEventKeyPrefix}(${this._.keys(events).join('|')})_(\\S+)$`));
 

@@ -43,6 +43,6 @@ module.exports = app => {
     goodsSpec: STRING(255),
     goodsCategoryName: STRING(76),
     goodsCategoryUuid: STRING(38),
-    remark: STRING(255),
+    remark: STRING(255), // 暂时没用，后面整理去掉
   };
 };

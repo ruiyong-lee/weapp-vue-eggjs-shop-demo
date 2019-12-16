@@ -103,7 +103,7 @@ module.exports = app => {
    * @return {string|null} - 运费方案uuid
    */
   FreightPlan.setDefault = async ({ uuid, orgUuid }) => {
-    const transaction = await app.getTransition();
+    const transaction = await app.transaction();
     await FreightPlan.update({ sysDefault: 0 }, { where: { sysDefault: 1 }, transaction });
     await FreightPlan.update({ uuid, sysDefault: 1 }, { where: { uuid, orgUuid }, transaction });
 

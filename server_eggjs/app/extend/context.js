@@ -23,7 +23,7 @@ module.exports = {
     const token = app.jwt.sign(data, app.config.jwt.secret, { expiresIn: '12h' });
     const cookieConfig = { maxAge: 1000 * 3600 * 24 * 7, httpOnly: false, overwrite: true, signed: false };
 
-    this.cookies.set('token', token, cookieConfig);
+    this.cookies.set('token', token, { ...cookieConfig, httpOnly: true });
     this.cookies.set('name', name, cookieConfig);
     this.cookies.set('userUuid', userUuid, cookieConfig);
     this.cookies.set('userName', userName, cookieConfig);

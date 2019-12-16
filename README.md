@@ -18,7 +18,7 @@
 
 **:mega: 列了一大堆，搞得好像都用的很好似的 :sweat_smile::sweat_smile:**
 
-微信小程序：**原生小程序代码老旧，用uni-app重构中（这段时间太忙，现在才开始做，目前提交在dev分支）**
+微信小程序：**uni-app**
 
 pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
@@ -59,6 +59,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 获取用户指定地址&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 新增用户地址&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 编辑用户地址&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 获取商家信息&nbsp;&nbsp;&nbsp;&nbsp;
 
 > **pc管理端**
 
@@ -116,11 +117,10 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 > **进行中**
   
-- 小程序用uni-app重构
+- 对代码写法更细致的完善、整理、改进（主要后端代码）
 
 > **未来**
 
-- 对代码写法更细致的完善、整理、改进
 - **停止维护（你说气人不）**
 
 > **已完成**
@@ -137,6 +137,7 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 ✔ 提供线下支付方式&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 订单消息推送&nbsp;&nbsp;&nbsp;&nbsp;
 ✔ 提供线下支付方式&nbsp;&nbsp;&nbsp;&nbsp;
+✔ 小程序用uni-app重构&nbsp;&nbsp;&nbsp;&nbsp;
 
 ## 开发与部署文档
 
@@ -155,6 +156,9 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 <img src="/_resource/screenshot/order-detail.png"/>
 <img src="/_resource/screenshot/goods-view.png"/>
 <img src="/_resource/screenshot/notice-list.png"/>
+<img src="/_resource/screenshot/weapp-1.png"/>
+<img src="/_resource/screenshot/weapp-2.png"/>
+<img src="/_resource/screenshot/weapp-3.png"/>
 
 ## 目录结构
 
@@ -162,10 +166,10 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 
 ```
 .
+├── _resource   // 其他资源
 ├── mobile_uni-app // 暂时只支持微信小程序，后面重构客户模块（uni-app）
 ├── pc_vue     // pc管理端（vue）
 ├── server_eggjs // 服务端（eggjs）
-├── _resource   // 其他资源
 ├── LICENSE   // 证书
 └── README.md  // 我就是我 是颜色不一样的烟火
 ```
@@ -191,8 +195,8 @@ pc前端：**vue2 + vuex + vue-router + vue-cli3 + element-ui + ES6**
 [**node-uuid**](https://github.com/kelektiv/node-uuid) |
 [**vuescroll**](https://github.com/YvesCoding/vuescroll) |
 [**Vue-Socket.io**](https://github.com/MetinSeylan/Vue-Socket.io) |
-[**weui-wxss**](https://github.com/Tencent/weui-wxss) |
-[**zanui-weapp**](https://github.com/youzan/zanui-weapp)
+[**uni-app**](https://github.com/dcloudio/uni-app) |
+[**ColorUI**](https://github.com/weilanwl/ColorUI)
 
 ## License
 
