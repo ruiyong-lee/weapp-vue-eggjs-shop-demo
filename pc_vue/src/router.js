@@ -11,9 +11,9 @@ const userType = Vue.cookie.get('userType');
 
 // 开发环境不使用懒加载, 因为懒加载页面太多的话会造成webpack热更新太慢, 所以只有生产环境使用懒加载
 if (process.env.NODE_ENV === 'production') {
-  customImport = file => () => import(`@/views/${file}.vue`);
+  customImport = (file) => () => import(`@/views/${file}.vue`);
 } else {
-  customImport = file => require(`@/views/${file}.vue`).default;
+  customImport = (file) => require(`@/views/${file}.vue`).default;
 }
 
 // meta.title：tab上显示的标题

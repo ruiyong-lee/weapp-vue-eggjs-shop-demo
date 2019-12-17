@@ -133,7 +133,7 @@
     },
     computed: {
       ...mapState({
-        userType: state => state.user.userType,
+        userType: (state) => state.user.userType,
       }),
     },
     methods: {

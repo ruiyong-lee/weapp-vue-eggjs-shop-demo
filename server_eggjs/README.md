@@ -6,7 +6,7 @@
 
 ##### 开发环境、工具
 
-- **Node.js：** v10.15.0 （>= v8.0.0）
+- **Node.js：** v12.13.1 （>= v8.0.0）
 
 - **Mysql：** v5.5.51
 
@@ -14,7 +14,7 @@
 
 - **Redis配置：** notify-keyspace-events Ex
 
-- **Westorm：** v2019.1.2
+- **Westorm：** v2019.3
 
 - **Webstorm配置：** File - Settings - Languages & Frameworks - Node.js and NPM 里面的 coding assistance for node.js 勾选 ，这样就会有代码提示
 

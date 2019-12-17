@@ -47,5 +47,5 @@ Object.entries(filters).forEach(([name, fn]) => {
 new Vue({
   router,
   store,
-  render: h => h(App),
+  render: (h) => h(App),
 }).$mount('#app');

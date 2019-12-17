@@ -10,7 +10,7 @@ module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        data: '@import "@/styles/variables.scss";', // 全局scss
+        prependData: '@import "@/styles/variables.scss";', // 全局scss
       },
     },
   },

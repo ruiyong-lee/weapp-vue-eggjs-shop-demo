@@ -8,7 +8,8 @@
             <i class="iconfont icon-initial status-card-box__icon text-red"></i>
             <div class="status-card-box__title">
               <span>待付款</span>
-              <el-progress class="status-card-box__progress" :percentage="initialPercentage" :show-text="false"
+              <el-progress class="status-card-box__progress" :percentage="initialPercentage"
+                           :show-text="false"
                            color="#FF5B5B"></el-progress>
             </div>
             <span class="status-card-box__value text-red">{{statusQtyMap.initial || 0}}</span>
@@ -19,7 +20,8 @@
             <i class="iconfont icon-audited status-card-box__icon text-primary"></i>
             <div class="status-card-box__title">
               <span>待发货</span>
-              <el-progress class="status-card-box__progress" :percentage="auditedPercentage" :show-text="false"
+              <el-progress class="status-card-box__progress" :percentage="auditedPercentage"
+                           :show-text="false"
                            color="#5C9ACF"></el-progress>
             </div>
             <span class="status-card-box__value text-primary">{{statusQtyMap.audited || 0}}</span>
@@ -30,7 +32,8 @@
             <i class="iconfont icon-dispatching status-card-box__icon text-green"></i>
             <div class="status-card-box__title">
               <span>待收货</span>
-              <el-progress class="status-card-box__progress" :percentage="dispatchingPercentage" :show-text="false"
+              <el-progress class="status-card-box__progress" :percentage="dispatchingPercentage"
+                           :show-text="false"
                            color="#1cc09f"></el-progress>
             </div>
             <span class="status-card-box__value text-green">{{statusQtyMap.dispatching || 0}}</span>
@@ -41,10 +44,12 @@
             <i class="iconfont icon-completed status-card-box__icon text-dark-gray"></i>
             <div class="status-card-box__title">
               <span>已完成</span>
-              <el-progress class="status-card-box__progress" :percentage="completedPercentage" :show-text="false"
+              <el-progress class="status-card-box__progress" :percentage="completedPercentage"
+                           :show-text="false"
                            color="#666666"></el-progress>
             </div>
-            <span class="status-card-box__value text-dark-gray">{{statusQtyMap.completed || 0}}</span>
+            <span
+              class="status-card-box__value text-dark-gray">{{statusQtyMap.completed || 0}}</span>
           </div>
         </el-col>
       </el-row>
@@ -62,7 +67,8 @@
       <el-col :span="12">
         <el-card>
           <div slot="header">订单金额</div>
-          <ve-line :data="chartOrderAmountData" :settings="chartSettings" :extend="chartOrderAmountExtend"
+          <ve-line :data="chartOrderAmountData" :settings="chartSettings"
+                   :extend="chartOrderAmountExtend"
                    ref="chartOrderAmount" :grid="grid" :height="chartHeight"></ve-line>
         </el-card>
       </el-col>
@@ -78,7 +84,8 @@
       <el-col :span="12">
         <el-card>
           <div slot="header">收款金额</div>
-          <ve-line :data="chartOrderReceiptAmountData" :settings="chartSettings" :extend="chartOrderAmountExtend"
+          <ve-line :data="chartOrderReceiptAmountData" :settings="chartSettings"
+                   :extend="chartOrderAmountExtend"
                    ref="chartOrderReceiptAmount" :grid="grid" :height="chartHeight"></ve-line>
         </el-card>
       </el-col>
@@ -190,19 +197,19 @@
     computed: {
       initialPercentage() {
         const { initial = 0, total = 0 } = this.statusQtyMap;
-        return _.round(initial * 100 / total, 0) || 0;
+        return _.round((initial * 100) / total, 0) || 0;
       },
       auditedPercentage() {
         const { audited = 0, total = 0 } = this.statusQtyMap;
-        return _.round(audited * 100 / total, 0) || 0;
+        return _.round((audited * 100) / total, 0) || 0;
       },
       dispatchingPercentage() {
         const { dispatching = 0, total = 0 } = this.statusQtyMap;
-        return _.round(dispatching * 100 / total, 0) || 0;
+        return _.round((dispatching * 100) / total, 0) || 0;
       },
       completedPercentage() {
         const { completed = 0, total = 0 } = this.statusQtyMap;
-        return _.round(completed * 100 / total, 0) || 0;
+        return _.round((completed * 100) / total, 0) || 0;
       },
     },
     methods: {

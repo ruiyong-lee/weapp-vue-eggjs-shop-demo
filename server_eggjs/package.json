@@ -1,6 +1,6 @@
 {
   "name": "server_eggjs",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "app server",
   "private": true,
   "dependencies": {
@@ -9,7 +9,7 @@
     "egg-mysql": "^3.0.0",
     "egg-passport": "^2.1.0",
     "egg-redis": "^2.4.0",
-    "egg-scripts": "^2.11.1",
+    "egg-scripts": "^2.12.0",
     "egg-sequelize": "^5.2.0",
     "egg-session-redis": "^2.1.0",
     "egg-socket.io": "^4.1.6",
@@ -27,7 +27,7 @@
     "babel-eslint": "^10.0.3",
     "egg-bin": "^4.14.0",
     "egg-ci": "^1.13.1",
-    "egg-mock": "^3.24.2",
+    "egg-mock": "^3.25.0",
     "eslint": "^6.7.2",
     "eslint-config-egg": "^8.0.0",
     "sequelize-cli": "^5.5.1",
