@@ -2,6 +2,7 @@ module.exports = {
   transpileDependencies: [
     /\bvue-awesome\b/,
   ],
+  lintOnSave: false,
   devServer: {
     proxy: 'http://localhost:7001', // 反向代理
     open: true, // 自动打开浏览器

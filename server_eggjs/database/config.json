@@ -5,7 +5,7 @@
     "host": "127.0.0.1",
     "port": "3306",
     "username": "root",
-    "password": "209cfcfaf6",
+    "password": "",
     "timezone": "+08:00"
   },
   "test": {
@@ -14,7 +14,7 @@
     "host": "127.0.0.1",
     "port": "3306",
     "username": "root",
-    "password": "209cfcfaf6",
+    "password": "",
     "timezone": "+08:00"
   },
   "production": {
@@ -23,7 +23,7 @@
     "host": "127.0.0.1",
     "port": "3306",
     "username": "root",
-    "password": "209cfcfaf6",
+    "password": "",
     "timezone": "+08:00"
   }
 }

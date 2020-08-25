@@ -18,6 +18,7 @@ module.exports = {
     'no-param-reassign': 0,
     'max-len': [0, 80, 4],
     indent: 0,
+    'linebreak-style': 0,
   },
 
   globals: {
@@ -25,7 +26,7 @@ module.exports = {
     _: true,
   },
 
-  parserOptions: {
-    parser: 'babel-eslint',
-  },
+  // parserOptions: {
+  //   parser: 'babel-eslint',
+  // },
 };

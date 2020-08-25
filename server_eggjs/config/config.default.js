@@ -23,7 +23,7 @@ module.exports = appInfo => {
         // 用户名
         user: 'root',
         // 密码
-        password: '209cfcfaf6',
+        password: '',
         // 数据库名
         database: 'weapp-vue-eggjs-shop-demo',
       },
@@ -43,7 +43,7 @@ module.exports = appInfo => {
       host: '127.0.0.1',
       port: '3306',
       username: 'root',
-      password: '209cfcfaf6',
+      password: '',
       timezone: '+08:00',
       define: {
         createdAt: 'createdTime',
