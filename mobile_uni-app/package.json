@@ -58,7 +58,7 @@
     "babel-plugin-import": "^1.12.2",
     "mini-types": "*",
     "miniprogram-api-typings": "^2.9.1",
-    "node-sass": "^4.13.0",
+    "node-sass": "^7.0.0",
     "postcss-comment": "^2.0.0",
     "sass-loader": "^8.0.0",
     "vue-template-compiler": "^2.6.10"
