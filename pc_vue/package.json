@@ -27,7 +27,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^4.1.1",
     "@vue/cli-plugin-eslint": "^4.1.1",
-    "@vue/cli-service": "^4.1.1",
+    "@vue/cli-service": "^5.0.8",
     "@vue/eslint-config-airbnb": "^5.0.0",
     "babel-eslint": "^10.0.3",
     "babel-helper-vue-jsx-merge-props": "^2.0.3",
